@@ -433,8 +433,8 @@ function handleSubmit(e,formId,okId){
   var email=emailInput.value.trim().toLowerCase();
   if(!email)return;
   btn.textContent='Submitting...';btn.disabled=true;
-  if(sb){try{sb.from('fieldlux_waitlist').insert({email:email,source:'landing'}).then(function(){})}catch(err){}}
-  form.style.display='none';ok.style.display='block';
+  if(sb){try{sb.from('fieldlux_waitlist').insert({email:email,source:'landing'}).then(function(){form.style.display='none';ok.style.display='block'}).catch(function(err){btn.textContent='Error. Try again.';btn.disabled=false})}catch(err){btn.textContent='Error. Try again.';btn.disabled=false}}
+  else{form.style.display='none';ok.style.display='block'}
 }
 </script>
 </body>
