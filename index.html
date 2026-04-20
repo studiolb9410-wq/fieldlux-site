@@ -717,11 +717,18 @@
             projection designers, AV integrators, and installers.
         </p>
 
-        <form class="max-w-xl mx-auto space-y-3" onsubmit="event.preventDefault(); alert('Beta signup wiring TBD — hook to Supabase beta_requests table.');">
+        <!-- Beta signup form — wired to Supabase fieldlux_waitlist. RLS: anon can
+             INSERT only (with_check=true); SELECT is blocked (qual=false), so
+             the email list is never readable from the browser. The publishable
+             key below is designed to be public; real authorisation is done by
+             Postgres policies, not by key secrecy. -->
+        <form id="flxBetaForm" class="max-w-xl mx-auto space-y-3">
             <div class="grid md:grid-cols-2 gap-3">
-                <input type="email" required placeholder="you@studio.com"
+                <input id="flxBetaEmail" name="email" type="email" required placeholder="you@studio.com"
+                       autocomplete="email"
                        class="w-full px-4 py-3 rounded-md bg-surface-elevated border border-line text-ink-50 placeholder-ink-500 focus:border-brand/50 focus:outline-none font-sans" />
-                <select required class="w-full px-4 py-3 rounded-md bg-surface-elevated border border-line text-ink-50 focus:border-brand/50 focus:outline-none">
+                <select id="flxBetaRole" name="role" required
+                        class="w-full px-4 py-3 rounded-md bg-surface-elevated border border-line text-ink-50 focus:border-brand/50 focus:outline-none">
                     <option value="">I'm a...</option>
                     <option>Technical Director</option>
                     <option>Projection Designer</option>
@@ -732,16 +739,100 @@
                     <option>Other</option>
                 </select>
             </div>
-            <input type="text" placeholder="One line — what are you trying to preflight? (optional)"
+            <input id="flxBetaUseCase" name="use_case" type="text" maxlength="280"
+                   placeholder="One line — what are you trying to preflight? (optional)"
                    class="w-full px-4 py-3 rounded-md bg-surface-elevated border border-line text-ink-50 placeholder-ink-500 focus:border-brand/50 focus:outline-none" />
-            <button type="submit" class="w-full px-6 py-4 rounded-md bg-brand text-surface-base font-semibold hover:bg-brand-dim transition-colors">
+            <button id="flxBetaSubmit" type="submit"
+                    class="w-full px-6 py-4 rounded-md bg-brand text-surface-base font-semibold hover:bg-brand-dim disabled:opacity-60 disabled:cursor-not-allowed transition-colors">
                 Request Beta Access →
             </button>
-            <p class="text-xs text-ink-500">
+            <p id="flxBetaStatus" class="text-xs min-h-[1.2em] text-ink-500" role="status" aria-live="polite">
                 We review every request personally and send access in batches as slots open.
                 No marketing list — only beta access updates.
             </p>
         </form>
+
+        <!-- Success state shown after a successful signup; form is hidden. -->
+        <div id="flxBetaSuccess" class="hidden max-w-xl mx-auto rounded-md border border-brand/40 bg-brand-muted p-6 text-center">
+            <p class="text-brand font-semibold mb-1">Request received.</p>
+            <p class="text-ink-400 text-sm leading-relaxed">
+                We'll review it and send your app link to the email above as slots open.
+                Want to say hi in the meantime? Join the Discord below — mention the email
+                you used and we'll prioritise.
+            </p>
+        </div>
+
+        <script>
+            (function () {
+                var SUPABASE_URL = 'https://ffetwcvjfzderjfizfak.supabase.co';
+                var SUPABASE_KEY = 'sb_publishable_7ISMDlvb9lL6PCGYSgsz4Q_EGhIw0b_';
+
+                var form = document.getElementById('flxBetaForm');
+                var submit = document.getElementById('flxBetaSubmit');
+                var status = document.getElementById('flxBetaStatus');
+                var success = document.getElementById('flxBetaSuccess');
+                if (!form || !submit || !status || !success) return;
+
+                form.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    submit.disabled = true;
+                    var originalLabel = submit.textContent;
+                    submit.textContent = 'Submitting…';
+                    status.classList.remove('text-danger');
+                    status.classList.add('text-ink-500');
+                    status.textContent = 'Sending your request to the review queue…';
+
+                    var email = (document.getElementById('flxBetaEmail').value || '').trim().toLowerCase();
+                    var role = document.getElementById('flxBetaRole').value || null;
+                    var useCase = (document.getElementById('flxBetaUseCase').value || '').trim();
+                    if (!useCase) useCase = null;
+
+                    var payload = {
+                        email: email,
+                        role: role,
+                        use_case: useCase,
+                        source: 'landing',
+                        user_agent: (navigator.userAgent || '').slice(0, 500) || null,
+                        referrer: (document.referrer || '').slice(0, 500) || null,
+                    };
+
+                    try {
+                        var res = await fetch(SUPABASE_URL + '/rest/v1/fieldlux_waitlist', {
+                            method: 'POST',
+                            headers: {
+                                apikey: SUPABASE_KEY,
+                                Authorization: 'Bearer ' + SUPABASE_KEY,
+                                'Content-Type': 'application/json',
+                                Prefer: 'return=minimal',
+                            },
+                            body: JSON.stringify(payload),
+                        });
+
+                        // 201 Created = new signup. 409 = duplicate email (already on list).
+                        // We treat the duplicate as success so the user does not feel punished
+                        // for resubmitting; they remain on the same waitlist row.
+                        if (res.ok || res.status === 409) {
+                            form.classList.add('hidden');
+                            success.classList.remove('hidden');
+                            success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            return;
+                        }
+
+                        var bodyText = '';
+                        try { bodyText = await res.text(); } catch (_) { /* noop */ }
+                        throw new Error('status ' + res.status + (bodyText ? ' · ' + bodyText.slice(0, 180) : ''));
+                    } catch (err) {
+                        submit.disabled = false;
+                        submit.textContent = originalLabel;
+                        status.classList.remove('text-ink-500');
+                        status.classList.add('text-danger');
+                        status.textContent =
+                            'Something blocked the submission. Check your connection and try again, or DM us on Discord — ' +
+                            (err && err.message ? err.message : 'unknown error');
+                    }
+                });
+            })();
+        </script>
 
         <!-- Discord community — secondary entry point -->
         <div class="mt-10 pt-8 border-t border-line-subtle">
