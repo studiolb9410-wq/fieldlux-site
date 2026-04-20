@@ -9,107 +9,22 @@
     <meta property="og:description" content="Physics-based preflight for professional projection installations. READY, AT_RISK, or NOT_RECOMMENDED — before you touch the rig." />
     <meta property="og:type" content="website" />
 
+    <!-- Theme / color-scheme hints (prevents white flash on Safari before CSS applies) -->
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0A0A0B" />
+
+    <!-- Critical inline styles — guarantee dark background even if external CSS is slow -->
+    <style>
+      html, body { background: #0A0A0B; color: #FAFAFA; margin: 0; }
+    </style>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
-    <!-- Tailwind CDN (production swap to build) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              ink: {
-                50:  '#FAFAFA',
-                200: '#E4E4E7',
-                400: '#A1A1AA',
-                500: '#71717A',
-                700: '#3F3F46',
-              },
-              surface: {
-                base:     '#0A0A0B',
-                elevated: '#111114',
-                raised:   '#1A1A1E',
-              },
-              line: {
-                DEFAULT:  '#27272A',
-                subtle:   '#1F1F22',
-              },
-              brand: {
-                DEFAULT: '#06B6D4',
-                dim:     '#0891B2',
-                muted:   'rgba(6, 182, 212, 0.08)',
-                ring:    'rgba(6, 182, 212, 0.3)',
-              },
-              success: '#22C55E',
-              warning: '#F59E0B',
-              danger:  '#EF4444',
-            },
-            fontFamily: {
-              sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-              mono: ['Geist Mono', 'ui-monospace', 'monospace'],
-            },
-          },
-        },
-      };
-    </script>
-
-    <style>
-      html, body { background: #0A0A0B; color: #FAFAFA; font-family: 'Inter', sans-serif; }
-      ::selection { background: rgba(6, 182, 212, 0.35); color: #fff; }
-      .grid-bg {
-        background-image:
-          linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-        background-size: 40px 40px;
-      }
-      .glow-brand { box-shadow: 0 0 40px rgba(6,182,212,0.15), inset 0 0 0 1px rgba(6,182,212,0.3); }
-
-      /* Screenshot/video slot — clearly identifies what goes where */
-      .media-slot {
-        position: relative;
-        border: 1px dashed rgba(6,182,212,0.4);
-        background: linear-gradient(135deg, rgba(6,182,212,0.04), rgba(255,255,255,0.01));
-        border-radius: 8px;
-        overflow: hidden;
-      }
-      .media-slot::before {
-        content: attr(data-label);
-        position: absolute;
-        top: 12px;
-        left: 12px;
-        padding: 4px 8px;
-        background: rgba(6,182,212,0.15);
-        border: 1px solid rgba(6,182,212,0.4);
-        color: #06B6D4;
-        font-family: 'Geist Mono', monospace;
-        font-size: 10px;
-        font-weight: 500;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        border-radius: 4px;
-        z-index: 10;
-      }
-      .media-slot::after {
-        content: attr(data-caption);
-        position: absolute;
-        bottom: 12px;
-        left: 12px;
-        right: 12px;
-        color: rgba(161,161,170,0.8);
-        font-size: 11px;
-        font-family: 'Geist Mono', monospace;
-        text-align: center;
-      }
-      .media-slot img, .media-slot video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
-    </style>
+    <!-- Prebuilt Tailwind CSS — static, cacheable, Safari-safe -->
+    <link rel="stylesheet" href="assets/tailwind.css" />
 </head>
 <body class="antialiased">
 

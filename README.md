@@ -5,20 +5,40 @@ Marketing site for [FieldLux](https://github.com/studiolb9410-wq/projection-mapp
 ## Structure
 
 ```
-landing/
-├── index.html          # single-file landing page (Tailwind CDN)
-├── assets/             # screenshots + hero video go here
+fieldlux-site/
+├── index.html            # landing page
+├── src/input.css         # Tailwind source (edit this, not tailwind.css)
+├── tailwind.config.js    # Tailwind theme (brand colors, fonts)
+├── postcss.config.js
+├── assets/
+│   ├── tailwind.css      # built CSS — commit this, referenced by index.html
+│   ├── logo.png
+│   └── logo-mark.png
 └── README.md
 ```
 
-## Local preview
-
-Just open `index.html` in a browser. No build step.
+## Local development
 
 ```bash
-# optional: served via any static server
-npx serve .
+npm install        # once
+npm run watch      # rebuild assets/tailwind.css on every change
+# then open index.html in a browser (or `npx serve .`)
 ```
+
+## Production build
+
+```bash
+npm run build      # minified assets/tailwind.css
+```
+
+The built `assets/tailwind.css` is committed so the repo deploys directly to
+any static host without a build step on the server.
+
+> **Why not Tailwind Play CDN (`cdn.tailwindcss.com`)?**
+> It runs a JIT compiler in the browser via JavaScript. On Safari/macOS,
+> the script can load slowly or get blocked, causing white flashes,
+> collapsed layouts, and scroll glitches (aspect-ratio placeholders
+> lose their dimensions). Prebuilding the CSS eliminates all of that.
 
 ## Deploy
 
