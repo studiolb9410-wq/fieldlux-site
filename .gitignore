@@ -1,0 +1,17 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Vercel / Netlify local
+.vercel
+.netlify
+
+# Build artifacts (in case we add a build step later)
+dist/
+node_modules/
+.cache/

@@ -1,441 +1,801 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FieldLux — Projection Mapping Preflight</title>
-<meta name="description" content="FieldLux runs physics-based preflight on projection mapping setups — quantitative scoring, stress analysis, and a professional PDF tech rider in one workflow.">
-<meta property="og:title" content="FieldLux — Projection Mapping Preflight">
-<meta property="og:description" content="Physics-based projection mapping preflight. Know before you load the truck.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://field-lux.com">
-<link rel="icon" type="image/png" href="/fieldlux-logo-mark.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  /* Palette mirrors the app exactly — same dark base, same cyan accent,
-     same muted grays. Landing and editor read as one product. */
-  --bg:#0a0a0a;
-  --bg2:#111114;
-  --bg3:#18181c;
-  --bg4:#202026;
-  --line:rgba(255,255,255,.08);
-  --line2:rgba(255,255,255,.04);
-  --text:#f3f4f6;
-  --text2:#9ca3af;
-  --text3:#6b7280;
-  --text4:#4b5563;
-  --accent:#06B6D4;
-  --accent-hover:#22d3ee;
-  --accent-dim:rgba(6,182,212,.08);
-  --accent-line:rgba(6,182,212,.25);
-  --amber:#FDE68A;
-  --green:#86EFAC;
-  --discord:#5865F2;
-  --radius:12px;
-  --radius-sm:8px;
-  --font:'Inter',system-ui,sans-serif;
-  --mono:'JetBrains Mono',ui-monospace,monospace;
-}
-html{scroll-behavior:smooth;background:var(--bg);color:var(--text);font-family:var(--font)}
-body{overflow-x:hidden;-webkit-font-smoothing:antialiased;font-feature-settings:'cv11','ss01'}
-a{color:inherit;text-decoration:none}
-::selection{background:rgba(6,182,212,.25);color:#fff}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FieldLux — Projection Preflight Engine</title>
+    <meta name="description" content="Verify your projection install will work before the truss goes up. Physics-based analysis, automatic verdict, prescription engine." />
+    <meta property="og:title" content="FieldLux — Projection Preflight Engine" />
+    <meta property="og:description" content="Physics-based preflight for professional projection installations. READY, AT_RISK, or NOT_RECOMMENDED — before you touch the rig." />
+    <meta property="og:type" content="website" />
 
-.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.028;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:64px 64px}
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
-/* ── Nav ───────────────────────────────────────────────── */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 clamp(1.5rem,4vw,4rem);height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,.82);backdrop-filter:blur(24px) saturate(1.5);border-bottom:1px solid var(--line2)}
-.logo{display:flex;align-items:center;gap:10px;height:32px}
-.logo img{height:32px;width:auto;display:block}
-.nav-right{display:flex;align-items:center;gap:24px}
-.nav-links{display:flex;gap:26px;font-size:13px;color:var(--text2);font-weight:500}
-.nav-links a{transition:color .15s}
-.nav-links a:hover{color:var(--text)}
-.nav-discord{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--text2);padding:7px 14px;border-radius:7px;border:1px solid rgba(88,101,242,.22);transition:all .15s}
-.nav-discord:hover{border-color:rgba(88,101,242,.5);color:var(--discord);background:rgba(88,101,242,.06)}
-.nav-discord svg{width:16px;height:16px}
-.nav-cta{font-size:12.5px;font-weight:600;padding:8px 18px;background:var(--accent);color:#00191e;border-radius:7px;transition:all .15s;letter-spacing:.01em}
-.nav-cta:hover{background:var(--accent-hover);transform:translateY(-1px)}
+    <!-- Tailwind CDN (production swap to build) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: {
+                50:  '#FAFAFA',
+                200: '#E4E4E7',
+                400: '#A1A1AA',
+                500: '#71717A',
+                700: '#3F3F46',
+              },
+              surface: {
+                base:     '#0A0A0B',
+                elevated: '#111114',
+                raised:   '#1A1A1E',
+              },
+              line: {
+                DEFAULT:  '#27272A',
+                subtle:   '#1F1F22',
+              },
+              brand: {
+                DEFAULT: '#06B6D4',
+                dim:     '#0891B2',
+                muted:   'rgba(6, 182, 212, 0.08)',
+                ring:    'rgba(6, 182, 212, 0.3)',
+              },
+              success: '#22C55E',
+              warning: '#F59E0B',
+              danger:  '#EF4444',
+            },
+            fontFamily: {
+              sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+              mono: ['Geist Mono', 'ui-monospace', 'monospace'],
+            },
+          },
+        },
+      };
+    </script>
 
-/* ── Hero ──────────────────────────────────────────────── */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px clamp(1.5rem,4vw,4rem) 60px;position:relative;z-index:1}
-.hero::before{content:'';position:absolute;top:-140px;left:50%;transform:translateX(-50%);width:720px;height:720px;background:radial-gradient(circle,rgba(6,182,212,.06) 0%,transparent 65%);pointer-events:none}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 10px;border:1px solid var(--accent-line);border-radius:100px;font-size:11px;font-weight:600;color:var(--accent);margin-bottom:32px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent-dim)}
-.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
-.hero h1{font-size:clamp(44px,7.2vw,80px);font-weight:700;letter-spacing:-.045em;line-height:1.02;max-width:820px;margin-bottom:24px}
-.hero h1 .accent{color:var(--accent)}
-.hero-sub{font-size:clamp(15px,1.7vw,17px);color:var(--text2);max-width:520px;line-height:1.65;margin-bottom:42px;font-weight:400}
-.email-row{display:flex;gap:8px;max-width:460px;width:100%}
-.email-in{flex:1;padding:13px 16px;background:var(--bg3);border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--text);font-size:14px;font-family:var(--font);outline:none;transition:border .2s}
-.email-in::placeholder{color:var(--text3)}
-.email-in:focus{border-color:var(--accent-line)}
-.email-btn{padding:13px 22px;background:var(--accent);color:#00191e;font-size:13px;font-weight:600;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;font-family:var(--font);white-space:nowrap}
-.email-btn:hover{background:var(--accent-hover);transform:translateY(-1px)}
-.email-btn:disabled{opacity:.6;cursor:default;transform:none}
-.hero-note{font-size:11px;color:var(--text3);margin-top:18px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:center;letter-spacing:.01em}
-.hero-note span{display:flex;align-items:center;gap:5px}
-.form-ok{display:none;padding:18px 24px;background:var(--accent-dim);border:1px solid var(--accent-line);border-radius:var(--radius-sm);max-width:460px;width:100%;text-align:center}
-.form-ok h3{color:var(--accent);font-size:16px;margin-bottom:4px;font-weight:600}
-.form-ok p{color:var(--text2);font-size:13px}
+    <style>
+      html, body { background: #0A0A0B; color: #FAFAFA; font-family: 'Inter', sans-serif; }
+      ::selection { background: rgba(6, 182, 212, 0.35); color: #fff; }
+      .grid-bg {
+        background-image:
+          linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+      .glow-brand { box-shadow: 0 0 40px rgba(6,182,212,0.15), inset 0 0 0 1px rgba(6,182,212,0.3); }
 
-/* ── Stats strip ───────────────────────────────────────── */
-.stats-bar{position:relative;z-index:1;padding:0 clamp(1.5rem,4vw,4rem)}
-.stats-inner{max-width:920px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line2);border-radius:var(--radius);overflow:hidden;background:var(--bg2)}
-.stat{padding:26px 20px;text-align:center;position:relative}
-.stat:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:var(--line2)}
-.stat-val{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--accent);margin-bottom:5px;letter-spacing:-.01em}
-.stat-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.09em;font-weight:500}
-
-/* ── Generic section shell ─────────────────────────────── */
-section{position:relative;z-index:1;padding:110px clamp(1.5rem,4vw,4rem)}
-.tag{display:inline-block;font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
-.heading{font-size:clamp(28px,3.8vw,40px);font-weight:700;letter-spacing:-.035em;line-height:1.1;margin-bottom:18px}
-.desc{font-size:15px;color:var(--text2);max-width:520px;line-height:1.7}
-
-/* ── Problem / Scorecard preview ───────────────────────── */
-.problem{background:var(--bg2)}
-.problem-wrap{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
-.pain-list{display:flex;flex-direction:column;gap:16px;margin-top:32px}
-.pain{display:flex;gap:14px;align-items:flex-start}
-.pain-dot{width:32px;height:32px;border-radius:8px;background:var(--accent-dim);border:1px solid var(--accent-line);display:grid;place-items:center;flex-shrink:0;font-size:14px;color:var(--accent);font-weight:500}
-.pain h4{font-size:14px;font-weight:600;margin-bottom:2px}
-.pain p{font-size:12.5px;color:var(--text2);line-height:1.55}
-.mock{background:var(--bg3);border:1px solid var(--line);border-radius:var(--radius);padding:26px;font-size:13px}
-.mock-header{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-.mock-badge{padding:5px 12px;border-radius:6px;font-size:11.5px;font-weight:700;background:rgba(134,239,172,.1);color:var(--green);border:1px solid rgba(134,239,172,.2);letter-spacing:.04em}
-.mock-res{color:var(--text2);font-size:12px;font-family:var(--mono)}
-.mock-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.mock-m{background:var(--bg4);border-radius:var(--radius-sm);padding:12px 14px}
-.mock-m-name{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;font-weight:500}
-.mock-m-val{font-family:var(--mono);font-size:17px;font-weight:500;letter-spacing:-.01em}
-.mock-m-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.06);margin-top:8px;overflow:hidden}
-.mock-m-fill{height:100%;border-radius:2px;transition:width 1.2s ease}
-.mock-rx{background:var(--bg4);border-radius:var(--radius-sm);padding:12px 14px}
-.mock-rx-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;font-weight:500}
-.mock-rx p{font-size:12.5px;color:var(--text2);line-height:1.55}
-.mock-rx span.val{color:var(--accent);font-family:var(--mono);font-weight:500}
-.mock-rx span.good{color:var(--green);font-family:var(--mono);font-weight:500}
-
-/* ── Features grid ─────────────────────────────────────── */
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line2);border-radius:var(--radius);overflow:hidden;max-width:1080px;margin:48px auto 0;border:1px solid var(--line2)}
-.feat{background:var(--bg);padding:36px 28px;transition:background .25s}
-.feat:hover{background:var(--bg2)}
-.feat-icon{width:40px;height:40px;border-radius:var(--radius-sm);display:grid;place-items:center;margin-bottom:18px;font-size:18px;background:var(--accent-dim);border:1px solid var(--accent-line);color:var(--accent)}
-.feat h3{font-size:15px;font-weight:600;margin-bottom:7px;letter-spacing:-.01em}
-.feat p{font-size:12.5px;color:var(--text2);line-height:1.65}
-
-/* ── Steps ─────────────────────────────────────────────── */
-.steps-section{background:var(--bg2)}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;max-width:980px;margin:52px auto 0}
-.step{position:relative}
-.step-n{font-family:var(--mono);font-size:56px;font-weight:600;color:rgba(6,182,212,.08);line-height:1;margin-bottom:-12px;letter-spacing:-.02em}
-.step-body{position:relative}
-.step h3{font-size:16px;font-weight:600;margin-bottom:7px;letter-spacing:-.01em}
-.step p{font-size:13px;color:var(--text2);line-height:1.65}
-
-/* ── Deliverables / What you ship with ─────────────────── */
-.deliver-wrap{max-width:1080px;margin:40px auto 0;display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.deliver{padding:28px;background:var(--bg2);border:1px solid var(--line2);border-radius:var(--radius);display:flex;flex-direction:column;gap:12px;transition:border .2s}
-.deliver:hover{border-color:var(--line)}
-.deliver-title{display:flex;align-items:center;gap:10px}
-.deliver-icon{width:32px;height:32px;border-radius:7px;background:var(--accent-dim);border:1px solid var(--accent-line);display:grid;place-items:center;font-size:15px}
-.deliver h3{font-size:15px;font-weight:600;letter-spacing:-.01em}
-.deliver p{font-size:13px;color:var(--text2);line-height:1.65}
-.deliver-meta{display:flex;gap:16px;font-size:11px;color:var(--text3);font-family:var(--mono);letter-spacing:.02em;margin-top:auto}
-.deliver-meta span{display:flex;align-items:center;gap:5px}
-.deliver-meta span::before{content:'·';color:var(--accent)}
-
-/* ── Principles (why-we-do-it, no competitor callouts) ── */
-.principles{background:var(--bg2)}
-.princ-grid{max-width:1080px;margin:48px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-.princ{padding:0}
-.princ h3{font-size:15px;font-weight:600;margin-bottom:8px;color:var(--text);letter-spacing:-.01em}
-.princ h3 .num{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:500;margin-right:8px;letter-spacing:-.01em}
-.princ p{font-size:13px;color:var(--text2);line-height:1.7}
-
-/* ── CTA ───────────────────────────────────────────────── */
-.cta{text-align:center;position:relative;overflow:hidden}
-.cta::before{content:'';position:absolute;bottom:-220px;left:50%;transform:translateX(-50%);width:820px;height:520px;background:radial-gradient(circle,rgba(6,182,212,.05) 0%,transparent 65%);pointer-events:none}
-.cta-inner{max-width:580px;margin:0 auto;position:relative}
-.btn-discord{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;background:var(--discord);color:#fff;font-size:14px;font-weight:600;border-radius:var(--radius-sm);border:none;cursor:pointer;transition:all .2s;font-family:var(--font)}
-.btn-discord:hover{background:#6d77f7;transform:translateY(-2px);box-shadow:0 12px 40px rgba(88,101,242,.2)}
-.btn-discord svg{width:20px;height:20px}
-
-footer{padding:32px clamp(1.5rem,4vw,4rem);border-top:1px solid var(--line2);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text3);position:relative;z-index:1;flex-wrap:wrap;gap:16px}
-footer .fl-left{display:flex;align-items:center;gap:10px}
-footer .fl-left img{height:22px;width:auto}
-footer a{color:var(--text2);margin-left:18px;transition:color .15s}
-footer a:hover{color:var(--text)}
-
-@media(max-width:820px){
-  .nav-links{display:none}
-  .nav-discord span{display:none}
-  .stats-inner{grid-template-columns:repeat(2,1fr)}
-  .stat:nth-child(2)::after{display:none}
-  .problem-wrap{grid-template-columns:1fr;gap:40px}
-  .feat-grid{grid-template-columns:1fr}
-  .steps{grid-template-columns:1fr;gap:28px}
-  .deliver-wrap{grid-template-columns:1fr}
-  .princ-grid{grid-template-columns:1fr;gap:28px}
-  .email-row{flex-direction:column}
-  section{padding:80px clamp(1.5rem,4vw,4rem)}
-}
-</style>
+      /* Screenshot/video slot — clearly identifies what goes where */
+      .media-slot {
+        position: relative;
+        border: 1px dashed rgba(6,182,212,0.4);
+        background: linear-gradient(135deg, rgba(6,182,212,0.04), rgba(255,255,255,0.01));
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .media-slot::before {
+        content: attr(data-label);
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 4px 8px;
+        background: rgba(6,182,212,0.15);
+        border: 1px solid rgba(6,182,212,0.4);
+        color: #06B6D4;
+        font-family: 'Geist Mono', monospace;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border-radius: 4px;
+        z-index: 10;
+      }
+      .media-slot::after {
+        content: attr(data-caption);
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        color: rgba(161,161,170,0.8);
+        font-size: 11px;
+        font-family: 'Geist Mono', monospace;
+        text-align: center;
+      }
+      .media-slot img, .media-slot video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    </style>
 </head>
-<body>
-<div class="grid-bg"></div>
+<body class="antialiased">
 
-<nav>
-  <a href="#" class="logo"><img src="/fieldlux-logo.png" alt="FieldLux"></a>
-  <div class="nav-right">
-    <div class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#workflow">Workflow</a>
-      <a href="#deliverables">Deliverables</a>
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- NAVIGATION                                                               -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<nav class="fixed top-0 inset-x-0 z-50 border-b border-line-subtle bg-surface-base/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <!-- Official FieldLux logo — replace asset file if rebranded -->
+            <a href="#" class="flex items-center" aria-label="FieldLux home">
+                <img src="assets/logo.png"
+                     alt="FieldLux"
+                     class="h-10 w-auto select-none"
+                     draggable="false" />
+            </a>
+            <span class="text-[10px] font-mono text-brand uppercase tracking-widest px-1.5 py-0.5 rounded bg-brand/10 border border-brand/30">Beta v.1</span>
+        </div>
+        <div class="hidden md:flex items-center gap-8 text-[13px] text-ink-400">
+            <a href="#capabilities" class="hover:text-ink-50 transition-colors">Capabilities</a>
+            <a href="#pipeline" class="hover:text-ink-50 transition-colors">Pipeline</a>
+            <a href="#methodology" class="hover:text-ink-50 transition-colors">Methodology</a>
+            <a href="#beta" class="px-4 py-1.5 rounded-md bg-brand text-surface-base font-semibold hover:bg-brand-dim transition-colors">Request Beta</a>
+        </div>
     </div>
-    <a href="https://discord.gg/ECXhu8Pb" target="_blank" class="nav-discord">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.36-.698.772-1.362 1.225-1.993a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.12-.098.246-.198.373-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-      <span>Community</span>
-    </a>
-    <a href="#beta" class="nav-cta">Request access</a>
-  </div>
 </nav>
 
-<!-- ╔═══ HERO ═══╗ -->
-<section class="hero">
-  <div class="hero-badge"><span class="dot"></span> Closed beta — invite only</div>
-  <h1>Know before<br>you <span class="accent">go.</span></h1>
-  <p class="hero-sub">FieldLux is a projection mapping preflight tool. Build your scene, run physics-based analysis, and walk into the install with a quantitative verdict.</p>
-  <form class="email-row" id="heroForm" onsubmit="handleSubmit(event,'heroForm','heroOk')">
-    <input type="email" class="email-in" placeholder="you@company.com" required id="heroEmail">
-    <button type="submit" class="email-btn" id="heroBtn">Request early access</button>
-  </form>
-  <div class="form-ok" id="heroOk"><h3>You're on the list.</h3><p>We'll send you an invite when your spot opens up.</p></div>
-  <div class="hero-note">
-    <span>✓ Invite only</span>
-    <span>✓ Free during beta</span>
-    <span>✓ Open beta coming soon</span>
-  </div>
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- HERO                                                                      -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="relative pt-32 pb-24 overflow-hidden">
+    <div class="absolute inset-0 grid-bg opacity-60"></div>
+    <div class="absolute top-40 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-brand/10 blur-[120px] pointer-events-none"></div>
+
+    <div class="relative max-w-7xl mx-auto px-6">
+        <div class="max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-line bg-surface-elevated mb-8">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span>
+                <span class="text-[11px] font-mono text-ink-400 uppercase tracking-widest">Closed beta — 2026 Q2</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight leading-[1.05] mb-6">
+                Projection preflight<br />
+                <span class="text-brand">before the truss goes up.</span>
+            </h1>
+
+            <p class="text-xl text-ink-400 leading-relaxed max-w-2xl mb-10">
+                FieldLux is a physics-based projection simulator that delivers an automatic
+                install verdict, stress-tests your rig against real-world drift, and prescribes
+                the fix — before you ship a single flightcase.
+            </p>
+
+            <div class="flex flex-wrap gap-4 mb-16">
+                <a href="#beta" class="px-6 py-3 rounded-md bg-brand text-surface-base font-semibold hover:bg-brand-dim transition-colors">
+                    Request Beta Access
+                </a>
+                <a href="#demo" class="px-6 py-3 rounded-md border border-line hover:border-brand/50 transition-colors text-ink-50">
+                    Watch 90-second demo →
+                </a>
+            </div>
+        </div>
+
+        <!-- HERO VIDEO SLOT -->
+        <div id="demo" class="media-slot aspect-video max-w-5xl mx-auto"
+             data-label="▶ Hero video"
+             data-caption="Drop hero.mp4 here — 60~90s: scene setup → judgment change → prescription → Spout output">
+            <!-- When ready:
+            <video controls poster="assets/hero-poster.jpg" class="w-full h-full">
+                <source src="assets/hero.mp4" type="video/mp4" />
+            </video>
+            -->
+        </div>
+    </div>
 </section>
 
-<!-- ╔═══ STATS ═══╗ -->
-<div class="stats-bar"><div class="stats-inner">
-  <div class="stat"><div class="stat-val">14</div><div class="stat-label">Optical & rig metrics</div></div>
-  <div class="stat"><div class="stat-val">11</div><div class="stat-label">Stress scenarios</div></div>
-  <div class="stat"><div class="stat-val">&lt;3s</div><div class="stat-label">Full analysis</div></div>
-  <div class="stat"><div class="stat-val">AVIXA</div><div class="stat-label">Standard-aligned</div></div>
-</div></div>
-
-<!-- ╔═══ PROBLEM / PREVIEW ═══╗ -->
-<section class="problem" id="problem"><div class="problem-wrap">
-  <div>
-    <div class="tag">Preflight, not preview</div>
-    <h2 class="heading">The install already succeeds, or already doesn't.</h2>
-    <p class="desc">Most projection gigs are won or lost in the planning phase. A throw ratio that's slightly off. A blend zone landing on the wrong surface. A lens change that flips the whole pixel budget. FieldLux surfaces the math before the truck loads.</p>
-    <div class="pain-list">
-      <div class="pain"><div class="pain-dot">✓</div><div><h4>Physically-grounded scoring</h4><p>Every C-metric ties back to optical math, not heuristics.</p></div></div>
-      <div class="pain"><div class="pain-dot">✓</div><div><h4>Stress before install</h4><p>See how the rig holds up to ±10 cm mount drift, yaw tolerance, reflectance shifts.</p></div></div>
-      <div class="pain"><div class="pain-dot">✓</div><div><h4>Actionable fixes</h4><p>Prescriptive guidance — move back 0.3 m, widen throw by 15 % — with estimated score impact.</p></div></div>
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- STATS STRIP                                                               -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="border-y border-line-subtle bg-surface-elevated">
+    <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div>
+            <div class="text-3xl font-bold font-mono text-brand">16</div>
+            <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Judgment metrics</div>
+            <div class="text-[11px] text-ink-500 mt-1">C1 through C14, physics-anchored</div>
+        </div>
+        <div>
+            <div class="text-3xl font-bold font-mono text-brand">11 × 7</div>
+            <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Stress scenarios × profiles</div>
+            <div class="text-[11px] text-ink-500 mt-1">S0~S10, install → archival</div>
+        </div>
+        <div>
+            <div class="text-3xl font-bold font-mono text-brand">232</div>
+            <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Automated tests</div>
+            <div class="text-[11px] text-ink-500 mt-1">Contracts · smoke · audit</div>
+        </div>
+        <div>
+            <div class="text-3xl font-bold font-mono text-brand">5</div>
+            <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Receiver integrations</div>
+            <div class="text-[11px] text-ink-500 mt-1">Presets ready · Resolume · TD · MM · OBS · VDMX</div>
+        </div>
     </div>
-  </div>
-  <div class="mock">
-    <div class="mock-header"><div class="mock-badge">READY</div><div class="mock-res">Resilience 87 / 100</div></div>
-    <div class="mock-grid">
-      <div class="mock-m"><div class="mock-m-name">Coverage</div><div class="mock-m-val" style="color:var(--green)">96%</div><div class="mock-m-bar"><div class="mock-m-fill" style="width:96%;background:var(--green)"></div></div></div>
-      <div class="mock-m"><div class="mock-m-name">Brightness</div><div class="mock-m-val" style="color:var(--green)">2,840 lx</div><div class="mock-m-bar"><div class="mock-m-fill" style="width:88%;background:var(--green)"></div></div></div>
-      <div class="mock-m"><div class="mock-m-name">Pixel density</div><div class="mock-m-val" style="color:var(--accent)">1.8 mm/px</div><div class="mock-m-bar"><div class="mock-m-fill" style="width:92%;background:var(--accent)"></div></div></div>
-      <div class="mock-m"><div class="mock-m-name">Blend uniformity</div><div class="mock-m-val" style="color:var(--amber)">74%</div><div class="mock-m-bar"><div class="mock-m-fill" style="width:74%;background:var(--amber)"></div></div></div>
-    </div>
-    <div class="mock-rx"><div class="mock-rx-label">Prescription</div><p>Move Projector 2 back <span class="val">0.3 m</span> to lift blend uniformity to <span class="good">88 %</span></p></div>
-  </div>
-</div></section>
-
-<!-- ╔═══ FEATURES ═══╗ -->
-<section id="features">
-  <div style="text-align:center;max-width:560px;margin:0 auto">
-    <div class="tag">Features</div>
-    <h2 class="heading">Every metric a TD actually checks.</h2>
-    <p class="desc" style="margin:0 auto">Not a viewer. A scoring engine that runs the same math a careful installer would — only faster, and consistent run-to-run.</p>
-  </div>
-  <div class="feat-grid">
-    <div class="feat">
-      <div class="feat-icon">⚡</div>
-      <h3>Judgment engine</h3>
-      <p>C-metrics scored 0–100 across coverage, brightness, pixel density, spill, overscan, blend uniformity, seam stability. PASS / AT_RISK / NOT_RECOMMENDED with root cause.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-icon">🔴</div>
-      <h3>Stress analysis</h3>
-      <p>S-scenarios perturb the rig — lateral drift, distance drift, yaw, pitch, reflectance. One resilience score summarises how much the install can absorb before scores crater.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-icon">💡</div>
-      <h3>Prescription engine</h3>
-      <p>Not just what's wrong — what to do. "Move Projector 2 back 0.3 m" with estimated score uplift. Fix in the app, re-analyze, ship.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-icon">👁</div>
-      <h3>Audience-visible coverage</h3>
-      <p>C10 scores the projection from the audience's seat, not the projector's lens. What the paying guest actually sees.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-icon">📄</div>
-      <h3>PDF tech rider</h3>
-      <p>One-click report for client / rigging crew. Coordinates, verdict, per-projector specs, prescription, confidence and error-budget bands.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-icon">🔗</div>
-      <h3>Handoff JSON</h3>
-      <p>Neutral export — projector placement, surface corners, blend hints, analysis metadata — for downstream projection pipelines.</p>
-    </div>
-  </div>
 </section>
 
-<!-- ╔═══ WORKFLOW ═══╗ -->
-<section class="steps-section" id="workflow">
-  <div style="text-align:center;max-width:540px;margin:0 auto">
-    <div class="tag">Workflow</div>
-    <h2 class="heading">Three steps to certainty.</h2>
-  </div>
-  <div class="steps">
-    <div class="step">
-      <div class="step-n">01</div>
-      <div class="step-body">
-        <h3>Build the scene</h3>
-        <p>Import .fbx / .obj / .glb / .dae / .stl / .ply or use built-in room primitives. Place projectors from the real-world lens database, set throw ratio, lumens, stacking.</p>
-      </div>
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION: JUDGMENT ENGINE                                                  -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="capabilities" class="py-24">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+                <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
+                    § 01 · Judgment Engine
+                </div>
+                <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
+                    Auto-verdict on every install.
+                </h2>
+                <p class="text-ink-400 leading-relaxed mb-6">
+                    The analyzer reads your projector choice, lens configuration, and target
+                    geometry, then delivers one of three answers:
+                </p>
+                <div class="space-y-3 mb-8">
+                    <div class="flex items-center gap-3 p-3 rounded-md bg-success/10 border border-success/20">
+                        <div class="w-2 h-2 rounded-full bg-success"></div>
+                        <code class="text-success font-mono text-sm font-semibold">READY</code>
+                        <span class="text-ink-400 text-sm">· ships within mount/drift tolerance</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 rounded-md bg-warning/10 border border-warning/20">
+                        <div class="w-2 h-2 rounded-full bg-warning"></div>
+                        <code class="text-warning font-mono text-sm font-semibold">AT_RISK</code>
+                        <span class="text-ink-400 text-sm">· works on a best-case day, no margin</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 rounded-md bg-danger/10 border border-danger/20">
+                        <div class="w-2 h-2 rounded-full bg-danger"></div>
+                        <code class="text-danger font-mono text-sm font-semibold">NOT_RECOMMENDED</code>
+                        <span class="text-ink-400 text-sm">· expected to fail on a measurement that matters</span>
+                    </div>
+                </div>
+                <p class="text-ink-400 leading-relaxed">
+                    Behind every verdict, 16 C-metrics grounded in
+                    <span class="text-ink-200 font-mono text-sm">ANSI/INFOCOMM 2M-2010</span>
+                    vignetting, <span class="text-ink-200 font-mono text-sm">ISO 9241-303</span>
+                    surface response, and <span class="text-ink-200 font-mono text-sm">RP-27</span>
+                    brightness recommendations — contrast ratio, brightness margin, pixel density,
+                    coverage gap, spill, blend hotspot, and more. Pass/fail thresholds are
+                    FieldLux engineering judgments with the rationale published in § 05.
+                    Every failing metric shows <em class="text-ink-200">why</em> and
+                    <em class="text-ink-200">what to fix</em>.
+                </p>
+            </div>
+
+            <!-- SCREENSHOT SLOT -->
+            <div class="media-slot aspect-[4/5]"
+                 data-label="📸 Screenshot 01"
+                 data-caption="Analysis panel with AT_RISK verdict + C-metrics bar chart + explanation summary">
+            </div>
+        </div>
     </div>
-    <div class="step">
-      <div class="step-n">02</div>
-      <div class="step-body">
-        <h3>Run analysis</h3>
-        <p>One click. Photometrics, coverage, stress scenarios, blend zones, audience view — results in under three seconds.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-n">03</div>
-      <div class="step-body">
-        <h3>Ship with confidence</h3>
-        <p>Go / No-Go verdict, resilience score, prescribed fixes. Share a read-only 3D link with the client or export the PDF tech rider.</p>
-      </div>
-    </div>
-  </div>
 </section>
 
-<!-- ╔═══ DELIVERABLES ═══╗ -->
-<section id="deliverables">
-  <div style="text-align:center;max-width:560px;margin:0 auto">
-    <div class="tag">What you walk away with</div>
-    <h2 class="heading">Artifacts, not just a screen.</h2>
-    <p class="desc" style="margin:0 auto">Every session produces outputs you can hand to the client, the crew, or your downstream projection tool. No locked-in file format.</p>
-  </div>
-  <div class="deliver-wrap">
-    <div class="deliver">
-      <div class="deliver-title"><div class="deliver-icon">📄</div><h3>PDF tech rider</h3></div>
-      <p>Branded PDF with 3D viewport snapshot, per-projector specs, lux heatmap legend, judgment breakdown, prescription, confidence band, disclosures. Print-ready at A4.</p>
-      <div class="deliver-meta"><span>multi-page</span><span>client-ready</span></div>
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION: STRESS ANALYSIS                                                  -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="py-24 bg-surface-elevated border-y border-line-subtle">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <!-- SCREENSHOT SLOT (left on desktop) -->
+            <div class="media-slot aspect-[4/5] order-2 md:order-1"
+                 data-label="📸 Screenshot 02"
+                 data-caption="Stress analysis card: S0~S10 scenario results, resilience score, worst-case bar">
+            </div>
+
+            <div class="order-1 md:order-2">
+                <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
+                    § 02 · Stress Analysis
+                </div>
+                <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
+                    Know every failure mode before<br/>the flightcase leaves the shop.
+                </h2>
+                <p class="text-ink-400 leading-relaxed mb-6">
+                    S0 through S10 perturb each projector by the tolerances pro installs
+                    actually encounter in the field:
+                </p>
+                <div class="grid grid-cols-2 gap-3 mb-8">
+                    <div class="p-3 rounded-md bg-surface-raised border border-line">
+                        <div class="text-xs text-ink-500 font-mono uppercase">Lateral slack</div>
+                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±10 cm</div>
+                    </div>
+                    <div class="p-3 rounded-md bg-surface-raised border border-line">
+                        <div class="text-xs text-ink-500 font-mono uppercase">Throw drift</div>
+                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±30 cm</div>
+                    </div>
+                    <div class="p-3 rounded-md bg-surface-raised border border-line">
+                        <div class="text-xs text-ink-500 font-mono uppercase">Yaw</div>
+                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±2°</div>
+                    </div>
+                    <div class="p-3 rounded-md bg-surface-raised border border-line">
+                        <div class="text-xs text-ink-500 font-mono uppercase">Pitch</div>
+                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±1.5°</div>
+                    </div>
+                </div>
+                <p class="text-ink-400 leading-relaxed">
+                    Seven deployment profiles tune the acceptance bar: quick install review,
+                    client walkthrough, show rehearsal, live show, archival. The resilience
+                    score lands before you ever touch the physical space.
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="deliver">
-      <div class="deliver-title"><div class="deliver-icon">🔗</div><h3>Read-only share link</h3></div>
-      <p>Interactive 3D share of your scene. Clients pan / orbit / zoom, click projectors to inspect lux or mm-per-pixel, toggle the lux heatmap — no edits possible.</p>
-      <div class="deliver-meta"><span>no-login</span><span>expiring URL</span></div>
-    </div>
-    <div class="deliver">
-      <div class="deliver-title"><div class="deliver-icon">{ }</div><h3>Handoff JSON</h3></div>
-      <p>Neutral schema of projector placement, surface corners, blend hints, and analysis metadata. Import into any downstream projection pipeline that speaks JSON.</p>
-      <div class="deliver-meta"><span>neutral schema</span><span>pipeline-friendly</span></div>
-    </div>
-    <div class="deliver">
-      <div class="deliver-title"><div class="deliver-icon">📐</div><h3>Calibration profile</h3></div>
-      <p>Capture measured center / edge lux from a real site and fold the correction gain into future analyses. Your scores start tracking reality, not just the spec sheet.</p>
-      <div class="deliver-meta"><span>field-verified</span><span>per-venue</span></div>
-    </div>
-  </div>
 </section>
 
-<!-- ╔═══ PRINCIPLES ═══╗ -->
-<section class="principles">
-  <div style="text-align:center;max-width:620px;margin:0 auto">
-    <div class="tag">Design principles</div>
-    <h2 class="heading">Why it's built the way it is.</h2>
-    <p class="desc" style="margin:0 auto">Three commitments that shape every decision, from the shader up to the PDF.</p>
-  </div>
-  <div class="princ-grid">
-    <div class="princ">
-      <h3><span class="num">01</span> Physics first</h3>
-      <p>Every score ties back to optical math — inverse-square intensity, Lambert falloff, pixel pitch, real lens profiles. The app won't give you a verdict it can't justify from first principles.</p>
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION: PRESCRIPTION ENGINE                                              -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="py-24">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+                <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
+                    § 03 · Prescription Engine
+                </div>
+                <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
+                    Concrete actions — not just warnings.
+                </h2>
+                <p class="text-ink-400 leading-relaxed mb-6">
+                    When brightness fails, we don't say "low lux". We say:
+                </p>
+                <div class="p-4 rounded-md bg-brand/10 border border-brand/30 mb-6 font-mono text-sm text-ink-50 leading-relaxed">
+                    Move all 3 projectors 40 cm closer as a group<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-ink-400">— or —</span><br/>
+                    upgrade to 15,000 lm units<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-ink-400">— or —</span><br/>
+                    swap ELPLM15 for short-throw ELPLU04.
+                </div>
+                <p class="text-ink-400 leading-relaxed mb-6">
+                    Distance and lumens prescriptions are derived from the actual physics —
+                    inverse-square law, lens-throw equations, blend-footprint geometry.
+                    Equipment-swap suggestions and conflict resolution fall back to documented
+                    heuristics, traceable in the prescription card.
+                </p>
+                <p class="text-ink-400 leading-relaxed">
+                    Conflicting prescriptions ("closer for brightness" vs "back for coverage")
+                    are detected and reconciled automatically. The real trade-off is surfaced
+                    so you understand <em class="text-ink-200">why</em> one path wins.
+                </p>
+            </div>
+
+            <!-- SCREENSHOT SLOT -->
+            <div class="media-slot aspect-[4/5]"
+                 data-label="📸 Screenshot 03"
+                 data-caption="Prescription card with 'Do this first' + follow-ups + conflict-resolution banner">
+            </div>
+        </div>
     </div>
-    <div class="princ">
-      <h3><span class="num">02</span> Show the work</h3>
-      <p>Confidence bands, error budgets, simulation disclaimers are on the face of every report. You know exactly what's estimated vs measured, and how much margin sits around each number.</p>
-    </div>
-    <div class="princ">
-      <h3><span class="num">03</span> Hand-off shaped</h3>
-      <p>A preflight tool is only useful if the output travels well. PDFs, share links, JSON handoffs, calibration profiles — shaped for how the rigging crew, the client, and the downstream pipeline actually work.</p>
-    </div>
-  </div>
 </section>
 
-<!-- ╔═══ CTA ═══╗ -->
-<section class="cta" id="beta"><div class="cta-inner">
-  <div class="tag">Early access</div>
-  <h2 class="heading">Stop guessing.<br>Start verifying.</h2>
-  <p class="desc" style="margin:0 auto">FieldLux is in closed beta with select projection teams. Request access and we'll invite you as seats open up.</p>
-  <form class="email-row" id="ctaForm" style="margin:32px auto 0;justify-content:center" onsubmit="handleSubmit(event,'ctaForm','ctaOk')">
-    <input type="email" class="email-in" placeholder="you@company.com" required id="ctaEmail">
-    <button type="submit" class="email-btn" id="ctaBtn">Request early access</button>
-  </form>
-  <div class="form-ok" id="ctaOk" style="margin:16px auto 0"><h3>You're on the list.</h3><p>We'll send you an invite when your spot opens up.</p></div>
-  <div style="margin-top:24px;display:flex;justify-content:center">
-    <a href="https://discord.gg/ECXhu8Pb" target="_blank" class="btn-discord">
-      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.36-.698.772-1.362 1.225-1.993a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.12-.098.246-.198.373-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-      Join Discord
-    </a>
-  </div>
-  <p style="font-size:12px;color:var(--text3);margin-top:18px">Currently invite-only · Open beta coming soon</p>
-</div></section>
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION: PIPELINE HUB (Spout / Syphon / OSC)                              -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="pipeline" class="py-24 bg-surface-elevated border-y border-line-subtle">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="max-w-3xl mb-12">
+            <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
+                § 04 · Pipeline Hub
+            </div>
+            <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
+                Don't replace your tools. Connect them.
+            </h2>
+            <p class="text-ink-400 leading-relaxed text-lg">
+                FieldLux is built to publish realtime output and OSC metadata to every
+                major pro projection tool — frame-by-frame video via Spout (Windows) /
+                Syphon (macOS) and analysis metadata via OSC. Native integration is
+                implemented and undergoing platform QA — shipping in the closed beta
+                cycle. The OSC metadata schema is frozen (v1) and ready for receiver-side
+                integration today.
+            </p>
+        </div>
 
-<footer>
-  <div class="fl-left"><img src="/fieldlux-logo.png" alt="FieldLux"><span>© 2026 FieldLux</span></div>
-  <div>
-    <a href="https://discord.gg/ECXhu8Pb" target="_blank">Discord</a>
-    <a href="mailto:hello@field-lux.com">Contact</a>
-  </div>
+        <!-- Receiver grid -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
+            <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
+                <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">Resolume</div>
+                <div class="text-ink-200 text-sm">Arena / Avenue</div>
+                <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon</div>
+            </div>
+            <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
+                <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">TouchDesigner</div>
+                <div class="text-ink-200 text-sm">Full integration</div>
+                <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon · OSC</div>
+            </div>
+            <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
+                <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">MadMapper</div>
+                <div class="text-ink-200 text-sm">Per-projector + calib</div>
+                <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon · OSC</div>
+            </div>
+            <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
+                <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">OBS Studio</div>
+                <div class="text-ink-200 text-sm">Record / stream</div>
+                <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon</div>
+            </div>
+            <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
+                <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">VDMX</div>
+                <div class="text-ink-200 text-sm">macOS live</div>
+                <div class="text-ink-500 text-xs mt-2 font-mono">Syphon</div>
+            </div>
+        </div>
+
+        <!-- SCREENSHOT SLOT -->
+        <div class="media-slot aspect-video"
+             data-label="📸 Screenshot 04"
+             data-caption="Realtime Output modal — Composite + Per-Projector outputs + OSC metadata config">
+        </div>
+
+        <!-- OSC schema badge -->
+        <div class="mt-8 max-w-3xl mx-auto text-center">
+            <p class="text-[11px] font-mono text-ink-500 uppercase tracking-widest mb-2">
+                OSC sidecar schema — v1, frozen for interop
+            </p>
+            <code class="block text-xs text-ink-400 font-mono leading-relaxed p-4 bg-surface-base border border-line rounded-md text-left">
+/fieldlux/projector/{id}/pose         fff fff&nbsp;&nbsp;&nbsp;# pos · euler<br/>
+/fieldlux/projector/{id}/calibration  f × 16&nbsp;&nbsp;&nbsp;&nbsp;# 4×4 matrix<br/>
+/fieldlux/projector/{id}/verdict      s i f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# status · resilience · center lux<br/>
+/fieldlux/hover/lux                   f f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# lux · mm/px<br/>
+/fieldlux/analysis/summary            s i i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# overall · ready · at_risk
+            </code>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION: ASSUMPTIONS & ERROR BUDGET                                       -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="methodology" class="py-24">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-16 items-start">
+            <div>
+                <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
+                    § 05 · Assumptions &amp; Error Budget
+                </div>
+                <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
+                    No black box.<br />Every assumption is public.
+                </h2>
+                <p class="text-ink-400 leading-relaxed mb-6">
+                    Surface reflectance, projector uniformity (ANSI 9-point), P20 sampling
+                    grid, stress reserve floor, non-planar fallback method — every value,
+                    every source, every error budget is surfaced in the analysis panel
+                    and the PDF export.
+                </p>
+                <div class="space-y-2 font-mono text-xs mb-6">
+                    <div class="flex justify-between p-2 rounded bg-surface-elevated border border-line">
+                        <span class="text-ink-400">Surface reflectance (default)</span>
+                        <span class="text-ink-50">0.60 <span class="text-warning">Δ ±0.10</span></span>
+                    </div>
+                    <div class="flex justify-between p-2 rounded bg-surface-elevated border border-line">
+                        <span class="text-ink-400">Projector uniformity</span>
+                        <span class="text-ink-50">ANSI 9-point <span class="text-warning">Δ ±5%</span></span>
+                    </div>
+                    <div class="flex justify-between p-2 rounded bg-surface-elevated border border-line">
+                        <span class="text-ink-400">P20 sampling</span>
+                        <span class="text-ink-50">16×16 <span class="text-warning">Δ ±5%</span></span>
+                    </div>
+                    <div class="flex justify-between p-2 rounded bg-surface-elevated border border-line">
+                        <span class="text-ink-400">Non-planar fallback</span>
+                        <span class="text-ink-50">bbox centroid <span class="text-warning">Δ ±15~30%</span></span>
+                    </div>
+                    <div class="flex justify-between p-2 rounded bg-surface-elevated border border-line">
+                        <span class="text-ink-400">Indirect bounce</span>
+                        <span class="text-ink-50">1-bounce form factor <span class="text-danger">Δ ±50%</span></span>
+                    </div>
+                </div>
+                <p class="text-ink-400 leading-relaxed">
+                    Defend every verdict with the exact physics citation. Schema is
+                    version-frozen (<code class="text-ink-200 font-mono text-sm">v1</code>);
+                    any change triggers a contract-test failure to prevent silent drift.
+                </p>
+            </div>
+
+            <!-- SCREENSHOT SLOT -->
+            <div class="media-slot aspect-[4/5]"
+                 data-label="📸 Screenshot 05"
+                 data-caption="Assumptions & Error Budget section inside Analysis panel, expanded">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION: MULTI-TARGET                                                     -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="py-24 bg-surface-elevated border-y border-line-subtle">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
+                § 06 · Multi-target Analysis
+            </div>
+            <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
+                Analyze what you actually project onto.
+            </h2>
+            <p class="text-ink-400 leading-relaxed text-lg">
+                Flat surfaces, room walls, imported 3D building models, photographic
+                targets. The same judgment engine runs on all four. Import
+                <span class="font-mono text-sm text-ink-200">glTF</span>,
+                <span class="font-mono text-sm text-ink-200">FBX</span>,
+                <span class="font-mono text-sm text-ink-200">OBJ</span>,
+                <span class="font-mono text-sm text-ink-200">Collada</span>.
+                Lens-warped projection lands on real mesh geometry — with a
+                documented bbox-centroid fallback when ray-mesh intersection
+                misses (error budget disclosed in § 05).
+            </p>
+        </div>
+
+        <!-- 4-up target screenshots -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="media-slot aspect-square"
+                 data-label="📸 06a"
+                 data-caption="Flat surface"></div>
+            <div class="media-slot aspect-square"
+                 data-label="📸 06b"
+                 data-caption="Room wall (front)"></div>
+            <div class="media-slot aspect-square"
+                 data-label="📸 06c"
+                 data-caption="3D building model"></div>
+            <div class="media-slot aspect-square"
+                 data-label="📸 06d"
+                 data-caption="Photo target"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION: RELIABILITY (contract-tested)                                    -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="py-24">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+                <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
+                    § 07 · Reliability
+                </div>
+                <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
+                    Your save file loads back inside tolerance.
+                </h2>
+                <p class="text-ink-400 leading-relaxed mb-6">
+                    Every commit runs 232 automated tests. Save → reload → reanalyze delivers
+                    the same verdict within ±0.5 lux tolerance (documented in the contract
+                    suite). You or your client can open a FieldLux project six months later
+                    and get the same analysis.
+                </p>
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="p-4 rounded-md bg-surface-elevated border border-line text-center">
+                        <div class="text-2xl font-bold font-mono text-brand">21</div>
+                        <div class="text-xs text-ink-500 mt-1 uppercase tracking-wider">Contract tests</div>
+                    </div>
+                    <div class="p-4 rounded-md bg-surface-elevated border border-line text-center">
+                        <div class="text-2xl font-bold font-mono text-brand">77</div>
+                        <div class="text-xs text-ink-500 mt-1 uppercase tracking-wider">Beta smoke</div>
+                    </div>
+                    <div class="p-4 rounded-md bg-surface-elevated border border-line text-center">
+                        <div class="text-2xl font-bold font-mono text-brand">134</div>
+                        <div class="text-xs text-ink-500 mt-1 uppercase tracking-wider">Engineering audit</div>
+                    </div>
+                </div>
+                <p class="text-ink-400 leading-relaxed">
+                    Golden fixtures lock in physics behavior for real projectors (Epson EB-L30000U,
+                    EB-PU2220B) so a silent regression in perturbation math or alignment
+                    computation fails the gate with a numeric diagnostic.
+                </p>
+            </div>
+
+            <!-- SCREENSHOT SLOT -->
+            <div class="media-slot aspect-[4/5]"
+                 data-label="📸 Screenshot 07"
+                 data-caption="Test output terminal / CI gate / contract assertions — whatever best shows 'tested'">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION: PDF REPORT                                                       -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="py-24 bg-surface-elevated border-y border-line-subtle">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <!-- SCREENSHOT SLOT (left) -->
+            <div class="media-slot aspect-[3/4] order-2 md:order-1"
+                 data-label="📸 Screenshot 08"
+                 data-caption="PDF report — cover page + assumptions section + per-projector detail">
+            </div>
+
+            <div class="order-1 md:order-2">
+                <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
+                    § 08 · PDF Tech Rider
+                </div>
+                <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
+                    Client-ready tech riders.<br/>One click.
+                </h2>
+                <p class="text-ink-400 leading-relaxed mb-6">
+                    Project summary, equipment list, per-projector detail, coverage
+                    analysis, stress scenario results, prescriptions, assumptions,
+                    error budget. All in one PDF.
+                </p>
+                <ul class="space-y-2 text-ink-400 text-sm mb-6">
+                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Cover page with verdict + resilience score</li>
+                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Equipment list per projector (model, lumens, lens, throw)</li>
+                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Photometric metrics table with pass/fail status</li>
+                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Stress scenario results + worst-case</li>
+                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Prescription list with priority</li>
+                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Assumptions &amp; Error Budget section (v1 frozen)</li>
+                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Custom branding (your studio name + logo)</li>
+                </ul>
+                <p class="text-ink-400 leading-relaxed">
+                    No spreadsheets. No manual formatting. Ready for hand-off to install
+                    teams or final clients.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION: DEPLOYMENT                                                       -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="py-24">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
+                § 09 · Deployment
+            </div>
+            <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
+                Web or desktop. Your choice.
+            </h2>
+            <p class="text-ink-400 leading-relaxed text-lg">
+                FieldLux is built as a web app <em class="text-ink-200">and</em> a native
+                desktop app (Tauri — Windows / macOS). Use the browser for quick reviews;
+                the desktop build unlocks local file I/O, realtime Spout/Syphon output,
+                and larger scenes. Closed beta users pick their environment at sign-up.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="p-8 rounded-md bg-surface-elevated border border-line">
+                <div class="text-xs font-mono text-ink-500 uppercase tracking-wider mb-3">Web</div>
+                <h3 class="text-xl font-semibold text-ink-50 mb-4">Browser-first preflight</h3>
+                <ul class="space-y-2 text-sm text-ink-400">
+                    <li class="flex gap-2"><span class="text-brand">✓</span> No install — open the link, you're analyzing</li>
+                    <li class="flex gap-2"><span class="text-brand">✓</span> Full judgment + stress + prescription</li>
+                    <li class="flex gap-2"><span class="text-brand">✓</span> Cloud Share for client reviews</li>
+                    <li class="flex gap-2"><span class="text-brand">✓</span> PDF export</li>
+                    <li class="flex gap-2 text-ink-500"><span class="text-ink-500">·</span> Spout/Syphon requires desktop</li>
+                </ul>
+            </div>
+            <div class="p-8 rounded-md bg-brand-muted border border-brand/40 glow-brand">
+                <div class="text-xs font-mono text-brand uppercase tracking-wider mb-3">Desktop · Tauri</div>
+                <h3 class="text-xl font-semibold text-ink-50 mb-4">Full professional stack</h3>
+                <ul class="space-y-2 text-sm text-ink-400">
+                    <li class="flex gap-2"><span class="text-brand">✓</span> Everything in the web build</li>
+                    <li class="flex gap-2"><span class="text-brand">✓</span> Realtime Spout (Windows) / Syphon (macOS) output</li>
+                    <li class="flex gap-2"><span class="text-brand">✓</span> OSC metadata sidecar publisher</li>
+                    <li class="flex gap-2"><span class="text-brand">✓</span> Local file I/O (import large .glb / .fbx)</li>
+                    <li class="flex gap-2"><span class="text-brand">✓</span> Offline capable — no network required</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- CTA / BETA SIGNUP                                                         -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="beta" class="relative py-32 border-t border-line-subtle overflow-hidden">
+    <div class="absolute inset-0 grid-bg opacity-40"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-brand/10 blur-[140px] pointer-events-none"></div>
+
+    <div class="relative max-w-3xl mx-auto px-6 text-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand/40 bg-brand-muted mb-8">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span>
+            <span class="text-[11px] font-mono text-brand uppercase tracking-widest">Closed beta · limited access</span>
+        </div>
+
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight leading-tight mb-6">
+            Ready to preflight<br/>your next install?
+        </h2>
+        <p class="text-ink-400 text-lg leading-relaxed mb-10">
+            Free during closed beta. Pro pricing announced Q3 2026. Priority access for
+            working TDs, show designers, and AV integrators.
+        </p>
+
+        <form class="max-w-xl mx-auto space-y-3" onsubmit="event.preventDefault(); alert('Beta signup wiring TBD — hook to Supabase beta_requests table.');">
+            <div class="grid md:grid-cols-2 gap-3">
+                <input type="email" required placeholder="you@studio.com"
+                       class="w-full px-4 py-3 rounded-md bg-surface-elevated border border-line text-ink-50 placeholder-ink-500 focus:border-brand/50 focus:outline-none font-sans" />
+                <select required class="w-full px-4 py-3 rounded-md bg-surface-elevated border border-line text-ink-50 focus:border-brand/50 focus:outline-none">
+                    <option value="">I'm a...</option>
+                    <option>Technical Director</option>
+                    <option>Projection Designer</option>
+                    <option>AV Integrator / Installer</option>
+                    <option>Content Designer / VJ</option>
+                    <option>Producer / Show Manager</option>
+                    <option>Student / Learning</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <input type="text" placeholder="One line — what are you trying to preflight? (optional)"
+                   class="w-full px-4 py-3 rounded-md bg-surface-elevated border border-line text-ink-50 placeholder-ink-500 focus:border-brand/50 focus:outline-none" />
+            <button type="submit" class="w-full px-6 py-4 rounded-md bg-brand text-surface-base font-semibold hover:bg-brand-dim transition-colors">
+                Request Beta Access →
+            </button>
+            <p class="text-xs text-ink-500">
+                We'll reply within 48 hours. No marketing email list — just the access link when approved.
+            </p>
+        </form>
+
+        <!-- Discord community — secondary entry point -->
+        <div class="mt-10 pt-8 border-t border-line-subtle">
+            <p class="text-xs font-mono text-ink-500 uppercase tracking-widest mb-3">
+                Or join the Discord community
+            </p>
+            <a href="https://discord.gg/KcTemQybU8"
+               target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-line hover:border-brand/50 bg-surface-elevated hover:bg-surface-raised transition-colors text-ink-200 text-sm">
+                <svg viewBox="0 -28.5 256 256" width="18" height="18" fill="currentColor" class="text-[#5865F2]">
+                    <path d="M216.856 16.597A208.502 208.502 0 0 0 164.042 0c-2.275 4.113-4.933 9.645-6.766 14.046-19.692-2.961-39.203-2.961-58.533 0-1.832-4.4-4.55-9.933-6.846-14.046a207.809 207.809 0 0 0-52.855 16.638C5.618 67.147-3.443 116.4 1.087 164.956c22.169 16.555 43.653 26.612 64.775 33.193A161.094 161.094 0 0 0 79.735 175.3a136.413 136.413 0 0 1-21.846-10.632 108.636 108.636 0 0 0 5.356-4.237c42.122 19.702 87.89 19.702 129.51 0a131.66 131.66 0 0 0 5.355 4.237 136.07 136.07 0 0 1-21.886 10.653c4.006 8.02 8.638 15.67 13.873 22.848 21.142-6.58 42.646-16.637 64.815-33.213 5.316-56.288-9.08-105.09-38.056-148.36ZM85.474 135.095c-12.645 0-23.015-11.805-23.015-26.18s10.149-26.2 23.015-26.2c12.867 0 23.236 11.804 23.015 26.2.02 14.375-10.148 26.18-23.015 26.18Zm85.051 0c-12.645 0-23.014-11.805-23.014-26.18s10.148-26.2 23.014-26.2c12.867 0 23.236 11.804 23.015 26.2 0 14.375-10.148 26.18-23.015 26.18Z"/>
+                </svg>
+                Join FieldLux Discord
+                <span class="text-ink-500 font-mono text-xs">→ #beta-access</span>
+            </a>
+            <p class="text-xs text-ink-500 mt-3">
+                Showcase your scenes, share analysis results, discuss projection prescriptions
+                with the core team.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- FOOTER                                                                    -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<footer class="border-t border-line-subtle bg-surface-elevated">
+    <div class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-8">
+        <div class="md:col-span-2">
+            <div class="flex items-center mb-4">
+                <img src="assets/logo.png"
+                     alt="FieldLux"
+                     class="h-9 w-auto select-none"
+                     draggable="false" />
+            </div>
+            <p class="text-sm text-ink-500 leading-relaxed max-w-md">
+                Projection preflight engine — physics-based install verification, automatic
+                verdict, prescription, and realtime pipeline hub.
+            </p>
+        </div>
+        <div>
+            <div class="text-xs font-mono text-ink-500 uppercase tracking-wider mb-3">Product</div>
+            <ul class="space-y-2 text-sm text-ink-400">
+                <li><a href="#capabilities" class="hover:text-ink-50">Capabilities</a></li>
+                <li><a href="#pipeline" class="hover:text-ink-50">Pipeline hub</a></li>
+                <li><a href="#methodology" class="hover:text-ink-50">Methodology</a></li>
+                <li><a href="#beta" class="hover:text-ink-50">Request beta</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="text-xs font-mono text-ink-500 uppercase tracking-wider mb-3">Reading</div>
+            <ul class="space-y-2 text-sm text-ink-400">
+                <li><a href="#" class="hover:text-ink-50">Judgment engine · physics</a></li>
+                <li><a href="#" class="hover:text-ink-50">Stress scenarios · why ±30cm matters</a></li>
+                <li><a href="#" class="hover:text-ink-50">FieldLux as pipeline hub</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="border-t border-line-subtle">
+        <div class="max-w-7xl mx-auto px-6 py-6 flex flex-wrap justify-between items-center gap-4 text-xs text-ink-500 font-mono">
+            <span>© 2026 FieldLux · Beta v.1 · 0420</span>
+            <div class="flex items-center gap-4">
+                <a href="https://discord.gg/KcTemQybU8"
+                   target="_blank" rel="noopener noreferrer"
+                   class="inline-flex items-center gap-1.5 hover:text-ink-200 transition-colors">
+                    <svg viewBox="0 -28.5 256 256" width="12" height="12" fill="currentColor">
+                        <path d="M216.856 16.597A208.502 208.502 0 0 0 164.042 0c-2.275 4.113-4.933 9.645-6.766 14.046-19.692-2.961-39.203-2.961-58.533 0-1.832-4.4-4.55-9.933-6.846-14.046a207.809 207.809 0 0 0-52.855 16.638C5.618 67.147-3.443 116.4 1.087 164.956c22.169 16.555 43.653 26.612 64.775 33.193A161.094 161.094 0 0 0 79.735 175.3a136.413 136.413 0 0 1-21.846-10.632 108.636 108.636 0 0 0 5.356-4.237c42.122 19.702 87.89 19.702 129.51 0a131.66 131.66 0 0 0 5.355 4.237 136.07 136.07 0 0 1-21.886 10.653c4.006 8.02 8.638 15.67 13.873 22.848 21.142-6.58 42.646-16.637 64.815-33.213 5.316-56.288-9.08-105.09-38.056-148.36ZM85.474 135.095c-12.645 0-23.015-11.805-23.015-26.18s10.149-26.2 23.015-26.2c12.867 0 23.236 11.804 23.015 26.2.02 14.375-10.148 26.18-23.015 26.18Zm85.051 0c-12.645 0-23.014-11.805-23.014-26.18s10.148-26.2 23.014-26.2c12.867 0 23.236 11.804 23.015 26.2 0 14.375-10.148 26.18-23.015 26.18Z"/>
+                    </svg>
+                    discord
+                </a>
+                <span>hello@fieldlux.com</span>
+            </div>
+        </div>
+    </div>
 </footer>
 
-<script>
-// Animated bar fills on initial paint
-setTimeout(function(){
-  document.querySelectorAll('.mock-m-fill').forEach(function(b){
-    var w=b.style.width;b.style.width='0%';
-    setTimeout(function(){b.style.width=w},100);
-  });
-},400);
-
-// Supabase waitlist (public anon key, insert-only per RLS policy)
-var SUPABASE_URL='https://ffetwcvjfzderjfizfak.supabase.co';
-var SUPABASE_ANON_KEY='sb_publishable_7ISMDlvb9lL6PCGYSgsz4Q_EGhIw0b_';
-var sb=null;
-try{sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY)}catch(e){}
-
-function handleSubmit(e,formId,okId){
-  e.preventDefault();
-  var form=document.getElementById(formId);
-  var ok=document.getElementById(okId);
-  var emailInput=form.querySelector('input[type=email]');
-  var btn=form.querySelector('button');
-  var email=emailInput.value.trim().toLowerCase();
-  if(!email)return;
-  btn.textContent='Submitting...';btn.disabled=true;
-  if(sb){try{sb.from('fieldlux_waitlist').insert({email:email,source:'landing'}).then(function(){form.style.display='none';ok.style.display='block'}).catch(function(err){btn.textContent='Error. Try again.';btn.disabled=false})}catch(err){btn.textContent='Error. Try again.';btn.disabled=false}}
-  else{form.style.display='none';ok.style.display='block'}
-}
-</script>
 </body>
 </html>
