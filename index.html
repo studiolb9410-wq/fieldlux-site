@@ -157,9 +157,9 @@
             </h1>
 
             <p class="text-xl text-ink-400 leading-relaxed max-w-2xl mb-10">
-                FieldLux is a physics-based projection simulator that delivers an automatic
-                install verdict, stress-tests your rig against real-world drift, and prescribes
-                the fix — before you ship a single flightcase.
+                FieldLux is a physics-based projection preflight tool that verifies an
+                install is viable, stress-tests it against real-world drift, and prescribes
+                the fix — before load-in.
             </p>
 
             <div class="flex flex-wrap gap-4 mb-16">
@@ -207,8 +207,8 @@
         </div>
         <div>
             <div class="text-3xl font-bold font-mono text-brand">5</div>
-            <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Receiver integrations</div>
-            <div class="text-[11px] text-ink-500 mt-1">Presets ready · Resolume · TD · MM · OBS · VDMX</div>
+            <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Workflow targets</div>
+            <div class="text-[11px] text-ink-500 mt-1">Resolume · TouchDesigner · MadMapper · OBS · VDMX</div>
         </div>
     </div>
 </section>
@@ -248,15 +248,12 @@
                     </div>
                 </div>
                 <p class="text-ink-400 leading-relaxed">
-                    Behind every verdict, 16 C-metrics grounded in
-                    <span class="text-ink-200 font-mono text-sm">ANSI/INFOCOMM 2M-2010</span>
-                    vignetting, <span class="text-ink-200 font-mono text-sm">ISO 9241-303</span>
-                    surface response, and <span class="text-ink-200 font-mono text-sm">RP-27</span>
-                    brightness recommendations — contrast ratio, brightness margin, pixel density,
-                    coverage gap, spill, blend hotspot, and more. Pass/fail thresholds are
-                    FieldLux engineering judgments with the rationale published in § 05.
-                    Every failing metric shows <em class="text-ink-200">why</em> and
-                    <em class="text-ink-200">what to fix</em>.
+                    Behind every verdict is a transparent set of install checks:
+                    brightness margin, contrast, pixel density, coverage gap, spill,
+                    blend hotspot, and more. Underlying standards and pass/fail
+                    rationales are documented in § 05. Every failing metric shows
+                    both the <em class="text-ink-200">reason</em> and the
+                    <em class="text-ink-200">recommended fix</em>.
                 </p>
             </div>
 
@@ -377,41 +374,44 @@
             <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
                 Don't replace your tools. Connect them.
             </h2>
+            <p class="text-ink-400 leading-relaxed text-lg mb-4">
+                <span class="text-ink-200">FieldLux's core is preflight — but your content runs somewhere.</span>
+                FieldLux is designed to plug into professional projection workflows.
+            </p>
             <p class="text-ink-400 leading-relaxed text-lg">
-                FieldLux is built to publish realtime output and OSC metadata to every
-                major pro projection tool — frame-by-frame video via Spout (Windows) /
-                Syphon (macOS) and analysis metadata via OSC. Native integration is
-                implemented and undergoing platform QA — shipping in the closed beta
-                cycle. The OSC metadata schema is frozen (v1) and ready for receiver-side
-                integration today.
+                Desktop builds can publish realtime output via Spout (Windows) and
+                Syphon (macOS), with OSC metadata for receiver-side workflows. Desktop
+                output workflows are planned for staged platform validation during
+                closed beta. The OSC metadata schema is frozen (v1) and ready for
+                receiver-side integration today.
             </p>
         </div>
 
-        <!-- Receiver grid -->
+        <!-- Workflow targets — text-only references, no logos, no implication of partnership -->
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
             <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
                 <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">Resolume</div>
-                <div class="text-ink-200 text-sm">Arena / Avenue</div>
+                <div class="text-ink-200 text-sm">Realtime output target</div>
                 <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon</div>
             </div>
             <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
                 <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">TouchDesigner</div>
-                <div class="text-ink-200 text-sm">Full integration</div>
+                <div class="text-ink-200 text-sm">Realtime output + OSC workflows</div>
                 <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon · OSC</div>
             </div>
             <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
                 <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">MadMapper</div>
-                <div class="text-ink-200 text-sm">Per-projector + calib</div>
+                <div class="text-ink-200 text-sm">Per-projector workflow target</div>
                 <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon · OSC</div>
             </div>
             <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
                 <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">OBS Studio</div>
-                <div class="text-ink-200 text-sm">Record / stream</div>
+                <div class="text-ink-200 text-sm">Capture / recording target</div>
                 <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon</div>
             </div>
             <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
                 <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">VDMX</div>
-                <div class="text-ink-200 text-sm">macOS live</div>
+                <div class="text-ink-200 text-sm">macOS output target</div>
                 <div class="text-ink-500 text-xs mt-2 font-mono">Syphon</div>
             </div>
         </div>
@@ -549,13 +549,13 @@
                     § 07 · Reliability
                 </div>
                 <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
-                    Your save file loads back inside tolerance.
+                    Results that stay stable over time.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    Every commit runs 232 automated tests. Save → reload → reanalyze delivers
-                    the same verdict within ±0.5 lux tolerance (documented in the contract
-                    suite). You or your client can open a FieldLux project six months later
-                    and get the same analysis.
+                    FieldLux is backed by contract tests, beta smoke tests, and engineering
+                    audit coverage that lock critical analysis behavior. Save → reload →
+                    reanalyze is checked for verdict consistency within ±0.5 lux tolerance,
+                    so project reviews stay stable across sessions, teammates, and milestones.
                 </p>
                 <div class="grid grid-cols-3 gap-4 mb-6">
                     <div class="p-4 rounded-md bg-surface-elevated border border-line text-center">
@@ -693,8 +693,8 @@
             Ready to preflight<br/>your next install?
         </h2>
         <p class="text-ink-400 text-lg leading-relaxed mb-10">
-            Free during closed beta. Pro pricing announced Q3 2026. Priority access for
-            working TDs, show designers, and AV integrators.
+            Free during closed beta. Early access is prioritized for working TDs,
+            projection designers, AV integrators, and installers.
         </p>
 
         <form class="max-w-xl mx-auto space-y-3" onsubmit="event.preventDefault(); alert('Beta signup wiring TBD — hook to Supabase beta_requests table.');">
@@ -718,7 +718,8 @@
                 Request Beta Access →
             </button>
             <p class="text-xs text-ink-500">
-                We'll reply within 48 hours. No marketing email list — just the access link when approved.
+                We review every request personally and send access in batches as slots open.
+                No marketing list — only beta access updates.
             </p>
         </form>
 
@@ -780,18 +781,29 @@
         </div>
     </div>
     <div class="border-t border-line-subtle">
-        <div class="max-w-7xl mx-auto px-6 py-6 flex flex-wrap justify-between items-center gap-4 text-xs text-ink-500 font-mono">
-            <span>© 2026 FieldLux · Beta v.1 · 0420</span>
-            <div class="flex items-center gap-4">
-                <a href="https://discord.gg/KcTemQybU8"
-                   target="_blank" rel="noopener noreferrer"
-                   class="inline-flex items-center gap-1.5 hover:text-ink-200 transition-colors">
-                    <svg viewBox="0 -28.5 256 256" width="12" height="12" fill="currentColor">
-                        <path d="M216.856 16.597A208.502 208.502 0 0 0 164.042 0c-2.275 4.113-4.933 9.645-6.766 14.046-19.692-2.961-39.203-2.961-58.533 0-1.832-4.4-4.55-9.933-6.846-14.046a207.809 207.809 0 0 0-52.855 16.638C5.618 67.147-3.443 116.4 1.087 164.956c22.169 16.555 43.653 26.612 64.775 33.193A161.094 161.094 0 0 0 79.735 175.3a136.413 136.413 0 0 1-21.846-10.632 108.636 108.636 0 0 0 5.356-4.237c42.122 19.702 87.89 19.702 129.51 0a131.66 131.66 0 0 0 5.355 4.237 136.07 136.07 0 0 1-21.886 10.653c4.006 8.02 8.638 15.67 13.873 22.848 21.142-6.58 42.646-16.637 64.815-33.213 5.316-56.288-9.08-105.09-38.056-148.36ZM85.474 135.095c-12.645 0-23.015-11.805-23.015-26.18s10.149-26.2 23.015-26.2c12.867 0 23.236 11.804 23.015 26.2.02 14.375-10.148 26.18-23.015 26.18Zm85.051 0c-12.645 0-23.014-11.805-23.014-26.18s10.148-26.2 23.014-26.2c12.867 0 23.236 11.804 23.015 26.2 0 14.375-10.148 26.18-23.015 26.18Z"/>
-                    </svg>
-                    discord
-                </a>
-                <span>hello@fieldlux.com</span>
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <!-- Trademark attribution — safe text-only references to pro projection tools.
+                 Plain-text product names only (no logos, no official/certified/partner
+                 language) so this stays on the safe side of nominative fair use. -->
+            <p class="text-[10.5px] text-ink-500 leading-relaxed mb-4 max-w-4xl">
+                Resolume, TouchDesigner, MadMapper, OBS Studio, and VDMX are trademarks
+                of their respective owners. Reference to these products describes
+                FieldLux's supported workflow targets and does not imply affiliation,
+                endorsement, or partnership.
+            </p>
+            <div class="flex flex-wrap justify-between items-center gap-4 text-xs text-ink-500 font-mono">
+                <span>© 2026 FieldLux · Beta v.1 · 0420</span>
+                <div class="flex items-center gap-4">
+                    <a href="https://discord.gg/KcTemQybU8"
+                       target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center gap-1.5 hover:text-ink-200 transition-colors">
+                        <svg viewBox="0 -28.5 256 256" width="12" height="12" fill="currentColor">
+                            <path d="M216.856 16.597A208.502 208.502 0 0 0 164.042 0c-2.275 4.113-4.933 9.645-6.766 14.046-19.692-2.961-39.203-2.961-58.533 0-1.832-4.4-4.55-9.933-6.846-14.046a207.809 207.809 0 0 0-52.855 16.638C5.618 67.147-3.443 116.4 1.087 164.956c22.169 16.555 43.653 26.612 64.775 33.193A161.094 161.094 0 0 0 79.735 175.3a136.413 136.413 0 0 1-21.846-10.632 108.636 108.636 0 0 0 5.356-4.237c42.122 19.702 87.89 19.702 129.51 0a131.66 131.66 0 0 0 5.355 4.237 136.07 136.07 0 0 1-21.886 10.653c4.006 8.02 8.638 15.67 13.873 22.848 21.142-6.58 42.646-16.637 64.815-33.213 5.316-56.288-9.08-105.09-38.056-148.36ZM85.474 135.095c-12.645 0-23.015-11.805-23.015-26.18s10.149-26.2 23.015-26.2c12.867 0 23.236 11.804 23.015 26.2.02 14.375-10.148 26.18-23.015 26.18Zm85.051 0c-12.645 0-23.014-11.805-23.014-26.18s10.148-26.2 23.014-26.2c12.867 0 23.236 11.804 23.015 26.2 0 14.375-10.148 26.18-23.015 26.18Z"/>
+                        </svg>
+                        discord
+                    </a>
+                    <span>hello@fieldlux.com</span>
+                </div>
             </div>
         </div>
     </div>
