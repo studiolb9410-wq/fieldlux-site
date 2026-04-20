@@ -118,12 +118,15 @@
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
 <nav class="fixed top-0 inset-x-0 z-50 border-b border-line-subtle bg-surface-base/80 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-md bg-brand/15 border border-brand/30 flex items-center justify-center">
-                <span class="text-brand font-bold text-sm">F</span>
-            </div>
-            <span class="text-ink-50 font-semibold text-[15px] tracking-tight">FieldLux</span>
-            <span class="ml-2 text-[10px] font-mono text-brand uppercase tracking-widest px-1.5 py-0.5 rounded bg-brand/10 border border-brand/30">Beta v.1</span>
+        <div class="flex items-center gap-3">
+            <!-- Official FieldLux logo — replace asset file if rebranded -->
+            <a href="#" class="flex items-center" aria-label="FieldLux home">
+                <img src="assets/logo.png"
+                     alt="FieldLux"
+                     class="h-8 w-auto select-none"
+                     draggable="false" />
+            </a>
+            <span class="text-[10px] font-mono text-brand uppercase tracking-widest px-1.5 py-0.5 rounded bg-brand/10 border border-brand/30">Beta v.1</span>
         </div>
         <div class="hidden md:flex items-center gap-8 text-[13px] text-ink-400">
             <a href="#capabilities" class="hover:text-ink-50 transition-colors">Capabilities</a>
@@ -716,11 +719,11 @@
 <footer class="border-t border-line-subtle bg-surface-elevated">
     <div class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-8">
         <div class="md:col-span-2">
-            <div class="flex items-center gap-2 mb-4">
-                <div class="w-7 h-7 rounded-md bg-brand/15 border border-brand/30 flex items-center justify-center">
-                    <span class="text-brand font-bold text-sm">F</span>
-                </div>
-                <span class="text-ink-50 font-semibold">FieldLux</span>
+            <div class="flex items-center mb-4">
+                <img src="assets/logo.png"
+                     alt="FieldLux"
+                     class="h-7 w-auto select-none"
+                     draggable="false" />
             </div>
             <p class="text-sm text-ink-500 leading-relaxed max-w-md">
                 Projection preflight engine — physics-based install verification, automatic
