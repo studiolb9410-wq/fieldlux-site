@@ -132,6 +132,7 @@
             <a href="#capabilities" class="hover:text-ink-50 transition-colors">Capabilities</a>
             <a href="#pipeline" class="hover:text-ink-50 transition-colors">Pipeline</a>
             <a href="#methodology" class="hover:text-ink-50 transition-colors">Methodology</a>
+            <a href="#roadmap" class="hover:text-ink-50 transition-colors">Roadmap</a>
             <a href="#beta" class="px-4 py-1.5 rounded-md bg-brand text-surface-base font-semibold hover:bg-brand-dim transition-colors">Request Beta</a>
         </div>
     </div>
@@ -368,41 +369,51 @@
 <section id="pipeline" class="py-24 bg-surface-elevated border-y border-line-subtle">
     <div class="max-w-7xl mx-auto px-6">
         <div class="max-w-3xl mb-12">
-            <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
-                § 04 · Pipeline Hub
+            <div class="flex items-center gap-3 mb-4">
+                <span class="text-[11px] font-mono text-brand uppercase tracking-widest">
+                    § 04 · Pipeline Hub
+                </span>
+                <span class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-warning/15 border border-warning/35 text-warning">
+                    Coming with open beta
+                </span>
             </div>
             <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
                 Don't replace your tools. Connect them.
             </h2>
             <p class="text-ink-400 leading-relaxed text-lg mb-4">
                 <span class="text-ink-200">FieldLux's core is preflight — but your content runs somewhere.</span>
-                FieldLux is designed to plug into professional projection workflows.
+                The open-beta desktop build introduces the pipeline hub so FieldLux
+                plugs into the tools already in your production chain.
             </p>
             <p class="text-ink-400 leading-relaxed text-lg">
-                Desktop builds can publish realtime output via Spout (Windows) and
-                Syphon (macOS), with OSC metadata for receiver-side workflows. Desktop
-                output workflows are planned for staged platform validation during
-                closed beta. The OSC metadata schema is frozen (v1) and ready for
-                receiver-side integration today.
+                Desktop builds will publish realtime output via Spout (Windows) and
+                Syphon (macOS), with OSC metadata for receiver-side workflows.
+                The OSC sidecar schema is defined today (v1) and ready for
+                receiver-side integration; realtime output targets below are
+                planned and undergo staged validation during the open-beta cycle.
             </p>
         </div>
 
-        <!-- Workflow targets — text-only references, no logos, no implication of partnership -->
+        <!-- Workflow targets — text-only references, no logos, no implication of
+             partnership. Each card lists an intended role + the mechanism.
+             "planned" cards validate during open beta; "target" cards ship
+             with the desktop build. MadMapper card reflects the handoff path
+             that already exists today in closed beta. -->
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
             <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
                 <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">Resolume</div>
-                <div class="text-ink-200 text-sm">Realtime output target</div>
+                <div class="text-ink-200 text-sm">Planned realtime output target</div>
                 <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon</div>
             </div>
             <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
                 <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">TouchDesigner</div>
-                <div class="text-ink-200 text-sm">Realtime output + OSC workflows</div>
+                <div class="text-ink-200 text-sm">Planned output + OSC workflow target</div>
                 <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon · OSC</div>
             </div>
             <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
                 <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">MadMapper</div>
-                <div class="text-ink-200 text-sm">Per-projector workflow target</div>
-                <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon · OSC</div>
+                <div class="text-ink-200 text-sm">Handoff + reference preview target</div>
+                <div class="text-ink-500 text-xs mt-2 font-mono">Handoff JSON · Spout · Syphon</div>
             </div>
             <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
                 <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">OBS Studio</div>
@@ -411,7 +422,7 @@
             </div>
             <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
                 <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">VDMX</div>
-                <div class="text-ink-200 text-sm">macOS output target</div>
+                <div class="text-ink-200 text-sm">Planned macOS receiver target</div>
                 <div class="text-ink-500 text-xs mt-2 font-mono">Syphon</div>
             </div>
         </div>
@@ -642,27 +653,33 @@
                 Web or desktop. Your choice.
             </h2>
             <p class="text-ink-400 leading-relaxed text-lg">
-                FieldLux is built as a web app <em class="text-ink-200">and</em> a native
-                desktop app (Tauri — Windows / macOS). Use the browser for quick reviews;
-                the desktop build unlocks local file I/O, realtime Spout/Syphon output,
-                and larger scenes. Closed beta users pick their environment at sign-up.
+                <span class="text-ink-200">Closed beta runs in your browser today.</span>
+                The native desktop build (Tauri — Windows / macOS) ships with open
+                beta and unlocks local file I/O, realtime Spout/Syphon output, OSC
+                metadata publishing, and larger scenes.
             </p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-6">
-            <div class="p-8 rounded-md bg-surface-elevated border border-line">
-                <div class="text-xs font-mono text-ink-500 uppercase tracking-wider mb-3">Web</div>
+            <div class="p-8 rounded-md bg-brand-muted border border-brand/40 glow-brand">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xs font-mono text-brand uppercase tracking-wider">Web</span>
+                    <span class="text-[10px] font-mono uppercase tracking-widest px-1.5 py-0.5 rounded bg-success/15 border border-success/40 text-success">Closed beta now</span>
+                </div>
                 <h3 class="text-xl font-semibold text-ink-50 mb-4">Browser-first preflight</h3>
                 <ul class="space-y-2 text-sm text-ink-400">
                     <li class="flex gap-2"><span class="text-brand">✓</span> No install — open the link, you're analyzing</li>
                     <li class="flex gap-2"><span class="text-brand">✓</span> Full judgment + stress + prescription</li>
                     <li class="flex gap-2"><span class="text-brand">✓</span> Cloud Share for client reviews</li>
                     <li class="flex gap-2"><span class="text-brand">✓</span> PDF export</li>
-                    <li class="flex gap-2 text-ink-500"><span class="text-ink-500">·</span> Spout/Syphon requires desktop</li>
+                    <li class="flex gap-2 text-ink-500"><span class="text-ink-500">·</span> Realtime output arrives with desktop (open beta)</li>
                 </ul>
             </div>
-            <div class="p-8 rounded-md bg-brand-muted border border-brand/40 glow-brand">
-                <div class="text-xs font-mono text-brand uppercase tracking-wider mb-3">Desktop · Tauri</div>
+            <div class="p-8 rounded-md bg-surface-elevated border border-line">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xs font-mono text-ink-500 uppercase tracking-wider">Desktop · Tauri</span>
+                    <span class="text-[10px] font-mono uppercase tracking-widest px-1.5 py-0.5 rounded bg-warning/15 border border-warning/40 text-warning">Open beta target</span>
+                </div>
                 <h3 class="text-xl font-semibold text-ink-50 mb-4">Full professional stack</h3>
                 <ul class="space-y-2 text-sm text-ink-400">
                     <li class="flex gap-2"><span class="text-brand">✓</span> Everything in the web build</li>
@@ -673,6 +690,94 @@
                 </ul>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- ROADMAP — three-phase capability timeline                                 -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="roadmap" class="py-24 bg-surface-elevated border-y border-line-subtle">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+            <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
+                Roadmap
+            </div>
+            <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
+                What's live, what's next, what's after.
+            </h2>
+            <p class="text-ink-400 leading-relaxed text-lg">
+                FieldLux ships in phases so every capability lands with validation,
+                not just announcement. Here's the plan.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4">
+            <!-- Closed beta (now) -->
+            <div class="p-6 rounded-md bg-success/5 border border-success/30">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-success">
+                        Closed beta · now
+                    </span>
+                </div>
+                <h3 class="text-lg font-semibold text-ink-50 mb-4">Preflight engine live</h3>
+                <ul class="space-y-2 text-sm text-ink-400">
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Judgment engine (READY / AT_RISK / NOT_RECOMMENDED)</li>
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Stress analysis (S0~S10 × 7 profiles)</li>
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Prescription engine with conflict resolution</li>
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Multi-target analysis (surface / room / 3D / photo)</li>
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Assumptions &amp; error budget (v1 frozen)</li>
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> PDF tech rider export</li>
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Cloud share + MadMapper handoff JSON</li>
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Web app, browser-first</li>
+                </ul>
+            </div>
+
+            <!-- Open beta (target) -->
+            <div class="p-6 rounded-md bg-warning/5 border border-warning/35">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-warning"></span>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-warning">
+                        Open beta · target Q2 2026
+                    </span>
+                </div>
+                <h3 class="text-lg font-semibold text-ink-50 mb-4">Desktop + pipeline hub</h3>
+                <ul class="space-y-2 text-sm text-ink-400">
+                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Native desktop app (Tauri — Windows / macOS)</li>
+                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Realtime Spout output (Windows)</li>
+                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Realtime Syphon output (macOS)</li>
+                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> OSC metadata sidecar — publisher</li>
+                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Per-projector capture</li>
+                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Receiver integration validation (Resolume / TD / OBS / VDMX)</li>
+                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Local file I/O for large imported models</li>
+                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Offline-capable workflows</li>
+                </ul>
+            </div>
+
+            <!-- Post-beta -->
+            <div class="p-6 rounded-md bg-surface-raised border border-line">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-ink-500"></span>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-ink-400">
+                        Post-beta
+                    </span>
+                </div>
+                <h3 class="text-lg font-semibold text-ink-50 mb-4">Scale-out</h3>
+                <ul class="space-y-2 text-sm text-ink-500">
+                    <li class="flex gap-2"><span class="text-ink-500 font-mono">▸</span> Pro pricing (details announced closer to launch)</li>
+                    <li class="flex gap-2"><span class="text-ink-500 font-mono">▸</span> Manufacturer equipment partnerships</li>
+                    <li class="flex gap-2"><span class="text-ink-500 font-mono">▸</span> Field-measurement calibration database</li>
+                    <li class="flex gap-2"><span class="text-ink-500 font-mono">▸</span> Advanced receiver workflows (bidirectional input)</li>
+                    <li class="flex gap-2"><span class="text-ink-500 font-mono">▸</span> Certification / compliance track</li>
+                </ul>
+            </div>
+        </div>
+
+        <p class="text-center text-[11px] text-ink-500 mt-8 max-w-2xl mx-auto leading-relaxed">
+            Target dates are planning intent, not commitments. Capabilities move to
+            the next phase only after validation — no feature ships because a quarter
+            is ending.
+        </p>
     </div>
 </section>
 
@@ -768,6 +873,7 @@
                 <li><a href="#capabilities" class="hover:text-ink-50">Capabilities</a></li>
                 <li><a href="#pipeline" class="hover:text-ink-50">Pipeline hub</a></li>
                 <li><a href="#methodology" class="hover:text-ink-50">Methodology</a></li>
+                <li><a href="#roadmap" class="hover:text-ink-50">Roadmap</a></li>
                 <li><a href="#beta" class="hover:text-ink-50">Request beta</a></li>
             </ul>
         </div>
