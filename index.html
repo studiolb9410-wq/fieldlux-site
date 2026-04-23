@@ -19,16 +19,20 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://fieldlux.com/" />
     <meta property="og:site_name" content="FieldLux" />
-    <meta property="og:image" content="https://fieldlux.com/assets/og-cover.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <!-- og:image uses the YouTube hero-video thumbnail until a dedicated
+         og-cover.png (1200×630) is produced. Stable URL keyed off the
+         video ID, so no asset pipeline work is required to get a working
+         social-share preview. -->
+    <meta property="og:image" content="https://img.youtube.com/vi/y-q1aTrx1qE/maxresdefault.jpg" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="720" />
     <meta property="og:image:alt" content="FieldLux — projection preflight engine" />
 
     <!-- Twitter / X card — summary_large_image needs a 2:1 ratio image -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="FieldLux — Projection Preflight Engine" />
     <meta name="twitter:description" content="Physics-based preflight for professional projection installations. READY, AT_RISK, or NOT_RECOMMENDED — before you touch the rig." />
-    <meta name="twitter:image" content="https://fieldlux.com/assets/og-cover.png" />
+    <meta name="twitter:image" content="https://img.youtube.com/vi/y-q1aTrx1qE/maxresdefault.jpg" />
     <meta name="twitter:image:alt" content="FieldLux — projection preflight engine" />
 
     <!-- Favicons — uses the existing logo mark. Multiple sizes cover
@@ -168,15 +172,17 @@
             </div>
         </div>
 
-        <!-- HERO VIDEO SLOT -->
-        <div id="demo" class="media-slot aspect-video max-w-5xl mx-auto"
-             data-label="▶ Hero video"
-             data-caption="Drop hero.mp4 here — 60~90s: scene setup → judgment change → prescription → Spout output">
-            <!-- When ready:
-            <video controls poster="assets/hero-poster.jpg" class="w-full h-full">
-                <source src="assets/hero.mp4" type="video/mp4" />
-            </video>
-            -->
+        <!-- HERO VIDEO -->
+        <div id="demo" class="aspect-video max-w-5xl mx-auto rounded-md overflow-hidden border border-line-subtle bg-surface-elevated shadow-2xl">
+            <iframe
+                src="https://www.youtube-nocookie.com/embed/y-q1aTrx1qE?rel=0&modestbranding=1&playsinline=1"
+                title="FieldLux — Projection Preflight Engine"
+                class="w-full h-full"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+                loading="lazy"></iframe>
         </div>
     </div>
 </section>
@@ -253,10 +259,61 @@
                 </p>
             </div>
 
-            <!-- SCREENSHOT SLOT -->
-            <div class="media-slot aspect-[4/5]"
-                 data-label="📸 Screenshot 01"
-                 data-caption="Analysis panel with AT_RISK verdict + C-metrics bar chart + explanation summary">
+            <!-- Mock analysis panel — matches the live app UI so visitors recognize
+                 exactly what they'll see after signing in. -->
+            <div class="rounded-md bg-surface-elevated border border-line p-5 font-sans">
+                <!-- Verdict header -->
+                <div class="flex items-center justify-between p-3 rounded-md bg-warning/10 border border-warning/30 mb-4">
+                    <div class="flex items-center gap-2">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="text-warning">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <span class="font-mono font-bold text-warning text-sm tracking-wide">AT RISK</span>
+                    </div>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-3xl font-bold text-ink-50 font-mono">78</span>
+                        <span class="text-[11px] text-ink-500 font-mono">/100</span>
+                    </div>
+                </div>
+                <!-- Judged against -->
+                <div class="mb-4">
+                    <div class="text-[10px] font-mono text-ink-500 uppercase tracking-widest mb-2">Judged against</div>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="px-2 py-0.5 rounded bg-brand-muted border border-brand/40 text-[10px] font-mono text-brand">acceptance</span>
+                        <span class="px-2 py-0.5 rounded bg-surface-raised border border-line text-[10px] font-mono text-ink-300">±0.1m lateral</span>
+                        <span class="px-2 py-0.5 rounded bg-surface-raised border border-line text-[10px] font-mono text-ink-300">±0.3m throw</span>
+                        <span class="px-2 py-0.5 rounded bg-surface-raised border border-line text-[10px] font-mono text-ink-300">±2° rot</span>
+                        <span class="px-2 py-0.5 rounded bg-surface-raised border border-line text-[10px] font-mono text-ink-300">floor 80%</span>
+                    </div>
+                </div>
+                <!-- Failing metrics -->
+                <div class="space-y-2 mb-4">
+                    <div class="p-2.5 rounded-md border border-danger/30 bg-danger/5">
+                        <div class="text-[11px] font-mono text-danger font-semibold">Pixel density</div>
+                        <div class="text-[11px] text-ink-400 mt-0.5">move closer or use higher resolution</div>
+                    </div>
+                    <div class="p-2.5 rounded-md border border-warning/30 bg-warning/5">
+                        <div class="text-[11px] font-mono text-warning font-semibold">Bright-enough coverage</div>
+                        <div class="text-[11px] text-ink-400 mt-0.5">24% more area needs minimum lux</div>
+                    </div>
+                    <div class="p-2.5 rounded-md border border-warning/30 bg-warning/5">
+                        <div class="text-[11px] font-mono text-warning font-semibold">Target coverage</div>
+                        <div class="text-[11px] text-ink-400 mt-0.5">24% more area needs minimum lux</div>
+                    </div>
+                </div>
+                <!-- Analysis basis -->
+                <div class="pt-3 border-t border-line-subtle">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[10px] font-mono text-success uppercase tracking-widest">High confidence</span>
+                        <span class="text-[10px] font-mono text-ink-500 uppercase tracking-widest">Analysis basis</span>
+                    </div>
+                    <div class="text-[10px] text-ink-400 font-mono leading-relaxed">
+                        · live mesh surface samples<br/>
+                        · mesh-aware raycasting · target-centric sampling
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -268,10 +325,103 @@
 <section class="py-24 bg-surface-elevated border-y border-line-subtle">
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid md:grid-cols-2 gap-16 items-center">
-            <!-- SCREENSHOT SLOT (left on desktop) -->
-            <div class="media-slot aspect-[4/5] order-2 md:order-1"
-                 data-label="📸 Screenshot 02"
-                 data-caption="Stress analysis card: S0~S10 scenario results, resilience score, worst-case bar">
+            <!-- Mock stress analysis card — S0~S10 scenario bars -->
+            <div class="rounded-md bg-surface-elevated border border-line p-5 order-2 md:order-1">
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <div class="text-[10px] font-mono text-brand uppercase tracking-widest">Stress Analysis</div>
+                        <div class="text-[11px] text-ink-500 mt-0.5">acceptance · 11 scenarios</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-[10px] font-mono text-ink-500 uppercase tracking-wider">Resilience</div>
+                        <div class="text-3xl font-bold font-mono text-brand">72</div>
+                    </div>
+                </div>
+                <!-- S0-S10 bars -->
+                <div class="space-y-1.5 font-mono">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-ink-500 w-7">S0</span>
+                        <div class="flex-1 h-5 rounded bg-surface-raised relative overflow-hidden">
+                            <div class="absolute inset-y-0 left-0 bg-success/80 rounded" style="width: 94%"></div>
+                            <span class="absolute inset-0 flex items-center justify-end pr-2 text-[10px] text-ink-50">94</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-ink-500 w-7">S1</span>
+                        <div class="flex-1 h-5 rounded bg-surface-raised relative overflow-hidden">
+                            <div class="absolute inset-y-0 left-0 bg-success/80 rounded" style="width: 88%"></div>
+                            <span class="absolute inset-0 flex items-center justify-end pr-2 text-[10px] text-ink-50">88</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-ink-500 w-7">S2</span>
+                        <div class="flex-1 h-5 rounded bg-surface-raised relative overflow-hidden">
+                            <div class="absolute inset-y-0 left-0 bg-success/80 rounded" style="width: 85%"></div>
+                            <span class="absolute inset-0 flex items-center justify-end pr-2 text-[10px] text-ink-50">85</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-ink-500 w-7">S3</span>
+                        <div class="flex-1 h-5 rounded bg-surface-raised relative overflow-hidden">
+                            <div class="absolute inset-y-0 left-0 bg-success/70 rounded" style="width: 80%"></div>
+                            <span class="absolute inset-0 flex items-center justify-end pr-2 text-[10px] text-ink-50">80</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-ink-500 w-7">S4</span>
+                        <div class="flex-1 h-5 rounded bg-surface-raised relative overflow-hidden">
+                            <div class="absolute inset-y-0 left-0 bg-warning/70 rounded" style="width: 74%"></div>
+                            <span class="absolute inset-0 flex items-center justify-end pr-2 text-[10px] text-ink-50">74</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-ink-500 w-7">S5</span>
+                        <div class="flex-1 h-5 rounded bg-surface-raised relative overflow-hidden">
+                            <div class="absolute inset-y-0 left-0 bg-warning/70 rounded" style="width: 70%"></div>
+                            <span class="absolute inset-0 flex items-center justify-end pr-2 text-[10px] text-ink-50">70</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-ink-500 w-7">S6</span>
+                        <div class="flex-1 h-5 rounded bg-surface-raised relative overflow-hidden">
+                            <div class="absolute inset-y-0 left-0 bg-warning/70 rounded" style="width: 66%"></div>
+                            <span class="absolute inset-0 flex items-center justify-end pr-2 text-[10px] text-ink-50">66</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 ring-1 ring-danger/40 rounded">
+                        <span class="text-[10px] text-danger w-7 pl-1">S7</span>
+                        <div class="flex-1 h-5 rounded bg-surface-raised relative overflow-hidden">
+                            <div class="absolute inset-y-0 left-0 bg-danger/80 rounded" style="width: 58%"></div>
+                            <span class="absolute inset-0 flex items-center justify-end pr-2 text-[10px] text-ink-50 font-semibold">58</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-ink-500 w-7">S8</span>
+                        <div class="flex-1 h-5 rounded bg-surface-raised relative overflow-hidden">
+                            <div class="absolute inset-y-0 left-0 bg-danger/60 rounded" style="width: 62%"></div>
+                            <span class="absolute inset-0 flex items-center justify-end pr-2 text-[10px] text-ink-50">62</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-ink-500 w-7">S9</span>
+                        <div class="flex-1 h-5 rounded bg-surface-raised relative overflow-hidden">
+                            <div class="absolute inset-y-0 left-0 bg-warning/60 rounded" style="width: 67%"></div>
+                            <span class="absolute inset-0 flex items-center justify-end pr-2 text-[10px] text-ink-50">67</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-ink-500 w-7">S10</span>
+                        <div class="flex-1 h-5 rounded bg-surface-raised relative overflow-hidden">
+                            <div class="absolute inset-y-0 left-0 bg-warning/60 rounded" style="width: 71%"></div>
+                            <span class="absolute inset-0 flex items-center justify-end pr-2 text-[10px] text-ink-50">71</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Worst case callout -->
+                <div class="mt-5 pt-3 border-t border-line-subtle">
+                    <div class="text-[10px] font-mono text-ink-500 uppercase tracking-widest mb-1">Worst case</div>
+                    <div class="text-[11px] text-danger font-mono">S7 · ±0.3m throw + floor 80% → 58/100</div>
+                </div>
             </div>
 
             <div class="order-1 md:order-2">
@@ -349,10 +499,52 @@
                 </p>
             </div>
 
-            <!-- SCREENSHOT SLOT -->
-            <div class="media-slot aspect-[4/5]"
-                 data-label="📸 Screenshot 03"
-                 data-caption="Prescription card with 'Do this first' + follow-ups + conflict-resolution banner">
+            <!-- Mock prescription card -->
+            <div class="rounded-md bg-surface-elevated border border-line p-5">
+                <!-- Primary action -->
+                <div class="mb-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                        <span class="text-[10px] font-mono text-brand uppercase tracking-widest">Do this first</span>
+                    </div>
+                    <div class="p-4 rounded-md bg-brand/10 border border-brand/40">
+                        <div class="text-sm text-ink-50 font-semibold mb-1.5">Move all 3 projectors 40 cm closer as a group</div>
+                        <div class="text-[11px] text-ink-400 font-mono leading-relaxed">
+                            reason: pixel density below threshold<br/>
+                            impact: +18% density · coverage gap closes
+                        </div>
+                    </div>
+                </div>
+                <!-- Alternatives -->
+                <div class="mb-4">
+                    <div class="text-[10px] font-mono text-ink-500 uppercase tracking-widest mb-2">Or one of these</div>
+                    <div class="space-y-2">
+                        <div class="p-3 rounded-md bg-surface-raised border border-line">
+                            <div class="text-[12px] text-ink-200">Upgrade to 15,000 lm units</div>
+                            <div class="text-[10px] text-ink-500 font-mono mt-0.5">higher cost · no geometry change</div>
+                        </div>
+                        <div class="p-3 rounded-md bg-surface-raised border border-line">
+                            <div class="text-[12px] text-ink-200">Swap ELPLM15 → ELPLU04 (short-throw)</div>
+                            <div class="text-[10px] text-ink-500 font-mono mt-0.5">shorter throw ratio · same mount</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Conflict resolution banner -->
+                <div class="p-3 rounded-md bg-warning/10 border border-warning/30">
+                    <div class="flex items-start gap-2">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="text-warning mt-0.5 flex-shrink-0">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <div>
+                            <div class="text-[11px] font-mono text-warning uppercase tracking-wider mb-1">Conflict resolved</div>
+                            <div class="text-[11px] text-ink-400 leading-relaxed">
+                                "closer for brightness" vs "back for coverage" — picked <span class="text-ink-50 font-mono">closer</span> because pixel density was the binding metric.
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -422,10 +614,50 @@
             </div>
         </div>
 
-        <!-- SCREENSHOT SLOT -->
-        <div class="media-slot aspect-video"
-             data-label="📸 Screenshot 04"
-             data-caption="Realtime Output modal — Composite + Per-Projector outputs + OSC metadata config">
+        <!-- Realtime Output structure mock — dashboard-style view of what the
+             desktop build will expose. Pure HTML/CSS, no image, but matches the
+             Pipeline Hub's explicit structure. -->
+        <div class="rounded-md bg-surface-base border border-line p-6 md:p-8">
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-line-subtle">
+                <div>
+                    <div class="text-[10px] font-mono text-brand uppercase tracking-widest">Realtime Output · desktop build</div>
+                    <div class="text-sm text-ink-50 font-semibold mt-1">Composite + per-projector outputs</div>
+                </div>
+                <span class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-warning/15 border border-warning/40 text-warning">Ships with open beta</span>
+            </div>
+            <div class="grid md:grid-cols-3 gap-4 mb-6">
+                <!-- Composite output card -->
+                <div class="p-4 rounded-md bg-surface-elevated border border-brand/30">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="w-2 h-2 rounded-full bg-brand"></span>
+                        <span class="text-[10px] font-mono text-brand uppercase tracking-widest">Composite</span>
+                    </div>
+                    <div class="text-[12px] text-ink-200 font-mono mb-1">/fieldlux/composite</div>
+                    <div class="text-[10px] text-ink-500 font-mono">3840×2160 · H.264 · Spout / Syphon</div>
+                </div>
+                <!-- Per-projector card -->
+                <div class="p-4 rounded-md bg-surface-elevated border border-line">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="w-2 h-2 rounded-full bg-ink-500"></span>
+                        <span class="text-[10px] font-mono text-ink-400 uppercase tracking-widest">Per-projector × N</span>
+                    </div>
+                    <div class="text-[12px] text-ink-200 font-mono mb-1">/fieldlux/projector/{id}</div>
+                    <div class="text-[10px] text-ink-500 font-mono">1920×1200 · lens-warped · Spout / Syphon</div>
+                </div>
+                <!-- OSC card -->
+                <div class="p-4 rounded-md bg-surface-elevated border border-line">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="w-2 h-2 rounded-full bg-ink-500"></span>
+                        <span class="text-[10px] font-mono text-ink-400 uppercase tracking-widest">OSC metadata</span>
+                    </div>
+                    <div class="text-[12px] text-ink-200 font-mono mb-1">udp://localhost:7700</div>
+                    <div class="text-[10px] text-ink-500 font-mono">pose · calibration · verdict · lux</div>
+                </div>
+            </div>
+            <div class="text-[11px] text-ink-500 leading-relaxed">
+                One modal · three data streams · your existing production chain. No replacement, no new routing layer.
+                Receivers subscribe to the streams they need; everything else stays in its current role.
+            </div>
         </div>
 
         <!-- OSC schema badge -->
@@ -498,10 +730,75 @@
                 </p>
             </div>
 
-            <!-- SCREENSHOT SLOT -->
-            <div class="media-slot aspect-[4/5]"
-                 data-label="📸 Screenshot 05"
-                 data-caption="Assumptions & Error Budget section inside Analysis panel, expanded">
+            <!-- Mock methodology panel — visual breakdown of the error budget
+                 stacked so visitors see the proportions, not just numbers. -->
+            <div class="rounded-md bg-surface-elevated border border-line p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-[10px] font-mono text-brand uppercase tracking-widest">Error Budget</div>
+                    <span class="text-[10px] font-mono text-ink-500 uppercase tracking-widest">v1 · frozen for interop</span>
+                </div>
+                <!-- Total uncertainty bar -->
+                <div class="mb-5">
+                    <div class="flex items-baseline justify-between mb-2">
+                        <span class="text-xs text-ink-400">Total brightness uncertainty</span>
+                        <span class="text-2xl font-bold text-ink-50 font-mono">±14%</span>
+                    </div>
+                    <div class="h-2 rounded bg-surface-raised overflow-hidden flex">
+                        <div class="bg-success/70" style="width: 14%" title="Geometry ±4%"></div>
+                        <div class="bg-success/60" style="width: 14%" title="Coverage ±4%"></div>
+                        <div class="bg-warning/60" style="width: 18%" title="Distance ±5%"></div>
+                        <div class="bg-warning/70" style="width: 27%" title="Optical ±8%"></div>
+                        <div class="bg-danger/60" style="width: 27%" title="Calibration ±8%"></div>
+                    </div>
+                </div>
+                <!-- Breakdown -->
+                <div class="space-y-2 font-mono text-xs">
+                    <div class="flex items-center justify-between p-2 rounded bg-surface-raised border border-line">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-success/70"></span>
+                            <span class="text-ink-300">Geometry basis</span>
+                        </div>
+                        <span class="text-ink-50">±4%</span>
+                    </div>
+                    <div class="flex items-center justify-between p-2 rounded bg-surface-raised border border-line">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-success/60"></span>
+                            <span class="text-ink-300">Coverage basis</span>
+                        </div>
+                        <span class="text-ink-50">±4%</span>
+                    </div>
+                    <div class="flex items-center justify-between p-2 rounded bg-surface-raised border border-line">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-warning/60"></span>
+                            <span class="text-ink-300">Distance model</span>
+                        </div>
+                        <span class="text-ink-50">±5%</span>
+                    </div>
+                    <div class="flex items-center justify-between p-2 rounded bg-surface-raised border border-line">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-warning/70"></span>
+                            <span class="text-ink-300">Optical spec quality</span>
+                        </div>
+                        <span class="text-ink-50">±8%</span>
+                    </div>
+                    <div class="flex items-center justify-between p-2 rounded bg-surface-raised border border-line">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-danger/60"></span>
+                            <span class="text-ink-300">Calibration</span>
+                        </div>
+                        <span class="text-ink-50">±8%</span>
+                    </div>
+                </div>
+                <!-- Target fidelity strip -->
+                <div class="mt-5 pt-4 border-t border-line-subtle">
+                    <div class="text-[10px] font-mono text-ink-500 uppercase tracking-widest mb-2">Target fidelity</div>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="px-2 py-0.5 rounded bg-brand-muted border border-brand/40 text-[10px] font-mono text-brand">Geo bbox</span>
+                        <span class="px-2 py-0.5 rounded bg-success/10 border border-success/40 text-[10px] font-mono text-success">Cov mesh</span>
+                        <span class="px-2 py-0.5 rounded bg-success/10 border border-success/40 text-[10px] font-mono text-success">Str planar</span>
+                        <span class="px-2 py-0.5 rounded bg-success/10 border border-success/40 text-[10px] font-mono text-success">Rnd full</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -532,20 +829,46 @@
             </p>
         </div>
 
-        <!-- 4-up target screenshots -->
+        <!-- 4-up target cards — same engine, four input modalities -->
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="media-slot aspect-square"
-                 data-label="📸 06a"
-                 data-caption="Flat surface"></div>
-            <div class="media-slot aspect-square"
-                 data-label="📸 06b"
-                 data-caption="Room wall (front)"></div>
-            <div class="media-slot aspect-square"
-                 data-label="📸 06c"
-                 data-caption="3D building model"></div>
-            <div class="media-slot aspect-square"
-                 data-label="📸 06d"
-                 data-caption="Photo target"></div>
+            <div class="p-6 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
+                <svg viewBox="0 0 48 48" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" class="text-brand mb-4">
+                    <rect x="6" y="14" width="36" height="24" rx="1"></rect>
+                    <line x1="6" y1="22" x2="42" y2="22"></line>
+                </svg>
+                <div class="text-[10px] font-mono text-brand uppercase tracking-widest mb-2">Flat surface</div>
+                <div class="text-sm text-ink-200 font-semibold mb-1.5">Screen or scrim</div>
+                <div class="text-[11px] text-ink-500 leading-relaxed">Rectangular projection surface at a fixed throw. The baseline case — same judgment engine runs on all the rest.</div>
+            </div>
+            <div class="p-6 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
+                <svg viewBox="0 0 48 48" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" class="text-brand mb-4">
+                    <path d="M8 10 L40 10 L40 38 L8 38 Z"></path>
+                    <path d="M14 10 L14 38"></path>
+                    <path d="M34 10 L34 38"></path>
+                </svg>
+                <div class="text-[10px] font-mono text-brand uppercase tracking-widest mb-2">Room walls</div>
+                <div class="text-sm text-ink-200 font-semibold mb-1.5">Interior space</div>
+                <div class="text-[11px] text-ink-500 leading-relaxed">Front, back, left, right, floor — five surfaces judged independently. Useful for immersive rooms and corner blends.</div>
+            </div>
+            <div class="p-6 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
+                <svg viewBox="0 0 48 48" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" class="text-brand mb-4">
+                    <path d="M8 40 L24 10 L40 40 Z"></path>
+                    <path d="M16 26 L32 26"></path>
+                </svg>
+                <div class="text-[10px] font-mono text-brand uppercase tracking-widest mb-2">3D model</div>
+                <div class="text-sm text-ink-200 font-semibold mb-1.5">glTF · FBX · OBJ · Collada</div>
+                <div class="text-[11px] text-ink-500 leading-relaxed">Real mesh geometry. Lens-warped projection lands on the actual surface; bounding-box centroid fallback when rays miss.</div>
+            </div>
+            <div class="p-6 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
+                <svg viewBox="0 0 48 48" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" class="text-brand mb-4">
+                    <rect x="6" y="10" width="36" height="28" rx="1"></rect>
+                    <circle cx="17" cy="21" r="3"></circle>
+                    <path d="M6 34 L18 24 L30 32 L42 22"></path>
+                </svg>
+                <div class="text-[10px] font-mono text-brand uppercase tracking-widest mb-2">Photo target</div>
+                <div class="text-sm text-ink-200 font-semibold mb-1.5">Site reference image</div>
+                <div class="text-[11px] text-ink-500 leading-relaxed">Preflight against a reference shot of the real site when a model isn't available. Useful for early client reviews.</div>
+            </div>
         </div>
     </div>
 </section>
@@ -590,10 +913,48 @@
                 </p>
             </div>
 
-            <!-- SCREENSHOT SLOT -->
-            <div class="media-slot aspect-[4/5]"
-                 data-label="📸 Screenshot 07"
-                 data-caption="Test output terminal / regression gate output / audit numbers — whatever best shows 'tested'">
+            <!-- Mock terminal — regression gate output -->
+            <div class="rounded-md bg-[#0c0c0e] border border-line overflow-hidden">
+                <div class="flex items-center gap-1.5 px-4 py-2 border-b border-line-subtle bg-surface-elevated">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#ff5f56]"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#27c93f]"></span>
+                    <span class="ml-3 text-[10px] font-mono text-ink-500">bash — npm run qa:beta</span>
+                </div>
+                <div class="p-5 font-mono text-[11px] leading-relaxed">
+                    <div class="text-ink-500">$ npm run qa:beta</div>
+                    <div class="h-2"></div>
+                    <div class="text-ink-400">› typecheck <span class="text-success">✓</span></div>
+                    <div class="text-ink-400">› verify:spout-syphon <span class="text-success">✓</span></div>
+                    <div class="h-2"></div>
+                    <div class="text-ink-300 mb-1">› test:contracts</div>
+                    <div class="pl-4 text-ink-500">
+                        <div><span class="text-success">✓</span> analysis-contracts.test.js <span class="text-ink-600">(8)</span></div>
+                        <div><span class="text-success">✓</span> save-reload-parity.test.js <span class="text-ink-600">(4)</span></div>
+                        <div><span class="text-success">✓</span> share-url-models-blocked.test.js <span class="text-ink-600">(3)</span></div>
+                        <div><span class="text-success">✓</span> stress-golden.test.js <span class="text-ink-600">(6)</span></div>
+                    </div>
+                    <div class="mt-1 pl-4 text-success">→ 21 physics regressions · all pass</div>
+                    <div class="h-2"></div>
+                    <div class="text-ink-300 mb-1">› test:beta-smoke</div>
+                    <div class="pl-4 text-ink-500">
+                        <div><span class="text-success">✓</span> smoke-scenarios.test.js <span class="text-ink-600">(17)</span></div>
+                        <div><span class="text-success">✓</span> serverProjectService.test.js <span class="text-ink-600">(22)</span></div>
+                        <div><span class="text-success">✓</span> madMapperEngineering.test.ts <span class="text-ink-600">(14)</span></div>
+                        <div><span class="text-ink-500">...and 9 more suites</span></div>
+                    </div>
+                    <div class="mt-1 pl-4 text-success">→ 77 install-flow checks · all pass</div>
+                    <div class="h-2"></div>
+                    <div class="text-ink-300 mb-1">› test:engineering-audit</div>
+                    <div class="pl-4 text-success">→ 134 audit assertions · all pass</div>
+                    <div class="h-2"></div>
+                    <div class="pt-2 border-t border-line-subtle">
+                        <div class="text-ink-50"><span class="text-success font-semibold">✓ 232 checks passed</span> <span class="text-ink-500">in 9.4s</span></div>
+                        <div class="text-ink-500">verdict drift: <span class="text-success">0 regressions · ±0.3 lux worst</span></div>
+                    </div>
+                    <div class="h-2"></div>
+                    <div class="text-success">$ _</div>
+                </div>
             </div>
         </div>
     </div>
@@ -605,10 +966,61 @@
 <section class="py-24 bg-surface-elevated border-y border-line-subtle">
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid md:grid-cols-2 gap-16 items-center">
-            <!-- SCREENSHOT SLOT (left) -->
-            <div class="media-slot aspect-[3/4] order-2 md:order-1"
-                 data-label="📸 Screenshot 08"
-                 data-caption="PDF report — cover page + assumptions section + per-projector detail">
+            <!-- Mock PDF cover — document style, stacked pages -->
+            <div class="order-2 md:order-1 relative">
+                <!-- Page 3 (back) -->
+                <div class="absolute top-6 left-6 right-0 bottom-0 rounded-md bg-[#f5f5f4] shadow-xl opacity-60 rotate-1 origin-bottom-left"></div>
+                <!-- Page 2 (middle) -->
+                <div class="absolute top-3 left-3 right-0 bottom-0 rounded-md bg-[#fafaf9] shadow-xl opacity-80"></div>
+                <!-- Page 1 (front) -->
+                <div class="relative rounded-md bg-[#fafaf9] shadow-2xl overflow-hidden aspect-[3/4]">
+                    <!-- Top brand band -->
+                    <div class="bg-[#0A0A0B] px-8 py-6 flex items-center justify-between">
+                        <span class="text-[#06B6D4] font-bold tracking-widest text-sm">FIELDLUX</span>
+                        <span class="text-[#888] font-mono text-[10px] uppercase tracking-widest">Tech Rider · v1</span>
+                    </div>
+                    <!-- Body -->
+                    <div class="p-8 text-[#18181b]">
+                        <div class="text-[10px] font-mono text-[#737373] uppercase tracking-widest mb-2">Project</div>
+                        <div class="text-xl font-bold mb-6 leading-tight">Immersive Pavilion 02<br/><span class="text-[#737373] text-sm font-normal">Front façade · 3 projectors</span></div>
+                        <!-- Verdict block -->
+                        <div class="border-2 border-[#ea580c] rounded p-4 mb-6 bg-[#fff7ed]">
+                            <div class="text-[10px] font-mono text-[#ea580c] uppercase tracking-widest mb-1">Verdict</div>
+                            <div class="flex items-baseline justify-between">
+                                <span class="text-2xl font-bold text-[#ea580c]">AT RISK</span>
+                                <span class="text-2xl font-bold font-mono text-[#18181b]">78<span class="text-sm text-[#737373]">/100</span></span>
+                            </div>
+                        </div>
+                        <!-- Metrics mini-table -->
+                        <div class="space-y-1 text-[10px] font-mono mb-4">
+                            <div class="flex justify-between py-1 border-b border-[#e5e5e5]">
+                                <span class="text-[#525252]">Pixel density</span>
+                                <span class="text-[#dc2626] font-semibold">FAIL</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-[#e5e5e5]">
+                                <span class="text-[#525252]">Bright-enough coverage</span>
+                                <span class="text-[#ea580c] font-semibold">WARN</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-[#e5e5e5]">
+                                <span class="text-[#525252]">Target coverage</span>
+                                <span class="text-[#ea580c] font-semibold">WARN</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-[#e5e5e5]">
+                                <span class="text-[#525252]">Contrast margin</span>
+                                <span class="text-[#16a34a] font-semibold">PASS</span>
+                            </div>
+                            <div class="flex justify-between py-1">
+                                <span class="text-[#525252]">Blend hotspot</span>
+                                <span class="text-[#16a34a] font-semibold">PASS</span>
+                            </div>
+                        </div>
+                        <div class="text-[9px] font-mono text-[#a3a3a3] uppercase tracking-wider">
+                            Error budget · ±14% · Epson EB-PU2220B
+                        </div>
+                    </div>
+                    <!-- Page number -->
+                    <div class="absolute bottom-3 right-6 text-[9px] font-mono text-[#a3a3a3]">p. 1 / 12</div>
+                </div>
             </div>
 
             <div class="order-1 md:order-2">
