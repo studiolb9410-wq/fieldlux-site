@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy — FieldLux</title>
+    <meta name="description" content="How FieldLux collects, stores, and uses the information you provide when requesting beta access." />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0A0A0B" />
+    <style>html, body { background: #0A0A0B; color: #FAFAFA; margin: 0; }</style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/tailwind.css" />
+</head>
+<body class="antialiased">
+
+<!-- Minimal nav — link back to landing only. Matches main site chrome. -->
+<nav class="fixed top-0 inset-x-0 z-50 border-b border-line-subtle bg-surface-base/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-3" aria-label="FieldLux home">
+            <img src="assets/logo.png" alt="FieldLux" class="h-10 w-auto select-none" draggable="false" />
+            <span class="text-[10px] font-mono text-brand uppercase tracking-widest px-1.5 py-0.5 rounded bg-brand/10 border border-brand/30">Beta v.1</span>
+        </a>
+        <a href="/" class="text-[13px] text-ink-400 hover:text-ink-50 transition-colors">← Back to site</a>
+    </div>
+</nav>
+
+<main class="pt-32 pb-24 bg-surface-base">
+    <div class="max-w-3xl mx-auto px-6">
+        <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">Privacy Policy</div>
+        <h1 class="text-4xl font-bold tracking-tight mb-4">How we handle your information</h1>
+        <p class="text-ink-500 text-sm font-mono mb-10">Last updated · 2026-04-23</p>
+
+        <div class="space-y-10 text-ink-300 leading-relaxed">
+
+            <section>
+                <h2 class="text-xl font-semibold text-ink-50 mb-3">1. Who we are</h2>
+                <p>
+                    FieldLux is a projection preflight tool operated from the Republic of Korea.
+                    This page describes what we collect when you request beta access via the
+                    signup form on the landing page. For questions about this policy, email
+                    <a href="mailto:hello@fieldlux.com" class="text-brand hover:underline">hello@fieldlux.com</a>.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-ink-50 mb-3">2. What we collect</h2>
+                <p class="mb-3">When you submit the beta request form, we store the following:</p>
+                <ul class="space-y-2 pl-5 list-disc marker:text-brand">
+                    <li><span class="text-ink-50 font-semibold">Email address</span> — required. Used to send your beta access link and related updates.</li>
+                    <li><span class="text-ink-50 font-semibold">Role</span> — required. The dropdown value you selected (Technical Director, Projection Designer, etc.). Helps us prioritise onboarding.</li>
+                    <li><span class="text-ink-50 font-semibold">Use case</span> — optional. The free-text line describing what you'd like to preflight.</li>
+                    <li><span class="text-ink-50 font-semibold">Browser metadata</span> — automatically captured: User-Agent string (truncated to 500 chars) and HTTP Referrer (truncated to 500 chars). Used for abuse detection and to understand which integration partners send the most relevant traffic.</li>
+                </ul>
+                <p class="mt-4 text-sm text-ink-400">
+                    We do <span class="text-ink-50 font-semibold">not</span> use cookies, trackers, analytics scripts,
+                    or fingerprinting on the landing page. We do not collect IP addresses beyond the
+                    short-term server log retained by our hosting provider (Vercel) and database
+                    provider (Supabase) for operational purposes.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-ink-50 mb-3">3. How we use it</h2>
+                <ul class="space-y-2 pl-5 list-disc marker:text-brand">
+                    <li>To review your beta request and send you an access invitation when a slot opens.</li>
+                    <li>To send occasional beta-related updates (major releases, calibration changes, end-of-beta notice). Typically fewer than one message per month.</li>
+                    <li>To understand the professional mix of our waitlist so we can prioritise features that match the real user base.</li>
+                </ul>
+                <p class="mt-4">
+                    We do <span class="text-ink-50 font-semibold">not</span> sell, rent, or share your information
+                    with third parties for marketing purposes. We do not operate a marketing mailing list.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-ink-50 mb-3">4. Where it's stored</h2>
+                <p>
+                    Waitlist records are stored in a Supabase PostgreSQL database
+                    (<code class="text-ink-100 font-mono text-sm">fieldlux_waitlist</code> table).
+                    Row-level security is configured so that the anonymous browser key used by
+                    this landing page can <span class="text-ink-50 font-semibold">insert</span>
+                    new records but cannot read, modify, or delete any record — your email is
+                    never readable from another browser session.
+                </p>
+                <p class="mt-4">
+                    Supabase hosts our database in the region stated in our project settings.
+                    Data transferred to Supabase travels over TLS.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-ink-50 mb-3">5. How long we keep it</h2>
+                <ul class="space-y-2 pl-5 list-disc marker:text-brand">
+                    <li><span class="text-ink-50 font-semibold">Active beta waitlist:</span> until you either accept an access invitation or request removal.</li>
+                    <li><span class="text-ink-50 font-semibold">After beta ends:</span> we will either migrate accepted users to a product account (with a new privacy notice) or delete unaccepted records within 90 days of beta closure.</li>
+                    <li><span class="text-ink-50 font-semibold">On your request:</span> we delete your record within 14 days of receiving a request at <a href="mailto:hello@fieldlux.com" class="text-brand hover:underline">hello@fieldlux.com</a>.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-ink-50 mb-3">6. Your rights</h2>
+                <p class="mb-3">You have the right to:</p>
+                <ul class="space-y-2 pl-5 list-disc marker:text-brand">
+                    <li>See what we have on file about you.</li>
+                    <li>Correct inaccurate data.</li>
+                    <li>Have your record deleted.</li>
+                    <li>Withdraw consent at any time — doing so removes you from the beta waitlist.</li>
+                    <li>Object to the processing described above.</li>
+                </ul>
+                <p class="mt-4">
+                    To exercise any of these, email <a href="mailto:hello@fieldlux.com" class="text-brand hover:underline">hello@fieldlux.com</a>
+                    from the address you signed up with. We respond within 14 days.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-ink-50 mb-3">7. Regional notes</h2>
+                <p class="mb-3"><span class="text-ink-50 font-semibold">Republic of Korea (PIPA):</span> Collection and use of the items in §2 is based on your explicit consent given via the checkbox on the signup form. You may withdraw consent at any time using the address in §6; withdrawal does not affect the lawfulness of processing carried out before the withdrawal.</p>
+                <p class="mb-3"><span class="text-ink-50 font-semibold">European Economic Area / UK (GDPR):</span> The lawful basis for processing is consent under Article 6(1)(a). The Controller is FieldLux; contact details above. You have the right to lodge a complaint with your local supervisory authority.</p>
+                <p><span class="text-ink-50 font-semibold">California (CCPA/CPRA):</span> We do not sell or share personal information as those terms are defined under California law.</p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-ink-50 mb-3">8. Changes to this policy</h2>
+                <p>
+                    We'll update the "Last updated" date at the top of this page when we change
+                    anything. Material changes (new categories of data, new purposes, new
+                    processors) will be announced via the email address you signed up with
+                    before they take effect. Continued use of your beta access after a change
+                    means you accept the revised policy.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-ink-50 mb-3">9. Contact</h2>
+                <p>
+                    All privacy questions, requests, and complaints:
+                    <a href="mailto:hello@fieldlux.com" class="text-brand hover:underline">hello@fieldlux.com</a>.
+                </p>
+            </section>
+
+        </div>
+    </div>
+</main>
+
+<footer class="border-t border-line-subtle bg-surface-elevated">
+    <div class="max-w-7xl mx-auto px-6 py-8 flex flex-wrap justify-between items-center gap-4 text-xs text-ink-500 font-mono">
+        <span>© 2026 FieldLux · Beta v.1 · 0423</span>
+        <a href="/" class="hover:text-ink-200 transition-colors">← Back to site</a>
+    </div>
+</footer>
+
+</body>
+</html>
