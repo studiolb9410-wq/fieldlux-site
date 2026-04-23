@@ -157,9 +157,9 @@
             </h1>
 
             <p class="text-xl text-ink-400 leading-relaxed max-w-2xl mb-10">
-                Physics-based preflight for projection installs. FieldLux verifies the rig
-                is viable, stress-tests it against real-world drift, and prescribes the fix
-                — all before load-in.
+                Checks whether your rig actually holds up — lens, throw, blend, the lot —
+                shakes it against the drift you see at load-in, and tells you what to move
+                if it doesn't. All before anyone touches a case.
             </p>
 
             <div class="flex flex-wrap gap-4 mb-16">
@@ -229,8 +229,8 @@
                     Auto-verdict on every install.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    The analyzer reads your projector choice, lens configuration, and target
-                    geometry, then delivers one of three answers:
+                    Drop in your projectors, pick the lens, point them at the target. It comes
+                    back with one of three calls:
                 </p>
                 <div class="space-y-3 mb-8">
                     <div class="flex items-center gap-3 p-3 rounded-md bg-success/10 border border-success/20">
@@ -250,12 +250,11 @@
                     </div>
                 </div>
                 <p class="text-ink-400 leading-relaxed">
-                    Behind every verdict is a transparent set of install checks:
-                    pixel density, bright-enough coverage, target coverage, contrast,
-                    spill, blend hotspot, and more. Underlying standards and pass/fail
-                    rationales are documented in the methodology section. Every failing metric shows
-                    both the <em class="text-ink-200">reason</em> and the
-                    <em class="text-ink-200">recommended fix</em>.
+                    Every call is backed by the checks that actually matter on site —
+                    pixel density, bright-enough coverage, target coverage, contrast margin,
+                    spill, blend hotspots. If one trips, you see exactly which metric tripped
+                    and what to do about it: move the rig, change the lens, bump the lumens.
+                    Thresholds and the reasoning live in the methodology section.
                 </p>
             </div>
 
@@ -432,8 +431,8 @@
                     Know every failure mode before<br/>the flightcase leaves the shop.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    S0 through S10 perturb each projector by the tolerances pro installs
-                    actually encounter in the field:
+                    S0 through S10 shake each projector by the slop you actually see at
+                    load-in — truss sag, mount shift, the usual:
                 </p>
                 <div class="grid grid-cols-2 gap-3 mb-8">
                     <div class="p-3 rounded-md bg-surface-raised border border-line">
@@ -454,9 +453,10 @@
                     </div>
                 </div>
                 <p class="text-ink-400 leading-relaxed">
-                    Seven operational profiles tune the acceptance bar for the review at hand —
-                    from quick install checks to live show and long-term archival. The resilience
-                    score lands before you ever touch the physical space.
+                    Seven operational profiles set where the pass bar sits for what you're
+                    reviewing — a quick hang check reads different from a live show read,
+                    and archival reads different again. Resilience score lands before anyone
+                    shows up to site.
                 </p>
             </div>
         </div>
@@ -487,15 +487,15 @@
                     swap ELPLM15 for short-throw ELPLU04.
                 </div>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    Distance and lumens prescriptions are derived from the actual physics —
-                    inverse-square law, lens-throw equations, blend-footprint geometry.
-                    Equipment-swap suggestions and conflict resolution fall back to documented
-                    heuristics, traceable in the prescription card.
+                    The "move X cm" and "bump to Y lumens" numbers come from the actual math —
+                    inverse-square, lens throw, blend-footprint geometry. Lens and gear swap
+                    suggestions use documented heuristics, all spelled out in the prescription
+                    card so you can audit the call.
                 </p>
                 <p class="text-ink-400 leading-relaxed">
-                    Conflicting prescriptions ("closer for brightness" vs "back for coverage")
-                    are detected and reconciled automatically. The real trade-off is surfaced
-                    so you understand <em class="text-ink-200">why</em> one path wins.
+                    When two fixes pull against each other — "come in for brightness" vs
+                    "pull back for coverage" — it picks the one that unblocks the binding
+                    metric and tells you <em class="text-ink-200">why</em>, not just what.
                 </p>
             </div>
 
@@ -568,16 +568,15 @@
                 Don't replace your tools. Connect them.
             </h2>
             <p class="text-ink-400 leading-relaxed text-lg mb-4">
-                <span class="text-ink-200">FieldLux's core is preflight — but your content runs somewhere.</span>
-                The open-beta desktop build introduces the pipeline hub so FieldLux
-                plugs into the tools already in your production chain.
+                <span class="text-ink-200">FieldLux is a preflight tool — your content still runs somewhere else.</span>
+                The desktop build landing with open beta adds a pipeline hub so it slots
+                into the rig you already use, not on top of it.
             </p>
             <p class="text-ink-400 leading-relaxed text-lg">
-                Desktop builds will publish realtime output via Spout (Windows) and
-                Syphon (macOS), with OSC metadata for receiver-side workflows.
-                The OSC sidecar schema is defined today (v1) and ready for
-                receiver-side integration; realtime output targets below are
-                planned and undergo staged validation during the open-beta cycle.
+                Desktop pushes realtime output via Spout on Windows and Syphon on macOS,
+                plus OSC metadata for the downstream patch. OSC schema is locked today —
+                receivers can be wired up now. Realtime output targets below are in staged
+                validation through the open-beta cycle.
             </p>
         </div>
 
@@ -655,24 +654,11 @@
                 </div>
             </div>
             <div class="text-[11px] text-ink-500 leading-relaxed">
-                One modal · three data streams · your existing production chain. No replacement, no new routing layer.
-                Receivers subscribe to the streams they need; everything else stays in its current role.
+                One modal, three streams. Your patch stays exactly as it is — receivers grab what they need,
+                nothing in your chain gets replaced. FieldLux sits upstream, not in the middle.
             </div>
         </div>
 
-        <!-- OSC schema badge -->
-        <div class="mt-8 max-w-3xl mx-auto text-center">
-            <p class="text-[11px] font-mono text-ink-500 uppercase tracking-widest mb-2">
-                OSC sidecar schema — v1, frozen for interop
-            </p>
-            <code class="block text-xs text-ink-400 font-mono leading-relaxed p-4 bg-surface-base border border-line rounded-md text-left">
-/fieldlux/projector/{id}/pose         fff fff&nbsp;&nbsp;&nbsp;# pos · euler<br/>
-/fieldlux/projector/{id}/calibration  f × 16&nbsp;&nbsp;&nbsp;&nbsp;# 4×4 matrix<br/>
-/fieldlux/projector/{id}/verdict      s i f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# status · resilience · center lux<br/>
-/fieldlux/hover/lux                   f f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# lux · mm/px<br/>
-/fieldlux/analysis/summary            s i i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# overall · ready · at_risk
-            </code>
-        </div>
     </div>
 </section>
 
@@ -690,10 +676,10 @@
                     No black box.<br />Every assumption is public.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    Every verdict carries an explicit error budget: geometry, coverage,
-                    distance model, optical spec, and calibration each contribute a
-                    disclosed share of the brightness uncertainty. Nothing hidden —
-                    the same breakdown shows up in the analysis panel and in the PDF export.
+                    Every verdict shows you where the uncertainty comes from. Geometry,
+                    coverage, distance model, optical spec, calibration — each one pulls
+                    its share of the total brightness error, and you see the split.
+                    Same numbers in the analysis panel, same numbers in the PDF. No black box.
                 </p>
                 <div class="mb-3 p-3 rounded bg-surface-elevated border border-brand/30">
                     <div class="flex justify-between items-center">
@@ -724,9 +710,9 @@
                     </div>
                 </div>
                 <p class="text-ink-400 leading-relaxed">
-                    Every verdict is backed by the exact physics citation. Any change to the
-                    methodology or thresholds passes through a regression gate before release —
-                    no silent drift between versions.
+                    Every verdict points back to the exact physics it used. If we change the
+                    methodology or move a threshold, the diff fails a gate before it ships —
+                    so your verdicts don't quietly drift between releases.
                 </p>
             </div>
 
@@ -817,15 +803,15 @@
                 Analyze what you actually project onto.
             </h2>
             <p class="text-ink-400 leading-relaxed text-lg">
-                Flat surfaces, room walls, imported 3D building models, photographic
-                targets. The same judgment engine runs on all four. Import
+                Flat surfaces, room walls, imported building meshes, site photos —
+                the same judgment engine runs on all four. Bring your model in as
                 <span class="font-mono text-sm text-ink-200">glTF</span>,
                 <span class="font-mono text-sm text-ink-200">FBX</span>,
-                <span class="font-mono text-sm text-ink-200">OBJ</span>,
+                <span class="font-mono text-sm text-ink-200">OBJ</span>, or
                 <span class="font-mono text-sm text-ink-200">Collada</span>.
-                Lens-warped projection lands on real mesh geometry — with a
-                documented bounding-box centroid fallback when ray-mesh intersection
-                misses (error budget disclosed in the methodology section).
+                Lens-warped projection lands on the real mesh; when a ray misses,
+                it falls back to a bounding-box centroid (that fallback's error budget
+                is in the methodology section too).
             </p>
         </div>
 
@@ -884,13 +870,14 @@
                     Reliability
                 </div>
                 <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
-                    Results that stay stable over time.
+                    Numbers that don't drift between sessions.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    FieldLux is backed by physics regression gates, install-flow checks, and
-                    engineering audit coverage that lock critical analysis behavior. Save → reload →
-                    reanalyze is checked for verdict consistency within ±0.5 lux tolerance,
-                    so project reviews stay stable across sessions, teammates, and milestones.
+                    Every release goes through physics regression gates, install-flow checks,
+                    and the engineering audit suite before it ships. The save → reload →
+                    reanalyze loop is pinned to ±0.5 lux — you can come back next week, open
+                    the file, and the verdict reads the same. Teammate opens it on their
+                    machine, still the same.
                 </p>
                 <div class="grid grid-cols-3 gap-4 mb-6">
                     <div class="p-4 rounded-md bg-surface-elevated border border-line text-center">
@@ -907,9 +894,10 @@
                     </div>
                 </div>
                 <p class="text-ink-400 leading-relaxed">
-                    Golden fixtures lock in physics behavior for real projectors (Epson EB-L30000U,
-                    EB-PU2220B) so a silent regression in perturbation math or alignment
-                    computation fails the gate with a numeric diagnostic.
+                    Golden fixtures pin the physics against real projectors — Epson EB-L30000U
+                    and EB-PU2220B — so if a stealth regression sneaks into the perturbation
+                    or alignment math, the gate fails with an actual number attached.
+                    No guessing whether a verdict shifted.
                 </p>
             </div>
 
@@ -966,60 +954,108 @@
 <section class="py-24 bg-surface-elevated border-y border-line-subtle">
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid md:grid-cols-2 gap-16 items-center">
-            <!-- Mock PDF cover — document style, stacked pages -->
+            <!-- PDF export mock — real Stress Analysis Metrics table from the app -->
             <div class="order-2 md:order-1 relative">
-                <!-- Page 3 (back) -->
-                <div class="absolute top-6 left-6 right-0 bottom-0 rounded-md bg-[#f5f5f4] shadow-xl opacity-60 rotate-1 origin-bottom-left"></div>
-                <!-- Page 2 (middle) -->
-                <div class="absolute top-3 left-3 right-0 bottom-0 rounded-md bg-[#fafaf9] shadow-xl opacity-80"></div>
-                <!-- Page 1 (front) -->
-                <div class="relative rounded-md bg-[#fafaf9] shadow-2xl overflow-hidden aspect-[3/4]">
-                    <!-- Top brand band -->
-                    <div class="bg-[#0A0A0B] px-8 py-6 flex items-center justify-between">
-                        <span class="text-[#06B6D4] font-bold tracking-widest text-sm">FIELDLUX</span>
-                        <span class="text-[#888] font-mono text-[10px] uppercase tracking-widest">Tech Rider · v1</span>
+                <!-- Stacked pages behind for depth -->
+                <div class="absolute top-5 left-5 right-0 bottom-0 rounded-md bg-[#f5f5f4] shadow-xl opacity-50 rotate-1 origin-bottom-left"></div>
+                <div class="absolute top-2.5 left-2.5 right-0 bottom-0 rounded-md bg-[#fafaf9] shadow-xl opacity-75"></div>
+                <!-- Front page -->
+                <div class="relative rounded-md bg-[#fafaf9] shadow-2xl overflow-hidden aspect-[5/4]">
+                    <!-- Brand band -->
+                    <div class="bg-[#0A0A0B] px-6 py-3 flex items-center justify-between">
+                        <span class="text-[#06B6D4] font-bold tracking-widest text-[11px]">FIELDLUX</span>
+                        <span class="text-[#888] font-mono text-[9px] uppercase tracking-widest">Tech Rider · p.4 / 12</span>
                     </div>
                     <!-- Body -->
-                    <div class="p-8 text-[#18181b]">
-                        <div class="text-[10px] font-mono text-[#737373] uppercase tracking-widest mb-2">Project</div>
-                        <div class="text-xl font-bold mb-6 leading-tight">Immersive Pavilion 02<br/><span class="text-[#737373] text-sm font-normal">Front façade · 3 projectors</span></div>
-                        <!-- Verdict block -->
-                        <div class="border-2 border-[#ea580c] rounded p-4 mb-6 bg-[#fff7ed]">
-                            <div class="text-[10px] font-mono text-[#ea580c] uppercase tracking-widest mb-1">Verdict</div>
-                            <div class="flex items-baseline justify-between">
-                                <span class="text-2xl font-bold text-[#ea580c]">AT RISK</span>
-                                <span class="text-2xl font-bold font-mono text-[#18181b]">78<span class="text-sm text-[#737373]">/100</span></span>
+                    <div class="p-6 text-[#18181b]">
+                        <!-- Section heading with cyan underline -->
+                        <div class="mb-3">
+                            <h4 class="inline-block text-[13px] font-bold tracking-wide uppercase border-b-2 border-[#06B6D4] pb-0.5">Stress Analysis Metrics</h4>
+                        </div>
+                        <!-- Table -->
+                        <div class="text-[8px] font-mono">
+                            <!-- Header row -->
+                            <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-1 bg-[#262626] text-[#fafaf9] font-semibold">
+                                <span>Metric</span>
+                                <span>Value</span>
+                                <span>Threshold</span>
+                                <span>Status</span>
+                                <span class="text-right">Weight</span>
+                                <span class="text-right">Score</span>
+                            </div>
+                            <!-- Rows -->
+                            <div class="divide-y divide-[#e5e5e5]">
+                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
+                                    <span>Area coverage</span><span>0</span><span>P:0.2 F:0.55</span>
+                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
+                                    <span class="text-right">4</span><span class="text-right">100</span>
+                                </div>
+                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
+                                    <span>Bright-enough coverage</span><span>0.436</span><span>P:0.2 F:0.55</span>
+                                    <span><span class="inline-block px-1 py-px rounded bg-[#eab308] text-white text-[7px] font-semibold">PARTIAL</span></span>
+                                    <span class="text-right">4</span><span class="text-right">30</span>
+                                </div>
+                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
+                                    <span>Light spill (off-target)</span><span>0</span><span>P:0.1 F:0.35</span>
+                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
+                                    <span class="text-right">6</span><span class="text-right">100</span>
+                                </div>
+                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
+                                    <span>Overscan outside target</span><span>0</span><span>P:0.15 F:0.5</span>
+                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
+                                    <span class="text-right">2</span><span class="text-right">100</span>
+                                </div>
+                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
+                                    <span>Reliable brightness (dimmest 20%)</span><span>0.46</span><span>P:0.05 F:-0.2</span>
+                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
+                                    <span class="text-right">25</span><span class="text-right">77</span>
+                                </div>
+                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
+                                    <span>Pixel density</span><span>0.007</span><span>P:0.4 F:0.05</span>
+                                    <span><span class="inline-block px-1 py-px rounded bg-[#dc2626] text-white text-[7px] font-semibold">FAIL</span></span>
+                                    <span class="text-right">7</span><span class="text-right">2</span>
+                                </div>
+                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
+                                    <span>Throw tolerance (±distance)</span><span>0.913</span><span>P:0.65 F:0.3</span>
+                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
+                                    <span class="text-right">11</span><span class="text-right">90</span>
+                                </div>
+                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
+                                    <span>Mount tolerance (±position)</span><span>0.932</span><span>P:0.75 F:0.4</span>
+                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
+                                    <span class="text-right">11</span><span class="text-right">89</span>
+                                </div>
+                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
+                                    <span>Alignment tolerance (±yaw)</span><span>0.922</span><span>P:0.8 F:0.4</span>
+                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
+                                    <span class="text-right">8</span><span class="text-right">84</span>
+                                </div>
+                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
+                                    <span>Content resolution fit</span><span>—</span><span>P:0.8 F:0.4</span>
+                                    <span><span class="inline-block px-1 py-px rounded bg-[#dc2626] text-white text-[7px] font-semibold">SKIP</span></span>
+                                    <span class="text-right">4</span><span class="text-right">—</span>
+                                </div>
+                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
+                                    <span>Blend hotspot control</span><span>0.68</span><span>P:0.4 F:0.1</span>
+                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
+                                    <span class="text-right">3</span><span class="text-right">79</span>
+                                </div>
+                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center text-[#a3a3a3]">
+                                    <span>… 6 more metrics</span><span></span><span></span><span></span><span></span><span></span>
+                                </div>
                             </div>
                         </div>
-                        <!-- Metrics mini-table -->
-                        <div class="space-y-1 text-[10px] font-mono mb-4">
-                            <div class="flex justify-between py-1 border-b border-[#e5e5e5]">
-                                <span class="text-[#525252]">Pixel density</span>
-                                <span class="text-[#dc2626] font-semibold">FAIL</span>
+                        <!-- Brightness subsection -->
+                        <div class="mt-3">
+                            <h4 class="inline-block text-[11px] font-bold tracking-wide uppercase border-b-2 border-[#06B6D4] pb-0.5 mb-1.5">Brightness</h4>
+                            <div class="text-[8px] font-mono space-y-0.5">
+                                <div class="flex justify-between border-b border-[#e5e5e5] py-0.5"><span>P20 (combined)</span><span>862 lx</span></div>
+                                <div class="flex justify-between border-b border-[#e5e5e5] py-0.5"><span>Worst Case</span><span>176 lx (combined worst-case)</span></div>
+                                <div class="flex justify-between border-b border-[#e5e5e5] py-0.5"><span>Contrast Ratio</span><span>N/A (no ambient)</span></div>
+                                <div class="flex justify-between py-0.5"><span>Required</span><span>150 lx</span></div>
                             </div>
-                            <div class="flex justify-between py-1 border-b border-[#e5e5e5]">
-                                <span class="text-[#525252]">Bright-enough coverage</span>
-                                <span class="text-[#ea580c] font-semibold">WARN</span>
-                            </div>
-                            <div class="flex justify-between py-1 border-b border-[#e5e5e5]">
-                                <span class="text-[#525252]">Target coverage</span>
-                                <span class="text-[#ea580c] font-semibold">WARN</span>
-                            </div>
-                            <div class="flex justify-between py-1 border-b border-[#e5e5e5]">
-                                <span class="text-[#525252]">Contrast margin</span>
-                                <span class="text-[#16a34a] font-semibold">PASS</span>
-                            </div>
-                            <div class="flex justify-between py-1">
-                                <span class="text-[#525252]">Blend hotspot</span>
-                                <span class="text-[#16a34a] font-semibold">PASS</span>
-                            </div>
-                        </div>
-                        <div class="text-[9px] font-mono text-[#a3a3a3] uppercase tracking-wider">
-                            Error budget · ±14% · Epson EB-PU2220B
                         </div>
                     </div>
-                    <!-- Page number -->
-                    <div class="absolute bottom-3 right-6 text-[9px] font-mono text-[#a3a3a3]">p. 1 / 12</div>
                 </div>
             </div>
 
@@ -1031,9 +1067,10 @@
                     Client-ready tech riders.<br/>One click.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    Project summary, equipment list, per-projector detail, coverage
-                    analysis, stress scenario results, prescriptions, assumptions,
-                    error budget. All in one PDF.
+                    Project summary, gear list, per-projector detail, coverage breakdown,
+                    stress scenario results, prescriptions, assumptions, error budget.
+                    All in one PDF — same doc you'd hand the client, same doc install
+                    reads at load-in.
                 </p>
                 <ul class="space-y-2 text-ink-400 text-sm mb-6">
                     <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Cover page with verdict + resilience score</li>
@@ -1045,8 +1082,8 @@
                     <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Custom branding (your studio name + logo)</li>
                 </ul>
                 <p class="text-ink-400 leading-relaxed">
-                    No spreadsheets. No manual formatting. Ready for hand-off to install
-                    teams or final clients.
+                    No spreadsheet wrangling, no reformatting before you send it.
+                    One export, hand it straight to install or to the client.
                 </p>
             </div>
         </div>
@@ -1066,10 +1103,11 @@
                 Web or desktop. Your choice.
             </h2>
             <p class="text-ink-400 leading-relaxed text-lg">
-                <span class="text-ink-200">Closed beta runs in your browser today.</span>
-                The native desktop build (Tauri — Windows / macOS) ships with open
+                <span class="text-ink-200">Closed beta runs in your browser right now.</span>
+                The native desktop build (Tauri — Windows and macOS) lands with open
                 beta and unlocks local file I/O, realtime Spout/Syphon output, OSC
-                metadata publishing, and larger scenes.
+                metadata out to the rest of your patch, and the big scenes that
+                browser memory can't hold.
             </p>
         </div>
 
@@ -1119,8 +1157,8 @@
                 What's live, what's next, what's after.
             </h2>
             <p class="text-ink-400 leading-relaxed text-lg">
-                FieldLux ships in phases so every capability lands with validation,
-                not just announcement. Here's the plan.
+                FieldLux ships in phases. Every capability lands after it's been
+                validated on real rigs, not on a launch day. Here's what's in each phase.
             </p>
         </div>
 
@@ -1187,9 +1225,8 @@
         </div>
 
         <p class="text-center text-[11px] text-ink-500 mt-8 max-w-2xl mx-auto leading-relaxed">
-            Target dates are planning intent, not commitments. Capabilities move to
-            the next phase only after validation — no feature ships because a quarter
-            is ending.
+            Target dates are intent, not a promise. Features move to the next phase
+            when they're actually validated — nothing ships because the quarter is closing.
         </p>
     </div>
 </section>
@@ -1211,8 +1248,8 @@
             Ready to preflight<br/>your next install?
         </h2>
         <p class="text-ink-400 text-lg leading-relaxed mb-10">
-            Free during closed beta. Early access is prioritized for working TDs,
-            projection designers, AV integrators, and installers.
+            Free during closed beta. We're prioritizing working TDs, projection
+            designers, AV integrators, and anyone who actually rigs on site.
         </p>
 
         <!-- Beta signup form — wired to Supabase fieldlux_waitlist. RLS: anon can
@@ -1396,8 +1433,8 @@
                      draggable="false" />
             </div>
             <p class="text-sm text-ink-500 leading-relaxed max-w-md">
-                Projection preflight engine — physics-based install verification, automatic
-                verdict, prescription, and realtime pipeline hub.
+                Projection preflight — physics-based verdict on your rig, a concrete fix
+                when it fails, and realtime output to the patch you already run.
             </p>
         </div>
         <div>
