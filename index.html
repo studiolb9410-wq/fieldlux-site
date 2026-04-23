@@ -157,9 +157,10 @@
             </h1>
 
             <p class="text-xl text-ink-400 leading-relaxed max-w-2xl mb-10">
-                Checks whether your rig actually holds up — lens, throw, blend, the lot —
-                shakes it against the drift you see at load-in, and tells you what to move
-                if it doesn't. All before anyone touches a case.
+                Physics-based review of your projection setup before install — covering
+                projector placement, lens choice, coverage, and on-site alignment drift.
+                Currently in closed beta, with the judgment model being refined
+                against field data as new installs come in.
             </p>
 
             <div class="flex flex-wrap gap-4 mb-16">
@@ -188,29 +189,23 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
-<!-- STATS STRIP                                                               -->
+<!-- STATS STRIP — kept deliberately minimal. The earlier four-stat strip
+     (14 / 11×7 / 232 / 5) pushed internal test counts and brand logos onto
+     the first fold, which reads more like an engineering dashboard than a
+     product value statement. The two kept here map directly to the product
+     story in the sections below (Judgment Engine + Stress Analysis).      -->
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
 <section class="border-y border-line-subtle bg-surface-elevated">
-    <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+    <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 gap-8">
         <div>
             <div class="text-3xl font-bold font-mono text-brand">14</div>
             <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Judgment metrics</div>
-            <div class="text-[11px] text-ink-500 mt-1">Brightness · coverage · pixel density · spill · blend · more</div>
+            <div class="text-[11px] text-ink-500 mt-1">Coverage · brightness · pixel density · spill · blend · more</div>
         </div>
         <div>
             <div class="text-3xl font-bold font-mono text-brand">11 × 7</div>
             <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Stress scenarios × profiles</div>
-            <div class="text-[11px] text-ink-500 mt-1">S0~S10 × 7 operational profiles</div>
-        </div>
-        <div>
-            <div class="text-3xl font-bold font-mono text-brand">232</div>
-            <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Automated tests</div>
-            <div class="text-[11px] text-ink-500 mt-1">Physics · install-flow · audit coverage</div>
-        </div>
-        <div>
-            <div class="text-3xl font-bold font-mono text-brand">5</div>
-            <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Workflow targets</div>
-            <div class="text-[11px] text-ink-500 mt-1">Resolume · TouchDesigner · MadMapper · OBS · VDMX</div>
+            <div class="text-[11px] text-ink-500 mt-1">Drift scenarios across review profiles</div>
         </div>
     </div>
 </section>
@@ -229,8 +224,10 @@
                     Auto-verdict on every install.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    Drop in your projectors, pick the lens, point them at the target. It comes
-                    back with one of three calls:
+                    Build the scene, choose the lens, aim at the target. The analyzer returns
+                    a verdict in one of three states — the states themselves are stable;
+                    the underlying thresholds are still being tuned against field data
+                    during closed beta.
                 </p>
                 <div class="space-y-3 mb-8">
                     <div class="flex items-center gap-3 p-3 rounded-md bg-success/10 border border-success/20">
@@ -241,20 +238,20 @@
                     <div class="flex items-center gap-3 p-3 rounded-md bg-warning/10 border border-warning/20">
                         <div class="w-2 h-2 rounded-full bg-warning"></div>
                         <code class="text-warning font-mono text-sm font-semibold">AT_RISK</code>
-                        <span class="text-ink-400 text-sm">· works on a best-case day, no margin</span>
+                        <span class="text-ink-400 text-sm">· passes in best-case conditions, margin is thin</span>
                     </div>
                     <div class="flex items-center gap-3 p-3 rounded-md bg-danger/10 border border-danger/20">
                         <div class="w-2 h-2 rounded-full bg-danger"></div>
                         <code class="text-danger font-mono text-sm font-semibold">NOT_RECOMMENDED</code>
-                        <span class="text-ink-400 text-sm">· expected to fail on a measurement that matters</span>
+                        <span class="text-ink-400 text-sm">· at least one core metric is likely to fall short</span>
                     </div>
                 </div>
                 <p class="text-ink-400 leading-relaxed">
-                    Every call is backed by the checks that actually matter on site —
+                    Each verdict is supported by the install checks that matter most on site —
                     pixel density, bright-enough coverage, target coverage, contrast margin,
-                    spill, blend hotspots. If one trips, you see exactly which metric tripped
-                    and what to do about it: move the rig, change the lens, bump the lumens.
-                    Thresholds and the reasoning live in the methodology section.
+                    spill, blend hotspot. When a metric falls short, you see which one and
+                    what to adjust. The full check list is being expanded during beta;
+                    thresholds and reasoning are documented in the methodology section.
                 </p>
             </div>
 
@@ -283,8 +280,8 @@
                         <span class="px-2 py-0.5 rounded bg-brand-muted border border-brand/40 text-[10px] font-mono text-brand">acceptance</span>
                         <span class="px-2 py-0.5 rounded bg-surface-raised border border-line text-[10px] font-mono text-ink-300">±0.1m lateral</span>
                         <span class="px-2 py-0.5 rounded bg-surface-raised border border-line text-[10px] font-mono text-ink-300">±0.3m throw</span>
-                        <span class="px-2 py-0.5 rounded bg-surface-raised border border-line text-[10px] font-mono text-ink-300">±2° rot</span>
-                        <span class="px-2 py-0.5 rounded bg-surface-raised border border-line text-[10px] font-mono text-ink-300">floor 80%</span>
+                        <span class="px-2 py-0.5 rounded bg-surface-raised border border-line text-[10px] font-mono text-ink-300">±2° rotation</span>
+                        <span class="px-2 py-0.5 rounded bg-surface-raised border border-line text-[10px] font-mono text-ink-300">±5° surface</span>
                     </div>
                 </div>
                 <!-- Failing metrics -->
@@ -419,7 +416,7 @@
                 <!-- Worst case callout -->
                 <div class="mt-5 pt-3 border-t border-line-subtle">
                     <div class="text-[10px] font-mono text-ink-500 uppercase tracking-widest mb-1">Worst case</div>
-                    <div class="text-[11px] text-danger font-mono">S7 · ±0.3m throw + floor 80% → 58/100</div>
+                    <div class="text-[11px] text-danger font-mono">S7 · throw drift + surface angle → 58/100</div>
                 </div>
             </div>
 
@@ -431,8 +428,9 @@
                     Know every failure mode before<br/>the flightcase leaves the shop.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    S0 through S10 shake each projector by the slop you actually see at
-                    load-in — truss sag, mount shift, the usual:
+                    S0 through S10 simulate the alignment drift projectors see on real sites —
+                    rigging settle, mount movement, thermal shift. The current tolerance
+                    profile is still being tuned as we collect more install data:
                 </p>
                 <div class="grid grid-cols-2 gap-3 mb-8">
                     <div class="p-3 rounded-md bg-surface-raised border border-line">
@@ -448,15 +446,16 @@
                         <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±2°</div>
                     </div>
                     <div class="p-3 rounded-md bg-surface-raised border border-line">
-                        <div class="text-xs text-ink-500 font-mono uppercase">Floor tilt</div>
-                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">80%</div>
+                        <div class="text-xs text-ink-500 font-mono uppercase">Surface angle</div>
+                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±5°</div>
                     </div>
                 </div>
                 <p class="text-ink-400 leading-relaxed">
-                    Seven operational profiles set where the pass bar sits for what you're
-                    reviewing — a quick hang check reads different from a live show read,
-                    and archival reads different again. Resilience score lands before anyone
-                    shows up to site.
+                    Seven review profiles shift the acceptance bar depending on the stage —
+                    a quick setup check uses a different profile than a live-show review
+                    or a long-term archival review. The resilience score is available
+                    before any crew arrives on site, and the profile set is being
+                    expanded during beta.
                 </p>
             </div>
         </div>
@@ -480,22 +479,24 @@
                     When brightness fails, we don't say "low lux". We say:
                 </p>
                 <div class="p-4 rounded-md bg-brand/10 border border-brand/30 mb-6 font-mono text-sm text-ink-50 leading-relaxed">
-                    Move all 3 projectors 40 cm closer as a group<br/>
+                    Move the projectors 40 cm closer as a group<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-ink-400">— or —</span><br/>
-                    upgrade to 15,000 lm units<br/>
+                    step up to a higher-lumen unit<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-ink-400">— or —</span><br/>
-                    swap ELPLM15 for short-throw ELPLU04.
+                    swap to a shorter-throw lens.
                 </div>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    The "move X cm" and "bump to Y lumens" numbers come from the actual math —
-                    inverse-square, lens throw, blend-footprint geometry. Lens and gear swap
-                    suggestions use documented heuristics, all spelled out in the prescription
-                    card so you can audit the call.
+                    Distance and lumen suggestions are derived from documented physics —
+                    inverse-square, lens-throw, blend-footprint geometry. Lens and gear
+                    swap suggestions fall back to documented heuristics, shown in full
+                    in the prescription card so the reasoning is auditable.
                 </p>
                 <p class="text-ink-400 leading-relaxed">
-                    When two fixes pull against each other — "come in for brightness" vs
-                    "pull back for coverage" — it picks the one that unblocks the binding
-                    metric and tells you <em class="text-ink-200">why</em>, not just what.
+                    When two suggestions conflict — "closer for brightness" vs
+                    "back for coverage" — the suggestion that resolves the core
+                    failing metric takes priority, and the reason is shown alongside
+                    the suggestion. The conflict-resolution model is being refined
+                    during closed beta.
                 </p>
             </div>
 
@@ -508,10 +509,10 @@
                         <span class="text-[10px] font-mono text-brand uppercase tracking-widest">Do this first</span>
                     </div>
                     <div class="p-4 rounded-md bg-brand/10 border border-brand/40">
-                        <div class="text-sm text-ink-50 font-semibold mb-1.5">Move all 3 projectors 40 cm closer as a group</div>
+                        <div class="text-sm text-ink-50 font-semibold mb-1.5">Move the projectors 40 cm closer as a group</div>
                         <div class="text-[11px] text-ink-400 font-mono leading-relaxed">
                             reason: pixel density below threshold<br/>
-                            impact: +18% density · coverage gap closes
+                            impact: +18% density · coverage gap reduces
                         </div>
                     </div>
                 </div>
@@ -520,11 +521,11 @@
                     <div class="text-[10px] font-mono text-ink-500 uppercase tracking-widest mb-2">Or one of these</div>
                     <div class="space-y-2">
                         <div class="p-3 rounded-md bg-surface-raised border border-line">
-                            <div class="text-[12px] text-ink-200">Upgrade to 15,000 lm units</div>
+                            <div class="text-[12px] text-ink-200">Step up to a higher-lumen unit</div>
                             <div class="text-[10px] text-ink-500 font-mono mt-0.5">higher cost · no geometry change</div>
                         </div>
                         <div class="p-3 rounded-md bg-surface-raised border border-line">
-                            <div class="text-[12px] text-ink-200">Swap ELPLM15 → ELPLU04 (short-throw)</div>
+                            <div class="text-[12px] text-ink-200">Swap to a shorter-throw lens</div>
                             <div class="text-[10px] text-ink-500 font-mono mt-0.5">shorter throw ratio · same mount</div>
                         </div>
                     </div>
@@ -540,7 +541,7 @@
                         <div>
                             <div class="text-[11px] font-mono text-warning uppercase tracking-wider mb-1">Conflict resolved</div>
                             <div class="text-[11px] text-ink-400 leading-relaxed">
-                                "closer for brightness" vs "back for coverage" — picked <span class="text-ink-50 font-mono">closer</span> because pixel density was the binding metric.
+                                "closer for brightness" vs "back for coverage" — picked <span class="text-ink-50 font-mono">closer</span>: pixel density was the core failing metric.
                             </div>
                         </div>
                     </div>
@@ -560,102 +561,57 @@
                 <span class="text-[11px] font-mono text-brand uppercase tracking-widest">
                     Pipeline Hub
                 </span>
-                <span class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-warning/15 border border-warning/35 text-warning">
-                    Coming with open beta
-                </span>
             </div>
             <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
-                Don't replace your tools. Connect them.
+                Works alongside your existing media-server workflow.
             </h2>
             <p class="text-ink-400 leading-relaxed text-lg mb-4">
                 <span class="text-ink-200">FieldLux is a preflight tool — your content still runs somewhere else.</span>
-                The desktop build landing with open beta adds a pipeline hub so it slots
-                into the rig you already use, not on top of it.
+                The closed beta hands off via PDF tech rider, a read-only cloud share link,
+                and a handoff JSON you can route into downstream workflows.
             </p>
             <p class="text-ink-400 leading-relaxed text-lg">
-                Desktop pushes realtime output via Spout on Windows and Syphon on macOS,
-                plus OSC metadata for the downstream patch. OSC schema is locked today —
-                receivers can be wired up now. Realtime output targets below are in staged
-                validation through the open-beta cycle.
+                A desktop build planned for open beta broadens integration via Spout
+                and Syphon — the standard realtime video-sharing protocols on Windows
+                and macOS — plus an OSC metadata channel. These integration paths are
+                being validated during the open-beta cycle.
             </p>
         </div>
 
-        <!-- Workflow targets — text-only references, no logos, no implication of
-             partnership. Each card lists an intended role + the mechanism.
-             "planned" cards validate during open beta; "target" cards ship
-             with the desktop build. MadMapper card reflects the handoff path
-             that already exists today in closed beta. -->
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
-            <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
-                <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">Resolume</div>
-                <div class="text-ink-200 text-sm">Planned realtime output target</div>
-                <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon</div>
+        <!-- Today vs Planned — cleanly separated so visitors don't confuse
+             current capability with future capability. No product/brand logos,
+             no implied partnerships. Protocols (Spout, Syphon, OSC) are named
+             so visitors can match FieldLux against their existing media server. -->
+        <div class="grid md:grid-cols-2 gap-4 mb-10">
+            <!-- Works today -->
+            <div class="p-6 rounded-md bg-success/5 border border-success/25">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-2 h-2 rounded-full bg-success"></span>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-success">Works today · closed beta</span>
+                </div>
+                <h3 class="text-lg font-semibold text-ink-50 mb-3">Hand-off outputs</h3>
+                <ul class="space-y-2 text-sm text-ink-400">
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> PDF tech rider export</li>
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Read-only cloud share link for client reviews</li>
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Handoff JSON for downstream workflows</li>
+                </ul>
             </div>
-            <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
-                <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">TouchDesigner</div>
-                <div class="text-ink-200 text-sm">Planned output + OSC workflow target</div>
-                <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon · OSC</div>
-            </div>
-            <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
-                <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">MadMapper</div>
-                <div class="text-ink-200 text-sm">Handoff + reference preview target</div>
-                <div class="text-ink-500 text-xs mt-2 font-mono">Handoff JSON · Spout · Syphon</div>
-            </div>
-            <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
-                <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">OBS Studio</div>
-                <div class="text-ink-200 text-sm">Capture / recording target</div>
-                <div class="text-ink-500 text-xs mt-2 font-mono">Spout · Syphon</div>
-            </div>
-            <div class="p-5 rounded-md bg-surface-raised border border-line hover:border-brand/30 transition-colors">
-                <div class="text-brand font-mono text-xs uppercase tracking-wider mb-2">VDMX</div>
-                <div class="text-ink-200 text-sm">Planned macOS receiver target</div>
-                <div class="text-ink-500 text-xs mt-2 font-mono">Syphon</div>
-            </div>
-        </div>
 
-        <!-- Realtime Output structure mock — dashboard-style view of what the
-             desktop build will expose. Pure HTML/CSS, no image, but matches the
-             Pipeline Hub's explicit structure. -->
-        <div class="rounded-md bg-surface-base border border-line p-6 md:p-8">
-            <div class="flex items-center justify-between mb-6 pb-4 border-b border-line-subtle">
-                <div>
-                    <div class="text-[10px] font-mono text-brand uppercase tracking-widest">Realtime Output · desktop build</div>
-                    <div class="text-sm text-ink-50 font-semibold mt-1">Composite + per-projector outputs</div>
+            <!-- Planned -->
+            <div class="p-6 rounded-md bg-warning/5 border border-warning/30">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-2 h-2 rounded-full bg-warning"></span>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-warning">Planned · open beta target</span>
                 </div>
-                <span class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-warning/15 border border-warning/40 text-warning">Ships with open beta</span>
-            </div>
-            <div class="grid md:grid-cols-3 gap-4 mb-6">
-                <!-- Composite output card -->
-                <div class="p-4 rounded-md bg-surface-elevated border border-brand/30">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="w-2 h-2 rounded-full bg-brand"></span>
-                        <span class="text-[10px] font-mono text-brand uppercase tracking-widest">Composite</span>
-                    </div>
-                    <div class="text-[12px] text-ink-200 font-mono mb-1">/fieldlux/composite</div>
-                    <div class="text-[10px] text-ink-500 font-mono">3840×2160 · H.264 · Spout / Syphon</div>
-                </div>
-                <!-- Per-projector card -->
-                <div class="p-4 rounded-md bg-surface-elevated border border-line">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="w-2 h-2 rounded-full bg-ink-500"></span>
-                        <span class="text-[10px] font-mono text-ink-400 uppercase tracking-widest">Per-projector × N</span>
-                    </div>
-                    <div class="text-[12px] text-ink-200 font-mono mb-1">/fieldlux/projector/{id}</div>
-                    <div class="text-[10px] text-ink-500 font-mono">1920×1200 · lens-warped · Spout / Syphon</div>
-                </div>
-                <!-- OSC card -->
-                <div class="p-4 rounded-md bg-surface-elevated border border-line">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="w-2 h-2 rounded-full bg-ink-500"></span>
-                        <span class="text-[10px] font-mono text-ink-400 uppercase tracking-widest">OSC metadata</span>
-                    </div>
-                    <div class="text-[12px] text-ink-200 font-mono mb-1">udp://localhost:7700</div>
-                    <div class="text-[10px] text-ink-500 font-mono">pose · calibration · verdict · lux</div>
-                </div>
-            </div>
-            <div class="text-[11px] text-ink-500 leading-relaxed">
-                One modal, three streams. Your patch stays exactly as it is — receivers grab what they need,
-                nothing in your chain gets replaced. FieldLux sits upstream, not in the middle.
+                <h3 class="text-lg font-semibold text-ink-50 mb-3">Realtime integration</h3>
+                <ul class="space-y-2 text-sm text-ink-400">
+                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Native desktop build (Windows / macOS)</li>
+                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Realtime video sharing via Spout (Windows) and Syphon (macOS)</li>
+                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> OSC metadata channel for pose · calibration · verdict</li>
+                </ul>
+                <p class="text-[11px] text-ink-500 mt-4 leading-relaxed">
+                    Still being validated during beta. Target dates are intent, not promises.
+                </p>
             </div>
         </div>
 
@@ -673,13 +629,14 @@
                     Assumptions &amp; Error Budget
                 </div>
                 <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
-                    No black box.<br />Every assumption is public.
+                    Assumptions and uncertainty,<br />documented and versioned.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    Every verdict shows you where the uncertainty comes from. Geometry,
-                    coverage, distance model, optical spec, calibration — each one pulls
-                    its share of the total brightness error, and you see the split.
-                    Same numbers in the analysis panel, same numbers in the PDF. No black box.
+                    Every verdict is accompanied by a documented breakdown of where the
+                    uncertainty comes from. Geometry, coverage, distance model, optical
+                    spec, calibration — each contributes a share of the total brightness
+                    error, and the split is shown. Same breakdown appears in the analysis
+                    panel and in the PDF.
                 </p>
                 <div class="mb-3 p-3 rounded bg-surface-elevated border border-brand/30">
                     <div class="flex justify-between items-center">
@@ -710,9 +667,10 @@
                     </div>
                 </div>
                 <p class="text-ink-400 leading-relaxed">
-                    Every verdict points back to the exact physics it used. If we change the
-                    methodology or move a threshold, the diff fails a gate before it ships —
-                    so your verdicts don't quietly drift between releases.
+                    Each verdict points back to the physics it used. Methodology and
+                    thresholds are versioned, and changes are documented — during closed
+                    beta the set is still being refined, so the goal is that updates
+                    remain visible rather than silent.
                 </p>
             </div>
 
@@ -721,7 +679,7 @@
             <div class="rounded-md bg-surface-elevated border border-line p-5">
                 <div class="flex items-center justify-between mb-4">
                     <div class="text-[10px] font-mono text-brand uppercase tracking-widest">Error Budget</div>
-                    <span class="text-[10px] font-mono text-ink-500 uppercase tracking-widest">v1 · frozen for interop</span>
+                    <span class="text-[10px] font-mono text-ink-500 uppercase tracking-widest">v1 · versioned</span>
                 </div>
                 <!-- Total uncertainty bar -->
                 <div class="mb-5">
@@ -863,88 +821,26 @@
 <!-- SECTION: RELIABILITY (regression-gated)                                  -->
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
 <section class="py-24 bg-surface-base">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="grid md:grid-cols-2 gap-16 items-center">
-            <div>
-                <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
-                    Reliability
-                </div>
-                <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
-                    Numbers that don't drift between sessions.
-                </h2>
-                <p class="text-ink-400 leading-relaxed mb-6">
-                    Every release goes through physics regression gates, install-flow checks,
-                    and the engineering audit suite before it ships. The save → reload →
-                    reanalyze loop is pinned to ±0.5 lux — you can come back next week, open
-                    the file, and the verdict reads the same. Teammate opens it on their
-                    machine, still the same.
-                </p>
-                <div class="grid grid-cols-3 gap-4 mb-6">
-                    <div class="p-4 rounded-md bg-surface-elevated border border-line text-center">
-                        <div class="text-2xl font-bold font-mono text-brand">21</div>
-                        <div class="text-xs text-ink-500 mt-1 uppercase tracking-wider">Physics regressions</div>
-                    </div>
-                    <div class="p-4 rounded-md bg-surface-elevated border border-line text-center">
-                        <div class="text-2xl font-bold font-mono text-brand">77</div>
-                        <div class="text-xs text-ink-500 mt-1 uppercase tracking-wider">Install-flow checks</div>
-                    </div>
-                    <div class="p-4 rounded-md bg-surface-elevated border border-line text-center">
-                        <div class="text-2xl font-bold font-mono text-brand">134</div>
-                        <div class="text-xs text-ink-500 mt-1 uppercase tracking-wider">Audit coverage</div>
-                    </div>
-                </div>
-                <p class="text-ink-400 leading-relaxed">
-                    Golden fixtures pin the physics against real projectors — Epson EB-L30000U
-                    and EB-PU2220B — so if a stealth regression sneaks into the perturbation
-                    or alignment math, the gate fails with an actual number attached.
-                    No guessing whether a verdict shifted.
-                </p>
-            </div>
-
-            <!-- Mock terminal — regression gate output -->
-            <div class="rounded-md bg-[#0c0c0e] border border-line overflow-hidden">
-                <div class="flex items-center gap-1.5 px-4 py-2 border-b border-line-subtle bg-surface-elevated">
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#ff5f56]"></span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]"></span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#27c93f]"></span>
-                    <span class="ml-3 text-[10px] font-mono text-ink-500">bash — npm run qa:beta</span>
-                </div>
-                <div class="p-5 font-mono text-[11px] leading-relaxed">
-                    <div class="text-ink-500">$ npm run qa:beta</div>
-                    <div class="h-2"></div>
-                    <div class="text-ink-400">› typecheck <span class="text-success">✓</span></div>
-                    <div class="text-ink-400">› verify:spout-syphon <span class="text-success">✓</span></div>
-                    <div class="h-2"></div>
-                    <div class="text-ink-300 mb-1">› test:contracts</div>
-                    <div class="pl-4 text-ink-500">
-                        <div><span class="text-success">✓</span> analysis-contracts.test.js <span class="text-ink-600">(8)</span></div>
-                        <div><span class="text-success">✓</span> save-reload-parity.test.js <span class="text-ink-600">(4)</span></div>
-                        <div><span class="text-success">✓</span> share-url-models-blocked.test.js <span class="text-ink-600">(3)</span></div>
-                        <div><span class="text-success">✓</span> stress-golden.test.js <span class="text-ink-600">(6)</span></div>
-                    </div>
-                    <div class="mt-1 pl-4 text-success">→ 21 physics regressions · all pass</div>
-                    <div class="h-2"></div>
-                    <div class="text-ink-300 mb-1">› test:beta-smoke</div>
-                    <div class="pl-4 text-ink-500">
-                        <div><span class="text-success">✓</span> smoke-scenarios.test.js <span class="text-ink-600">(17)</span></div>
-                        <div><span class="text-success">✓</span> serverProjectService.test.js <span class="text-ink-600">(22)</span></div>
-                        <div><span class="text-success">✓</span> madMapperEngineering.test.ts <span class="text-ink-600">(14)</span></div>
-                        <div><span class="text-ink-500">...and 9 more suites</span></div>
-                    </div>
-                    <div class="mt-1 pl-4 text-success">→ 77 install-flow checks · all pass</div>
-                    <div class="h-2"></div>
-                    <div class="text-ink-300 mb-1">› test:engineering-audit</div>
-                    <div class="pl-4 text-success">→ 134 audit assertions · all pass</div>
-                    <div class="h-2"></div>
-                    <div class="pt-2 border-t border-line-subtle">
-                        <div class="text-ink-50"><span class="text-success font-semibold">✓ 232 checks passed</span> <span class="text-ink-500">in 9.4s</span></div>
-                        <div class="text-ink-500">verdict drift: <span class="text-success">0 regressions · ±0.3 lux worst</span></div>
-                    </div>
-                    <div class="h-2"></div>
-                    <div class="text-success">$ _</div>
-                </div>
-            </div>
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="text-[11px] font-mono text-brand uppercase tracking-widest mb-4">
+            Reliability
         </div>
+        <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
+            Results that stay consistent between sessions.
+        </h2>
+        <p class="text-ink-400 leading-relaxed text-lg mb-6">
+            Each release is validated through an automated test suite covering the
+            physics, the install-flow, and an engineering audit pass before it ships.
+            Save → reload → reanalyze is targeted to stay within a tight lux window
+            so a project review reads the same when you open it next week, or when a
+            teammate opens it on their machine.
+        </p>
+        <p class="text-ink-400 leading-relaxed text-lg">
+            Calibration is pinned against real projector fixtures in the test suite,
+            so regressions in perturbation or alignment math surface before a release
+            goes out. During closed beta, the fixture set and thresholds continue to
+            be refined as more install data comes in.
+        </p>
     </div>
 </section>
 
@@ -954,108 +850,42 @@
 <section class="py-24 bg-surface-elevated border-y border-line-subtle">
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid md:grid-cols-2 gap-16 items-center">
-            <!-- PDF export mock — real Stress Analysis Metrics table from the app -->
+            <!-- PDF export mock — simple tech-rider cover page, no full table
+                 dump. The table belongs inside the actual document, not on the
+                 landing page. -->
             <div class="order-2 md:order-1 relative">
                 <!-- Stacked pages behind for depth -->
                 <div class="absolute top-5 left-5 right-0 bottom-0 rounded-md bg-[#f5f5f4] shadow-xl opacity-50 rotate-1 origin-bottom-left"></div>
                 <div class="absolute top-2.5 left-2.5 right-0 bottom-0 rounded-md bg-[#fafaf9] shadow-xl opacity-75"></div>
                 <!-- Front page -->
-                <div class="relative rounded-md bg-[#fafaf9] shadow-2xl overflow-hidden aspect-[5/4]">
+                <div class="relative rounded-md bg-[#fafaf9] shadow-2xl overflow-hidden aspect-[3/4]">
                     <!-- Brand band -->
-                    <div class="bg-[#0A0A0B] px-6 py-3 flex items-center justify-between">
-                        <span class="text-[#06B6D4] font-bold tracking-widest text-[11px]">FIELDLUX</span>
-                        <span class="text-[#888] font-mono text-[9px] uppercase tracking-widest">Tech Rider · p.4 / 12</span>
+                    <div class="bg-[#0A0A0B] px-8 py-5 flex items-center justify-between">
+                        <span class="text-[#06B6D4] font-bold tracking-widest text-sm">FIELDLUX</span>
+                        <span class="text-[#888] font-mono text-[10px] uppercase tracking-widest">Tech Rider</span>
                     </div>
                     <!-- Body -->
-                    <div class="p-6 text-[#18181b]">
-                        <!-- Section heading with cyan underline -->
-                        <div class="mb-3">
-                            <h4 class="inline-block text-[13px] font-bold tracking-wide uppercase border-b-2 border-[#06B6D4] pb-0.5">Stress Analysis Metrics</h4>
+                    <div class="p-8 text-[#18181b]">
+                        <div class="text-[10px] font-mono text-[#737373] uppercase tracking-widest mb-2">Preflight Report</div>
+                        <div class="text-xl font-bold mb-8 leading-tight">Projection Installation<br/><span class="text-[#737373] text-sm font-normal">Closed-beta preview</span></div>
+                        <!-- Contents list -->
+                        <div class="mb-6">
+                            <div class="text-[10px] font-mono text-[#a3a3a3] uppercase tracking-widest mb-2">Contents</div>
+                            <ul class="text-[11px] text-[#404040] space-y-1.5">
+                                <li class="flex justify-between border-b border-[#e5e5e5] pb-1"><span>Project summary &amp; verdict</span><span class="text-[#a3a3a3] font-mono">p.1</span></li>
+                                <li class="flex justify-between border-b border-[#e5e5e5] pb-1"><span>Equipment list</span><span class="text-[#a3a3a3] font-mono">p.2</span></li>
+                                <li class="flex justify-between border-b border-[#e5e5e5] pb-1"><span>Stress analysis metrics</span><span class="text-[#a3a3a3] font-mono">p.3</span></li>
+                                <li class="flex justify-between border-b border-[#e5e5e5] pb-1"><span>Prescriptions</span><span class="text-[#a3a3a3] font-mono">p.5</span></li>
+                                <li class="flex justify-between border-b border-[#e5e5e5] pb-1"><span>Assumptions &amp; error budget</span><span class="text-[#a3a3a3] font-mono">p.7</span></li>
+                                <li class="flex justify-between pb-1"><span>Per-projector detail</span><span class="text-[#a3a3a3] font-mono">p.8</span></li>
+                            </ul>
                         </div>
-                        <!-- Table -->
-                        <div class="text-[8px] font-mono">
-                            <!-- Header row -->
-                            <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-1 bg-[#262626] text-[#fafaf9] font-semibold">
-                                <span>Metric</span>
-                                <span>Value</span>
-                                <span>Threshold</span>
-                                <span>Status</span>
-                                <span class="text-right">Weight</span>
-                                <span class="text-right">Score</span>
-                            </div>
-                            <!-- Rows -->
-                            <div class="divide-y divide-[#e5e5e5]">
-                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
-                                    <span>Area coverage</span><span>0</span><span>P:0.2 F:0.55</span>
-                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
-                                    <span class="text-right">4</span><span class="text-right">100</span>
-                                </div>
-                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
-                                    <span>Bright-enough coverage</span><span>0.436</span><span>P:0.2 F:0.55</span>
-                                    <span><span class="inline-block px-1 py-px rounded bg-[#eab308] text-white text-[7px] font-semibold">PARTIAL</span></span>
-                                    <span class="text-right">4</span><span class="text-right">30</span>
-                                </div>
-                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
-                                    <span>Light spill (off-target)</span><span>0</span><span>P:0.1 F:0.35</span>
-                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
-                                    <span class="text-right">6</span><span class="text-right">100</span>
-                                </div>
-                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
-                                    <span>Overscan outside target</span><span>0</span><span>P:0.15 F:0.5</span>
-                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
-                                    <span class="text-right">2</span><span class="text-right">100</span>
-                                </div>
-                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
-                                    <span>Reliable brightness (dimmest 20%)</span><span>0.46</span><span>P:0.05 F:-0.2</span>
-                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
-                                    <span class="text-right">25</span><span class="text-right">77</span>
-                                </div>
-                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
-                                    <span>Pixel density</span><span>0.007</span><span>P:0.4 F:0.05</span>
-                                    <span><span class="inline-block px-1 py-px rounded bg-[#dc2626] text-white text-[7px] font-semibold">FAIL</span></span>
-                                    <span class="text-right">7</span><span class="text-right">2</span>
-                                </div>
-                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
-                                    <span>Throw tolerance (±distance)</span><span>0.913</span><span>P:0.65 F:0.3</span>
-                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
-                                    <span class="text-right">11</span><span class="text-right">90</span>
-                                </div>
-                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
-                                    <span>Mount tolerance (±position)</span><span>0.932</span><span>P:0.75 F:0.4</span>
-                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
-                                    <span class="text-right">11</span><span class="text-right">89</span>
-                                </div>
-                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
-                                    <span>Alignment tolerance (±yaw)</span><span>0.922</span><span>P:0.8 F:0.4</span>
-                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
-                                    <span class="text-right">8</span><span class="text-right">84</span>
-                                </div>
-                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
-                                    <span>Content resolution fit</span><span>—</span><span>P:0.8 F:0.4</span>
-                                    <span><span class="inline-block px-1 py-px rounded bg-[#dc2626] text-white text-[7px] font-semibold">SKIP</span></span>
-                                    <span class="text-right">4</span><span class="text-right">—</span>
-                                </div>
-                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center">
-                                    <span>Blend hotspot control</span><span>0.68</span><span>P:0.4 F:0.1</span>
-                                    <span><span class="inline-block px-1 py-px rounded bg-[#16a34a] text-white text-[7px] font-semibold">PASS</span></span>
-                                    <span class="text-right">3</span><span class="text-right">79</span>
-                                </div>
-                                <div class="grid grid-cols-[2fr_0.7fr_1fr_0.8fr_0.5fr_0.5fr] gap-1.5 px-1.5 py-0.5 items-center text-[#a3a3a3]">
-                                    <span>… 6 more metrics</span><span></span><span></span><span></span><span></span><span></span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Brightness subsection -->
-                        <div class="mt-3">
-                            <h4 class="inline-block text-[11px] font-bold tracking-wide uppercase border-b-2 border-[#06B6D4] pb-0.5 mb-1.5">Brightness</h4>
-                            <div class="text-[8px] font-mono space-y-0.5">
-                                <div class="flex justify-between border-b border-[#e5e5e5] py-0.5"><span>P20 (combined)</span><span>862 lx</span></div>
-                                <div class="flex justify-between border-b border-[#e5e5e5] py-0.5"><span>Worst Case</span><span>176 lx (combined worst-case)</span></div>
-                                <div class="flex justify-between border-b border-[#e5e5e5] py-0.5"><span>Contrast Ratio</span><span>N/A (no ambient)</span></div>
-                                <div class="flex justify-between py-0.5"><span>Required</span><span>150 lx</span></div>
-                            </div>
+                        <div class="text-[9px] font-mono text-[#a3a3a3] uppercase tracking-wider">
+                            Generated by FieldLux · v1 versioned
                         </div>
                     </div>
+                    <!-- Page number -->
+                    <div class="absolute bottom-4 right-6 text-[9px] font-mono text-[#a3a3a3]">p. 1</div>
                 </div>
             </div>
 
@@ -1064,26 +894,17 @@
                     PDF Tech Rider
                 </div>
                 <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
-                    Client-ready tech riders.<br/>One click.
+                    One-click tech rider<br/>for clients and install crews.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    Project summary, gear list, per-projector detail, coverage breakdown,
-                    stress scenario results, prescriptions, assumptions, error budget.
-                    All in one PDF — same doc you'd hand the client, same doc install
-                    reads at load-in.
+                    One PDF export that brings together the verdict, equipment list,
+                    stress analysis, prescriptions, and documented assumptions —
+                    the same document shared with the client and handed to the
+                    install team.
                 </p>
-                <ul class="space-y-2 text-ink-400 text-sm mb-6">
-                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Cover page with verdict + resilience score</li>
-                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Equipment list per projector (model, lumens, lens, throw)</li>
-                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Photometric metrics table with pass/fail status</li>
-                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Stress scenario results + worst-case</li>
-                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Prescription list with priority</li>
-                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Assumptions &amp; Error Budget section</li>
-                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Custom branding (your studio name + logo)</li>
-                </ul>
                 <p class="text-ink-400 leading-relaxed">
-                    No spreadsheet wrangling, no reformatting before you send it.
-                    One export, hand it straight to install or to the client.
+                    Layout and sections are still being refined during closed
+                    beta as feedback from the first review cycles comes in.
                 </p>
             </div>
         </div>
@@ -1103,11 +924,11 @@
                 Web or desktop. Your choice.
             </h2>
             <p class="text-ink-400 leading-relaxed text-lg">
-                <span class="text-ink-200">Closed beta runs in your browser right now.</span>
-                The native desktop build (Tauri — Windows and macOS) lands with open
-                beta and unlocks local file I/O, realtime Spout/Syphon output, OSC
-                metadata out to the rest of your patch, and the big scenes that
-                browser memory can't hold.
+                <span class="text-ink-200">Closed beta runs in your browser today.</span>
+                A native desktop build is planned for open beta — targeting Windows and
+                macOS — and is being prepared to add local file handling, realtime video
+                sharing via Spout and Syphon, and OSC metadata for broader integration.
+                These capabilities are still being validated.
             </p>
         </div>
 
@@ -1179,7 +1000,7 @@
                     <li class="flex gap-2"><span class="text-success font-mono">▸</span> Multi-target analysis (surface / room / 3D / photo)</li>
                     <li class="flex gap-2"><span class="text-success font-mono">▸</span> Assumptions &amp; error budget (documented + versioned)</li>
                     <li class="flex gap-2"><span class="text-success font-mono">▸</span> PDF tech rider export</li>
-                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Cloud share + MadMapper handoff JSON</li>
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Cloud share + handoff JSON for downstream workflows</li>
                     <li class="flex gap-2"><span class="text-success font-mono">▸</span> Web app, browser-first</li>
                 </ul>
             </div>
@@ -1199,7 +1020,7 @@
                     <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Realtime Syphon output (macOS)</li>
                     <li class="flex gap-2"><span class="text-warning font-mono">▸</span> OSC metadata sidecar — publisher</li>
                     <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Per-projector capture</li>
-                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Receiver integration validation (Resolume / TD / OBS / VDMX)</li>
+                    <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Integration validation with common media-server workflows</li>
                     <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Local file I/O for large imported models</li>
                     <li class="flex gap-2"><span class="text-warning font-mono">▸</span> Offline-capable workflows</li>
                 </ul>
@@ -1218,7 +1039,7 @@
                     <li class="flex gap-2"><span class="text-ink-500 font-mono">▸</span> Pro pricing (details announced closer to launch)</li>
                     <li class="flex gap-2"><span class="text-ink-500 font-mono">▸</span> Manufacturer equipment partnerships</li>
                     <li class="flex gap-2"><span class="text-ink-500 font-mono">▸</span> Field-measurement calibration database</li>
-                    <li class="flex gap-2"><span class="text-ink-500 font-mono">▸</span> Advanced receiver workflows (bidirectional input)</li>
+                    <li class="flex gap-2"><span class="text-ink-500 font-mono">▸</span> Deeper integration with media-server workflows (bidirectional input)</li>
                     <li class="flex gap-2"><span class="text-ink-500 font-mono">▸</span> Certification / compliance track</li>
                 </ul>
             </div>
@@ -1433,8 +1254,9 @@
                      draggable="false" />
             </div>
             <p class="text-sm text-ink-500 leading-relaxed max-w-md">
-                Projection preflight — physics-based verdict on your rig, a concrete fix
-                when it fails, and realtime output to the patch you already run.
+                Projection preflight — a physics-based review of your projector setup
+                before install, with documented assumptions and suggested adjustments
+                when a metric falls short. Currently in closed beta.
             </p>
         </div>
         <div>
@@ -1492,7 +1314,6 @@
                         </svg>
                         discord
                     </a>
-                    <a href="mailto:jay@field-lux.com" class="hover:text-ink-200 transition-colors">jay@field-lux.com</a>
                 </div>
             </div>
         </div>
