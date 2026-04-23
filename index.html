@@ -189,17 +189,17 @@
         <div>
             <div class="text-3xl font-bold font-mono text-brand">14</div>
             <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Judgment metrics</div>
-            <div class="text-[11px] text-ink-500 mt-1">C1 through C14, physics-anchored</div>
+            <div class="text-[11px] text-ink-500 mt-1">Brightness · coverage · pixel density · spill · blend · more</div>
         </div>
         <div>
             <div class="text-3xl font-bold font-mono text-brand">11 × 7</div>
             <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Stress scenarios × profiles</div>
-            <div class="text-[11px] text-ink-500 mt-1">S0~S10, install → archival</div>
+            <div class="text-[11px] text-ink-500 mt-1">S0~S10 × 7 operational profiles</div>
         </div>
         <div>
             <div class="text-3xl font-bold font-mono text-brand">232</div>
             <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Automated tests</div>
-            <div class="text-[11px] text-ink-500 mt-1">Contracts · smoke · audit</div>
+            <div class="text-[11px] text-ink-500 mt-1">Physics · install-flow · audit coverage</div>
         </div>
         <div>
             <div class="text-3xl font-bold font-mono text-brand">5</div>
@@ -245,8 +245,8 @@
                 </div>
                 <p class="text-ink-400 leading-relaxed">
                     Behind every verdict is a transparent set of install checks:
-                    brightness margin, contrast, pixel density, coverage gap, spill,
-                    blend hotspot, and more. Underlying standards and pass/fail
+                    pixel density, bright-enough coverage, target coverage, contrast,
+                    spill, blend hotspot, and more. Underlying standards and pass/fail
                     rationales are documented in the methodology section. Every failing metric shows
                     both the <em class="text-ink-200">reason</em> and the
                     <em class="text-ink-200">recommended fix</em>.
@@ -287,25 +287,25 @@
                 </p>
                 <div class="grid grid-cols-2 gap-3 mb-8">
                     <div class="p-3 rounded-md bg-surface-raised border border-line">
-                        <div class="text-xs text-ink-500 font-mono uppercase">Lateral slack</div>
-                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±10 cm</div>
+                        <div class="text-xs text-ink-500 font-mono uppercase">Lateral</div>
+                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±0.1 m</div>
                     </div>
                     <div class="p-3 rounded-md bg-surface-raised border border-line">
-                        <div class="text-xs text-ink-500 font-mono uppercase">Throw drift</div>
-                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±30 cm</div>
+                        <div class="text-xs text-ink-500 font-mono uppercase">Throw</div>
+                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±0.3 m</div>
                     </div>
                     <div class="p-3 rounded-md bg-surface-raised border border-line">
-                        <div class="text-xs text-ink-500 font-mono uppercase">Yaw</div>
+                        <div class="text-xs text-ink-500 font-mono uppercase">Rotation</div>
                         <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±2°</div>
                     </div>
                     <div class="p-3 rounded-md bg-surface-raised border border-line">
-                        <div class="text-xs text-ink-500 font-mono uppercase">Pitch</div>
-                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±1.5°</div>
+                        <div class="text-xs text-ink-500 font-mono uppercase">Floor tilt</div>
+                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">80%</div>
                     </div>
                 </div>
                 <p class="text-ink-400 leading-relaxed">
-                    Seven deployment profiles tune the acceptance bar: quick install review,
-                    client walkthrough, show rehearsal, live show, archival. The resilience
+                    Seven operational profiles tune the acceptance bar for the review at hand —
+                    from quick install checks to live show and long-term archival. The resilience
                     score lands before you ever touch the physical space.
                 </p>
             </div>
@@ -458,37 +458,43 @@
                     No black box.<br />Every assumption is public.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    Surface reflectance, projector uniformity (ANSI 9-point), P20 sampling
-                    grid, stress reserve floor, non-planar fallback method — every value,
-                    every source, every error budget is surfaced in the analysis panel
-                    and the PDF export.
+                    Every verdict carries an explicit error budget: geometry, coverage,
+                    distance model, optical spec, and calibration each contribute a
+                    disclosed share of the brightness uncertainty. Nothing hidden —
+                    the same breakdown shows up in the analysis panel and in the PDF export.
                 </p>
+                <div class="mb-3 p-3 rounded bg-surface-elevated border border-brand/30">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[11px] font-mono text-ink-400 uppercase tracking-wider">Estimated brightness uncertainty</span>
+                        <span class="text-ink-50 font-mono text-lg font-semibold">±14%</span>
+                    </div>
+                </div>
                 <div class="space-y-2 font-mono text-xs mb-6">
                     <div class="flex justify-between p-2 rounded bg-surface-elevated border border-line">
-                        <span class="text-ink-400">Surface reflectance (default)</span>
-                        <span class="text-ink-50">0.60 <span class="text-warning">Δ ±0.10</span></span>
+                        <span class="text-ink-400">Geometry basis</span>
+                        <span class="text-ink-50">±4%</span>
                     </div>
                     <div class="flex justify-between p-2 rounded bg-surface-elevated border border-line">
-                        <span class="text-ink-400">Projector uniformity</span>
-                        <span class="text-ink-50">ANSI 9-point <span class="text-warning">Δ ±5%</span></span>
+                        <span class="text-ink-400">Coverage basis</span>
+                        <span class="text-ink-50">±4%</span>
                     </div>
                     <div class="flex justify-between p-2 rounded bg-surface-elevated border border-line">
-                        <span class="text-ink-400">P20 sampling</span>
-                        <span class="text-ink-50">16×16 <span class="text-warning">Δ ±5%</span></span>
+                        <span class="text-ink-400">Distance model</span>
+                        <span class="text-ink-50">±5%</span>
                     </div>
                     <div class="flex justify-between p-2 rounded bg-surface-elevated border border-line">
-                        <span class="text-ink-400">Non-planar fallback</span>
-                        <span class="text-ink-50">bbox centroid <span class="text-warning">Δ ±15~30%</span></span>
+                        <span class="text-ink-400">Optical spec quality</span>
+                        <span class="text-ink-50">±8%</span>
                     </div>
                     <div class="flex justify-between p-2 rounded bg-surface-elevated border border-line">
-                        <span class="text-ink-400">Indirect bounce</span>
-                        <span class="text-ink-50">1-bounce form factor <span class="text-danger">Δ ±50%</span></span>
+                        <span class="text-ink-400">Calibration</span>
+                        <span class="text-ink-50">±8%</span>
                     </div>
                 </div>
                 <p class="text-ink-400 leading-relaxed">
-                    Defend every verdict with the exact physics citation. Schema is
-                    version-frozen (<code class="text-ink-200 font-mono text-sm">v1</code>);
-                    any change triggers a contract-test failure to prevent silent drift.
+                    Every verdict is backed by the exact physics citation. Any change to the
+                    methodology or thresholds passes through a regression gate before release —
+                    no silent drift between versions.
                 </p>
             </div>
 
@@ -521,7 +527,7 @@
                 <span class="font-mono text-sm text-ink-200">OBJ</span>,
                 <span class="font-mono text-sm text-ink-200">Collada</span>.
                 Lens-warped projection lands on real mesh geometry — with a
-                documented bbox-centroid fallback when ray-mesh intersection
+                documented bounding-box centroid fallback when ray-mesh intersection
                 misses (error budget disclosed in the methodology section).
             </p>
         </div>
@@ -545,7 +551,7 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
-<!-- SECTION: RELIABILITY (contract-tested)                                    -->
+<!-- SECTION: RELIABILITY (regression-gated)                                  -->
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
 <section class="py-24 bg-surface-base">
     <div class="max-w-7xl mx-auto px-6">
@@ -558,23 +564,23 @@
                     Results that stay stable over time.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    FieldLux is backed by contract tests, beta smoke tests, and engineering
-                    audit coverage that lock critical analysis behavior. Save → reload →
+                    FieldLux is backed by physics regression gates, install-flow checks, and
+                    engineering audit coverage that lock critical analysis behavior. Save → reload →
                     reanalyze is checked for verdict consistency within ±0.5 lux tolerance,
                     so project reviews stay stable across sessions, teammates, and milestones.
                 </p>
                 <div class="grid grid-cols-3 gap-4 mb-6">
                     <div class="p-4 rounded-md bg-surface-elevated border border-line text-center">
                         <div class="text-2xl font-bold font-mono text-brand">21</div>
-                        <div class="text-xs text-ink-500 mt-1 uppercase tracking-wider">Contract tests</div>
+                        <div class="text-xs text-ink-500 mt-1 uppercase tracking-wider">Physics regressions</div>
                     </div>
                     <div class="p-4 rounded-md bg-surface-elevated border border-line text-center">
                         <div class="text-2xl font-bold font-mono text-brand">77</div>
-                        <div class="text-xs text-ink-500 mt-1 uppercase tracking-wider">Beta smoke</div>
+                        <div class="text-xs text-ink-500 mt-1 uppercase tracking-wider">Install-flow checks</div>
                     </div>
                     <div class="p-4 rounded-md bg-surface-elevated border border-line text-center">
                         <div class="text-2xl font-bold font-mono text-brand">134</div>
-                        <div class="text-xs text-ink-500 mt-1 uppercase tracking-wider">Engineering audit</div>
+                        <div class="text-xs text-ink-500 mt-1 uppercase tracking-wider">Audit coverage</div>
                     </div>
                 </div>
                 <p class="text-ink-400 leading-relaxed">
@@ -587,7 +593,7 @@
             <!-- SCREENSHOT SLOT -->
             <div class="media-slot aspect-[4/5]"
                  data-label="📸 Screenshot 07"
-                 data-caption="Test output terminal / CI gate / contract assertions — whatever best shows 'tested'">
+                 data-caption="Test output terminal / regression gate output / audit numbers — whatever best shows 'tested'">
             </div>
         </div>
     </div>
@@ -623,7 +629,7 @@
                     <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Photometric metrics table with pass/fail status</li>
                     <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Stress scenario results + worst-case</li>
                     <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Prescription list with priority</li>
-                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Assumptions &amp; Error Budget section (v1 frozen)</li>
+                    <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Assumptions &amp; Error Budget section</li>
                     <li class="flex gap-2"><span class="text-brand font-mono">▸</span> Custom branding (your studio name + logo)</li>
                 </ul>
                 <p class="text-ink-400 leading-relaxed">
@@ -721,7 +727,7 @@
                     <li class="flex gap-2"><span class="text-success font-mono">▸</span> Stress analysis (S0~S10 × 7 profiles)</li>
                     <li class="flex gap-2"><span class="text-success font-mono">▸</span> Prescription engine with conflict resolution</li>
                     <li class="flex gap-2"><span class="text-success font-mono">▸</span> Multi-target analysis (surface / room / 3D / photo)</li>
-                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Assumptions &amp; error budget (v1 frozen)</li>
+                    <li class="flex gap-2"><span class="text-success font-mono">▸</span> Assumptions &amp; error budget (documented + versioned)</li>
                     <li class="flex gap-2"><span class="text-success font-mono">▸</span> PDF tech rider export</li>
                     <li class="flex gap-2"><span class="text-success font-mono">▸</span> Cloud share + MadMapper handoff JSON</li>
                     <li class="flex gap-2"><span class="text-success font-mono">▸</span> Web app, browser-first</li>
