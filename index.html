@@ -159,8 +159,8 @@
             <p class="text-xl text-ink-400 leading-relaxed max-w-2xl mb-10">
                 Physics-based review of your projection setup before install. Covers
                 projector placement, lens choice, coverage, and on-site alignment drift.
-                Currently in closed beta, with the judgment model being refined
-                against field data as new installs come in.
+                We're in closed beta and still tuning the judgment model based on
+                what each new install teaches us.
             </p>
 
             <div class="flex flex-wrap gap-4 mb-16">
@@ -203,7 +203,7 @@
             <div class="text-[11px] text-ink-500 mt-1">Coverage · brightness · pixel density · spill · blend · more</div>
         </div>
         <div>
-            <div class="text-3xl font-bold font-mono text-brand">11 × 7</div>
+            <div class="text-3xl font-bold font-mono text-brand">12 × 7</div>
             <div class="text-xs text-ink-400 mt-1 uppercase tracking-wider">Stress scenarios × profiles</div>
             <div class="text-[11px] text-ink-500 mt-1">Drift scenarios across review profiles</div>
         </div>
@@ -428,11 +428,11 @@
                     Know every failure mode before<br/>the flightcase leaves the shop.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    S0 through S10 simulate the alignment drift projectors see on real sites:
-                    rigging settle, mount movement, thermal shift. The current tolerance
-                    profile is still being tuned as we collect more install data.
+                    Twelve scenarios run on top of the nominal setup, perturbing each
+                    projector by a fixed amount in each axis to see what holds and what
+                    breaks. The default acceptance profile uses these tolerances:
                 </p>
-                <div class="grid grid-cols-2 gap-3 mb-8">
+                <div class="grid grid-cols-2 gap-3 mb-3">
                     <div class="p-3 rounded-md bg-surface-raised border border-line">
                         <div class="text-xs text-ink-500 font-mono uppercase">Lateral</div>
                         <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±0.1 m</div>
@@ -446,10 +446,14 @@
                         <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±2°</div>
                     </div>
                     <div class="p-3 rounded-md bg-surface-raised border border-line">
-                        <div class="text-xs text-ink-500 font-mono uppercase">Surface angle</div>
-                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±5°</div>
+                        <div class="text-xs text-ink-500 font-mono uppercase">Surface size</div>
+                        <div class="text-lg font-semibold font-mono text-ink-50 mt-1">±10%</div>
                     </div>
                 </div>
+                <p class="text-[11px] text-ink-500 leading-relaxed mb-8">
+                    The scenario logic is still being refined during closed beta as we
+                    collect data from real installs.
+                </p>
                 <p class="text-ink-400 leading-relaxed">
                     Seven review profiles shift the acceptance bar depending on the stage.
                     A quick setup check uses a different profile than a live-show review
@@ -629,13 +633,13 @@
                     Assumptions &amp; Error Budget
                 </div>
                 <h2 class="text-4xl font-bold tracking-tight mb-6 leading-tight">
-                    Assumptions and uncertainty,<br />documented and versioned.
+                    Assumptions and uncertainty,<br />written down and versioned.
                 </h2>
                 <p class="text-ink-400 leading-relaxed mb-6">
-                    Every verdict is accompanied by a documented breakdown of where the
-                    uncertainty comes from. Geometry, coverage, distance model, optical
-                    spec, and calibration each contribute a share of the total brightness
-                    error, and the split is shown. The same breakdown appears in the analysis
+                    Every verdict comes with a breakdown of where the uncertainty
+                    comes from. Geometry, coverage, distance model, optical spec, and
+                    calibration each contribute a share of the total brightness error,
+                    and the split is shown. The same breakdown appears in the analysis
                     panel and in the PDF.
                 </p>
                 <div class="mb-3 p-3 rounded bg-surface-elevated border border-brand/30">
