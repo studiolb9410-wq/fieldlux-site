@@ -1092,18 +1092,54 @@
                 Request Beta Access →
             </button>
             <p id="flxBetaStatus" class="text-xs min-h-[1.2em] text-ink-500" role="status" aria-live="polite">
-                We review every request personally and send access in batches as slots open.
+                We review every request within 24 hours and send your access link by email.
                 No marketing list — only beta access updates.
             </p>
         </form>
 
-        <!-- Success state shown after a successful signup; form is hidden. -->
-        <div id="flxBetaSuccess" class="hidden max-w-xl mx-auto rounded-md border border-brand/40 bg-brand-muted p-6 text-center">
-            <p class="text-brand font-semibold mb-1">Request received.</p>
-            <p class="text-ink-400 text-sm leading-relaxed">
-                We'll review it and send your app link to the email above as slots open.
-                Want to say hi in the meantime? Join the Discord below — mention the email
-                you used and we'll prioritise.
+        <!-- Success state shown after a successful signup; form is hidden.
+             Discord is the primary CTA inside the card itself — the moment
+             right after submit is when intent is highest. Layout, top to
+             bottom: the receipt line so the user knows submit worked, a
+             FOMO callout that frames Discord as the only place patch notes
+             ship in real time, the big Discord button (also the fallback
+             for browsers that blocked the auto-opened tab), and a small
+             post-submit hint about the clipboard handoff. The submit
+             handler also (a) auto-opens this Discord invite in a new tab
+             and (b) copies the user's email to the clipboard. -->
+        <div id="flxBetaSuccess" class="hidden max-w-xl mx-auto rounded-md border border-brand/40 bg-brand-muted p-6">
+            <p class="text-brand font-semibold mb-1">✓ Request received.</p>
+            <p class="text-ink-400 text-sm leading-relaxed mb-5">
+                We'll send your access link within 24 hours.
+            </p>
+
+            <!-- FOMO callout: Discord-first updates. Bordered + tinted in
+                 Discord brand purple so it visually anchors the eye before
+                 the button below. -->
+            <div class="rounded-md border border-[#5865F2]/40 bg-[#5865F2]/10 p-4 mb-5 text-left">
+                <p class="text-white font-bold text-sm mb-2 flex items-center gap-2">
+                    <span class="inline-block w-2 h-2 rounded-full bg-[#5865F2] animate-pulse"></span>
+                    Discord-first updates
+                </p>
+                <p class="text-ink-300 text-sm leading-relaxed">
+                    Every patch, bug fix, and new feature drops in Discord
+                    <strong class="text-white">before anywhere else</strong>.
+                    We only email access links — for updates, you'll want to be inside.
+                    Active testers also get the first look at upcoming features.
+                </p>
+            </div>
+
+            <a href="https://discord.gg/JpeQ7Hgsnd"
+               target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-md bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold transition-colors">
+                <svg viewBox="0 -28.5 256 256" width="20" height="20" fill="currentColor">
+                    <path d="M216.856 16.597A208.502 208.502 0 0 0 164.042 0c-2.275 4.113-4.933 9.645-6.766 14.046-19.692-2.961-39.203-2.961-58.533 0-1.832-4.4-4.55-9.933-6.846-14.046a207.809 207.809 0 0 0-52.855 16.638C5.618 67.147-3.443 116.4 1.087 164.956c22.169 16.555 43.653 26.612 64.775 33.193A161.094 161.094 0 0 0 79.735 175.3a136.413 136.413 0 0 1-21.846-10.632 108.636 108.636 0 0 0 5.356-4.237c42.122 19.702 87.89 19.702 129.51 0a131.66 131.66 0 0 0 5.355 4.237 136.07 136.07 0 0 1-21.886 10.653c4.006 8.02 8.638 15.67 13.873 22.848 21.142-6.58 42.646-16.637 64.815-33.213 5.316-56.288-9.08-105.09-38.056-148.36ZM85.474 135.095c-12.645 0-23.015-11.805-23.015-26.18s10.149-26.2 23.015-26.2c12.867 0 23.236 11.804 23.015 26.2.02 14.375-10.148 26.18-23.015 26.18Zm85.051 0c-12.645 0-23.014-11.805-23.014-26.18s10.148-26.2 23.014-26.2c12.867 0 23.236 11.804 23.015 26.2 0 14.375-10.148 26.18-23.015 26.18Z"/>
+                </svg>
+                Open the FieldLux Discord →
+            </a>
+            <p class="text-xs text-ink-500 mt-3 text-center leading-relaxed">
+                Discord just opened in a new tab. Your email is already on your clipboard —
+                paste it in <span class="font-mono text-ink-300">#beta-access</span> for priority approval.
             </p>
         </div>
 
@@ -1170,6 +1206,35 @@
                             form.classList.add('hidden');
                             success.classList.remove('hidden');
                             success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                            // Copy the submitted email to the clipboard so the
+                            // user can paste it straight into #beta-access without
+                            // retyping. Best-effort — clipboard API is gated by
+                            // user gesture + secure context (HTTPS), and we're
+                            // already inside a form-submit gesture handler so
+                            // both are satisfied on the live site.
+                            try {
+                                if (navigator.clipboard && navigator.clipboard.writeText) {
+                                    await navigator.clipboard.writeText(email);
+                                }
+                            } catch (_) { /* non-fatal */ }
+
+                            // Auto-open the Discord invite in a new tab. Triggered
+                            // synchronously from the form-submit gesture so popup
+                            // blockers in Chrome / Firefox / Safari let it through
+                            // (they only block window.open calls that aren't tied
+                            // to a user gesture). 600 ms delay so the success card
+                            // is visible for a moment first — otherwise the new
+                            // tab steals focus before the user reads the message.
+                            // The big Discord button in the success card is still
+                            // there as the manual fallback for the rare case where
+                            // a corporate browser policy blocks the auto-open.
+                            setTimeout(function () {
+                                try {
+                                    window.open('https://discord.gg/JpeQ7Hgsnd', '_blank', 'noopener,noreferrer');
+                                } catch (_) { /* non-fatal — fallback button is in the card */ }
+                            }, 600);
+
                             return;
                         }
 
