@@ -1158,6 +1158,21 @@
                 var success = document.getElementById('flxBetaSuccess');
                 if (!form || !submit || !status || !success) return;
 
+                // Visual gate: keep the submit button disabled (greyed-out via
+                // the existing Tailwind `disabled:` classes) until the consent
+                // checkbox is ticked. Mirrors the React-app landing form on
+                // projection-mapping#30. The submit-handler check below is the
+                // defence-in-depth pair — a user who removes the disabled
+                // attribute via devtools still gets blocked at submit time.
+                var consent = document.getElementById('flxBetaConsent');
+                function syncSubmitState() {
+                    submit.disabled = !consent || !consent.checked;
+                }
+                if (consent) {
+                    consent.addEventListener('change', syncSubmitState);
+                }
+                syncSubmitState();
+
                 form.addEventListener('submit', async function (e) {
                     e.preventDefault();
                     // Defence-in-depth: the checkbox has `required` already,
@@ -1254,7 +1269,10 @@
                         // actionable line. Avoid exposing err.message verbatim — earlier
                         // versions included Supabase status codes and RLS messages.
                         console.warn('[FieldLux waitlist] submit error', err);
-                        submit.disabled = false;
+                        // Re-enable via the gate sync so the button only comes
+                        // back if consent is still ticked (it should be, but
+                        // route through the single source of truth either way).
+                        syncSubmitState();
                         submit.textContent = originalLabel;
                         status.classList.remove('text-ink-500');
                         status.classList.add('text-danger');
