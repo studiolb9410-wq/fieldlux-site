@@ -6,7 +6,7 @@
   html, body {
     background: #050607;
     color: #FAFAFA;
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
     color-scheme: dark;
     overflow-x: hidden;
   }
@@ -138,8 +138,13 @@
   }
 
   .hero-title {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
     font-size: clamp(3.25rem, 10vw, 10rem);
     max-width: min(64rem, calc(100vw - 40px));
+  }
+
+  .nav-brand {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
   }
 
   .hero-copy,
