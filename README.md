@@ -23,6 +23,18 @@ npm run build
 
 The build regenerates `assets/tailwind.css` from `src/input.css`.
 
+## Full Flow Review
+
+This branch supports a review-only app override without changing the production default.
+
+Open the site with:
+
+```text
+?flowAppUrl=https%3A%2F%2Fprojection-mapping-git-public-signup-project-h-46a32f-field-lux.vercel.app%2F%3Fauth%3D1
+```
+
+All app CTAs with `data-app-link` will point to that URL for the current browser. Without the query string, CTAs keep using `https://app.field-lux.com`.
+
 ## Source Files
 
 - `index.html` - main site

@@ -27,8 +27,8 @@
         <a href="#roadmap" class="hover:text-brand">Roadmap</a>
       </nav>
       <div class="flex items-center gap-2">
-        <a href="https://app.field-lux.com" class="mobile-hide-cta hidden h-10 items-center border border-white/15 bg-white/5 px-4 text-xs font-bold uppercase tracking-[0.12em] text-ink-200 hover:border-brand/70 hover:text-white sm:inline-flex">Sign in</a>
-        <a href="https://app.field-lux.com" class="mobile-hide-cta hidden h-10 items-center bg-brand px-4 text-xs font-black uppercase tracking-[0.1em] text-black hover:bg-brand-hot sm:inline-flex">Start free</a>
+        <a href="https://app.field-lux.com" data-app-link class="mobile-hide-cta hidden h-10 items-center border border-white/15 bg-white/5 px-4 text-xs font-bold uppercase tracking-[0.12em] text-ink-200 hover:border-brand/70 hover:text-white sm:inline-flex">Sign in</a>
+        <a href="https://app.field-lux.com" data-app-link class="mobile-hide-cta hidden h-10 items-center bg-brand px-4 text-xs font-black uppercase tracking-[0.1em] text-black hover:bg-brand-hot sm:inline-flex">Start free</a>
       </div>
     </div>
   </header>
@@ -50,7 +50,7 @@
             <span>handoff from one project workspace.</span>
           </p>
           <div class="hero-actions mt-8 flex flex-wrap gap-3">
-            <a href="https://app.field-lux.com" class="inline-flex h-12 items-center justify-center bg-white px-5 text-sm font-black uppercase tracking-[0.1em] text-black hover:bg-brand">Create account</a>
+            <a href="https://app.field-lux.com" data-app-link class="inline-flex h-12 items-center justify-center bg-white px-5 text-sm font-black uppercase tracking-[0.1em] text-black hover:bg-brand">Create account</a>
             <a href="#software" class="inline-flex h-12 items-center justify-center border border-white/20 bg-black/45 px-5 text-sm font-bold uppercase tracking-[0.1em] text-white hover:border-brand hover:text-brand">View software</a>
           </div>
         </div>
@@ -181,7 +181,7 @@
           <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Launch access</p>
           <h2 class="mt-3 text-3xl font-black uppercase leading-none text-white md:text-5xl">Open the workspace.</h2>
         </div>
-        <a href="https://app.field-lux.com" class="inline-flex h-12 items-center justify-center bg-brand px-6 text-sm font-black uppercase tracking-[0.1em] text-black hover:bg-brand-hot">Start FieldLux</a>
+        <a href="https://app.field-lux.com" data-app-link class="inline-flex h-12 items-center justify-center bg-brand px-6 text-sm font-black uppercase tracking-[0.1em] text-black hover:bg-brand-hot">Start FieldLux</a>
       </div>
     </section>
   </main>
@@ -198,5 +198,31 @@
       </div>
     </div>
   </footer>
+  <script>
+    (() => {
+      const defaultAppUrl = 'https://app.field-lux.com';
+      const params = new URLSearchParams(window.location.search);
+      const suppliedUrl = params.get('flowAppUrl') || window.localStorage.getItem('fieldlux_flow_app_url');
+      let appUrl = defaultAppUrl;
+
+      if (suppliedUrl) {
+        try {
+          const parsed = new URL(suppliedUrl, window.location.href);
+          const isAllowedProtocol = parsed.protocol === 'https:';
+          const isLocalPreview = parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1';
+          if (isAllowedProtocol || isLocalPreview) {
+            appUrl = parsed.href;
+            window.localStorage.setItem('fieldlux_flow_app_url', appUrl);
+          }
+        } catch (_) {
+          appUrl = defaultAppUrl;
+        }
+      }
+
+      document.querySelectorAll('[data-app-link]').forEach((link) => {
+        link.href = appUrl;
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -15,7 +15,7 @@
         <img src="/assets/logo-mark.png" alt="" class="h-8 w-8 object-contain" />
         <span class="text-sm font-bold tracking-wide">FieldLux</span>
       </a>
-      <a href="https://app.field-lux.com" class="text-xs font-semibold text-ink-400 hover:text-ink-50">Open app</a>
+      <a href="https://app.field-lux.com" data-app-link class="text-xs font-semibold text-ink-400 hover:text-ink-50">Open app</a>
     </div>
   </header>
 
@@ -58,5 +58,31 @@
       </section>
     </div>
   </main>
+  <script>
+    (() => {
+      const defaultAppUrl = 'https://app.field-lux.com';
+      const params = new URLSearchParams(window.location.search);
+      const suppliedUrl = params.get('flowAppUrl') || window.localStorage.getItem('fieldlux_flow_app_url');
+      let appUrl = defaultAppUrl;
+
+      if (suppliedUrl) {
+        try {
+          const parsed = new URL(suppliedUrl, window.location.href);
+          const isAllowedProtocol = parsed.protocol === 'https:';
+          const isLocalPreview = parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1';
+          if (isAllowedProtocol || isLocalPreview) {
+            appUrl = parsed.href;
+            window.localStorage.setItem('fieldlux_flow_app_url', appUrl);
+          }
+        } catch (_) {
+          appUrl = defaultAppUrl;
+        }
+      }
+
+      document.querySelectorAll('[data-app-link]').forEach((link) => {
+        link.href = appUrl;
+      });
+    })();
+  </script>
 </body>
 </html>
