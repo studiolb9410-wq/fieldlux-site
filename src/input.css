@@ -199,6 +199,23 @@
     display: block;
   }
 
+  .software-gallery {
+    display: grid;
+    gap: 16px;
+  }
+  .software-gallery-main {
+    aspect-ratio: 16 / 9;
+    min-height: 320px;
+  }
+  .software-gallery-side {
+    display: grid;
+    gap: 16px;
+  }
+  .software-gallery-side .media-slot {
+    aspect-ratio: 16 / 9;
+    min-height: 220px;
+  }
+
   .feature-panel {
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: #080A0B;
@@ -389,6 +406,27 @@
   @media (min-width: 768px) {
     .roadmap-modal__grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .software-gallery {
+      grid-template-columns: 1.35fr 0.65fr;
+      align-items: stretch;
+    }
+    .software-gallery-main {
+      aspect-ratio: 16 / 9;
+      min-height: 0;
+      height: 100%;
+    }
+    .software-gallery-side {
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      min-height: 0;
+    }
+    .software-gallery-side .media-slot {
+      aspect-ratio: auto;
+      min-height: 0;
+      height: 100%;
     }
   }
 
