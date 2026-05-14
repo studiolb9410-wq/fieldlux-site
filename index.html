@@ -301,14 +301,25 @@
         }
       }
 
+      const getAppLinkUrl = () => {
+        try {
+          const url = new URL(appUrl, window.location.href);
+          url.searchParams.set('siteReturnUrl', window.location.href);
+          return url.href;
+        } catch (_) {
+          return appUrl;
+        }
+      };
+
       document.querySelectorAll('[data-app-link]').forEach((link) => {
-        link.href = appUrl;
+        const appLinkUrl = getAppLinkUrl();
+        link.href = appLinkUrl;
         link.addEventListener('click', (event) => {
           if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
             return;
           }
           event.preventDefault();
-          window.location.assign(appUrl);
+          window.location.assign(appLinkUrl);
         });
       });
 
