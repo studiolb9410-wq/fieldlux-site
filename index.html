@@ -38,6 +38,16 @@
       <div class="hero-pending absolute inset-0" data-label="FULL SIMULATION IMAGE" data-caption="UPLOAD PENDING"></div>
       <div class="stage-overlay absolute inset-0 bg-[linear-gradient(90deg,#000_0%,rgba(0,0,0,0.88)_26%,rgba(0,0,0,0.38)_62%,rgba(0,0,0,0.72)_100%)]"></div>
       <div class="stage-overlay absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(0deg,#050607_0%,rgba(5,6,7,0)_100%)]"></div>
+      <aside class="community-strip">
+        <div class="min-w-0">
+          <div class="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-brand">FieldLux Discord</div>
+          <p>Official community for beta access, product updates, setup feedback, and projection analysis discussion.</p>
+        </div>
+        <a href="#" data-discord-link aria-disabled="true">
+          <span>Join Discord</span>
+          <span class="community-channel">#beta-access</span>
+        </a>
+      </aside>
       <div class="hero-content mx-auto flex min-h-[calc(100vh-64px)] max-w-[1520px] items-end px-5 pb-16 pt-24 md:px-8 md:pb-20">
         <div class="w-full min-w-0 max-w-4xl">
           <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Projection simulation workspace</p>
@@ -201,9 +211,12 @@
   <script>
     (() => {
       const defaultAppUrl = 'https://app.field-lux.com';
+      const defaultDiscordUrl = '#';
       const params = new URLSearchParams(window.location.search);
       const suppliedUrl = params.get('flowAppUrl') || window.localStorage.getItem('fieldlux_flow_app_url');
+      const suppliedDiscordUrl = params.get('discordUrl') || window.localStorage.getItem('fieldlux_discord_url');
       let appUrl = defaultAppUrl;
+      let discordUrl = defaultDiscordUrl;
 
       if (suppliedUrl) {
         try {
@@ -219,6 +232,19 @@
         }
       }
 
+      if (suppliedDiscordUrl) {
+        try {
+          const parsed = new URL(suppliedDiscordUrl, window.location.href);
+          const isDiscordHost = parsed.hostname === 'discord.gg' || parsed.hostname.endsWith('.discord.com') || parsed.hostname === 'discord.com';
+          if (parsed.protocol === 'https:' && isDiscordHost) {
+            discordUrl = parsed.href;
+            window.localStorage.setItem('fieldlux_discord_url', discordUrl);
+          }
+        } catch (_) {
+          discordUrl = defaultDiscordUrl;
+        }
+      }
+
       document.querySelectorAll('[data-app-link]').forEach((link) => {
         link.href = appUrl;
         link.addEventListener('click', (event) => {
@@ -227,6 +253,18 @@
           }
           event.preventDefault();
           window.location.assign(appUrl);
+        });
+      });
+
+      document.querySelectorAll('[data-discord-link]').forEach((link) => {
+        const hasInvite = discordUrl !== '#';
+        link.href = discordUrl;
+        link.setAttribute('aria-disabled', hasInvite ? 'false' : 'true');
+        if (!hasInvite) link.title = 'Discord invite link pending.';
+        link.addEventListener('click', (event) => {
+          if (!hasInvite) {
+            event.preventDefault();
+          }
         });
       });
     })();

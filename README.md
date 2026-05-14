@@ -35,6 +35,14 @@ Open the site with:
 
 All app CTAs with `data-app-link` will point to that URL for the current browser. Without the query string, CTAs keep using `https://app.field-lux.com`.
 
+The Discord CTA is intentionally configurable because the public invite URL is not checked into the repo. For review, pass:
+
+```text
+?discordUrl=https%3A%2F%2Fdiscord.gg%2Fyour-invite
+```
+
+Only `discord.gg`, `discord.com`, and `*.discord.com` HTTPS links are accepted.
+
 ## Source Files
 
 - `index.html` - main site
