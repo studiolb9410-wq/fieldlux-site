@@ -25,6 +25,14 @@
         <a href="#features" class="hover:text-brand">Features</a>
         <a href="#cases" class="hover:text-brand">Cases</a>
         <a href="#roadmap" class="hover:text-brand">Roadmap</a>
+        <a
+          href="#"
+          data-discord-link
+          data-tooltip="Official community for beta access, product updates, setup feedback, and projection analysis discussion."
+          aria-disabled="true"
+          aria-label="Join Discord"
+          class="nav-discord-link"
+        >Join Discord</a>
       </nav>
       <div class="flex items-center gap-2">
         <a href="https://app.field-lux.com" data-app-link class="mobile-hide-cta hidden h-10 items-center border border-white/15 bg-white/5 px-4 text-xs font-bold uppercase tracking-[0.12em] text-ink-200 hover:border-brand/70 hover:text-white sm:inline-flex">Sign in</a>
@@ -38,16 +46,6 @@
       <div class="hero-pending absolute inset-0" data-label="FULL SIMULATION IMAGE" data-caption="UPLOAD PENDING"></div>
       <div class="stage-overlay absolute inset-0 bg-[linear-gradient(90deg,#000_0%,rgba(0,0,0,0.88)_26%,rgba(0,0,0,0.38)_62%,rgba(0,0,0,0.72)_100%)]"></div>
       <div class="stage-overlay absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(0deg,#050607_0%,rgba(5,6,7,0)_100%)]"></div>
-      <aside class="community-strip">
-        <div class="min-w-0">
-          <div class="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-brand">FieldLux Discord</div>
-          <p>Official community for beta access, product updates, setup feedback, and projection analysis discussion.</p>
-        </div>
-        <a href="#" data-discord-link aria-disabled="true">
-          <span>Join Discord</span>
-          <span class="community-channel">#beta-access</span>
-        </a>
-      </aside>
       <div class="hero-content mx-auto flex min-h-[calc(100vh-64px)] max-w-[1520px] items-end px-5 pb-16 pt-24 md:px-8 md:pb-20">
         <div class="w-full min-w-0 max-w-4xl">
           <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Projection simulation workspace</p>
@@ -260,7 +258,7 @@
         const hasInvite = discordUrl !== '#';
         link.href = discordUrl;
         link.setAttribute('aria-disabled', hasInvite ? 'false' : 'true');
-        if (!hasInvite) link.title = 'Discord invite link pending.';
+        link.title = link.dataset.tooltip || '';
         link.addEventListener('click', (event) => {
           if (!hasInvite) {
             event.preventDefault();
