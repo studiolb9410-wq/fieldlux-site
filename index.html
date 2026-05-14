@@ -24,7 +24,7 @@
         <a href="#software" class="hover:text-brand">Software</a>
         <a href="#features" class="hover:text-brand">Features</a>
         <a href="#cases" class="hover:text-brand">Cases</a>
-        <a href="#roadmap" class="hover:text-brand">Roadmap</a>
+        <a href="#roadmap" data-roadmap-open class="hover:text-brand">Roadmap</a>
         <a
           href="#"
           data-discord-link
@@ -166,18 +166,32 @@
         <div class="mt-12 grid gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-3">
           <div class="roadmap-cell">
             <span>Now</span>
-            <strong>Public launch accounts</strong>
-            <p>Open signup, project home, simulator access, and founding member preservation.</p>
+            <strong>Current build</strong>
+            <ul class="roadmap-list">
+              <li>Open signup and password / Google sign-in</li>
+              <li>Project home with saved project entry</li>
+              <li>Projector placement, lens behavior, screen coverage, and shift planning</li>
+              <li>Analysis, stress checks, PDF export, read-only share, and handoff output</li>
+            </ul>
           </div>
           <div class="roadmap-cell">
             <span>Next</span>
-            <strong>Asset pass</strong>
-            <p>Full simulation hero image, feature captures, and real installation case studies.</p>
+            <strong>Installation intelligence</strong>
+            <ul class="roadmap-list">
+              <li>Desktop app migration activation</li>
+              <li>Calibration workflow for real site alignment</li>
+              <li>Lighting fixture registration and equipment profiles</li>
+              <li>Projection install stress analysis for mixed projector, lighting, and LED wall projects</li>
+            </ul>
           </div>
           <div class="roadmap-cell">
             <span>Later</span>
             <strong>Paid plans</strong>
-            <p>Billing, founding tester entitlement, team workflows, and deeper equipment verification.</p>
+            <ul class="roadmap-list">
+              <li>Billing and founding tester entitlement</li>
+              <li>Team workflows, shared libraries, and permission control</li>
+              <li>Deeper equipment verification and manufacturer data coverage</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -193,6 +207,50 @@
       </div>
     </section>
   </main>
+
+  <div id="roadmap-modal" class="roadmap-modal" role="dialog" aria-modal="true" aria-labelledby="roadmap-modal-title" hidden>
+    <div class="roadmap-modal__backdrop" data-roadmap-close></div>
+    <section class="roadmap-modal__panel">
+      <div class="roadmap-modal__header">
+        <div>
+          <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Roadmap</p>
+          <h2 id="roadmap-modal-title">FieldLux shipping path</h2>
+        </div>
+        <button type="button" data-roadmap-close aria-label="Close roadmap">Close</button>
+      </div>
+      <div class="roadmap-modal__grid">
+        <div class="roadmap-cell">
+          <span>Now</span>
+          <strong>Current build</strong>
+          <ul class="roadmap-list">
+            <li>Open signup and password / Google sign-in</li>
+            <li>Project home with saved project entry</li>
+            <li>Projector placement, lens behavior, screen coverage, and shift planning</li>
+            <li>Analysis, stress checks, PDF export, read-only share, and handoff output</li>
+          </ul>
+        </div>
+        <div class="roadmap-cell">
+          <span>Next</span>
+          <strong>Installation intelligence</strong>
+          <ul class="roadmap-list">
+            <li>Desktop app migration activation</li>
+            <li>Calibration workflow for real site alignment</li>
+            <li>Lighting fixture registration and equipment profiles</li>
+            <li>Projection install stress analysis for mixed projector, lighting, and LED wall projects</li>
+          </ul>
+        </div>
+        <div class="roadmap-cell">
+          <span>Later</span>
+          <strong>Paid plans</strong>
+          <ul class="roadmap-list">
+            <li>Billing and founding tester entitlement</li>
+            <li>Team workflows, shared libraries, and permission control</li>
+            <li>Deeper equipment verification and manufacturer data coverage</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <footer class="border-t border-white/10 bg-black py-8">
     <div class="mx-auto flex max-w-[1520px] flex-col justify-between gap-4 px-5 text-xs text-ink-500 md:flex-row md:items-center md:px-8">
@@ -265,6 +323,39 @@
           }
         });
       });
+
+      const roadmapModal = document.getElementById('roadmap-modal');
+      const openRoadmap = () => {
+        if (!roadmapModal) return;
+        roadmapModal.hidden = false;
+        document.body.classList.add('modal-open');
+        const closeButton = roadmapModal.querySelector('button[data-roadmap-close]');
+        closeButton?.focus?.();
+      };
+      const closeRoadmap = () => {
+        if (!roadmapModal) return;
+        roadmapModal.hidden = true;
+        document.body.classList.remove('modal-open');
+      };
+
+      document.querySelectorAll('[data-roadmap-open]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          openRoadmap();
+        });
+      });
+      document.querySelectorAll('[data-roadmap-close]').forEach((button) => {
+        button.addEventListener('click', closeRoadmap);
+      });
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && roadmapModal && !roadmapModal.hidden) {
+          closeRoadmap();
+        }
+      });
+
+      if (window.location.hash === '#roadmap') {
+        window.setTimeout(openRoadmap, 50);
+      }
     })();
   </script>
 </body>
