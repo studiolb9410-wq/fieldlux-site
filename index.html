@@ -36,9 +36,9 @@
   <main>
     <section class="relative min-h-screen overflow-hidden bg-black pt-16">
       <div class="hero-pending absolute inset-0" data-label="FULL SIMULATION IMAGE" data-caption="UPLOAD PENDING"></div>
-      <div class="absolute inset-0 bg-[linear-gradient(90deg,#000_0%,rgba(0,0,0,0.88)_26%,rgba(0,0,0,0.38)_62%,rgba(0,0,0,0.72)_100%)]"></div>
-      <div class="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(0deg,#050607_0%,rgba(5,6,7,0)_100%)]"></div>
-      <div class="relative mx-auto flex min-h-[calc(100vh-64px)] max-w-[1520px] items-end px-5 pb-16 pt-24 md:px-8 md:pb-20">
+      <div class="stage-overlay absolute inset-0 bg-[linear-gradient(90deg,#000_0%,rgba(0,0,0,0.88)_26%,rgba(0,0,0,0.38)_62%,rgba(0,0,0,0.72)_100%)]"></div>
+      <div class="stage-overlay absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(0deg,#050607_0%,rgba(5,6,7,0)_100%)]"></div>
+      <div class="hero-content mx-auto flex min-h-[calc(100vh-64px)] max-w-[1520px] items-end px-5 pb-16 pt-24 md:px-8 md:pb-20">
         <div class="w-full min-w-0 max-w-4xl">
           <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Projection simulation workspace</p>
           <h1 class="hero-title mt-5 font-black uppercase leading-[0.82] tracking-normal text-white">
@@ -221,6 +221,13 @@
 
       document.querySelectorAll('[data-app-link]').forEach((link) => {
         link.href = appUrl;
+        link.addEventListener('click', (event) => {
+          if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+            return;
+          }
+          event.preventDefault();
+          window.location.assign(appUrl);
+        });
       });
     })();
   </script>

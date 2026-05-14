@@ -31,6 +31,7 @@
       radial-gradient(circle at 68% 42%, rgba(32, 213, 222, 0.18), transparent 34%),
       #050607;
     background-size: 48px 48px, 48px 48px, auto, auto;
+    pointer-events: none;
   }
   .hero-pending::before {
     content: attr(data-label);
@@ -43,6 +44,7 @@
     font-weight: 800;
     letter-spacing: 0.22em;
     text-transform: uppercase;
+    pointer-events: none;
   }
   .hero-pending::after {
     content: attr(data-caption);
@@ -55,6 +57,23 @@
     font-weight: 700;
     letter-spacing: 0.18em;
     text-transform: uppercase;
+    pointer-events: none;
+  }
+
+  .stage-overlay {
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 20;
+  }
+
+  [data-app-link] {
+    position: relative;
+    z-index: 30;
+    cursor: pointer;
+    pointer-events: auto;
   }
 
   .glow-brand {
