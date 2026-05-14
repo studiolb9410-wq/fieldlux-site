@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./index.html', './src/**/*.{html,js}'],
+  content: ['./index.html', './privacy.html', './src/**/*.{html,js}'],
   theme: {
     extend: {
       colors: {
@@ -16,15 +16,17 @@ module.exports = {
           elevated: '#111114',
           raised:   '#1A1A1E',
         },
+        stage: '#050607',
         line: {
           DEFAULT:  '#27272A',
           subtle:   '#1F1F22',
         },
         brand: {
-          DEFAULT: '#06B6D4',
-          dim:     '#0891B2',
-          muted:   'rgba(6, 182, 212, 0.08)',
-          ring:    'rgba(6, 182, 212, 0.3)',
+          DEFAULT: '#20D5DE',
+          hot:     '#00B8C8',
+          dim:     '#087B86',
+          muted:   'rgba(32, 213, 222, 0.08)',
+          ring:    'rgba(32, 213, 222, 0.3)',
         },
         success: '#22C55E',
         warning: '#F59E0B',

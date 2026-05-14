@@ -3,189 +3,198 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FieldLux - Projection planning workspace</title>
-  <meta name="description" content="FieldLux is a project-first workspace for projector coverage, lens planning, stress analysis, and technician handoff." />
+  <title>FieldLux - Projection simulation workspace</title>
+  <meta name="description" content="FieldLux is a projection simulation workspace for projector placement, lens planning, stress checks, and show-ready technical handoff." />
   <link rel="canonical" href="https://field-lux.com/" />
-  <meta property="og:title" content="FieldLux - Projection planning workspace" />
-  <meta property="og:description" content="Plan projector coverage before the crew reaches site. Free full access during launch." />
+  <meta property="og:title" content="FieldLux - Projection simulation workspace" />
+  <meta property="og:description" content="Build projection setups before the install day. Public accounts are open during launch." />
   <meta property="og:url" content="https://field-lux.com/" />
-  <meta property="og:image" content="https://field-lux.com/assets/product-workspace.png" />
+  <meta property="og:image" content="https://field-lux.com/assets/logo.png" />
   <link rel="icon" href="/assets/logo-mark.png" />
   <link rel="stylesheet" href="/assets/tailwind.css" />
 </head>
-<body class="bg-surface-base text-ink-50 antialiased">
-  <header class="fixed left-0 right-0 top-0 z-50 border-b border-line-subtle bg-surface-base/95">
-    <div class="mx-auto flex h-14 max-w-7xl items-center justify-between px-5">
-      <a href="/" class="flex items-center gap-3">
-        <img src="/assets/logo-mark.png" alt="" class="h-8 w-8 object-contain" />
-        <span class="text-sm font-bold tracking-wide">FieldLux</span>
+<body class="bg-stage text-ink-50 antialiased">
+  <header class="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/85 backdrop-blur">
+    <div class="mx-auto flex h-16 max-w-[1520px] items-center justify-between px-5 md:px-8">
+      <a href="/" class="flex items-center gap-3" aria-label="FieldLux home">
+        <img src="/assets/logo-mark.png" alt="" class="h-9 w-9 object-contain" />
+        <span class="text-sm font-black uppercase tracking-[0.16em] text-white">FieldLux</span>
       </a>
-      <nav class="hidden items-center gap-6 text-xs font-medium text-ink-400 md:flex">
-        <a href="#workflow" class="hover:text-ink-50">Workflow</a>
-        <a href="#stress" class="hover:text-ink-50">Stress analysis</a>
-        <a href="#roadmap" class="hover:text-ink-50">Roadmap</a>
-        <a href="#founding" class="hover:text-ink-50">Founding members</a>
+      <nav class="hidden items-center gap-8 text-[11px] font-bold uppercase tracking-[0.18em] text-ink-400 lg:flex">
+        <a href="#software" class="hover:text-brand">Software</a>
+        <a href="#features" class="hover:text-brand">Features</a>
+        <a href="#cases" class="hover:text-brand">Cases</a>
+        <a href="#roadmap" class="hover:text-brand">Roadmap</a>
       </nav>
       <div class="flex items-center gap-2">
-        <a href="https://app.field-lux.com" class="hidden h-9 items-center rounded-md border border-line bg-surface-elevated px-3 text-xs font-semibold text-ink-200 hover:text-ink-50 sm:inline-flex">Sign in</a>
-        <a href="https://app.field-lux.com" class="inline-flex h-9 items-center rounded-md bg-ink-50 px-3 text-xs font-bold text-surface-base hover:bg-ink-200">Start free</a>
+        <a href="https://app.field-lux.com" class="mobile-hide-cta hidden h-10 items-center border border-white/15 bg-white/5 px-4 text-xs font-bold uppercase tracking-[0.12em] text-ink-200 hover:border-brand/70 hover:text-white sm:inline-flex">Sign in</a>
+        <a href="https://app.field-lux.com" class="mobile-hide-cta hidden h-10 items-center bg-brand px-4 text-xs font-black uppercase tracking-[0.1em] text-black hover:bg-brand-hot sm:inline-flex">Start free</a>
       </div>
     </div>
   </header>
 
   <main>
-    <section class="relative min-h-[82vh] overflow-hidden border-b border-line-subtle bg-black pt-14">
-      <img
-        src="/assets/product-workspace.png"
-        alt="FieldLux project workspace showing project list and editor"
-        class="absolute inset-0 h-full w-full object-cover object-center opacity-55"
-      />
-      <div class="absolute inset-0 bg-[linear-gradient(90deg,#050505_0%,rgba(5,5,5,0.88)_28%,rgba(5,5,5,0.30)_72%,rgba(5,5,5,0.62)_100%)]"></div>
-      <div class="relative mx-auto flex min-h-[calc(82vh-56px)] max-w-7xl items-center px-5 py-14">
-        <div class="max-w-2xl">
-          <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-success">Free full access during launch</p>
-          <h1 class="mt-5 text-5xl font-semibold leading-[0.98] tracking-normal text-white md:text-7xl">FieldLux</h1>
-          <p class="mt-6 max-w-xl text-lg leading-8 text-ink-200">
-            A project-first workspace for projector coverage, lens planning, stress analysis, and technician handoff before the crew reaches site.
+    <section class="relative min-h-screen overflow-hidden bg-black pt-16">
+      <div class="hero-pending absolute inset-0" data-label="FULL SIMULATION IMAGE" data-caption="UPLOAD PENDING"></div>
+      <div class="absolute inset-0 bg-[linear-gradient(90deg,#000_0%,rgba(0,0,0,0.88)_26%,rgba(0,0,0,0.38)_62%,rgba(0,0,0,0.72)_100%)]"></div>
+      <div class="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(0deg,#050607_0%,rgba(5,6,7,0)_100%)]"></div>
+      <div class="relative mx-auto flex min-h-[calc(100vh-64px)] max-w-[1520px] items-end px-5 pb-16 pt-24 md:px-8 md:pb-20">
+        <div class="w-full min-w-0 max-w-4xl">
+          <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Projection simulation workspace</p>
+          <h1 class="hero-title mt-5 font-black uppercase leading-[0.82] tracking-normal text-white">
+            FieldLux
+          </h1>
+          <p class="hero-copy mt-7 text-lg leading-8 text-ink-200">
+            <span>Plan projector placement, lens behavior,</span>
+            <span>screen coverage, stress margin, and</span>
+            <span>handoff from one project workspace.</span>
           </p>
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a href="https://app.field-lux.com" class="inline-flex h-11 items-center rounded-md bg-white px-5 text-sm font-bold text-black hover:bg-ink-200">Create free account</a>
-            <a href="https://app.field-lux.com" class="inline-flex h-11 items-center rounded-md border border-white/25 bg-black/40 px-5 text-sm font-semibold text-white hover:bg-white/10">Open app</a>
+          <div class="hero-actions mt-8 flex flex-wrap gap-3">
+            <a href="https://app.field-lux.com" class="inline-flex h-12 items-center justify-center bg-white px-5 text-sm font-black uppercase tracking-[0.1em] text-black hover:bg-brand">Create account</a>
+            <a href="#software" class="inline-flex h-12 items-center justify-center border border-white/20 bg-black/45 px-5 text-sm font-bold uppercase tracking-[0.1em] text-white hover:border-brand hover:text-brand">View software</a>
           </div>
-          <p class="mt-4 text-xs leading-5 text-ink-400">
-            Existing beta testers keep their projects and become Founding Members with 12 months of full access after paid plans begin.
-          </p>
         </div>
       </div>
     </section>
 
-    <section id="workflow" class="border-b border-line-subtle bg-surface-base py-20">
-      <div class="mx-auto max-w-7xl px-5">
-        <div class="grid gap-10 lg:grid-cols-[0.75fr_1.25fr]">
+    <section id="software" class="border-y border-white/10 bg-stage py-20 md:py-28">
+      <div class="mx-auto max-w-[1520px] px-5 md:px-8">
+        <div class="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-end">
           <div>
-            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500">Workflow</p>
-            <h2 class="mt-3 text-3xl font-semibold leading-tight tracking-normal text-ink-50">Start from the project list. Enter the editor when the job is clear.</h2>
+            <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Software</p>
+            <h2 class="mt-4 max-w-3xl text-4xl font-black uppercase leading-none tracking-normal text-white md:text-6xl">
+              A working surface before the real surface.
+            </h2>
           </div>
-          <div class="grid gap-3 md:grid-cols-2">
-            <article class="rounded-md border border-line bg-surface-elevated p-4">
-              <div class="font-mono text-[11px] text-ink-500">01</div>
-              <h3 class="mt-3 text-sm font-semibold text-ink-50">Project home</h3>
-              <p class="mt-2 text-sm leading-6 text-ink-400">Continue a saved setup, start a blank scene, import a .flx file, or branch from the Jay sample.</p>
-            </article>
-            <article class="rounded-md border border-line bg-surface-elevated p-4">
-              <div class="font-mono text-[11px] text-ink-500">02</div>
-              <h3 class="mt-3 text-sm font-semibold text-ink-50">Optical setup</h3>
-              <p class="mt-2 text-sm leading-6 text-ink-400">Choose verified projector and lens data, set throw distance, shift, aspect, surface, and room conditions.</p>
-            </article>
-            <article class="rounded-md border border-line bg-surface-elevated p-4">
-              <div class="font-mono text-[11px] text-ink-500">03</div>
-              <h3 class="mt-3 text-sm font-semibold text-ink-50">Stress check</h3>
-              <p class="mt-2 text-sm leading-6 text-ink-400">Read setup margin across brightness, coverage, overlap, pixel density, ambient light, and placement drift.</p>
-            </article>
-            <article class="rounded-md border border-line bg-surface-elevated p-4">
-              <div class="font-mono text-[11px] text-ink-500">04</div>
-              <h3 class="mt-3 text-sm font-semibold text-ink-50">Handoff</h3>
-              <p class="mt-2 text-sm leading-6 text-ink-400">Save to cloud, share a read-only 3D link, and export a PDF tech rider for the install conversation.</p>
-            </article>
+          <div class="grid gap-3 sm:grid-cols-3">
+            <div class="border-l border-brand pl-4">
+              <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500">01</div>
+              <div class="mt-3 text-sm font-black uppercase tracking-[0.1em] text-white">Projects</div>
+            </div>
+            <div class="border-l border-brand pl-4">
+              <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500">02</div>
+              <div class="mt-3 text-sm font-black uppercase tracking-[0.1em] text-white">Simulator</div>
+            </div>
+            <div class="border-l border-brand pl-4">
+              <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500">03</div>
+              <div class="mt-3 text-sm font-black uppercase tracking-[0.1em] text-white">Handoff</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
+          <div class="media-slot aspect-[16/9]" data-label="SOFTWARE IMAGE" data-caption="UPLOAD PENDING"></div>
+          <div class="grid gap-4">
+            <div class="media-slot aspect-[4/3]" data-label="PROJECT HOME" data-caption="UPLOAD PENDING"></div>
+            <div class="media-slot aspect-[4/3]" data-label="EDITOR DETAIL" data-caption="UPLOAD PENDING"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="stress" class="border-b border-line-subtle bg-[#0d0d0f] py-20">
-      <div class="mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-[1.05fr_0.95fr]">
-        <div>
-          <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-warning">Stress analysis</p>
-          <h2 class="mt-3 max-w-2xl text-3xl font-semibold leading-tight tracking-normal text-ink-50">Not AI judgment. Engineering checks you can inspect.</h2>
-          <p class="mt-5 max-w-2xl text-sm leading-7 text-ink-400">
-            FieldLux tests how a projection setup reacts when site conditions move: throw distance, ambient lux, lens shift, coverage, overlap, pixel density, and output margin. The point is not a black-box answer. The point is knowing where the setup is fragile before installation day.
-          </p>
-        </div>
-        <div class="rounded-md border border-line bg-surface-elevated">
-          <div class="grid grid-cols-3 border-b border-line-subtle text-[11px] font-semibold text-ink-400">
-            <div class="px-4 py-3">Check</div>
-            <div class="px-4 py-3">Signal</div>
-            <div class="px-4 py-3">Action</div>
-          </div>
-          <div class="grid grid-cols-3 border-b border-line-subtle text-sm"><div class="px-4 py-3 text-ink-50">Brightness</div><div class="px-4 py-3 text-ink-400">Lux margin</div><div class="px-4 py-3 text-ink-400">Move, dim room, or change fixture</div></div>
-          <div class="grid grid-cols-3 border-b border-line-subtle text-sm"><div class="px-4 py-3 text-ink-50">Coverage</div><div class="px-4 py-3 text-ink-400">Target hit + spill</div><div class="px-4 py-3 text-ink-400">Re-aim or split projectors</div></div>
-          <div class="grid grid-cols-3 border-b border-line-subtle text-sm"><div class="px-4 py-3 text-ink-50">Pixel density</div><div class="px-4 py-3 text-ink-400">mm/px or PPI</div><div class="px-4 py-3 text-ink-400">Adjust distance or source resolution</div></div>
-          <div class="grid grid-cols-3 border-b border-line-subtle text-sm"><div class="px-4 py-3 text-ink-50">Blend</div><div class="px-4 py-3 text-ink-400">Overlap width</div><div class="px-4 py-3 text-ink-400">Tune spacing and lens choice</div></div>
-          <div class="grid grid-cols-3 text-sm"><div class="px-4 py-3 text-ink-50">Shift</div><div class="px-4 py-3 text-ink-400">Lens envelope</div><div class="px-4 py-3 text-ink-400">Stay inside verified hardware limits</div></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="border-b border-line-subtle bg-surface-base py-20">
-      <div class="mx-auto max-w-7xl px-5">
-        <div class="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+    <section id="features" class="border-b border-white/10 bg-black py-20 md:py-28">
+      <div class="mx-auto max-w-[1520px] px-5 md:px-8">
+        <div class="flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500">What is live</p>
-            <h2 class="mt-3 text-3xl font-semibold tracking-normal">Built for repeated planning work.</h2>
+            <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Current build</p>
+            <h2 class="mt-4 text-4xl font-black uppercase leading-none tracking-normal text-white md:text-6xl">Feature slots</h2>
           </div>
-          <a href="https://app.field-lux.com" class="inline-flex h-10 items-center rounded-md border border-line bg-surface-elevated px-4 text-sm font-semibold text-ink-200 hover:text-ink-50">Open project workspace</a>
-        </div>
-        <div class="grid gap-3 md:grid-cols-3">
-          <article class="rounded-md border border-line bg-surface-elevated p-4"><h3 class="text-sm font-semibold">Verified equipment catalog</h3><p class="mt-2 text-sm leading-6 text-ink-400">Projector and lens visibility is now gated by official-source verification policy.</p></article>
-          <article class="rounded-md border border-line bg-surface-elevated p-4"><h3 class="text-sm font-semibold">Cloud project history</h3><p class="mt-2 text-sm leading-6 text-ink-400">Saved projects stay tied to the same Supabase account id, so existing beta work remains intact.</p></article>
-          <article class="rounded-md border border-line bg-surface-elevated p-4"><h3 class="text-sm font-semibold">Read-only sharing</h3><p class="mt-2 text-sm leading-6 text-ink-400">Send a link that lets collaborators inspect the scene without editing your source project.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section id="roadmap" class="border-b border-line-subtle bg-[#0d0d0f] py-20">
-      <div class="mx-auto max-w-7xl px-5">
-        <div class="max-w-2xl">
-          <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500">Roadmap</p>
-          <h2 class="mt-3 text-3xl font-semibold tracking-normal">Status, not hype dates.</h2>
-          <p class="mt-4 text-sm leading-7 text-ink-400">The roadmap is organized by shipping state so teams can tell what is dependable today and what is still moving.</p>
-        </div>
-        <div class="mt-8 grid gap-3 lg:grid-cols-3">
-          <article class="rounded-md border border-success/35 bg-success/10 p-4">
-            <h3 class="text-sm font-semibold text-success">Available now</h3>
-            <ul class="mt-4 space-y-2 text-sm text-ink-300"><li>Projector/lens calculation</li><li>Stress analysis</li><li>Cloud save</li><li>PDF tech rider</li><li>Read-only share links</li></ul>
-          </article>
-          <article class="rounded-md border border-warning/35 bg-warning/10 p-4">
-            <h3 class="text-sm font-semibold text-warning">In active build</h3>
-            <ul class="mt-4 space-y-2 text-sm text-ink-300"><li>Project home</li><li>Account settings</li><li>Public signup</li><li>Sample onboarding</li><li>Output handoff polish</li></ul>
-          </article>
-          <article class="rounded-md border border-line bg-surface-elevated p-4">
-            <h3 class="text-sm font-semibold text-ink-200">Later</h3>
-            <ul class="mt-4 space-y-2 text-sm text-ink-400"><li>Paid plans</li><li>Desktop realtime output</li><li>Team collaboration</li><li>Billing entitlements</li><li>Expanded fixture verification</li></ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="founding" class="bg-surface-base py-20">
-      <div class="mx-auto grid max-w-7xl gap-8 px-5 lg:grid-cols-[0.85fr_1.15fr]">
-        <div>
-          <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-success">Founding members</p>
-          <h2 class="mt-3 text-3xl font-semibold leading-tight tracking-normal">Existing beta testers do not need to re-register.</h2>
-        </div>
-        <div class="rounded-md border border-line bg-surface-elevated p-5">
-          <p class="text-sm leading-7 text-ink-300">
-            Andrew, Mark, and everyone already approved in the beta list keep using the same email. Their existing projects remain attached to the same account, and they receive 12 months of full access after paid plans begin.
+          <p class="max-w-xl text-sm leading-7 text-ink-400">
+            Visuals will be replaced with final product captures. The structure is ready; assets stay empty until upload.
           </p>
-          <div class="mt-5 grid gap-3 md:grid-cols-3">
-            <div class="border-t border-line pt-3"><h3 class="text-sm font-semibold">Same email</h3><p class="mt-2 text-sm leading-6 text-ink-400">Use the email that was approved during beta.</p></div>
-            <div class="border-t border-line pt-3"><h3 class="text-sm font-semibold">No forced password</h3><p class="mt-2 text-sm leading-6 text-ink-400">Email code login stays the default; password can be added later.</p></div>
-            <div class="border-t border-line pt-3"><h3 class="text-sm font-semibold">Projects preserved</h3><p class="mt-2 text-sm leading-6 text-ink-400">Project ownership stays tied to the existing Supabase user id.</p></div>
+        </div>
+
+        <div class="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <article class="feature-panel">
+            <div class="media-slot aspect-[16/10]" data-label="PROJECT LIST" data-caption="UPLOAD PENDING"></div>
+            <h3>Project workspace</h3>
+          </article>
+          <article class="feature-panel">
+            <div class="media-slot aspect-[16/10]" data-label="SIMULATION" data-caption="UPLOAD PENDING"></div>
+            <h3>Full simulation</h3>
+          </article>
+          <article class="feature-panel">
+            <div class="media-slot aspect-[16/10]" data-label="PROJECTOR + LENS" data-caption="UPLOAD PENDING"></div>
+            <h3>Projector / lens</h3>
+          </article>
+          <article class="feature-panel">
+            <div class="media-slot aspect-[16/10]" data-label="STRESS ANALYSIS" data-caption="UPLOAD PENDING"></div>
+            <h3>Stress analysis</h3>
+          </article>
+          <article class="feature-panel">
+            <div class="media-slot aspect-[16/10]" data-label="SHARE LINK" data-caption="UPLOAD PENDING"></div>
+            <h3>Read-only share</h3>
+          </article>
+          <article class="feature-panel">
+            <div class="media-slot aspect-[16/10]" data-label="PDF EXPORT" data-caption="UPLOAD PENDING"></div>
+            <h3>Tech rider export</h3>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cases" class="border-b border-white/10 bg-stage py-20 md:py-28">
+      <div class="mx-auto max-w-[1520px] px-5 md:px-8">
+        <div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
+          <div>
+            <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Cases</p>
+            <h2 class="mt-4 text-4xl font-black uppercase leading-none tracking-normal text-white md:text-6xl">Case studies uploading soon.</h2>
+          </div>
+          <div class="grid gap-4 md:grid-cols-3">
+            <div class="media-slot aspect-[3/4]" data-label="CASE 01" data-caption="UPLOAD PENDING"></div>
+            <div class="media-slot aspect-[3/4]" data-label="CASE 02" data-caption="UPLOAD PENDING"></div>
+            <div class="media-slot aspect-[3/4]" data-label="CASE 03" data-caption="UPLOAD PENDING"></div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section id="roadmap" class="border-b border-white/10 bg-black py-20 md:py-28">
+      <div class="mx-auto max-w-[1520px] px-5 md:px-8">
+        <div class="max-w-3xl">
+          <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Roadmap</p>
+          <h2 class="mt-4 text-4xl font-black uppercase leading-none tracking-normal text-white md:text-6xl">Shipping path</h2>
+        </div>
+        <div class="mt-12 grid gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-3">
+          <div class="roadmap-cell">
+            <span>Now</span>
+            <strong>Public launch accounts</strong>
+            <p>Open signup, project home, simulator access, and founding member preservation.</p>
+          </div>
+          <div class="roadmap-cell">
+            <span>Next</span>
+            <strong>Asset pass</strong>
+            <p>Full simulation hero image, feature captures, and real installation case studies.</p>
+          </div>
+          <div class="roadmap-cell">
+            <span>Later</span>
+            <strong>Paid plans</strong>
+            <p>Billing, founding tester entitlement, team workflows, and deeper equipment verification.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-stage py-16">
+      <div class="mx-auto flex max-w-[1520px] flex-col justify-between gap-6 px-5 md:flex-row md:items-center md:px-8">
+        <div>
+          <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Launch access</p>
+          <h2 class="mt-3 text-3xl font-black uppercase leading-none text-white md:text-5xl">Open the workspace.</h2>
+        </div>
+        <a href="https://app.field-lux.com" class="inline-flex h-12 items-center justify-center bg-brand px-6 text-sm font-black uppercase tracking-[0.1em] text-black hover:bg-brand-hot">Start FieldLux</a>
       </div>
     </section>
   </main>
 
-  <footer class="border-t border-line-subtle bg-black py-8">
-    <div class="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-5 text-xs text-ink-500 md:flex-row md:items-center">
+  <footer class="border-t border-white/10 bg-black py-8">
+    <div class="mx-auto flex max-w-[1520px] flex-col justify-between gap-4 px-5 text-xs text-ink-500 md:flex-row md:items-center md:px-8">
       <div class="flex items-center gap-3">
         <img src="/assets/logo-mark.png" alt="" class="h-7 w-7 object-contain" />
-        <span>FieldLux</span>
+        <span class="font-bold uppercase tracking-[0.14em]">FieldLux</span>
       </div>
       <div class="flex gap-5">
-        <a href="/privacy.html" class="hover:text-ink-200">Privacy</a>
-        <a href="mailto:jay@field-lux.com" class="hover:text-ink-200">jay@field-lux.com</a>
+        <a href="/privacy.html" class="hover:text-brand">Privacy</a>
+        <a href="mailto:jay@field-lux.com" class="hover:text-brand">jay@field-lux.com</a>
       </div>
     </div>
   </footer>

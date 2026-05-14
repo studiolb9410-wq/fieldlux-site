@@ -1,29 +1,32 @@
 # FieldLux Site
 
-Static product site for `field-lux.com`.
+Static marketing/product site for `field-lux.com`.
 
-## Current Positioning
+## Current Direction
 
-This is no longer a closed-beta waitlist page. The site presents FieldLux as a public launch product:
+The page is now structured as a real product site rather than a beta waitlist:
 
-- `Start free` and `Sign in` point to `https://app.field-lux.com`.
-- Existing beta testers are described as Founding Members.
-- The roadmap is state-based: `Available now`, `In active build`, `Later`.
-- The hero uses a real app screenshot at `assets/product-workspace.png`.
+- Full-screen simulation hero slot, intentionally empty until the final visual is supplied.
+- FieldLux logo cyan is the main accent color.
+- Current feature areas are present as blank upload slots.
+- Case studies are marked as uploading soon.
+- Roadmap is status-based: now, next, later.
+
+The visual direction references projection/VJ software sites such as MadMapper and Resolume: dark stage, strong product name, large media surfaces, direct navigation, and minimal explanatory filler.
 
 ## Build
 
 ```bash
-npm ci
+npm install
 npm run build
 ```
 
-The build writes the compiled Tailwind CSS to `assets/tailwind.css`.
+The build regenerates `assets/tailwind.css` from `src/input.css`.
 
 ## Source Files
 
-- `index.html` - product site
-- `privacy.html` - account/project privacy copy
-- `src/input.css` - Tailwind entry and small component utilities
+- `index.html` - main site
+- `privacy.html` - privacy policy
+- `src/input.css` - Tailwind input and custom site components
+- `tailwind.config.js` - color tokens and content paths
 - `assets/logo.png`, `assets/logo-mark.png` - brand assets
-- `assets/product-workspace.png` - app screenshot used in the hero

@@ -4,35 +4,86 @@
 
 @layer base {
   html, body {
-    background: #0A0A0B;
+    background: #050607;
     color: #FAFAFA;
     font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
     color-scheme: dark;
+    overflow-x: hidden;
   }
   ::selection {
-    background: rgba(6, 182, 212, 0.35);
-    color: #fff;
+    background: rgba(32, 213, 222, 0.36);
+    color: #000;
   }
 }
 
 @layer components {
   .grid-bg {
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
     background-size: 40px 40px;
   }
 
+  .hero-pending {
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      radial-gradient(circle at 68% 42%, rgba(32, 213, 222, 0.18), transparent 34%),
+      #050607;
+    background-size: 48px 48px, 48px 48px, auto, auto;
+  }
+  .hero-pending::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 42%;
+    left: clamp(24px, 6vw, 112px);
+    color: rgba(32, 213, 222, 0.92);
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: clamp(0.75rem, 1.35vw, 1.35rem);
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .hero-pending::after {
+    content: attr(data-caption);
+    position: absolute;
+    top: calc(42% + 34px);
+    left: clamp(24px, 6vw, 112px);
+    color: rgba(250, 250, 250, 0.48);
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
   .glow-brand {
-    box-shadow: 0 0 40px rgba(6, 182, 212, 0.15),
-                inset 0 0 0 1px rgba(6, 182, 212, 0.3);
+    box-shadow: 0 0 40px rgba(32, 213, 222, 0.15),
+                inset 0 0 0 1px rgba(32, 213, 222, 0.3);
+  }
+
+  .hero-title {
+    font-size: clamp(3.25rem, 10vw, 10rem);
+    max-width: min(64rem, calc(100vw - 40px));
+  }
+
+  .hero-copy,
+  .hero-actions {
+    max-width: min(42rem, calc(100vw - 40px));
+  }
+  .hero-copy span {
+    display: inline;
   }
 
   .media-slot {
     position: relative;
-    border: 1px dashed rgba(6, 182, 212, 0.4);
-    background: linear-gradient(135deg, rgba(6, 182, 212, 0.04), rgba(255, 255, 255, 0.01));
-    border-radius: 8px;
+    border: 1px solid rgba(32, 213, 222, 0.32);
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(135deg, rgba(32, 213, 222, 0.08), rgba(255, 255, 255, 0.018));
+    background-size: 32px 32px, 32px 32px, auto;
+    border-radius: 2px;
     overflow: hidden;
   }
   .media-slot::before {
@@ -40,16 +91,15 @@
     position: absolute;
     top: 12px;
     left: 12px;
-    padding: 4px 8px;
-    background: rgba(6, 182, 212, 0.15);
-    border: 1px solid rgba(6, 182, 212, 0.4);
-    color: #06B6D4;
+    padding: 5px 8px;
+    background: rgba(0, 0, 0, 0.72);
+    border: 1px solid rgba(32, 213, 222, 0.55);
+    color: #20D5DE;
     font-family: 'Geist Mono', ui-monospace, monospace;
     font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
+    font-weight: 800;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    border-radius: 4px;
     z-index: 10;
   }
   .media-slot::after {
@@ -58,10 +108,13 @@
     bottom: 12px;
     left: 12px;
     right: 12px;
-    color: rgba(161, 161, 170, 0.8);
+    color: rgba(250, 250, 250, 0.5);
     font-size: 11px;
+    font-weight: 700;
     font-family: 'Geist Mono', ui-monospace, monospace;
+    letter-spacing: 0.14em;
     text-align: center;
+    text-transform: uppercase;
   }
   .media-slot img,
   .media-slot video {
@@ -69,6 +122,86 @@
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  .feature-panel {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #080A0B;
+    padding: 12px;
+  }
+  .feature-panel h3 {
+    margin-top: 14px;
+    color: #FAFAFA;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .roadmap-cell {
+    background: #080A0B;
+    min-height: 240px;
+    padding: 24px;
+  }
+  .roadmap-cell span {
+    color: #20D5DE;
+    display: block;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .roadmap-cell strong {
+    color: #FAFAFA;
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-top: 20px;
+    text-transform: uppercase;
+  }
+  .roadmap-cell p {
+    color: rgba(161, 161, 170, 0.92);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 900px) {
+    .mobile-hide-cta {
+      display: none !important;
+    }
+    .hero-title {
+      font-size: clamp(3.1rem, 15vw, 4.25rem);
+      max-width: min(350px, calc(100vw - 40px));
+    }
+    .hero-copy,
+    .hero-actions {
+      max-width: min(350px, calc(100vw - 40px));
+    }
+    .hero-copy span {
+      display: block;
+    }
+    .hero-actions {
+      flex-direction: column;
+    }
+    .hero-actions a {
+      width: 100%;
+    }
+    .hero-pending::before {
+      left: 20px;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-align: left;
+    }
+    .hero-pending::after {
+      left: 20px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-align: left;
+    }
   }
 
   @supports not (aspect-ratio: 1 / 1) {
