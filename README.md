@@ -4,15 +4,21 @@ Static marketing/product site for `field-lux.com`.
 
 ## Current Direction
 
-The page is now structured as a real product site rather than a beta waitlist:
+The page is now structured as a real product site rather than a beta waitlist.
+The 0517 branch focuses on the latest app capabilities from the FieldLux
+workspace:
 
 - Full-screen simulation hero slot, intentionally empty until the final visual is supplied.
-- FieldLux logo cyan is the main accent color.
-- Current feature areas are present as blank upload slots.
-- Case studies are marked as uploading soon.
+- FieldLux heatmap modes: Absolute, Normalized, and Deviation.
+- 13-point FieldLux distribution diagnostics with center, reference average, uniformity, edge, and hotspot metrics.
+- Hover probe messaging for lux, pixel density, peak contribution, lens view, and lit receiver behavior.
+- Cloud share messaging for URL share, Supabase-backed model uploads, read-only viewer, expiry, revoke, and account access.
+- Case study and product media areas are blank upload slots so final images or videos can be attached later.
 - Roadmap is status-based: now, next, later.
 
-The visual direction references projection/VJ software sites such as MadMapper and Resolume: dark stage, strong product name, large media surfaces, direct navigation, and minimal explanatory filler.
+The visual direction references professional projection and VJ software sites:
+dark stage, strong product name, large media surfaces, direct navigation,
+measured product copy, and minimal explanatory filler.
 
 ## Build
 

@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FieldLux - Projection simulation workspace</title>
-  <meta name="description" content="FieldLux is a projection simulation workspace for projector placement, lens planning, stress checks, and client share links." />
+  <title>FieldLux - Projection simulation, lux analysis, and cloud share</title>
+  <meta name="description" content="FieldLux is a projection simulation workspace for projector planning, FieldLux heatmaps, hover measurements, 13-point lux diagnostics, and read-only cloud sharing." />
   <link rel="canonical" href="https://field-lux.com/" />
   <meta property="og:title" content="FieldLux - Projection simulation workspace" />
-  <meta property="og:description" content="Build projection setups before the install day. Public accounts are open during launch." />
+  <meta property="og:description" content="Plan projector placement, analyze lux distribution, inspect hover measurements, and share read-only client views from one workspace." />
   <meta property="og:url" content="https://field-lux.com/" />
   <meta property="og:image" content="https://field-lux.com/assets/logo.png" />
   <link rel="icon" href="/assets/logo-mark.png" />
@@ -16,18 +16,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700;800&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/assets/tailwind.css" />
 </head>
-<body class="bg-stage text-ink-50 antialiased">
-  <header class="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/85 backdrop-blur">
-    <div class="mx-auto flex h-16 max-w-[1520px] items-center justify-between px-5 md:px-8">
-      <a href="/" class="flex items-center gap-3" aria-label="FieldLux home">
-        <img src="/assets/logo-mark.png" alt="" class="h-9 w-9 object-contain" />
-        <span class="nav-brand text-sm font-black uppercase tracking-normal text-white">FieldLux</span>
+<body>
+  <header class="site-header">
+    <div class="site-shell nav-shell">
+      <a href="/" class="brand-lockup" aria-label="FieldLux home">
+        <img src="/assets/logo.png" alt="FieldLux" />
+        <span class="brand-beta">Beta v.2</span>
       </a>
-      <nav class="hidden items-center gap-8 text-[11px] font-bold uppercase tracking-[0.18em] text-ink-400 lg:flex">
-        <a href="#software" class="hover:text-brand">Software</a>
-        <a href="#features" class="hover:text-brand">Features</a>
-        <a href="#cases" class="hover:text-brand">Cases</a>
-        <a href="#roadmap" data-roadmap-open class="hover:text-brand">Roadmap</a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#software">Software</a>
+        <a href="#analysis">Analysis</a>
+        <a href="#roadmap" data-roadmap-open>Roadmap</a>
         <a
           href="#"
           data-discord-link
@@ -35,178 +34,272 @@
           aria-disabled="true"
           aria-label="Join Discord"
           class="nav-discord-link"
-        >Join Discord</a>
+        >Discord</a>
       </nav>
-      <div class="flex items-center gap-2">
-        <a href="https://app.field-lux.com" data-app-link class="mobile-hide-cta hidden h-10 items-center border border-white/15 bg-white/5 px-4 text-xs font-bold uppercase tracking-[0.12em] text-ink-200 hover:border-brand/70 hover:text-white sm:inline-flex">Sign in</a>
-        <a href="https://app.field-lux.com" data-app-link class="mobile-hide-cta hidden h-10 items-center bg-brand px-4 text-xs font-black uppercase tracking-[0.1em] text-black hover:bg-brand-hot sm:inline-flex">Start free</a>
+      <div class="nav-actions">
+        <a href="https://app.field-lux.com" data-app-link class="button button-ghost mobile-hide-cta">Sign in</a>
+        <a href="https://app.field-lux.com" data-app-link class="button button-solid">Start free</a>
       </div>
     </div>
   </header>
 
   <main>
-    <section class="relative min-h-screen overflow-hidden bg-black pt-16">
-      <div class="hero-pending absolute inset-0" data-label="FULL SIMULATION IMAGE" data-caption="UPLOAD PENDING"></div>
-      <div class="stage-overlay absolute inset-0 bg-[linear-gradient(90deg,#000_0%,rgba(0,0,0,0.88)_26%,rgba(0,0,0,0.38)_62%,rgba(0,0,0,0.72)_100%)]"></div>
-      <div class="stage-overlay absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(0deg,#050607_0%,rgba(5,6,7,0)_100%)]"></div>
-      <div class="hero-content mx-auto flex min-h-[calc(100vh-64px)] max-w-[1520px] items-end px-5 pb-16 pt-24 md:px-8 md:pb-20">
-        <div class="w-full min-w-0 max-w-4xl">
-          <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Projection simulation workspace</p>
-          <h1 class="hero-title mt-5 font-black uppercase leading-[0.82] tracking-normal text-white">
-            FieldLux
-          </h1>
-          <p class="hero-copy mt-7 text-lg leading-8 text-ink-200">
-            <span>Plan projector placement, lens behavior,</span>
-            <span>screen coverage, stress margin, and</span>
-            <span>client share from one project workspace.</span>
+    <section class="hero-section">
+      <div class="hero-media-slot has-media" data-label="FULL WORKSPACE MEDIA SLOT" data-caption="Replace with final image or video">
+        <img src="/assets/media/hero-stitch-01.png" alt="FieldLux heatmap workspace preview" />
+      </div>
+      <div class="hero-wash"></div>
+      <div class="site-shell hero-layout">
+        <div class="hero-copy">
+          <p class="kicker">Projection simulation workspace</p>
+          <h1>FieldLux</h1>
+          <p>
+            Plan projector layouts, inspect lux coverage, and share a read-only
+            client view from the same scene.
           </p>
-          <div class="hero-actions mt-8 flex flex-wrap gap-3">
-            <a href="https://app.field-lux.com" data-app-link class="inline-flex h-12 items-center justify-center bg-white px-5 text-sm font-black uppercase tracking-[0.1em] text-black hover:bg-brand">Create account</a>
-            <a href="#software" class="inline-flex h-12 items-center justify-center border border-white/20 bg-black/45 px-5 text-sm font-bold uppercase tracking-[0.1em] text-white hover:border-brand hover:text-brand">View software</a>
+          <div class="hero-actions">
+            <a href="https://app.field-lux.com" data-app-link class="button button-light">Start free</a>
+            <a href="#analysis" class="button button-ghost">Explore analysis tools</a>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section id="software" class="border-y border-white/10 bg-stage py-20 md:py-28">
-      <div class="mx-auto max-w-[1520px] px-5 md:px-8">
-        <div class="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-end">
+        <div class="hero-readout" aria-label="FieldLux build highlights">
           <div>
-            <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Software</p>
-            <h2 class="mt-4 max-w-3xl text-4xl font-black uppercase leading-none tracking-normal text-white md:text-6xl">
-              A working surface before the real surface.
-            </h2>
+            <span>Heatmap modes</span>
+            <strong>Absolute, Norm, Deviation</strong>
           </div>
-          <div class="grid gap-3 sm:grid-cols-3">
-            <div class="border-l border-brand pl-4">
-              <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500">01</div>
-              <div class="mt-3 text-sm font-black uppercase tracking-[0.1em] text-white">Projects</div>
-            </div>
-            <div class="border-l border-brand pl-4">
-              <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500">02</div>
-              <div class="mt-3 text-sm font-black uppercase tracking-[0.1em] text-white">Simulator</div>
-            </div>
-            <div class="border-l border-brand pl-4">
-              <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500">03</div>
-              <div class="mt-3 text-sm font-black uppercase tracking-[0.1em] text-white">Client Share</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="software-gallery mt-12">
-          <div class="media-slot software-gallery-main" data-label="SOFTWARE IMAGE" data-caption="UPLOAD PENDING"></div>
-          <div class="software-gallery-side">
-            <div class="media-slot" data-label="PROJECT HOME" data-caption="UPLOAD PENDING"></div>
-            <div class="media-slot" data-label="EDITOR DETAIL" data-caption="UPLOAD PENDING"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="features" class="border-b border-white/10 bg-black py-20 md:py-28">
-      <div class="mx-auto max-w-[1520px] px-5 md:px-8">
-        <div class="flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Current build</p>
-            <h2 class="mt-4 text-4xl font-black uppercase leading-none tracking-normal text-white md:text-6xl">Feature slots</h2>
+            <span>Field probes</span>
+            <strong>13pt distribution + hover lux</strong>
           </div>
-          <p class="max-w-xl text-sm leading-7 text-ink-400">
-            Visuals will be replaced with final product captures. The structure is ready; assets stay empty until upload.
-          </p>
-        </div>
-
-        <div class="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          <article class="feature-panel">
-            <div class="media-slot aspect-[16/10]" data-label="PROJECT LIST" data-caption="UPLOAD PENDING"></div>
-            <h3>Project workspace</h3>
-          </article>
-          <article class="feature-panel">
-            <div class="media-slot aspect-[16/10]" data-label="SIMULATION" data-caption="UPLOAD PENDING"></div>
-            <h3>Full simulation</h3>
-          </article>
-          <article class="feature-panel">
-            <div class="media-slot aspect-[16/10]" data-label="PROJECTOR + LENS" data-caption="UPLOAD PENDING"></div>
-            <h3>Projector / lens</h3>
-          </article>
-          <article class="feature-panel">
-            <div class="media-slot aspect-[16/10]" data-label="STRESS ANALYSIS" data-caption="UPLOAD PENDING"></div>
-            <h3>Stress analysis</h3>
-          </article>
-          <article class="feature-panel">
-            <div class="media-slot aspect-[16/10]" data-label="SHARE LINK" data-caption="UPLOAD PENDING"></div>
-            <h3>Read-only share</h3>
-          </article>
-          <article class="feature-panel">
-            <div class="media-slot aspect-[16/10]" data-label="PDF EXPORT" data-caption="UPLOAD PENDING"></div>
-            <h3>Tech rider export</h3>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="cases" class="border-b border-white/10 bg-stage py-20 md:py-28">
-      <div class="mx-auto max-w-[1520px] px-5 md:px-8">
-        <div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
           <div>
-            <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Cases</p>
-            <h2 class="mt-4 text-4xl font-black uppercase leading-none tracking-normal text-white md:text-6xl">Case studies uploading soon.</h2>
-          </div>
-          <div class="grid gap-4 md:grid-cols-3">
-            <div class="media-slot aspect-[3/4]" data-label="CASE 01" data-caption="UPLOAD PENDING"></div>
-            <div class="media-slot aspect-[3/4]" data-label="CASE 02" data-caption="UPLOAD PENDING"></div>
-            <div class="media-slot aspect-[3/4]" data-label="CASE 03" data-caption="UPLOAD PENDING"></div>
+            <span>Share path</span>
+            <strong>URL, Cloud, Account access</strong>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="roadmap" class="border-b border-white/10 bg-black py-20 md:py-28">
-      <div class="mx-auto max-w-[1520px] px-5 md:px-8">
-        <div class="max-w-3xl">
-          <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Roadmap</p>
-          <h2 class="mt-4 text-4xl font-black uppercase leading-none tracking-normal text-white md:text-6xl">Shipping path</h2>
+    <section id="software" class="section section-stage">
+      <div class="site-shell split-heading software-heading">
+        <div>
+          <p class="kicker">Software</p>
+          <h2>
+            <span>A working model</span>
+            <span>before the real room is built.</span>
+          </h2>
         </div>
-        <div class="mt-12 grid gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-3">
+        <p>
+          <span>The current app combines projector layout, lens behavior, imported models,</span>
+          <span>target surfaces, analysis, export, and sharing in one production-oriented workspace.</span>
+        </p>
+      </div>
+
+      <div class="site-shell software-grid">
+        <div class="media-slot media-large has-media software-video-slot" style="--media-ratio: 1918 / 942;" data-label="MAIN PRODUCT VIDEO SLOT" data-caption="Add product video or short loop">
+          <video autoplay muted loop playsinline preload="metadata" aria-label="FieldLux software workflow preview">
+            <source src="/assets/media/software-demo.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="software-notes">
+          <div class="note-row">
+            <span>01</span>
+            <strong>Project home</strong>
+            <p>Saved projects, account access, cloud restore, and sample scenes for fast entry.</p>
+          </div>
+          <div class="note-row">
+            <span>02</span>
+            <strong>3D simulation</strong>
+            <p>Projectors, lenses, imported models, rooms, target surfaces, and reference media share one scene logic.</p>
+          </div>
+          <div class="note-row">
+            <span>03</span>
+            <strong>Cloud share</strong>
+            <p>Create read-only client links, manage account access, restore cloud projects, and revoke shared views when plans change.</p>
+          </div>
+          <div class="note-row">
+            <span>04</span>
+            <strong>Output handoff</strong>
+            <p>Export analysis summaries, PDF reports, and final review materials without rebuilding the scene.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="analysis" class="section section-black">
+      <div class="site-shell split-heading analysis-heading">
+        <div>
+          <p class="kicker">FieldLux analysis</p>
+          <h2>
+            <span>Three heatmap views,</span>
+            <span>one shared lux model.</span>
+          </h2>
+        </div>
+        <p>
+          <span>FieldLux uses the same lux model for heatmap rendering, 13-point diagnostics,</span>
+          <span>hover probes, lens views, and shared client readouts.</span>
+        </p>
+      </div>
+
+      <div class="site-shell analysis-layout">
+        <div class="analysis-panel">
+          <div class="panel-topline">
+            <span>3 Heatmap Views</span>
+          </div>
+          <div class="heatmap-mode-grid">
+            <article>
+              <span>Absolute</span>
+              <strong>0 lx to max lux</strong>
+              <p>Shows the projected field against a user-defined lux scale.</p>
+            </article>
+            <article>
+              <span>Normalized</span>
+              <strong>Below / at / above reference</strong>
+              <p>Compares each point against the configured reference lux.</p>
+            </article>
+            <article>
+              <span>Deviation</span>
+              <strong>+/- target deviation</strong>
+              <p>Shows how far each area is from the reference using +/-10%, +/-20%, or +/-30% scales.</p>
+            </article>
+          </div>
+          <div class="meter-strip" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="metric-grid">
+            <div><span>Center</span><strong>Center lux</strong></div>
+            <div><span>Reference avg</span><strong>9-point mean</strong></div>
+            <div><span>Uniformity</span><strong>Mean uniformity</strong></div>
+            <div><span>Edges</span><strong>Min / Max</strong></div>
+            <div><span>Hotspot</span><strong>Center-to-corner + CV</strong></div>
+            <div><span>Sample set</span><strong>13 points</strong></div>
+          </div>
+        </div>
+        <div class="media-stack">
+          <div class="media-slot has-media heatmap-triptych-slot" data-label="HEATMAP MODE" data-caption="Add Absolute / Norm / Deviation loop">
+            <span class="media-label-badge">Heatmap mode</span>
+            <div class="heatmap-triptych" aria-label="Absolute, normalized, and deviation heatmap modes">
+              <img src="/assets/media/analysis-heatmap-absolute.png" alt="Absolute heatmap mode panel" />
+              <img src="/assets/media/analysis-heatmap-norm.png" alt="Normalized heatmap mode panel" />
+              <img class="heatmap-deviation-img" src="/assets/media/analysis-heatmap-deviation.png" alt="Deviation heatmap mode panel" />
+            </div>
+          </div>
+          <div class="media-slot has-media analysis-wide-slot" data-label="13PT DISTRIBUTION" data-caption="Add 13-point, hover, and lens view demo">
+            <span class="media-label-badge">13pt distribution</span>
+            <img src="/assets/media/analysis-13pt-diagnostics.png" alt="13-point lux diagnostics over the projected facade" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="probe" class="section section-stage">
+      <div class="site-shell split-heading probe-heading">
+        <div>
+          <p class="kicker">Hover measurements</p>
+          <h2>
+            <span>Measure the surface under your cursor,</span>
+            <span>not after export.</span>
+          </h2>
+        </div>
+        <p>
+          <span>FieldLux shows point-level lux and pixel density directly in the viewport.</span>
+          <span>The probe follows the lit receiver surface, ignores unlit or occluded areas, and reveals overlap contribution when multiple projectors stack.</span>
+        </p>
+      </div>
+
+      <div class="site-shell probe-grid">
+        <div class="media-slot has-media probe-video-slot" style="--media-ratio: 1912 / 942;" data-label="LIVE SURFACE PROBE" data-caption="Add cursor measurement demo">
+          <video autoplay muted loop playsinline preload="metadata" aria-label="FieldLux live surface probe demo">
+            <source src="/assets/media/hover-probe-demo.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="probe-list">
+          <div>
+            <span>Lux at point</span>
+            <strong>Total lux at the cursor</strong>
+          </div>
+          <div>
+            <span>Pixel density</span>
+            <strong>mm/px at the same hit point</strong>
+          </div>
+          <div>
+            <span>Projector context</span>
+            <strong>Lens view + selected distribution</strong>
+          </div>
+          <div>
+            <span>Receiver safety</span>
+            <strong>Hidden on occluded or unlit surfaces</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="roadmap" class="section section-stage">
+      <div class="site-shell">
+        <div class="narrow-heading">
+          <p class="kicker">Roadmap</p>
+          <h2>Open beta focus.</h2>
+        </div>
+        <div class="roadmap-grid">
           <div class="roadmap-cell">
             <span>Now</span>
-            <strong>Current build</strong>
-            <ul class="roadmap-list">
-              <li>Open signup and password / Google sign-in</li>
-              <li>Project home with saved project entry</li>
-              <li>Projector placement, lens behavior, screen coverage, and shift planning</li>
-              <li>Analysis, stress checks, PDF export, and client share links</li>
+            <strong>Core preflight workflow</strong>
+            <ul>
+              <li>Real projectors, lenses, throw, and lens-shift controls</li>
+              <li>Imported models, rooms, surfaces, photos, and LED walls</li>
+              <li>Absolute, normalized, and deviation lux heatmaps</li>
+              <li>13-point diagnostics, hover lux, pixel density, and lens view</li>
+              <li>Multi-projector overlap and peak contribution review</li>
+              <li>PDF export, cloud share, and read-only client viewer</li>
             </ul>
           </div>
           <div class="roadmap-cell">
             <span>Next</span>
             <strong>Installation intelligence</strong>
-            <ul class="roadmap-list">
-              <li>Desktop app migration activation</li>
-              <li>Calibration workflow for real site alignment</li>
+            <ul>
+              <li>Calibration workflow for on-site correction gain</li>
               <li>Lighting fixture registration and equipment profiles</li>
-              <li>Projection install stress analysis for mixed projector, lighting, and LED wall projects</li>
+              <li>Projection, lighting, and LED wall stress analysis in one review</li>
+              <li>Clearer desktop app migration and recovery paths</li>
             </ul>
           </div>
           <div class="roadmap-cell">
             <span>Later</span>
-            <strong>Paid plans</strong>
-            <ul class="roadmap-list">
-              <li>Billing and founding tester entitlement</li>
-              <li>Team workflows, shared libraries, and permission control</li>
-              <li>Deeper equipment verification and manufacturer data coverage</li>
+            <strong>Team operations &amp; integrations</strong>
+            <ul>
+              <li>Founding tester access and plan management</li>
+              <li>Shared libraries, permissions, and account-based review access</li>
+              <li>Expanded manufacturer verification and catalog governance</li>
+              <li>Managed storage cleanup for long-running project libraries</li>
+              <li>Spout / Syphon output for external production workflows</li>
+              <li>Studio workflows for multi-user production teams</li>
             </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="bg-stage py-16">
-      <div class="mx-auto flex max-w-[1520px] flex-col justify-between gap-6 px-5 md:flex-row md:items-center md:px-8">
-        <div>
-          <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Launch access</p>
-          <h2 class="mt-3 text-3xl font-black uppercase leading-none text-white md:text-5xl">Open the workspace.</h2>
+    <section class="community-cta">
+      <div class="site-shell community-cta-inner">
+        <div class="community-divider" aria-hidden="true"></div>
+        <p class="community-label">Join the Discord community</p>
+        <div class="community-actions">
+          <a
+            href="https://discord.gg/JpeQ7Hgsnd"
+            data-discord-link
+            class="discord-button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M19.5 5.3A16.8 16.8 0 0 0 15.3 4l-.2.4c1.4.4 2 .9 2.8 1.6a12 12 0 0 0-4.8-1.2h-.4A12 12 0 0 0 7.9 6c.8-.7 1.6-1.2 2.8-1.6L10.5 4a16.8 16.8 0 0 0-4.2 1.3C3.7 9.1 3 12.7 3.3 16.2A16.9 16.9 0 0 0 8.4 19l.8-1.1a10.8 10.8 0 0 1-1.7-.8l.4-.3a12.4 12.4 0 0 0 8.2 0l.4.3c-.5.3-1.1.6-1.7.8l.8 1.1a16.9 16.9 0 0 0 5.1-2.8c.5-4-.7-7.6-3.2-10.9ZM9.4 14.2c-.8 0-1.4-.7-1.4-1.5s.6-1.5 1.4-1.5 1.4.7 1.4 1.5-.6 1.5-1.4 1.5Zm5.2 0c-.8 0-1.4-.7-1.4-1.5s.6-1.5 1.4-1.5 1.4.7 1.4 1.5-.6 1.5-1.4 1.5Z" />
+            </svg>
+            Join FieldLux Discord
+            <span>-> #beta-access</span>
+          </a>
         </div>
-        <a href="https://app.field-lux.com" data-app-link class="inline-flex h-12 items-center justify-center bg-brand px-6 text-sm font-black uppercase tracking-[0.1em] text-black hover:bg-brand-hot">Start FieldLux</a>
+        <p class="community-copy">
+          Showcase your scenes, share analysis results, and discuss projection prescriptions with the core team.
+        </p>
       </div>
     </section>
   </main>
@@ -216,61 +309,65 @@
     <section class="roadmap-modal__panel">
       <div class="roadmap-modal__header">
         <div>
-          <p class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand">Roadmap</p>
-          <h2 id="roadmap-modal-title">FieldLux shipping path</h2>
+          <p class="kicker">Roadmap</p>
+          <h2 id="roadmap-modal-title">Open beta focus.</h2>
         </div>
         <button type="button" data-roadmap-close aria-label="Close roadmap">Close</button>
       </div>
       <div class="roadmap-modal__grid">
         <div class="roadmap-cell">
           <span>Now</span>
-          <strong>Current build</strong>
-          <ul class="roadmap-list">
-            <li>Open signup and password / Google sign-in</li>
-            <li>Project home with saved project entry</li>
-            <li>Projector placement, lens behavior, screen coverage, and shift planning</li>
-            <li>Analysis, stress checks, PDF export, and client share links</li>
+          <strong>Core preflight workflow</strong>
+          <ul>
+            <li>Real projectors, lenses, throw, and lens-shift controls</li>
+            <li>Imported models, rooms, surfaces, photos, and LED walls</li>
+            <li>Absolute, normalized, and deviation lux heatmaps</li>
+            <li>13-point diagnostics, hover lux, pixel density, and lens view</li>
+            <li>Multi-projector overlap and peak contribution review</li>
+            <li>PDF export, cloud share, and read-only client viewer</li>
           </ul>
         </div>
         <div class="roadmap-cell">
           <span>Next</span>
           <strong>Installation intelligence</strong>
-          <ul class="roadmap-list">
-            <li>Desktop app migration activation</li>
-            <li>Calibration workflow for real site alignment</li>
+          <ul>
+            <li>Calibration workflow for on-site correction gain</li>
             <li>Lighting fixture registration and equipment profiles</li>
-            <li>Projection install stress analysis for mixed projector, lighting, and LED wall projects</li>
+            <li>Projection, lighting, and LED wall stress analysis in one review</li>
+            <li>Clearer desktop app migration and recovery paths</li>
           </ul>
         </div>
         <div class="roadmap-cell">
           <span>Later</span>
-          <strong>Paid plans</strong>
-          <ul class="roadmap-list">
-            <li>Billing and founding tester entitlement</li>
-            <li>Team workflows, shared libraries, and permission control</li>
-            <li>Deeper equipment verification and manufacturer data coverage</li>
+          <strong>Team operations &amp; integrations</strong>
+          <ul>
+            <li>Founding tester access and plan management</li>
+            <li>Shared libraries, permissions, and account-based review access</li>
+            <li>Expanded manufacturer verification and catalog governance</li>
+            <li>Managed storage cleanup for long-running project libraries</li>
+            <li>Spout / Syphon output for external production workflows</li>
+            <li>Studio workflows for multi-user production teams</li>
           </ul>
         </div>
       </div>
     </section>
   </div>
 
-  <footer class="border-t border-white/10 bg-black py-8">
-    <div class="mx-auto flex max-w-[1520px] flex-col justify-between gap-4 px-5 text-xs text-ink-500 md:flex-row md:items-center md:px-8">
-      <div class="flex items-center gap-3">
-        <img src="/assets/logo-mark.png" alt="" class="h-7 w-7 object-contain" />
-        <span class="font-bold uppercase tracking-[0.14em]">FieldLux</span>
-      </div>
-      <div class="flex gap-5">
-        <a href="/privacy.html" class="hover:text-brand">Privacy</a>
-        <a href="mailto:jay@field-lux.com" class="hover:text-brand">jay@field-lux.com</a>
+  <footer class="site-footer">
+    <div class="site-shell footer-inner">
+      <p class="footer-meta">&copy; 2026 FieldLux &middot; Beta v.2</p>
+      <div class="footer-links">
+        <a href="/privacy.html">privacy</a>
+        <a href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">discord</a>
+        <a href="mailto:jay@field-lux.com">jay@field-lux.com</a>
       </div>
     </div>
   </footer>
+
   <script>
     (() => {
       const defaultAppUrl = 'https://app.field-lux.com';
-      const defaultDiscordUrl = 'https://discord.com/invite/JpeQ7Hgsnd';
+      const defaultDiscordUrl = 'https://discord.gg/JpeQ7Hgsnd';
       const params = new URLSearchParams(window.location.search);
       const suppliedUrl = params.get('flowAppUrl') || window.localStorage.getItem('fieldlux_flow_app_url');
       const suppliedDiscordUrl = params.get('discordUrl') || window.localStorage.getItem('fieldlux_discord_url');
@@ -330,6 +427,8 @@
         const hasInvite = discordUrl !== '#';
         link.href = discordUrl;
         link.setAttribute('aria-disabled', hasInvite ? 'false' : 'true');
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
         link.title = link.dataset.tooltip || '';
         link.addEventListener('click', (event) => {
           if (!hasInvite) {
@@ -367,9 +466,6 @@
         }
       });
 
-      if (window.location.hash === '#roadmap') {
-        window.setTimeout(openRoadmap, 50);
-      }
     })();
   </script>
 </body>
