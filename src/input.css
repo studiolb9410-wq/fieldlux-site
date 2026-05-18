@@ -45,6 +45,18 @@
     margin-inline: auto;
   }
 
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  img,
+  video,
+  svg {
+    max-width: 100%;
+  }
+
   .site-header {
     position: fixed;
     inset: 0 0 auto;
@@ -1184,13 +1196,44 @@
       width: min(100% - 32px, 1520px);
     }
 
+    .nav-shell {
+      width: min(100% - 24px, 1720px);
+      min-height: 58px;
+      gap: 12px;
+    }
+
+    .brand-lockup {
+      gap: 8px;
+    }
+
+    .brand-lockup img {
+      height: 34px;
+      max-width: 140px;
+    }
+
+    .brand-beta {
+      display: none;
+    }
+
+    .nav-actions {
+      flex: 0 0 auto;
+      gap: 0;
+    }
+
     .mobile-hide-cta {
       display: none;
     }
 
+    .button {
+      min-height: 40px;
+      padding-inline: 13px;
+      font-size: 11px;
+    }
+
     .hero-layout {
       gap: 34px;
-      padding-top: 104px;
+      min-height: auto;
+      padding-top: 96px;
       padding-bottom: 48px;
     }
 
@@ -1223,6 +1266,62 @@
       grid-template-columns: 1fr;
     }
 
+    .hero-actions {
+      align-items: stretch;
+      flex-direction: column;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .hero-actions .button {
+      width: 100%;
+      white-space: normal;
+      text-align: center;
+    }
+
+    .split-heading h2,
+    .narrow-heading h2,
+    .probe-layout h2,
+    .software-heading h2,
+    .probe-heading h2 {
+      font-size: clamp(2.35rem, 13vw, 3.6rem);
+      line-height: 0.98;
+    }
+
+    .split-heading > p,
+    .section-copy,
+    .software-heading > p,
+    .analysis-heading > p,
+    .probe-heading > p {
+      max-width: 100%;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .software-grid,
+    .probe-grid {
+      margin-top: 32px;
+      gap: 14px;
+    }
+
+    .software-notes {
+      grid-template-rows: none;
+      height: auto;
+    }
+
+    .note-row,
+    .probe-grid .probe-list div {
+      min-height: auto;
+      padding: 16px;
+    }
+
+    .note-row p,
+    .share-step p,
+    .roadmap-cell li {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     .hero-readout div + div,
     .metric-grid div,
     .metric-grid div:not(:nth-child(3n)),
@@ -1240,6 +1339,30 @@
     .media-tall,
     .media-portrait {
       min-height: 360px;
+    }
+
+    .software-video-slot,
+    .probe-video-slot {
+      min-height: 0;
+      aspect-ratio: 16 / 10;
+    }
+
+    .heatmap-triptych-slot,
+    .analysis-wide-slot {
+      min-height: 220px;
+    }
+
+    .heatmap-mode-grid article,
+    .metric-grid div,
+    .probe-list div,
+    .share-step,
+    .workflow-rail div {
+      min-height: auto;
+    }
+
+    .roadmap-cell {
+      min-height: auto;
+      padding: 24px;
     }
 
     .share-grid,
@@ -1263,6 +1386,141 @@
 
     .roadmap-modal__header button {
       width: 100%;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .site-shell {
+      width: min(100% - 24px, 1520px);
+    }
+
+    .section {
+      padding-block: 58px;
+    }
+
+    .hero-section {
+      min-height: auto;
+    }
+
+    .hero-wash {
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.34) 42%, #000 100%),
+        linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.72) 52%, rgba(0, 0, 0, 0.24) 100%);
+    }
+
+    .hero-layout {
+      width: min(100% - 24px, 1720px);
+      gap: 28px;
+      padding-top: 88px;
+      padding-bottom: 34px;
+    }
+
+    .hero-copy h1 {
+      margin-top: 14px;
+      font-size: clamp(2.9rem, 16vw, 3.7rem);
+      line-height: 0.9;
+      overflow-wrap: anywhere;
+    }
+
+    .hero-copy p:not(.kicker) {
+      margin-top: 18px;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .hero-readout {
+      width: 100%;
+    }
+
+    .media-large,
+    .media-tall,
+    .media-portrait {
+      min-height: 260px;
+    }
+
+    .software-video-slot,
+    .probe-video-slot {
+      min-height: 0;
+      aspect-ratio: 4 / 3;
+    }
+
+    .heatmap-triptych {
+      grid-template-columns: 1fr;
+    }
+
+    .heatmap-triptych-slot {
+      min-height: 560px;
+    }
+
+    .analysis-wide-slot {
+      min-height: 240px;
+    }
+
+    .panel-topline,
+    .community-label,
+    .footer-meta {
+      overflow-wrap: anywhere;
+    }
+
+    .analysis-panel {
+      padding: 18px;
+    }
+
+    .roadmap-grid {
+      margin-top: 30px;
+    }
+
+    .community-cta-inner {
+      width: min(100% - 24px, 760px);
+    }
+
+    .discord-button {
+      width: 100%;
+      min-height: auto;
+      flex-wrap: wrap;
+      padding: 12px 14px;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .discord-button span {
+      width: 100%;
+    }
+
+    .footer-links {
+      flex-wrap: wrap;
+      gap: 10px 16px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .nav-shell {
+      width: min(100% - 20px, 1720px);
+    }
+
+    .brand-lockup img {
+      height: 30px;
+      max-width: 118px;
+    }
+
+    .nav-actions .button-solid {
+      min-height: 36px;
+      padding-inline: 10px;
+      font-size: 10px;
+    }
+
+    .hero-layout,
+    .site-shell,
+    .community-cta-inner {
+      width: min(100% - 20px, 1520px);
+    }
+
+    .hero-actions {
+      max-width: none;
+    }
+
+    .roadmap-cell {
+      padding: 20px;
     }
   }
 }
