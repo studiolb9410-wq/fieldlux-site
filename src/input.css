@@ -1217,11 +1217,11 @@
 
     .nav-actions {
       flex: 0 0 auto;
-      gap: 0;
+      gap: 6px;
     }
 
     .mobile-hide-cta {
-      display: none;
+      display: inline-flex;
     }
 
     .button {
@@ -1506,6 +1506,12 @@
     .nav-actions .button-solid {
       min-height: 36px;
       padding-inline: 10px;
+      font-size: 10px;
+    }
+
+    .nav-actions .button-ghost {
+      min-height: 36px;
+      padding-inline: 9px;
       font-size: 10px;
     }
 
