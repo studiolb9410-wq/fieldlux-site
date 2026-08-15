@@ -1,40 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./index.html', './privacy.html', './src/**/*.{html,js}'],
+  content: ['./*.html', './src/**/*.{html,js}'],
   theme: {
     extend: {
       colors: {
-        ink: {
-          50:  '#FAFAFA',
-          200: '#E4E4E7',
-          400: '#A1A1AA',
-          500: '#71717A',
-          700: '#3F3F46',
-        },
-        surface: {
-          base:     '#0A0A0B',
-          elevated: '#111114',
-          raised:   '#1A1A1E',
-        },
-        stage: '#050607',
-        line: {
-          DEFAULT:  '#27272A',
-          subtle:   '#1F1F22',
-        },
-        brand: {
-          DEFAULT: '#20D5DE',
-          hot:     '#00B8C8',
-          dim:     '#087B86',
-          muted:   'rgba(32, 213, 222, 0.08)',
-          ring:    'rgba(32, 213, 222, 0.3)',
-        },
-        success: '#22C55E',
-        warning: '#F59E0B',
-        danger:  '#EF4444',
+        paper: '#FFFFFF',
+        surface: { 100:'#F4F6F7', 200:'#EBEEEF', tint:'#ECFBFC' },
+        ink:   { 300:'#8A959B', 400:'#626E74', 500:'#566268', 700:'#2A3338',
+                 900:'#0B0F11', 950:'#020102' },
+        brand: { 100:'#ECFBFC', 200:'#C9F4F7', 300:'#7FE4EA', 400:'#3FD3DF',
+                 500:'#20D5DE', 600:'#00B1C4', 700:'#008DA6', 800:'#006E87',
+                 900:'#00566B', 950:'#003F4E' },
+        mass:  { 800:'#0B4A5C', 900:'#073644', 950:'#04252D' },
+        line:  { DEFAULT:'#E4E8EA', strong:'#C9D0D3', control:'#626E74' },
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        mono: ['Manrope', 'Geist', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['Geologica','Pretendard Variable','Pretendard','Apple SD Gothic Neo','sans-serif'],
+        sans:    ['Pretendard Variable','Pretendard','-apple-system','Apple SD Gothic Neo','sans-serif'],
       },
     },
   },

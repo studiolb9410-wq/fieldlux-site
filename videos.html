@@ -1,0 +1,1893 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Feature videos: every FieldLux tool, in the shipped app | FieldLux</title>
+  <meta name="description" content="Short explainer videos for each FieldLux feature: projector optics, edge blending, warp and masks, lux heatmaps, 13-point diagnostics, and read-only client sharing.">
+  <link rel="canonical" href="https://field-lux.com/videos">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FieldLux">
+  <meta property="og:title" content="FieldLux feature videos">
+  <meta property="og:description" content="One short clip per feature, recorded in the shipped app.">
+  <meta property="og:url" content="https://field-lux.com/videos">
+  <!-- Section 8.2 A2. og-videos.png does not exist yet; until it does this page falls
+       back to the shipped og-card.png. A social card that 404s renders blank. -->
+  <meta property="og:image" content="https://field-lux.com/assets/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FieldLux feature videos">
+  <meta name="twitter:image" content="https://field-lux.com/assets/og-card.png">
+
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="/assets/favicon-16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/assets/logo-mark-180.png">
+
+  <link rel="preload" href="/assets/fonts/geologica-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/pretendard/PretendardVariable.subset.91.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Section 7.7 performance budget: preload the first three posters. Nothing is
+       published yet, so assets/media/features/ is empty and there is nothing to
+       preload. Add one line per poster as clips land, top three only. -->
+
+  <link rel="stylesheet" href="/assets/tailwind.css">
+
+  <script>
+    /* Motion preference, read before first paint (spec 5.9). Tri-state: on / off / follow OS. */
+    (function () {
+      try {
+        var m = window.localStorage.getItem('fieldlux_motion');
+        if (m === 'on' || m === 'off') { document.documentElement.setAttribute('data-motion', m); }
+      } catch (e) { /* storage blocked: follow the OS */ }
+    })();
+  </script>
+
+  <!-- Section 7.7. Structured data for the videos that actually exist. A VideoObject
+       whose contentUrl 404s is a Search Console error and a claim the site
+       cannot back. It is the exact failure this product argues against. Nothing is
+       published yet, so the list is empty and no VideoObject is emitted.
+       The owner extends this block by one entry per upload, in the same commit
+       as the two class edits described above the grid: position, name,
+       description, thumbnailUrl, contentUrl, uploadDate (the real upload day),
+       duration (ISO-8601, e.g. PT45S). Pending slots emit nothing. -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "FieldLux feature videos",
+  "itemListElement": []
+}
+  </script>
+</head>
+<body class="videos-page">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="site-shell nav-shell">
+      <a class="brand-lockup" href="/" aria-label="FieldLux home">
+        <img class="brand-lockup-img" src="/assets/logo-ink.png" width="154" height="45" alt="FieldLux">
+        <span class="brand-beta">BETA</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a class="nav-link" href="/#product">Product</a>
+        <a class="nav-link" href="/#measure">Measurement</a>
+        <a class="nav-link" href="/videos" aria-label="Feature videos" aria-current="page">Videos</a>
+        <a class="nav-link" href="/#limits">Limits</a>
+        <a class="nav-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link data-tooltip="Official FieldLux community: beta access, catalogue submissions and bug reports." target="_blank" rel="noopener noreferrer">Discord</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn btn--outline btn--sm" href="https://app.field-lux.com" data-app-link>Sign in</a>
+        <a class="btn btn--solid btn--sm" href="https://app.field-lux.com" data-app-link>Start free</a>
+      </div>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-overlay">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="u-visually-hidden">Menu</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="nav-overlay" id="nav-overlay" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <div class="nav-overlay-inner">
+      <ul class="nav-overlay-list">
+        <li>
+          <a class="nav-overlay-link" href="/#product">
+            <span class="nav-overlay-index" aria-hidden="true">(01)</span>
+            <span>Product</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="/#measure">
+            <span class="nav-overlay-index" aria-hidden="true">(02)</span>
+            <span>Measurement</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="/videos" aria-current="page">
+            <span class="nav-overlay-index" aria-hidden="true">(03)</span>
+            <span>Videos</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="/#limits">
+            <span class="nav-overlay-index" aria-hidden="true">(04)</span>
+            <span>Limits</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">
+            <span class="nav-overlay-index" aria-hidden="true">(05)</span>
+            <span>Discord</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <main class="site-main" id="main" tabindex="-1">
+
+    <!-- == V1: Video masthead ================================================
+         Same section grammar as the home page: micro-label spine carrying the
+         ordinal and the name, then the display-type claim, then the lead.
+         (section 4.6, section 6.) -->
+    <section class="video-hero section section--pad-sm" aria-labelledby="video-hero-title">
+      <div class="site-shell">
+        <p class="micro-label">
+          <span class="micro-label-ord">(00)</span>
+          <span class="micro-label-name">FEATURE VIDEOS</span>
+        </p>
+
+        <h1 class="video-hero-title reveal-lines" id="video-hero-title">
+          <span class="section-title-line reveal-line"><span class="reveal-line-inner">SEE EVERY TOOL</span></span>
+          <span class="section-title-line reveal-line"><span class="reveal-line-inner">DO ITS ACTUAL JOB.</span></span>
+        </h1>
+
+        <p class="copy section-lead u-text-measure reveal">One short clip per feature, recorded in the shipped app. No narration, no speed-up.</p>
+
+        <p class="copy u-text-measure reveal">Every part of the product gets a short screen recording, filed under the same ten chapters the home page uses. Chapters fill in as each clip is shot.</p>
+
+        <!-- Section 7.4: the empty state is a designed state, and it says so in
+             words before the reader meets 41 dashed cards. It is set as ordinary
+             body copy rather than in a note of its own: the point is that a
+             pending card is a finished index entry, and giving the explanation a
+             special typographic box would argue the opposite. -->
+        <p class="copy u-text-measure reveal">A dashed card is not decoration. It is a feature that is documented but not yet filmed: its title, its chapter and its description are final, and the running time beside it is the plan for the clip. Only the recording is outstanding, so this index reads complete today and gains motion as clips land.</p>
+
+        <!-- The count is written into the markup, not computed at boot: it must be
+             right with JavaScript disabled (ship gate G16). The script re-derives
+             the same numbers from the DOM and overwrites them, rebuilding the same
+             contract classes rather than flattening them to a string. Section 7.4:
+             at zero published the masthead states the plan instead of a ratio,
+             because a bare `0 of 41` reads as a failure rather than as a schedule.
+             The write-ups are all live and only the footage is outstanding, so the
+             bar sits at --p: 0. -->
+        <div class="pub-progress">
+          <p class="pub-progress-text" data-pub-en>All <span class="index-counter-current">41</span> features are written up. The footage is still in production.</p>
+          <span class="pub-progress-bar" data-pub-bar style="--p: 0" aria-hidden="true"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- == V2: Filter rail ===================================================
+         Chapter chips carry the same (NN) NAME pairing as the section spine, so
+         the rail reads as the page's own table of contents. -->
+    <div class="site-shell filter-rail" role="group" aria-label="Filter feature videos">
+      <button class="filter-chip is-active" type="button" aria-pressed="true" data-filter-chapter="all"><span>All</span><span class="u-tabular">41</span></button>
+      <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-scene"><span class="micro-label-ord u-tabular">(01)</span><span>THE SCENE</span><span class="u-tabular">4</span></button>
+      <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-optics"><span class="micro-label-ord u-tabular">(02)</span><span>THE OPTICS</span><span class="u-tabular">4</span></button>
+      <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-blend"><span class="micro-label-ord u-tabular">(03)</span><span>THE COVERAGE</span><span class="u-tabular">5</span></button>
+      <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-warp"><span class="micro-label-ord u-tabular">(04)</span><span>THE CORRECTION</span><span class="u-tabular">4</span></button>
+      <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-content"><span class="micro-label-ord u-tabular">(05)</span><span>THE CONTENT</span><span class="u-tabular">3</span></button>
+      <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-measure"><span class="micro-label-ord u-tabular">(06)</span><span>THE MEASUREMENT</span><span class="u-tabular">5</span></button>
+      <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-render"><span class="micro-label-ord u-tabular">(07)</span><span>THE LIGHT</span><span class="u-tabular">3</span></button>
+      <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-lighting"><span class="micro-label-ord u-tabular">(08)</span><span>THE ROOM AROUND IT</span><span class="u-tabular">3</span></button>
+      <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-deliver"><span class="micro-label-ord u-tabular">(09)</span><span>THE DELIVERABLE</span><span class="u-tabular">7</span></button>
+      <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-project"><span class="micro-label-ord u-tabular">(10)</span><span>THE PROJECT</span><span class="u-tabular">3</span></button>
+      <!-- Section 7.4: disabled while zero cards are live, so the filter can never
+           yield an empty page. Authored here as well as set by the script, so
+           the state is right with JavaScript off; drop `disabled` when the
+           first clip is published (the script re-derives it either way). -->
+      <button class="filter-toggle" type="button" aria-pressed="false" data-filter-available disabled>Available now</button>
+      <p class="filter-result-sr" aria-live="polite"></p>
+    </div>
+
+    <!-- == V3: Ten chapters, 41 slots ========================================
+         PUBLISHING A SLOT. The whole workflow is two class edits (spec 7.5):
+           1. Encode <slug>.mp4 and <slug>.jpg (spec 7.5 commands). The file
+              basename IS the data-slug below, exactly. Lowercase ASCII, hyphens,
+              no version suffixes. Drop both files in assets/media/features/.
+           2. On that card: remove `video-card--pending` from the <article>, add
+              `has-media` to its `.video-card-media`, swap the pending
+              `<span class="video-card-link" aria-disabled="true">` for
+              `<a class="video-card-link" href="/assets/media/features/<slug>.mp4"
+                  data-video-open="<slug>">`, add the <img class="media-img
+              media-poster"> and <span class="video-card-play">, and drop
+              `video-card-duration--planned` and the trailing
+              `<span class="stat-unit">planned</span>` from the duration, leaving
+              the bare `0:45`.
+           3. Bump the two counters that are authored in markup: this chapter's
+              `data-live` and the `.index-counter-current` inside its
+              `.video-chapter-count`, and the masthead `.pub-progress` text and
+              `--p`. On the first publish the masthead swaps from the section 7.4
+              zero state to the ratio form, `1 / 41 published`, and the
+              `Available now` toggle loses its `disabled`. The script recomputes
+              all of it at boot, but it must be right with JS off (gate G16).
+           4. Add the VideoObject entry to the JSON-LD block in <head>, and a
+              `<link rel="preload" as="image">` for the poster if it is one of
+              the first three cards on the page.
+         Liveness is authored here, never discovered from load events: a poster
+         below the fold has not loaded yet, so a runtime probe would report the
+         wrong number until the reader scrolled, and forever with JS off. -->
+    <div class="site-shell" id="video-chapters">
+      <section class="video-chapter" id="ch-scene" data-chapter="ch-scene" data-live="0" aria-labelledby="ch-scene-title">
+        <header class="video-chapter-head chapter-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(01)</span>
+            <span class="micro-label-name">THE SCENE</span>
+          </p>
+          <h2 class="video-chapter-title" id="ch-scene-title">ONE SCENE HOLDS ALL OF IT.</h2>
+          <p class="video-chapter-count index-counter u-tabular" data-chapter-count>
+            <span class="index-counter-current">0</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">4</span>
+            <span class="stat-unit">published</span>
+          </p>
+        </header>
+        <div class="video-grid">
+          <article class="video-card video-card--pending" data-slug="viewport-walkthrough" data-chapter="ch-scene" data-len="51">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="PLACING PROJECTORS IN A SCENE" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:51 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Placing projectors in a scene</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(01)</span>
+                <span class="micro-label-name">THE SCENE</span>
+              </p>
+              <p class="video-card-desc">A head goes into an imported venue, a lens is picked for it, and the beam cone and the footprint it lands on the wall redraw while the projector is still being dragged.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="walk-mode" data-chapter="ch-scene" data-len="45">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="INTERIOR WALK MODE" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:45 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Interior walk mode</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(01)</span>
+                <span class="micro-label-name">THE SCENE</span>
+              </p>
+              <p class="video-card-desc">Press G and walk the venue in first person. Speed re-samples the scene bounds, so a 10 m studio and a kilometre-wide site both feel right.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="model-import-units" data-chapter="ch-scene" data-len="60">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="IMPORT A VENUE, UNITS AND AXIS SOLVED" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">1:00 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Import a venue, units and axis solved</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(01)</span>
+                <span class="micro-label-name">THE SCENE</span>
+              </p>
+              <p class="video-card-desc">The same building lands from FBX, GLB/GLTF, OBJ, DAE, STL and PLY. Units come from the file's own metadata and the up-axis is read where the format states it, with the manual override shown as the deterministic fallback.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="scene-layers-isolate" data-chapter="ch-scene" data-len="40">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="SCENE LAYERS AND ISOLATE" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:40 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Scene Layers and isolate</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(01)</span>
+                <span class="micro-label-name">THE SCENE</span>
+              </p>
+              <p class="video-card-desc">The DCC-authored hierarchy arrives intact: per-node hide, lock, material override, sub-layer isolate on a 2,020-mesh model.</p>
+            </div>
+          </article>
+        </div>
+        <div class="chapter-foot">
+          <p class="index-counter u-tabular" aria-hidden="true">
+            <span class="index-counter-current">(01)</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">(10)</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="video-chapter" id="ch-optics" data-chapter="ch-optics" data-live="0" aria-labelledby="ch-optics-title">
+        <header class="video-chapter-head chapter-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(02)</span>
+            <span class="micro-label-name">THE OPTICS</span>
+          </p>
+          <h2 class="video-chapter-title" id="ch-optics-title">THE NUMBERS COME OFF THE SPEC SHEET.</h2>
+          <p class="video-chapter-count index-counter u-tabular" data-chapter-count>
+            <span class="index-counter-current">0</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">4</span>
+            <span class="stat-unit">published</span>
+          </p>
+        </header>
+        <div class="video-grid">
+          <article class="video-card video-card--pending" data-slug="throw-and-shift" data-chapter="ch-optics" data-len="45">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="LIVE THROW RATIO AND LENS SHIFT" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:45 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Live throw ratio and lens shift</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(02)</span>
+                <span class="micro-label-name">THE OPTICS</span>
+              </p>
+              <p class="video-card-desc">Drag the throw slider inside the lens's real range and watch beam size, axial distance, Center Surface Lux and mm/px move together.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="catalog-official-check" data-chapter="ch-optics" data-len="60">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="CATALOGUE AND OFFICIAL CROSS-CHECK" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">1:00 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Catalogue and official cross-check</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(02)</span>
+                <span class="micro-label-name">THE OPTICS</span>
+              </p>
+              <p class="video-card-desc">87 projectors and 113 lenses across four brands, with 642 combinations that compute from Panasonic TDC and Epson PTDS formulas. Christie and Barco carry no cross-check, and the app says so.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="out-of-spec" data-chapter="ch-optics" data-len="30">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="THE OUT-OF-SPEC REFUSAL" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:30 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">The out-of-spec refusal</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(02)</span>
+                <span class="micro-label-name">THE OPTICS</span>
+              </p>
+              <p class="video-card-desc">Place a head outside its throw envelope and the readouts reskin to a struck-through diagnostic block stating the values are not achievable.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="projector-arrays" data-chapter="ch-optics" data-len="50">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="LINEAR, CIRCULAR AND MIRRORED ARRAYS" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:50 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Linear, circular and mirrored arrays</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(02)</span>
+                <span class="micro-label-name">THE OPTICS</span>
+              </p>
+              <p class="video-card-desc">Generate a 12-head ring on a radius with a shared aim target, then edit radius or count and watch every member re-solve.</p>
+            </div>
+          </article>
+        </div>
+        <div class="chapter-foot">
+          <p class="index-counter u-tabular" aria-hidden="true">
+            <span class="index-counter-current">(02)</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">(10)</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="video-chapter" id="ch-blend" data-chapter="ch-blend" data-live="0" aria-labelledby="ch-blend-title">
+        <header class="video-chapter-head chapter-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(03)</span>
+            <span class="micro-label-name">THE COVERAGE</span>
+          </p>
+          <h2 class="video-chapter-title" id="ch-blend-title">MANY HEADS, ONE CONTINUOUS IMAGE.</h2>
+          <p class="video-chapter-count index-counter u-tabular" data-chapter-count>
+            <span class="index-counter-current">0</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">5</span>
+            <span class="stat-unit">published</span>
+          </p>
+        </header>
+        <div class="video-grid">
+          <article class="video-card video-card--pending" data-slug="auto-edge-blend" data-chapter="ch-blend" data-len="45">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="AUTO EDGE BLEND DETECTION" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:45 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Auto edge blend detection</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(03)</span>
+                <span class="micro-label-name">THE COVERAGE</span>
+              </p>
+              <p class="video-card-desc">Measures every head's real footprint against the target and writes the per-edge overlap widths and the blend curve itself, all in one undo step.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="quick-wrap" data-chapter="ch-blend" data-len="60">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="QUICK WRAP: REGIONS FROM WHERE THE LIGHT LANDS" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">1:00 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Quick Wrap: regions from where the light lands</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(03)</span>
+                <span class="micro-label-name">THE COVERAGE</span>
+              </p>
+              <p class="video-card-desc">Aim the heads and regions appear from the beams themselves. Pick a video, Apply. Hover an output to isolate its beam in 3D.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="canvas-sets" data-chapter="ch-blend" data-len="60">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="CANVAS SETS: ONE VIDEO ACROSS MANY SURFACES" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">1:00 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Canvas Sets: one video across many surfaces</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(03)</span>
+                <span class="micro-label-name">THE COVERAGE</span>
+              </p>
+              <p class="video-card-desc">Walls, floor and ceiling take crops of one master canvas. A blend group is one flat plane by design; continuity across faces is a set.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="dome-blend" data-chapter="ch-blend" data-len="45">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="DOME AND CURVED BLEND MEASUREMENT" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:45 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Dome and curved blend measurement</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(03)</span>
+                <span class="micro-label-name">THE COVERAGE</span>
+              </p>
+              <p class="video-card-desc">An image-UV grid is raycast onto the real mesh and feather widths come from measured penetration depth. Planar maths saturates on a hemisphere.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="plane-picker" data-chapter="ch-blend" data-len="30">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="THREE CLICKS DEFINE A CANVAS PLANE" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:30 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Three clicks define a canvas plane</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(03)</span>
+                <span class="micro-label-name">THE COVERAGE</span>
+              </p>
+              <p class="video-card-desc">Click three points on the geometry instead of typing eight Euler and dimension values into narrow fields.</p>
+            </div>
+          </article>
+        </div>
+        <div class="chapter-foot">
+          <p class="index-counter u-tabular" aria-hidden="true">
+            <span class="index-counter-current">(03)</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">(10)</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="video-chapter" id="ch-warp" data-chapter="ch-warp" data-live="0" aria-labelledby="ch-warp-title">
+        <header class="video-chapter-head chapter-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(04)</span>
+            <span class="micro-label-name">THE CORRECTION</span>
+          </p>
+          <h2 class="video-chapter-title" id="ch-warp-title">THE CORRECTION CUTS THE REAL BEAM.</h2>
+          <p class="video-chapter-count index-counter u-tabular" data-chapter-count>
+            <span class="index-counter-current">0</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">4</span>
+            <span class="stat-unit">published</span>
+          </p>
+        </header>
+        <div class="video-grid">
+          <article class="video-card video-card--pending" data-slug="corner-pin" data-chapter="ch-warp" data-len="40">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="CORNER-PIN KEYSTONE, LIVE IN THE 3D BEAM" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:40 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Corner-pin keystone, live in the 3D beam</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(04)</span>
+                <span class="micro-label-name">THE CORRECTION</span>
+              </p>
+              <p class="video-card-desc">The homography goes in as shader uniforms, so the corrected image renders in the actual beam, not only in a 2D panel.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="mesh-warp-masks" data-chapter="ch-warp" data-len="50">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="MESH WARP AND FEATHERED MASKS" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:50 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Mesh warp and feathered masks</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(04)</span>
+                <span class="micro-label-name">THE CORRECTION</span>
+              </p>
+              <p class="video-card-desc">Subdividable grids with a Spherize control for domes, plus click-drawn masks that cut the real beam. Up to 16 heads.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="soft-edge-authoring" data-chapter="ch-warp" data-len="40">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="PER-EDGE SOFT EDGE, LIVE FEEDBACK" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:40 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Per-edge soft edge, live feedback</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(04)</span>
+                <span class="micro-label-name">THE CORRECTION</span>
+              </p>
+              <p class="video-card-desc">Drag a blend width and the seam softens in the viewport as you drag. Auto derives all widths from measured overlaps.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="calibration-patterns" data-chapter="ch-warp" data-len="35">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="LIVE CALIBRATION PATTERNS PER OUTPUT" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:35 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Live calibration patterns per output</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(04)</span>
+                <span class="micro-label-name">THE CORRECTION</span>
+              </p>
+              <p class="video-card-desc">Throw a grid from one head in the real beam, set the blend and mask, drop back to content, all with zero undo entries.</p>
+            </div>
+          </article>
+        </div>
+        <div class="chapter-foot">
+          <p class="index-counter u-tabular" aria-hidden="true">
+            <span class="index-counter-current">(04)</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">(10)</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="video-chapter" id="ch-content" data-chapter="ch-content" data-live="0" aria-labelledby="ch-content-title">
+        <header class="video-chapter-head chapter-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(05)</span>
+            <span class="micro-label-name">THE CONTENT</span>
+          </p>
+          <h2 class="video-chapter-title" id="ch-content-title">DRAG THE IMAGE IN 2D, THE BEAMS FOLLOW IN 3D.</h2>
+          <p class="video-chapter-count index-counter u-tabular" data-chapter-count>
+            <span class="index-counter-current">0</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">3</span>
+            <span class="stat-unit">published</span>
+          </p>
+        </header>
+        <div class="video-grid">
+          <article class="video-card video-card--pending" data-slug="mapping-stage" data-chapter="ch-content" data-len="55">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="MAPPING STAGE: 2D CANVAS, 3D BEAMS" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:55 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Mapping Stage: 2D canvas, 3D beams</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(05)</span>
+                <span class="micro-label-name">THE CONTENT</span>
+              </p>
+              <p class="video-card-desc">Drag the canvas quad in 2D and the beams follow in 3D. Regions outside the canvas render as hatched no-content zones.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="media-drop" data-chapter="ch-content" data-len="35">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="DRAG MEDIA ONTO A SURFACE" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:35 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Drag media onto a surface</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(05)</span>
+                <span class="micro-label-name">THE CONTENT</span>
+              </p>
+              <p class="video-card-desc">A media chip is dragged from the library into the 3D viewport. A hover chip names the face under the cursor before you let go, and the drop commits as one batch you can undo in one step.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="content-slot-budget" data-chapter="ch-content" data-len="25">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="THE LOUD REFUSAL" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:25 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">The loud refusal</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(05)</span>
+                <span class="micro-label-name">THE CONTENT</span>
+              </p>
+              <p class="video-card-desc">Four distinct content sources is the GPU budget. The drop that would make it five is refused explicitly, before anything is written, instead of silently dropping a texture and looking like a bug.</p>
+            </div>
+          </article>
+        </div>
+        <div class="chapter-foot">
+          <p class="index-counter u-tabular" aria-hidden="true">
+            <span class="index-counter-current">(05)</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">(10)</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="video-chapter" id="ch-measure" data-chapter="ch-measure" data-live="0" aria-labelledby="ch-measure-title">
+        <header class="video-chapter-head chapter-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(06)</span>
+            <span class="micro-label-name">THE MEASUREMENT</span>
+          </p>
+          <h2 class="video-chapter-title" id="ch-measure-title">THE SURFACE BECOMES A LIGHT METER.</h2>
+          <p class="video-chapter-count index-counter u-tabular" data-chapter-count>
+            <span class="index-counter-current">0</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">5</span>
+            <span class="stat-unit">published</span>
+          </p>
+        </header>
+        <div class="video-grid">
+          <article class="video-card video-card--pending" data-slug="hover-probe" data-chapter="ch-measure" data-len="16" data-ratio="1912 / 942">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" style="--media-ratio: 1912 / 942" data-label="LUX AND MM/PX UNDER THE CURSOR" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:16 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Lux and mm/px under the cursor</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(06)</span>
+                <span class="micro-label-name">THE MEASUREMENT</span>
+              </p>
+              <p class="video-card-desc">Move the cursor across a lit wall and read illuminance, luminance and pixel density at that exact point, with every head reaching it already summed into the figure.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="heatmap-modes" data-chapter="ch-measure" data-len="50">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="THREE MAP MODES, THREE SCALES" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:50 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Three map modes, three scales</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(06)</span>
+                <span class="micro-label-name">THE MEASUREMENT</span>
+              </p>
+              <p class="video-card-desc">Surface lux, pixel density and luminance, each in absolute, normalized-to-reference and deviation-from-reference.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="distribution-13pt" data-chapter="ch-measure" data-len="50">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="13-POINT DISTRIBUTION, LIVE" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:50 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">13-point distribution, live</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(06)</span>
+                <span class="micro-label-name">THE MEASUREMENT</span>
+              </p>
+              <p class="video-card-desc">Nine ANSI points plus four quarter-points drawn on the surface in world space, recomputing as the projector is dragged.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="lens-view" data-chapter="ch-measure" data-len="25">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="LENS VIEW CAMERA SNAP" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:25 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Lens View camera snap</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(06)</span>
+                <span class="micro-label-name">THE MEASUREMENT</span>
+              </p>
+              <p class="video-card-desc">One click frames the camera along a head's optical axis, fitted to the probe bounds. Uniformity reads differently head-on.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="measure-snap" data-chapter="ch-measure" data-len="40">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="MEASURE TOOL WITH MULTI-SOURCE SNAPPING" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:40 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Measure tool with multi-source snapping</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(06)</span>
+                <span class="micro-label-name">THE MEASUREMENT</span>
+              </p>
+              <p class="video-card-desc">Snaps to vertices, bounding boxes, model centres, projector bodies and beam-origin points. The last one is the real throw distance.</p>
+            </div>
+          </article>
+        </div>
+        <div class="chapter-foot">
+          <p class="index-counter u-tabular" aria-hidden="true">
+            <span class="index-counter-current">(06)</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">(10)</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="video-chapter" id="ch-render" data-chapter="ch-render" data-live="0" aria-labelledby="ch-render-title">
+        <header class="video-chapter-head chapter-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(07)</span>
+            <span class="micro-label-name">THE LIGHT</span>
+          </p>
+          <h2 class="video-chapter-title" id="ch-render-title">LIGHT BEHAVES LIKE LIGHT.</h2>
+          <p class="video-chapter-count index-counter u-tabular" data-chapter-count>
+            <span class="index-counter-current">0</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">3</span>
+            <span class="stat-unit">published</span>
+          </p>
+        </header>
+        <div class="video-grid">
+          <article class="video-card video-card--pending" data-slug="additive-light" data-chapter="ch-render" data-len="40">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="ADDITIVE LIGHT ON A SHADED SURFACE" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:40 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Additive light on a shaded surface</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(07)</span>
+                <span class="micro-label-name">THE LIGHT</span>
+              </p>
+              <p class="video-card-desc">Projector light composites onto the surface's own shading rather than being pasted over it: a white beam brightens a dark wall while its texture stays visible, and a black frame adds nothing.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="depth-occlusion" data-chapter="ch-render" data-len="40">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="OCCLUSION AND PROJECTOR SHADOWS" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:40 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Occlusion and projector shadows</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(07)</span>
+                <span class="micro-label-name">THE LIGHT</span>
+              </p>
+              <p class="video-card-desc">Each head renders its own depth map, so objects block the beam and cast real shadows. The CPU sampling path mirrors it.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="ambient-contrast" data-chapter="ch-render" data-len="35">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="AMBIENT PRESETS AND CONTRAST RATIO" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:35 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Ambient presets and contrast ratio</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(07)</span>
+                <span class="micro-label-name">THE LIGHT</span>
+              </p>
+              <p class="video-card-desc">From 100,000 lx direct sun to full blackout, with a live chip rating the result Optimal through Not viable.</p>
+            </div>
+          </article>
+        </div>
+        <div class="chapter-foot">
+          <p class="index-counter u-tabular" aria-hidden="true">
+            <span class="index-counter-current">(07)</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">(10)</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="video-chapter" id="ch-lighting" data-chapter="ch-lighting" data-live="0" aria-labelledby="ch-lighting-title">
+        <header class="video-chapter-head chapter-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(08)</span>
+            <span class="micro-label-name">THE ROOM AROUND IT</span>
+          </p>
+          <h2 class="video-chapter-title" id="ch-lighting-title">PROJECTION NEVER SHIPS ALONE.</h2>
+          <p class="video-chapter-count index-counter u-tabular" data-chapter-count>
+            <span class="index-counter-current">0</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">3</span>
+            <span class="stat-unit">published</span>
+          </p>
+        </header>
+        <div class="video-grid">
+          <article class="video-card video-card--pending" data-slug="isolux-working-plane" data-chapter="ch-lighting" data-len="45">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="DIALUX-STYLE ISOLUX WORKING PLANE" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:45 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">DIALux-style isolux working plane</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(08)</span>
+                <span class="micro-label-name">THE ROOM AROUND IT</span>
+              </p>
+              <p class="video-card-desc">Eavg, Emin, Emax and uniformity drawn as a false-colour plane with contour lines in the same 3D scene. Labelled an estimate.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="ies-import" data-chapter="ch-lighting" data-len="35">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="IES PHOTOMETRIC IMPORT" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:35 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">IES photometric import</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(08)</span>
+                <span class="micro-label-name">THE ROOM AROUND IT</span>
+              </p>
+              <p class="video-card-desc">A manufacturer .ies file drives the beam cookie and the illuminance estimate from the same curve, so they cannot disagree.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="led-wall-spill" data-chapter="ch-lighting" data-len="40">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="LED WALL SPILL AND WASHOUT RISK" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:40 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">LED wall spill and washout risk</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(08)</span>
+                <span class="micro-label-name">THE ROOM AROUND IT</span>
+              </p>
+              <p class="video-card-desc">Model the wall's own emission from a real cabinet profile and get contrast before and after, contrast drop, and a washout risk rating.</p>
+            </div>
+          </article>
+        </div>
+        <div class="chapter-foot">
+          <p class="index-counter u-tabular" aria-hidden="true">
+            <span class="index-counter-current">(08)</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">(10)</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="video-chapter" id="ch-deliver" data-chapter="ch-deliver" data-live="0" aria-labelledby="ch-deliver-title">
+        <header class="video-chapter-head chapter-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(09)</span>
+            <span class="micro-label-name">THE DELIVERABLE</span>
+          </p>
+          <h2 class="video-chapter-title" id="ch-deliver-title">WHAT LEAVES THE APP.</h2>
+          <p class="video-chapter-count index-counter u-tabular" data-chapter-count>
+            <span class="index-counter-current">0</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">7</span>
+            <span class="stat-unit">published</span>
+          </p>
+        </header>
+        <div class="video-grid">
+          <article class="video-card video-card--pending" data-slug="pdf-tech-rider" data-chapter="ch-deliver" data-len="45">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="ONE-CLICK PDF TECH RIDER" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:45 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">One-click PDF Tech Rider</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(09)</span>
+                <span class="micro-label-name">THE DELIVERABLE</span>
+              </p>
+              <p class="video-card-desc">Viewport capture with its matching legend, project setup, then one page per projector: equipment, lens, position, optical distances, surface sampling.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="handoff-json" data-chapter="ch-deliver" data-len="30">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="NEUTRAL HANDOFF JSON" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:30 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Neutral handoff JSON</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(09)</span>
+                <span class="micro-label-name">THE DELIVERABLE</span>
+              </p>
+              <p class="video-card-desc">A versioned file declaring its coordinate system, then every projector's optics, every target's plane basis, blend groups and per-edge blends.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="share-link" data-chapter="ch-deliver" data-len="50">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="A READ-ONLY LINK, NO ACCOUNT NEEDED" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:50 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">A read-only link, no account needed</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(09)</span>
+                <span class="micro-label-name">THE DELIVERABLE</span>
+              </p>
+              <p class="video-card-desc">Publish the scene as a viewer URL with studio branding and a QR code. The TD, the producer and the rental house all see the same plan.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="share-capabilities" data-chapter="ch-deliver" data-len="40">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="DECIDE WHAT THE RECIPIENT CAN DO" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:40 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Decide what the recipient can do</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(09)</span>
+                <span class="micro-label-name">THE DELIVERABLE</span>
+              </p>
+              <p class="video-card-desc">Per link: measurements, layers, display panel, PDF download, walk mode, zoom. Hidden measurements are stripped from the payload, not the UI.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="share-receipt" data-chapter="ch-deliver" data-len="40">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="A DATED RECEIPT, NOT A LIVE MIRROR" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:40 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">A dated receipt, not a live mirror</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(09)</span>
+                <span class="micro-label-name">THE DELIVERABLE</span>
+              </p>
+              <p class="video-card-desc">The link is pinned to the version it was published from. Editing later cannot rewrite what the client was shown.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="share-whatif" data-chapter="ch-deliver" data-len="40">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="BOUNDED WHAT-IF INSIDE THE VIEWER" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:40 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Bounded what-if inside the viewer</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(09)</span>
+                <span class="micro-label-name">THE DELIVERABLE</span>
+              </p>
+              <p class="video-card-desc">The client drags a throw slider clamped to that lens's catalogue range; beam, heatmap and spec sheet recompute. Nothing is saved.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="share-management" data-chapter="ch-deliver" data-len="35">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="EXTEND, REVOKE, DESTROY" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:35 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Extend, revoke, destroy</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(09)</span>
+                <span class="micro-label-name">THE DELIVERABLE</span>
+              </p>
+              <p class="video-card-desc">Every link in one list with countdown chips. Revoke stops it resolving immediately. Files already downloaded stay downloaded, because the bucket is public.</p>
+            </div>
+          </article>
+        </div>
+        <div class="chapter-foot">
+          <p class="index-counter u-tabular" aria-hidden="true">
+            <span class="index-counter-current">(09)</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">(10)</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="video-chapter" id="ch-project" data-chapter="ch-project" data-live="0" aria-labelledby="ch-project-title">
+        <header class="video-chapter-head chapter-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(10)</span>
+            <span class="micro-label-name">THE PROJECT</span>
+          </p>
+          <h2 class="video-chapter-title" id="ch-project-title">THE WORK SURVIVES THE SESSION.</h2>
+          <p class="video-chapter-count index-counter u-tabular" data-chapter-count>
+            <span class="index-counter-current">0</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">3</span>
+            <span class="stat-unit">published</span>
+          </p>
+        </header>
+        <div class="video-grid">
+          <article class="video-card video-card--pending" data-slug="project-home" data-chapter="ch-project" data-len="35">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="PROJECT HOME AND SAMPLE SCENES" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:35 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Project Home and sample scenes</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(10)</span>
+                <span class="micro-label-name">THE PROJECT</span>
+              </p>
+              <p class="video-card-desc">Land on your saved projects, not an empty editor. Two sample scenes are seeded as your own private copy on first click.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="version-restore" data-chapter="ch-project" data-len="40">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="NON-DESTRUCTIVE ROLL-FORWARD RESTORE" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:40 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Non-destructive roll-forward restore</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(10)</span>
+                <span class="micro-label-name">THE PROJECT</span>
+              </p>
+              <p class="video-card-desc">Restoring an old version checkpoints your current edits first, then saves the old state as a new latest version. Nothing is deleted.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="crash-recovery" data-chapter="ch-project" data-len="35">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="CRASH DRAFT AND SAME-TAB RESUME" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:35 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Crash draft and same-tab resume</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(10)</span>
+                <span class="micro-label-name">THE PROJECT</span>
+              </p>
+              <p class="video-card-desc">Every edit debounces a local draft, flushed on tab close. Refresh the tab you were working in and you land back in the project.</p>
+            </div>
+          </article>
+        </div>
+        <div class="chapter-foot">
+          <p class="index-counter u-tabular" aria-hidden="true">
+            <span class="index-counter-current">(10)</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">(10)</span>
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <!-- == V4: #start ========================================================
+         The same closing CTA the home page ends on, same classes, same order. -->
+    <section class="section section--pad-md" id="start" aria-labelledby="start-title">
+      <div class="site-shell--narrow">
+        <p class="micro-label">
+          <span class="micro-label-ord">(00)</span>
+          <span class="micro-label-name">START</span>
+        </p>
+        <h2 class="section-title reveal-lines" id="start-title">
+          <span class="section-title-line reveal-line"><span class="reveal-line-inner">TWO FINISHED SCENES, ALREADY YOURS.</span></span>
+        </h2>
+
+        <p class="copy section-lead u-text-measure reveal">Sign in and open your own copy of the FieldLux Test Scene or the Play Dock Demo. Both are complete projection studies. Move a projector 300 mm and watch which numbers move with it.</p>
+
+        <div class="hero-actions">
+          <a class="btn btn--solid" href="https://app.field-lux.com" data-app-link>START FREE</a>
+          <a class="btn btn--text" href="/#product">BACK TO THE PRODUCT</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- == Section 7.6: the one lightbox. Shares the 5.8 overlay system. ====== -->
+  <div class="video-lightbox" id="video-lightbox" role="dialog" aria-modal="true" aria-labelledby="video-lightbox-title" hidden>
+    <button class="video-lightbox__backdrop" type="button" tabindex="-1" aria-hidden="true"></button>
+    <div class="video-lightbox__panel">
+      <div class="video-lightbox__header">
+        <h2 class="video-lightbox__title" id="video-lightbox-title"></h2>
+        <button class="video-lightbox__close" type="button">
+          <svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M2.5 2.5 11.5 11.5M11.5 2.5 2.5 11.5"></path></svg>
+          <span class="u-visually-hidden">Close video</span>
+        </button>
+      </div>
+      <!-- The player is injected here on open and torn down on close, so no
+           video bytes are requested until the reader asks for them. -->
+      <div class="video-lightbox__player"></div>
+      <div class="video-lightbox__meta">
+        <p class="video-card-tag" data-lightbox-tag></p>
+        <p class="video-card-desc" data-lightbox-desc></p>
+      </div>
+      <div class="video-lightbox__nav">
+        <button class="video-lightbox__prev" type="button">Previous</button>
+        <button class="video-lightbox__next" type="button">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- == S13: Footer ======================================================= -->
+  <footer class="site-footer">
+    <div class="site-shell footer-inner">
+
+      <a class="brand-lockup" href="/" aria-label="FieldLux home">
+        <img class="brand-lockup-img" src="/assets/logo-ink.png" width="154" height="45" alt="FieldLux">
+      </a>
+
+      <p class="footer-lead">WE'RE BUILDING THIS WITH THE PEOPLE WHO RIG IT.</p>
+
+      <div class="footer-contact">
+        <p class="footer-contact-item">
+          <span class="footer-col-title">hello</span>
+          <a class="footer-link" href="mailto:jay@field-lux.com">jay@field-lux.com</a>
+        </p>
+      </div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <p class="footer-col-title">links</p>
+          <ul class="footer-links">
+            <li><a class="footer-link" href="/privacy">Privacy</a></li>
+            <li><a class="footer-link" href="/videos">Feature videos</a></li>
+            <li><a class="footer-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">Discord</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-meta">
+        <p class="footer-legal">Copyright 2026 FieldLux. Open beta</p>
+        <button class="motion-toggle" type="button" aria-pressed="false">Reduce motion</button>
+      </div>
+
+    </div>
+  </footer>
+  <script>
+    (() => {
+      'use strict';
+
+      const doc  = document;
+      const root = doc.documentElement;
+
+      /* -- storage, guarded ------------------------------------------------ */
+      const store = (() => {
+        try {
+          const s = window.localStorage;
+          const probe = '__fieldlux_probe__';
+          s.setItem(probe, '1'); s.removeItem(probe);
+          return s;
+        } catch (_) { return null; }
+      })();
+      const read  = (k) => { try { return store && store.getItem(k); }  catch (_) { return null; } };
+      const write = (k, v) => { try { store && store.setItem(k, v); }   catch (_) {} };
+      const drop  = (k) => { try { store && store.removeItem(k); }      catch (_) {} };
+
+      const params = new URLSearchParams(window.location.search);
+
+      /* == 10.4 (b): flowAppUrl review override, host allowlist ============= */
+      const DEFAULT_APP_URL = 'https://app.field-lux.com';
+      const APP_KEY = 'fieldlux_flow_app_url';
+
+      function isAllowedAppHost(u) {
+        try {
+          const p = new URL(u);
+          const h = p.hostname;
+          if (p.protocol === 'http:' && (h === 'localhost' || h === '127.0.0.1')) return true;
+          if (p.protocol !== 'https:') return false;
+          return h === 'field-lux.com' || h.endsWith('.field-lux.com')
+              || h.endsWith('.vercel.app')
+              || h === 'localhost' || h === '127.0.0.1';
+        } catch { return false; }
+      }
+
+      let appUrl = DEFAULT_APP_URL;
+      const suppliedApp = params.get('flowAppUrl') || read(APP_KEY);
+      if (suppliedApp) {
+        if (isAllowedAppHost(suppliedApp)) {
+          appUrl = new URL(suppliedApp).href;
+          write(APP_KEY, appUrl);
+        } else {
+          /* a bad value must not persist for this visitor */
+          appUrl = DEFAULT_APP_URL;
+          drop(APP_KEY);
+        }
+      }
+
+      /* == 10.4 (a): data-app-link rewriting, with siteReturnUrl ============ */
+      const getAppLinkUrl = () => {
+        try {
+          const url = new URL(appUrl, window.location.href);
+          url.searchParams.set('siteReturnUrl', window.location.href);
+          return url.href;
+        } catch (_) { return appUrl; }
+      };
+
+      doc.querySelectorAll('[data-app-link]').forEach((link) => {
+        const appLinkUrl = getAppLinkUrl();
+        link.href = appLinkUrl;
+        link.addEventListener('click', (event) => {
+          /* modifier-key / middle-click passthrough: let the browser do its thing */
+          if (event.defaultPrevented || event.button !== 0
+              || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          window.location.assign(appLinkUrl);
+        });
+      });
+
+      /* == 10.4 (c): discordUrl allowlist ================================== */
+      const DEFAULT_DISCORD_URL = 'https://discord.gg/JpeQ7Hgsnd';
+      const DISCORD_KEY = 'fieldlux_discord_url';
+
+      let discordUrl = DEFAULT_DISCORD_URL;
+      const suppliedDiscord = params.get('discordUrl') || read(DISCORD_KEY);
+      if (suppliedDiscord) {
+        try {
+          const parsed = new URL(suppliedDiscord, window.location.href);
+          const h = parsed.hostname;
+          const isDiscordHost = h === 'discord.gg' || h === 'discord.com' || h.endsWith('.discord.com');
+          if (parsed.protocol === 'https:' && isDiscordHost) {
+            discordUrl = parsed.href;
+            write(DISCORD_KEY, discordUrl);
+          }
+        } catch (_) { discordUrl = DEFAULT_DISCORD_URL; }
+      }
+
+      doc.querySelectorAll('[data-discord-link]').forEach((link) => {
+        link.href = discordUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.setAttribute('aria-disabled', 'false');
+        link.removeAttribute('title');   /* the CSS ::after tooltip is the only tooltip */
+      });
+
+      /* == 5.9: Motion, tri-state (on / off / follow the OS) ================ */
+      const MOTION_KEY = 'fieldlux_motion';
+      const osReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const motionAllowed = () => {
+        const m = root.dataset.motion;
+        if (m === 'on')  return true;
+        if (m === 'off') return false;
+        return !osReduce.matches;
+      };
+      const MOTION_EVENT = 'fieldlux:motionchange';
+      const announceMotion = () => doc.dispatchEvent(new CustomEvent(MOTION_EVENT));
+
+      const motionToggles = [...doc.querySelectorAll('.motion-toggle')];
+      const syncMotionToggles = () => {
+        const reduced = !motionAllowed();
+        motionToggles.forEach((b) => b.setAttribute('aria-pressed', reduced ? 'true' : 'false'));
+      };
+      motionToggles.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          root.dataset.motion = motionAllowed() ? 'off' : 'on';
+          write(MOTION_KEY, root.dataset.motion);
+          syncMotionToggles();
+          announceMotion();
+        });
+      });
+      if (osReduce.addEventListener) {
+        osReduce.addEventListener('change', () => { syncMotionToggles(); announceMotion(); });
+      }
+      syncMotionToggles();
+
+      /* data-saver / reduced-data: never fetch video bytes */
+      const conn = navigator.connection;
+      const leanData = (conn && conn.saveData === true)
+                    || window.matchMedia('(prefers-reduced-data: reduce)').matches;
+
+      /* == 5.8: One overlay system, one Escape handler ======================
+         Two overlays are live on this page: .nav-overlay and .video-lightbox.
+         They share one body-scroll lock and one Escape handler; Escape closes
+         whichever was opened last. */
+      const overlays = [];
+      function openOverlay(rec) { overlays.push(rec); doc.body.classList.add('overlay-open'); }
+      function closeTop() {
+        const r = overlays.pop();
+        if (r && r.close) r.close();
+        if (!overlays.length) doc.body.classList.remove('overlay-open');
+      }
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlays.length) closeTop();
+      });
+
+      /* == 5.6 Nav overlay: focus trap, inert, focus return ================= */
+      const navToggle  = doc.querySelector('.nav-toggle');
+      const navOverlay = doc.getElementById('nav-overlay');
+      const siteMain   = doc.getElementById('main');
+      const siteFooter = doc.querySelector('.site-footer');
+      const FOCUSABLE  = 'a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])';
+
+      /* Section 5.8: page isolation is shared, so releasing it is conditional.
+         Both overlays are live on this page and the header sits outside #main,
+         so the nav can be opened on top of an open lightbox, and closed there too.
+         closeTop() pops the record before it calls close(), so overlays.length
+         inside a close handler is the count still open underneath: releasing
+         #main there would hand the reader a page behind a modal. */
+      const isolatePage = () => {
+        if (siteMain)   siteMain.setAttribute('inert', '');
+        if (siteFooter) siteFooter.setAttribute('inert', '');
+      };
+      const releasePageIfLastOverlay = () => {
+        if (overlays.length) return;
+        if (siteMain)   siteMain.removeAttribute('inert');
+        if (siteFooter) siteFooter.removeAttribute('inert');
+      };
+
+      if (navToggle && navOverlay) {
+        let navReturnFocus = null;
+        let navHideTimer = null;
+
+        const trapStops = () => [navToggle].concat([...navOverlay.querySelectorAll(FOCUSABLE)]);
+
+        const onTrapKeydown = (e) => {
+          if (e.key !== 'Tab') return;
+          const stops = trapStops();
+          if (!stops.length) return;
+          const first = stops[0];
+          const last  = stops[stops.length - 1];
+          if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
+        };
+
+        const closeNav = () => {
+          navOverlay.removeAttribute('data-open');
+          navToggle.setAttribute('aria-expanded', 'false');
+          releasePageIfLastOverlay();
+          doc.removeEventListener('keydown', onTrapKeydown, true);
+          window.clearTimeout(navHideTimer);
+          /* The clip-path close runs for 420 ms (section 5.8), and until `hidden`
+             lands the panel is still on screen and still tabbable. inert holds
+             it out of the tab order and the a11y tree for exactly that window;
+             the hide timer takes it off again so a re-open is unaffected. */
+          navOverlay.setAttribute('inert', '');
+          navHideTimer = window.setTimeout(() => {
+            navOverlay.hidden = true;
+            navOverlay.removeAttribute('inert');
+          }, motionAllowed() ? 440 : 0);
+          if (navReturnFocus && navReturnFocus.focus) navReturnFocus.focus();
+          navReturnFocus = null;
+        };
+
+        const openNav = () => {
+          navReturnFocus = doc.activeElement;
+          window.clearTimeout(navHideTimer);   /* cancels the pending un-inert too */
+          navOverlay.removeAttribute('inert');
+          navOverlay.hidden = false;
+          navToggle.setAttribute('aria-expanded', 'true');
+          isolatePage();
+          requestAnimationFrame(() => navOverlay.setAttribute('data-open', ''));
+          doc.addEventListener('keydown', onTrapKeydown, true);
+          const first = navOverlay.querySelector(FOCUSABLE);
+          if (first) first.focus();
+          openOverlay({ el: navOverlay, close: closeNav });
+        };
+
+        navToggle.addEventListener('click', () => {
+          if (navToggle.getAttribute('aria-expanded') === 'true') closeTop();
+          else openNav();
+        });
+
+        navOverlay.querySelectorAll('.nav-overlay-link').forEach((link) => {
+          link.addEventListener('click', () => {
+            if (navToggle.getAttribute('aria-expanded') === 'true') closeTop();
+          });
+        });
+      }
+
+      /* == 5.1 Scroll: one passive listener. Header state only here; this
+         page has no monitor to settle. No Lenis, no virtualized scroll. ==== */
+      const header = doc.querySelector('.site-header');
+      let isScrolled = false;
+      const syncHeader = () => {
+        const y = window.scrollY;
+        if (!isScrolled && y > 24)      { isScrolled = true;  header && header.classList.add('is-scrolled'); }
+        else if (isScrolled && y < 12)  { isScrolled = false; header && header.classList.remove('is-scrolled'); }
+      };
+      window.addEventListener('scroll', syncHeader, { passive: true });
+      syncHeader();
+
+      /* == 5.3 Scroll reveal: one-shot, per-section stagger ================= */
+      const revealTargets = [...doc.querySelectorAll('.reveal, .reveal-lines')];
+      if (!motionAllowed() || !('IntersectionObserver' in window)) {
+        revealTargets.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+          }
+        }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
+        revealTargets.forEach((el) => {
+          const group = el.closest('.section') || doc;
+          const sibs = [...group.querySelectorAll('.reveal, .reveal-lines')];
+          el.style.setProperty('--i', String(sibs.indexOf(el) % 6));   // per-section, not global
+          io.observe(el);
+        });
+        /* turning motion off mid-page must not strand un-revealed copy */
+        doc.addEventListener(MOTION_EVENT, () => {
+          if (!motionAllowed()) revealTargets.forEach((el) => el.classList.add('is-in'));
+        });
+      }
+
+      /* ======================================================================
+         SECTION 7: THE VIDEO PAGE
+         ===================================================================== */
+
+      const grid       = doc.getElementById('video-chapters');
+      const allCards   = [...doc.querySelectorAll('.video-card')];
+      const chapterEls = [...doc.querySelectorAll('.video-chapter')];
+      const FEATURES   = '/assets/media/features/';
+      const isLive     = (card) => !card.classList.contains('video-card--pending');
+      const mmss       = (n) => Math.floor(n / 60) + ':' + String(n % 60).padStart(2, '0');
+
+      /* -- 7.2: Publication counters, recomputed from the DOM at boot -------
+         Liveness is authored in markup (section 7.5), never derived from poster load
+         events: below-the-fold posters have not loaded yet, so a load-driven
+         count would be wrong until the reader scrolled the whole page. These
+         numbers already sit in the markup; this only keeps them honest after a
+         card reverts to pending (a 404 file). */
+      const pubEn  = doc.querySelector('[data-pub-en]');
+      const pubBar = doc.querySelector('[data-pub-bar]');
+
+      /* Every number the script writes is rebuilt with the same contract classes
+         the markup authors by hand, so the numeric hierarchy (section 4.10,
+         section 4.11) survives a re-render: the live figure in
+         .index-counter-current, the total in .index-counter-total, the word in
+         .stat-unit. Writing a flat string here would have quietly stripped the
+         hierarchy off every chapter head the first time syncCounts ran. */
+      const numSpan = (cls, text) => {
+        const s = doc.createElement('span');
+        s.className = cls;
+        s.textContent = text;
+        return s;
+      };
+      const fillRatio = (el, current, total, unit) => {
+        el.textContent = '';
+        el.appendChild(numSpan('index-counter-current', String(current)));
+        el.appendChild(numSpan('index-counter-tick', '/'));
+        el.appendChild(numSpan('index-counter-total', String(total)));
+        el.appendChild(numSpan('stat-unit', unit));
+      };
+
+      function syncCounts() {
+        const total = allCards.length;
+        const live  = allCards.filter(isLive).length;
+
+        chapterEls.forEach((ch) => {
+          const cards = [...ch.querySelectorAll('.video-card')];
+          const n = cards.length;
+          const l = cards.filter(isLive).length;
+          ch.dataset.live = String(l);
+          const out = ch.querySelector('[data-chapter-count]');
+          if (out) fillRatio(out, l, n, 'published');
+        });
+
+        if (live === 0) {
+          /* Section 7.4. At zero published the masthead states the plan, not a ratio:
+             every feature is written up, only the footage is outstanding. A
+             `0 of 41` would read as a failure; this reads as the state it is. */
+          if (pubEn) {
+            pubEn.textContent = 'All ';
+            pubEn.appendChild(numSpan('index-counter-current', String(total)));
+            pubEn.appendChild(doc.createTextNode(' features are written up. The footage is still in production.'));
+          }
+          if (pubBar) pubBar.style.setProperty('--p', '0');
+        } else {
+          if (pubEn) fillRatio(pubEn, live, total, 'published');
+          if (pubBar) pubBar.style.setProperty('--p', String(live / total));
+        }
+        if (availToggle) availToggle.disabled = live === 0;
+      }
+
+      /* -- Reverting a card to pending, in place (section 7.4) --------------
+         Fires when a poster or an mp4 that markup claims exists does not. The
+         reader sees a card that never claimed to be playable. The empty state
+         is a designed state, so nothing looks broken. */
+      const warned = new Set();
+      function revertToPending(card, why) {
+        if (!card || !isLive(card)) return;
+        const slug = card.dataset.slug;
+        card.classList.add('video-card--pending');
+
+        const media = card.querySelector('.video-card-media');
+        if (media) {
+          media.classList.remove('has-media');
+          const img = media.querySelector('.media-poster');
+          if (img) img.remove();
+          const play = media.querySelector('.video-card-play');
+          if (play) play.remove();
+          const prev = media.querySelector('.video-card-preview');
+          if (prev) prev.remove();
+          const dur = media.querySelector('.video-card-duration');
+          if (dur) {
+            dur.classList.add('video-card-duration--planned');
+            /* Same shape as the authored markup: the figure in the number face,
+               the qualifier beside it in .stat-unit so it can be set subordinate. */
+            dur.textContent = mmss(Number(card.dataset.len || 0)) + ' ';
+            dur.appendChild(numSpan('stat-unit', 'planned'));
+          }
+        }
+
+        const link = card.querySelector('.video-card-link');
+        if (link) {
+          link.removeAttribute('href');
+          link.removeAttribute('data-video-open');
+          link.setAttribute('aria-disabled', 'true');
+        }
+
+        if (!warned.has(slug)) {
+          warned.add(slug);
+          console.warn('[FieldLux] ' + slug + ': ' + why + '. Card reverted to pending.');
+        }
+        syncCounts();
+        applyFilters(false);
+      }
+
+      /* -- 7.2: Filter rail -------------------------------------------------
+         Chapter chips and the Available-now toggle are plain buttons with
+         aria-pressed, never role="tab" (section 5.10): they hide and show sibling
+         sections and sit beside an independent toggle. */
+      const chips        = [...doc.querySelectorAll('.filter-chip')];
+      const availToggle  = doc.querySelector('[data-filter-available]');
+      const srOut        = doc.querySelector('.filter-result-sr');
+      const CHAPTER_IDS  = chapterEls.map((ch) => ch.dataset.chapter);
+
+      let activeChapter = 'all';
+      let availableOnly = false;
+
+      function visibleCount() {
+        return allCards.filter((card) => {
+          if (activeChapter !== 'all' && card.dataset.chapter !== activeChapter) return false;
+          if (availableOnly && !isLive(card)) return false;
+          return true;
+        }).length;
+      }
+
+      const liveIn = (id) => allCards.filter(
+        (card) => isLive(card) && (id === 'all' || card.dataset.chapter === id)).length;
+
+      function applyFilters(pushUrl) {
+        /* Section 7.4: "filter yields 0" must stay impossible. With Available now on,
+           a chapter that has shot nothing cannot be selected, and a selection
+           that just went empty falls back to All rather than to a blank page. */
+        if (availableOnly && activeChapter !== 'all' && liveIn(activeChapter) === 0) {
+          activeChapter = 'all';
+        }
+        if (grid) {
+          if (activeChapter === 'all') grid.removeAttribute('data-active-chapter');
+          else grid.dataset.activeChapter = activeChapter;
+          if (availableOnly) grid.dataset.availableOnly = 'true';
+          else grid.removeAttribute('data-available-only');
+        }
+        chips.forEach((c) => {
+          const id = c.dataset.filterChapter || 'all';
+          const on = id === activeChapter;
+          c.setAttribute('aria-pressed', on ? 'true' : 'false');
+          c.classList.toggle('is-active', on);
+          c.disabled = availableOnly && liveIn(id) === 0;
+        });
+        if (availToggle) availToggle.setAttribute('aria-pressed', availableOnly ? 'true' : 'false');
+
+        const n = visibleCount();
+        if (srOut) srOut.textContent = n + (n === 1 ? ' video shown' : ' videos shown');
+
+        if (pushUrl && window.history && window.history.replaceState) {
+          const url = new URL(window.location.href);
+          if (activeChapter === 'all') url.searchParams.delete('c');
+          else url.searchParams.set('c', activeChapter);
+          window.history.replaceState(null, '', url.pathname + url.search + url.hash);
+        }
+      }
+
+      chips.forEach((c) => {
+        c.addEventListener('click', () => {
+          const want = c.dataset.filterChapter || 'all';
+          activeChapter = (activeChapter === want && want !== 'all') ? 'all' : want;
+          applyFilters(true);
+        });
+      });
+
+      if (availToggle) {
+        availToggle.addEventListener('click', () => {
+          if (availToggle.disabled) return;
+          availableOnly = !availableOnly;
+          applyFilters(true);
+        });
+      }
+
+      /* ?c=ch-blend makes a chapter linkable. */
+      const wantedChapter = params.get('c');
+      if (wantedChapter && CHAPTER_IDS.indexOf(wantedChapter) !== -1) activeChapter = wantedChapter;
+
+      syncCounts();
+      applyFilters(false);
+
+      /* A poster that 404s would be the one broken-looking thing on the page,
+         so it is treated exactly like the missing-mp4 case in section 7.4: the card
+         reverts to the designed pending state in place, and the counters follow.
+         Wired after the first applyFilters() so a synchronous revert cannot run
+         before the filter state exists. */
+      allCards.filter(isLive).forEach((card) => {
+        const img = card.querySelector('.media-poster');
+        if (!img) return;
+        const onErr = () => revertToPending(card, 'poster missing');
+        if (img.complete && img.naturalWidth === 0) onErr();
+        else img.addEventListener('error', onErr, { once: true });
+      });
+
+      /* -- 7.6: Lightbox ----------------------------------------------------
+         Playback is started by script and only when motion is allowed; there is
+         no such attribute anywhere in this markup (ship gate G8). */
+      const lightbox = doc.getElementById('video-lightbox');
+      const coarse   = window.matchMedia('(pointer: coarse)');
+
+      if (lightbox) {
+        const panel    = lightbox.querySelector('.video-lightbox__panel');
+        const playerEl = lightbox.querySelector('.video-lightbox__player');
+        const titleEl  = lightbox.querySelector('.video-lightbox__title');
+        const tagEl    = lightbox.querySelector('[data-lightbox-tag]');
+        const descEl   = lightbox.querySelector('[data-lightbox-desc]');
+        const closeBtn = lightbox.querySelector('.video-lightbox__close');
+        const backdrop = lightbox.querySelector('.video-lightbox__backdrop');
+        const prevBtn  = lightbox.querySelector('.video-lightbox__prev');
+        const nextBtn  = lightbox.querySelector('.video-lightbox__next');
+
+        let lbReturnFocus = null;
+        let lbCard = null;
+        let lbOpen = false;
+
+        const pickPreload = () => {
+          if (leanData || coarse.matches) return 'none';
+          if (conn && typeof conn.effectiveType === 'string' && conn.effectiveType.indexOf('2g') !== -1) return 'none';
+          return 'metadata';
+        };
+
+        /* The live cards currently on screen, in DOM order. Pending cards are
+           skipped by the left and right arrow keys, because there is nothing
+           to step to. */
+        const stepList = () => allCards.filter((card) => {
+          if (!isLive(card)) return false;
+          if (activeChapter !== 'all' && card.dataset.chapter !== activeChapter) return false;
+          return true;
+        });
+
+        const teardownPlayer = () => {
+          const v = playerEl.querySelector('video');
+          if (v) {
+            v.pause();
+            v.removeAttribute('src');
+            v.load();            /* release the decoder */
+          }
+          playerEl.textContent = '';
+        };
+
+        const fillPanel = (card) => {
+          const slug = card.dataset.slug;
+          const body = card.querySelector('.video-card-body');
+          const titleText = card.querySelector('.video-card-title');
+          titleEl.textContent = titleText ? titleText.textContent : slug;
+          /* The chapter tag carries the same (NN) NAME span pair as the section
+             spine, so it is cloned rather than flattened to text: copying
+             textContent would have dropped the ordinal treatment inside the
+             modal and left a run of source whitespace in its place. */
+          tagEl.textContent = '';
+          [...body.querySelector('.video-card-tag').children].forEach((node, i) => {
+            if (i) tagEl.appendChild(doc.createTextNode(' '));
+            tagEl.appendChild(node.cloneNode(true));
+          });
+          descEl.textContent = body.querySelector('.video-card-desc').textContent;
+
+          playerEl.style.setProperty('--media-ratio', card.dataset.ratio || '1918 / 942');
+          teardownPlayer();
+
+          const v = doc.createElement('video');
+          v.setAttribute('controls', '');
+          v.setAttribute('playsinline', '');       /* or iOS Safari hijacks to fullscreen */
+          v.preload = pickPreload();
+          v.poster = FEATURES + slug + '.jpg';
+          v.src = FEATURES + slug + '.mp4';
+          /* These are silent screen recordings. The encode strips audio with
+             -an, so there is no synchronised audio to caption (section 7.6). The
+             accessible name comes from .video-lightbox__title via
+             aria-labelledby, and the prose beneath states what changes on
+             screen. A real <track> lands only if a clip ever ships narrated. */
+          v.addEventListener('error', () => { closeTop(); revertToPending(card, 'video missing'); });
+          playerEl.appendChild(v);
+
+          if (motionAllowed() && !leanData) {
+            const p = v.play();
+            if (p && p.catch) p.catch(() => {});
+          }
+
+          const list = stepList();
+          const i = list.indexOf(card);
+          prevBtn.disabled = i <= 0;
+          nextBtn.disabled = i < 0 || i >= list.length - 1;
+        };
+
+        /* The injected <video controls> is tabbable but matches none of the
+           FOCUSABLE selectors. Without it, a filter that leaves one live card
+           disables both step buttons, the trap collapses to [closeBtn] and the
+           player itself becomes keyboard-unreachable (section 5.10). */
+        const lbFocusables = () =>
+          [...panel.querySelectorAll(FOCUSABLE + ',video[controls]')].filter((el) => !el.disabled);
+        const onLbKeydown = (e) => {
+          if (e.key === 'Tab') {
+            const stops = lbFocusables();
+            if (!stops.length) return;
+            const first = stops[0], last = stops[stops.length - 1];
+            if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
+            return;
+          }
+          if (e.key === 'ArrowLeft')  { e.preventDefault(); step(-1); }
+          if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+        };
+
+        function step(dir) {
+          const list = stepList();
+          const i = list.indexOf(lbCard);
+          const next = list[i + dir];
+          if (!next) return;
+          lbCard = next;
+          fillPanel(next);
+        }
+
+        function closeLightbox() {
+          if (!lbOpen) return;
+          lbOpen = false;
+          teardownPlayer();
+          lightbox.hidden = true;
+          lightbox.classList.remove('is-open');
+          releasePageIfLastOverlay();
+          doc.removeEventListener('keydown', onLbKeydown, true);
+          /* focus returns to the card link that opened it */
+          if (lbReturnFocus && lbReturnFocus.focus) lbReturnFocus.focus();
+          lbReturnFocus = null;
+          lbCard = null;
+        }
+
+        function openLightbox(card, opener) {
+          if (lbOpen) { lbCard = card; fillPanel(card); return; }
+          lbOpen = true;
+          lbCard = card;
+          lbReturnFocus = opener || doc.activeElement;
+          lightbox.hidden = false;
+          fillPanel(card);
+          isolatePage();
+          requestAnimationFrame(() => lightbox.classList.add('is-open'));
+          doc.addEventListener('keydown', onLbKeydown, true);
+          closeBtn.focus();
+          openOverlay({ el: lightbox, close: closeLightbox });
+        }
+
+        closeBtn.addEventListener('click', () => closeTop());
+        backdrop.addEventListener('click', () => closeTop());
+        prevBtn.addEventListener('click', () => step(-1));
+        nextBtn.addEventListener('click', () => step(1));
+
+        /* Delegated: a card that reverts to pending stops matching, and a card
+           the owner publishes starts matching, with no rebinding. */
+        grid.addEventListener('click', (e) => {
+          const link = e.target.closest ? e.target.closest('[data-video-open]') : null;
+          if (!link) return;
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;  /* let cmd-click save the file */
+          const card = link.closest('.video-card');
+          if (!card || !isLive(card)) return;
+          e.preventDefault();
+          openLightbox(card, link);
+        });
+
+        /* -- Hover preview (section 7.6) -----------------------------------
+           180 ms of intent before any decoder is created, exactly one preview
+           alive at a time, and never on a coarse pointer. */
+        /* motionAllowed() rather than a bare prefers-reduced-motion test: the
+           toggle is tri-state (section 5.9) precisely so a reader whose OS says
+           "reduce" can turn motion back on, and previews must come back with
+           it. Reading the media query directly left that reader with a control
+           that looked broken to exactly the audience it was built for. */
+        const canPreview = () =>
+             window.matchMedia('(hover: hover) and (pointer: fine)').matches
+          && motionAllowed()
+          && !(conn && conn.saveData === true);
+
+        let currentPreview = null;   /* module-level: one decoder, not eight */
+        let intentTimer = null;
+
+        function killPreview() {
+          window.clearTimeout(intentTimer);
+          intentTimer = null;
+          if (!currentPreview) return;
+          currentPreview.pause();
+          currentPreview.removeAttribute('src');
+          currentPreview.load();
+          if (currentPreview.parentNode) currentPreview.parentNode.removeChild(currentPreview);
+          currentPreview = null;
+        }
+
+        function startPreview(card) {
+          if (!canPreview() || !isLive(card)) return;
+          const media = card.querySelector('.video-card-media');
+          if (!media) return;
+          killPreview();
+          intentTimer = window.setTimeout(() => {
+            if (!isLive(card)) return;
+            const slug = card.dataset.slug;
+            const v = doc.createElement('video');
+            v.className = 'video-card-preview';
+            v.muted = true;                       /* property before play(), or Safari refuses */
+            v.setAttribute('muted', '');
+            v.setAttribute('playsinline', '');
+            v.loop = true;
+            v.preload = 'none';
+            v.src = FEATURES + slug + '.mp4';
+            v.addEventListener('error', () => { killPreview(); revertToPending(card, 'video missing'); });
+            media.appendChild(v);
+            currentPreview = v;
+            v.currentTime = 0;                    /* always the same impression, never a random midpoint */
+            const p = v.play();
+            if (p && p.catch) p.catch(() => killPreview());
+          }, 180);
+        }
+
+        if (!coarse.matches) {
+          grid.addEventListener('mouseover', (e) => {
+            const link = e.target.closest ? e.target.closest('[data-video-open]') : null;
+            if (!link) return;
+            const card = link.closest('.video-card');
+            if (card) startPreview(card);
+          });
+          grid.addEventListener('mouseout', (e) => {
+            const link = e.target.closest ? e.target.closest('[data-video-open]') : null;
+            if (!link) return;
+            if (e.relatedTarget && link.contains(e.relatedTarget)) return;
+            killPreview();
+          });
+          /* keyboard parity: the same preview, the same delay, the same gates */
+          const focusVisible = (el) => { try { return el.matches(':focus-visible'); } catch (_) { return true; } };
+          grid.addEventListener('focusin', (e) => {
+            const link = e.target.closest ? e.target.closest('[data-video-open]') : null;
+            if (!link || !focusVisible(link)) return;
+            const card = link.closest('.video-card');
+            if (card) startPreview(card);
+          });
+          grid.addEventListener('focusout', () => killPreview());
+          doc.addEventListener(MOTION_EVENT, () => { if (!motionAllowed()) killPreview(); });
+        }
+      }
+
+    })();
+  </script>
+</body>
+</html>

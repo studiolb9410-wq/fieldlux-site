@@ -1,1532 +1,2765 @@
+/* ============================================================================
+   FieldLux: src/input.css
+   Built to docs/REDESIGN_SPEC_0814.md. That document is authoritative EXCEPT
+   where the owner overrode it after it was written:
+     OVERRIDE 1: the site is ENGLISH ONLY. Section 1.4 (the bilingual contract)
+                 and section 3.3 (Korean rendering) are revoked and their rules
+                 deleted.
+     OVERRIDE 2: the hero is a rounded frame hosting the real app, not a 3D
+                 monitor. The section 4.4 / 6.2b geometry and section 4.3's
+                 .hero-notch are deleted; .hero-frame and .hero-card replace them.
+
+   File map, spec section to line block:
+     3.1  Fonts .................. @IMPORT + @font-face, below
+     2.1  Design tokens .......... :root
+     3.2  Type scale ............. :root
+     3.4  Container + spacing .... :root, including the four --rhythm-* steps
+     5    Motion tokens .......... :root
+     3.7  Bleed rule ............. html / body / .site-main
+     5.10 Focus .................. :focus-visible
+     4.1 to 4.5 .................. the component class contract, in spec order
+     3.2 + 4    ................... THE NUMERIC HIERARCHY: the inventory of
+                                    every number on every page, and the five
+                                    roles, each declared exactly once. Sits
+                                    before 4.6 because 4.6 is its first
+                                    consumer. Components after it carry only
+                                    their positional and colour deltas.
+     4.6 to 4.15 ................. the rest of the class contract
+     3.8  Breakpoints ............ 1180 / 860 / 560 / 380, one block each
+     5.9  Reduced motion ......... designed branches + the !important floor
+     5.10 Contrast modes ......... prefers-contrast / forced-colors
+     -    Unused-but-kept ........ closing block, above @tailwind utilities
+
+   Rules enforced here:
+     - The site is WHITE (--paper). Exactly three dark elements exist:
+       .hero-frame (the screen, formerly .monitor-screen), .media-slot--mass,
+       and nothing else (section 2.4).
+     - Cyan (--brand-400/500/600) never carries a letterform on white. It appears
+       on white only as a *fill*: .btn--brand, .pin-progress-bar, .pub-progress-bar,
+       .nav-link::after, .type-caret. The cyan-as-text property is used only
+       inside .section--mass / .media-slot--mass  (G2).
+     - The x-axis overflow keyword is `clip` everywhere, never the one that turns
+       <html> into a scroll container (G3).
+     - No animation, transition or transform-driven reveal survives
+       prefers-reduced-motion, and .motion-toggle can force motion back on (section 5.9).
+   ========================================================================== */
+
+/* -- Section 3.1, Fonts -----------------------------------------------------
+   Two families, both self-hosted: Geologica (display, latin) and Pretendard
+   Variable (body + ALL Korean, dynamic subset ~100 unicode-range chunks).
+
+   WARNING: THE UPPERCASE `@IMPORT` IS LOAD-BEARING. DO NOT LOWERCASE IT.
+   Tailwind's CLI runs postcss-import over this file. postcss-import matches the
+   at-rule name case-sensitively (`node.name === "import"`), so a lowercase
+   @import is intercepted and either
+     (a) hard-fails the build with `Failed to find '/assets/fonts/...'`, because
+         a root-relative URL is a *filesystem*-absolute path at build time, or
+     (b) is silently discarded, if anything precedes it.
+   Verified against tailwindcss 3.4.17 / postcss-import in node_modules.
+   CSS at-keywords are ASCII case-insensitive, so browsers honour `@IMPORT`
+   exactly as `@import`, and it stays the first statement of assets/tailwind.css.
+   A *runtime* import is also the correct mechanism here: the subset .css
+   references its .woff2 chunks with URLs relative to itself, which build-time
+   inlining into /assets/tailwind.css would break.
+   The file arrives with asset A6 (section 8.2); until then this 404s harmlessly and
+   Korean falls back down the stack below. Nothing else needs to change. */
+@IMPORT url('/assets/fonts/pretendard/pretendard-dynamic-subset.css');
+
+@font-face{
+  font-family:'Geologica';
+  src:url('/assets/fonts/geologica-var-latin.woff2') format('woff2-variations');
+  font-weight:300 700; font-style:normal; font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+2000-206F,U+2074,
+                U+20AC,U+2122,U+2190-2193,U+2197,U+2212,U+2215,U+00B7;
+}
+
 @tailwind base;
+
+/* ============================================================================
+   Section 2.1, THE TOKEN BLOCK: pasted verbatim from the spec.
+   Every legacy token (--stage, --stage-2, --muted, --soft, --brand-2, --amber,
+   --blue, --red, --green, --surface-50, --ramp-1 to 5, the alpha --line pair,
+   the old warm --ink) is deleted and must not come back (section 9.3).
+   ========================================================================== */
+:root {
+  color-scheme: light;
+
+  /* -- Page + surfaces ------------------------------------------- */
+  --paper:       #FFFFFF;   /* the page ground. the default. */
+  --surface-100: #F4F6F7;   /* cards, inset panels, code, empty media slots */
+  --surface-200: #EBEEEF;   /* pressed states, table zebra */
+  --surface-tint:#ECFBFC;   /* brand wash: callouts only, used sparingly */
+
+  /* -- Ink scale (ratios measured on --paper) -------------------- */
+  --ink-950: #020102;   /* logo ink. display type, primary text     20.84:1 */
+  --ink-900: #0B0F11;   /* headings                                 19.25:1 */
+  --ink-700: #2A3338;   /* body copy                                12.89:1 */
+  --ink-500: #566268;   /* secondary copy, list bodies               6.28:1 */
+  --ink-400: #626E74;   /* captions, micro-labels, control borders   5.25:1 */
+  /* NON-TEXT ONLY, and the "non-text" is load-bearing: 3.06:1 is legal only
+     for a drawn object (.marquee-dot) or a control WCAG counts as inactive
+     (:disabled / [disabled] / .is-disabled). A glyph the reader can read is
+     text however small its job sounds - see .index-counter-tick. */
+  --ink-300: #8A959B;   /* disabled glyphs, drawn marks              3.06:1 */
+
+  /* -- Brand ramp, sampled from assets/logo-mark.png ------------- */
+  --brand-100: #ECFBFC;
+  --brand-200: #C9F4F7;
+  --brand-300: #7FE4EA;
+  --brand-400: #3FD3DF;  /* logo light cyan,   OBJECT ONLY      1.81:1 FAIL text */
+  --brand-500: #20D5DE;  /* logo mid,          OBJECT ONLY      1.81:1 FAIL text */
+  --brand-600: #00B1C4;  /* logo mid-dark,     DECORATIVE ONLY  2.60:1 FAIL text */
+  --brand-700: #008DA6;  /* large text 24px up + UI boundaries  3.92:1 */
+  --brand-800: #006E87;  /* logo deep teal,    TEXT-SAFE ACCENT 5.87:1 PASS */
+  --brand-900: #00566B;  /* link hover                          8.26:1 PASS */
+  --brand-950: #003F4E;  /* pressed                            11.53:1 PASS */
+
+  /* -- Mass: the only dark grounds on the site ------------------- */
+  --mass-950: #04252D;   /* monitor screen ground, video letterbox */
+  --mass-900: #073644;
+  --mass-800: #0B4A5C;
+  --mass-ink:      #FFFFFF;              /* on mass-950   16.06:1 */
+  --mass-ink-soft: #B9CDD3;              /* on mass-950    9.74:1 */
+  --mass-accent:   #3FD3DF;              /* on mass-950    8.87:1 */
+  --mass-line:     rgba(63,211,223,0.22);
+  --mass-line-soft:rgba(255,255,255,0.12);
+
+  /* -- The monitor bezel ramp (--bezel-hi / -mid / -lo / -edge / -wall /
+        -stand) is DELETED by OWNER OVERRIDE 2. It existed only to fake the
+        extruded faces of the 3D monitor; that component is retired, so the six
+        tokens have zero var() sites and do not ship (section 9.3). ---------- */
+
+  /* -- Hairlines ------------------------------------------------- */
+  --line:        #E4E8EA;  /* decorative hairline, the document spine */
+  --line-strong: #C9D0D3;  /* emphasized rule, dashed empty-slot border */
+  --line-control:#626E74;  /* ANY border that identifies a control  5.25:1 PASS */
+
+  /* -- Focus ----------------------------------------------------- */
+  --focus:         #006E87;   /* on light  5.87:1 */
+  --focus-on-mass: #3FD3DF;   /* on mass   8.87:1 */
+  --focus-halo:    #FFFFFF;
+}
+
+/* -- Section 3.1, Font stacks --------------------------------------------- */
+:root{
+  --font-display:'Geologica','Pretendard Variable',Pretendard,-apple-system,
+                 'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;
+  --font-body:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,
+              'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',
+              'Segoe UI',Roboto,sans-serif;
+  --font-num:'Geologica',ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-synthesis-weight:none;
+}
+
+/* -- Section 3.2, Type scale: fluid between 390px and 1440px ------------- */
+:root{
+  /* --fs-display-1 sizes the hero H1 and nothing else, and it has now been
+     refitted twice: once when OWNER OVERRIDE 2 replaced the 3D monitor, and
+     again now that the card sits IN FRONT of the frame at 47% of its width,
+     which is a little under half the measure the H1 had when the card was full
+     width. The headline shrank to suit: "CAN YOU HIT 350 SURFACE LUX" was 27
+     characters, "ON THAT FACADE" is 14 plus the drawn caret.
+
+     The binding line is line two, "ON THAT " plus the longest rotation word
+     (FACADE and TUNNEL, both 6 characters) plus the drawn caret. MEASURED, not
+     estimated: rendered in Geologica 500 at -0.035em in Chrome it is 8.827 x
+     font-size (FACADE is 8.804, "HOW MANY LUX" only 7.631, so TUNNEL sets the
+     ceiling). It has to hold on one line inside the card's inner width, which
+     is 47% of the shell minus twice the card's padding.
+
+     The shell column below is the REAL one: `scrollbar-gutter:stable` reserves
+     ~15px that vw units still count, so the shell is narrower than
+     (viewport - 2 x gutter) by that much. Sizing off the naive number is how a
+     headline that measured fine ships wrapped.
+
+       viewport  shell   card   padding  inner   max F  F at 4vw  headroom
+        1600+    1440    676.8   36.0    604.8   68.5   64 (cap)    6.6%
+        1440     1304    612.9   34.6    543.8   61.6   57.6        6.5%
+        1280     1157    544.0   30.7    482.6   54.7   51.2        6.3%
+        1180     1066    501.0   28.3    444.4   50.3   47.2        6.2%
+         861      774    363.6   20.7    322.3   36.5   34.4        5.7%
+
+     4vw clears every row by 6%. That margin is not slack, it is the budget for
+     the fallback stack: Geologica is font-display:swap, so the first paint
+     sets this line in Pretendard or the system face, and a headline that fits
+     to the pixel in the webfont wraps for the first 200 ms in the fallback.
+     The 64px cap is where the shell stops growing at 1440 (viewport 1600);
+     past it the card is a fixed 676.8px and a bigger H1 only eats the budget.
+     Below 860 the card leaves the frame and goes full width; the H1 gets its
+     own ramp in that breakpoint block, not this one. */
+  --fs-display-1: clamp(2.125rem, 4vw, 4rem);                    /*  34 to  64 */
+  --fs-display-2: clamp(2.125rem, 0.964rem + 4.76vw, 5.25rem);   /*  34 to  84 */
+  --fs-display-3: clamp(1.75rem, 1.100rem + 2.67vw, 3.5rem);     /*  28 to  56 */
+  --fs-h3:        clamp(1.5rem, 1.129rem + 1.52vw, 2.5rem);      /*  24 to  40 */
+  --fs-h4:        clamp(1.1875rem, 1.071rem + 0.48vw, 1.5rem);   /*  19 to  24 */
+  --fs-lead:      clamp(1.0625rem, 0.970rem + 0.38vw, 1.3125rem);/*  17 to  21 */
+  --fs-body:      clamp(1rem, 0.966rem + 0.10vw, 1.0625rem);     /*  16 to  17 */
+  --fs-body-sm:   clamp(0.875rem, 0.841rem + 0.10vw, 0.9375rem); /*  14 to  15 */
+  --fs-micro:     clamp(0.6875rem, 0.653rem + 0.10vw, 0.75rem);  /*  11 to  12 */
+  --fs-counter:   clamp(0.75rem, 0.699rem + 0.19vw, 0.875rem);   /*  12 to  14 */
+  /* --fs-stat used to top out at 4rem, the SAME cap as --fs-display-1, but off a
+     shallower ramp with a +1.257rem offset - so it reached that cap at a much
+     narrower viewport than the H1 reached its own. Measured at 1440: a
+     .stat-value painted 64px against a .hero-title of 57.6px, and at 1280,
+     59.15 against 51.2. The largest number on the page outranked the largest
+     promise on the page, at every width from about 700 up.
+     Re-ramped so ROLE 1 is subordinate to the H1 EVERYWHERE, not just where the
+     two clamps happen to cross. Checked against both H1 ramps (--fs-display-1
+     above 860, the .hero-title ramp below it):
+       360   28.0 stat / 28.2 H1     860   31.0 / 54.0     1440  51.8 / 57.6
+       390   28.0 / 29.7             1180  42.5 / 47.2     1600  56.0 / 64.0
+       560   32.0? no: 20.2 -> 28.0 floor / 38.5           2560  56.0 / 64.0
+     The floor moves 32 -> 28 for the same reason: at 390 a 32px floor sat above
+     a 29.7px headline. 28 is --fs-display-3's own floor, so the largest figure
+     on a phone is still the size of a section title. */
+  --fs-stat:      clamp(1.75rem, 3.6vw, 3.5rem);                 /*  28 to  56 */
+}
+
+/* -- Section 3.4, Container and spacing ----------------------------------- */
+:root{
+  --gutter:  clamp(20px, 4.2vw, 64px);
+  --w-page:  1440px;   /* THE container. one width. */
+  --w-narrow:1120px;   /* prose-forward sections, pin panels */
+  --w-text:  68ch;     /* max measure for any paragraph */
+  --gap:     clamp(16px, 1.8vw, 28px);
+  --nav-h:   clamp(64px, 5.2vw, 84px);
+
+  --pad-xs: clamp(40px,  5vw,  64px);
+  --pad-sm: clamp(64px,  7.5vw,104px);
+  --pad-md: clamp(96px, 11vw, 168px);
+  --pad-lg: clamp(140px,16vw, 240px);
+
+  /* -- Section 3.6, THE RHYTHM SCALE ----------------------------------------
+     --pad-* sizes the gap BETWEEN sections. Everything INSIDE a section used
+     to be a hand-written clamp, and there were eleven different ones doing
+     four jobs: 10 / 14 / 16 / 18px hairline offsets, three "gap under a label"
+     values, and two head gaps that differed by 2px for no reason. Four steps
+     replace them, one job each, so a section's internal rhythm is the same
+     section to section and page to page.
+
+       --rhythm-tight  label -> value -> note inside one stat / readout cell
+       --rhythm-rule   ANY 1px hairline to the text directly under it
+       --rhythm-head   the (00) spine to the title it introduces; head internals
+       --rhythm-block  title -> body, block -> block, table row padding
+
+     The scale governs the distance BETWEEN things. A box's own inset is not
+     rhythm and is not on it: .hero-card, .btn, .filter-chip, .marquee--hairline
+     and .video-lightbox__panel keep their own padding clamps, because those are
+     the size of an object rather than the space around one. Nine of those
+     remain and every one is a padding-inline or a box inset.
+
+     Distances between things that are NOT on the scale: exactly one,
+     .video-chapter-head's margin-block-end, documented at its own rule as a
+     sticky offset. Anything else that wants a new number wants one of these
+     four instead. */
+  --rhythm-tight: clamp(8px,  0.8vw, 12px);
+  --rhythm-rule:  clamp(12px, 1.1vw, 16px);
+  --rhythm-head:  clamp(14px, 1.6vw, 24px);
+  --rhythm-block: clamp(18px, 2.0vw, 28px);
+}
+
+/* -- Section 5, Motion tokens --------------------------------------------- */
+:root{
+  --ease-out:    cubic-bezier(.22,1,.36,1);     /* default */
+  --ease-in-out: cubic-bezier(.65,.05,.36,1);   /* overlays */
+  --ease-spring: cubic-bezier(.34,1.4,.44,1);   /* caret only */
+  --t-fast:   160ms;
+  --t-base:   260ms;
+  --t-slow:   620ms;
+  --t-reveal: 760ms;
+  --stagger:   70ms;
+}
+
+/* -- Section 4.9, Default media aspect = the app-window capture ratio ----- */
+:root{ --media-ratio: 1918 / 942; }
+
+/* -- OWNER OVERRIDE 2, the rounded-frame radius --------------------------------
+   ONE radius, not a family. This was a two-step family - a generous radius for
+   the object and one step tighter for the paper card - which is the correct
+   pattern for a card sitting loose on a page, and the wrong one here: the card
+   shares the frame's left edge, so the two are near-concentric and the step
+   read as a 4.32px misalignment rather than as a hierarchy (measured at 1440:
+   frame 23.04px, card 18.72px). Both draw --radius-frame now.
+   --radius-card is DELETED rather than left unused: it had exactly one consumer,
+   that consumer is gone, and section 9.3 is explicit that a dead token does not
+   ship. It is not one of the section 2.1 tokens the closing note reports instead
+   of removing - those are pasted verbatim from the spec, this one was authored
+   by the override and the override no longer needs it. */
+:root{
+  --radius-frame: clamp(16px, 1.6vw, 28px);
+}
+
+/* ============================================================================
+   BASE: document, section 3.7 bleed rule, section 3.3 Korean, section 5.10 focus
+   ========================================================================== */
+
+/* Section 3.7: `clip`, NEVER `hidden`. `hidden` makes <html> a scroll container and
+   silently kills position:sticky, which the pinned chapter (section 6.10), the sticky
+   header and the /videos filter rail all depend on. */
+html{
+  overflow-x:clip; scrollbar-gutter:stable;
+  scroll-behavior:smooth;
+  scroll-padding-block-start:calc(var(--nav-h) + 16px);
+  -webkit-text-size-adjust:100%;
+}
+body{
+  overflow-x:clip;
+  background:var(--paper);
+  color:var(--ink-700);
+  font-family:var(--font-body);
+  font-size:var(--fs-body);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+/* Container-query unit source for every bleed (section 3.7). 100cqw, not 100vw:
+   with scrollbar-gutter reserved, 100vw overshoots by the scrollbar width. */
+.site-main{ container-type:inline-size; display:block; }
+
+/* UA `[hidden]{display:none}` must survive component `display` declarations:
+   both overlays and the lightbox are `hidden` at rest (section 5.8, section 7.6). */
+[hidden]{ display:none !important; }
+
+img,video,svg{ max-inline-size:100%; }
+p,li{ font-size:var(--fs-body); line-height:1.65; color:var(--ink-700); }
+a{ color:inherit; }
+::selection{ background:var(--brand-200); color:var(--ink-950); }
+:target{ scroll-margin-block-start:calc(var(--nav-h) + 24px); }
+
+/* Section 3.3, Korean rendering rules: DELETED by OWNER OVERRIDE 1.
+   The site is English only: the bilingual contract (section 1.4) is revoked, every
+   lang="ko" node is gone from index.html, and the :lang(ko) block that lived
+   here (keep-all word breaking, the Hangul line-height and the .micro-label
+   case override) has nothing left to match. It is removed rather than left
+   dead. If Korean ever returns it comes back with section 3.3 intact. Do not
+   re-add half of it. */
+
+/* Section 5.10, Focus. The ring is --focus #006E87 (5.87:1) everywhere on light,
+   with a white halo so it survives on any surface. A focus ring is never removed
+   without a replacement, and no rule in this file suppresses one. */
+:where(a,button,[tabindex],summary,input,select,textarea):focus-visible{
+  outline:2px solid var(--focus); outline-offset:3px; border-radius:4px;
+  box-shadow:0 0 0 5px var(--focus-halo);
+}
+.section--mass :focus-visible, .hero-frame :focus-visible, .media-slot--mass :focus-visible{
+  outline-color:var(--focus-on-mass); box-shadow:0 0 0 5px rgba(4,37,45,.9);
+}
+
 @tailwind components;
+
+/* ############################################################################
+   Section 4.1, SHELL AND GLOBAL
+   ######################################################################### */
+
+/* .skip-link: first child of <body>, visually hidden until :focus-visible */
+.skip-link{
+  position:fixed; z-index:100;
+  inset-block-start:8px; inset-inline-start:8px;
+  padding:12px 18px;
+  background:var(--paper); color:var(--ink-950);
+  border:1px solid var(--line-control); border-radius:6px;
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1;
+  text-decoration:none;
+  transform:translateY(-220%);
+  transition:transform var(--t-fast) var(--ease-out);
+}
+.skip-link:focus-visible{ transform:none; }
+
+/* The only two containers on the site. */
+.site-shell{ width:min(var(--w-page), 100% - var(--gutter)*2); margin-inline:auto; }
+.site-shell--narrow{ width:min(var(--w-narrow), 100% - var(--gutter)*2); margin-inline:auto; }
+
+/* Section 3.6, section padding. Rhythm is measure + mass + the ordinal spine.
+   There are no alternating tint bands in this build (section 2.4). */
+.section{ padding-block:var(--pad-md); position:relative; }
+.section--pad-xs{ padding-block:var(--pad-xs); }
+.section--pad-sm{ padding-block:var(--pad-sm); }
+.section--pad-md{ padding-block:var(--pad-md); }    /* same value as .section, written out so the modifier set is complete */
+.section--pad-lg{ padding-block:var(--pad-lg); }
+/* .section--wash is DELETED: section 3.6 caps it at one band per page and no
+   page uses its one band. --surface-tint keeps its other job (::selection). */
+.section--mass{ background:var(--mass-950); color:var(--mass-ink); }
+.hero + .section{ padding-block-start:var(--pad-sm); }
+
+.section--mass p,
+.section--mass li{ color:var(--mass-ink-soft); }
+.section--mass .section-title,
+.section--mass .chapter-title{ color:var(--mass-ink); }
+.section--mass .link{ color:var(--brand-400); }          /* 8.87:1 on --mass-950 */
+.section--mass .link:hover{ color:var(--brand-300); }
+/* ---- The stat family on the dark ground ----------------------------------
+   #numbers is the page's one --mass band (see its markup), and .section--mass
+   shipped without rules for the one component that would ever land on it. Every
+   part of a .stat is a <p>, so `.section--mass p` was about to repaint the
+   six ROLE 1 figures in --mass-ink-soft - the qualifier colour - while .stat's
+   own --line hairline went to roughly 1.2:1 on --mass-950 and disappeared.
+   The figure takes the full 16.06:1 ink, everything subordinate to it takes the
+   9.74:1 soft ink, and the rule that separates the six cells becomes visible
+   again. This is the family the closing note flagged as failing INVISIBLY; it
+   now has a consumer, and these five lines are what that consumer needed. */
+.section--mass .stat{ border-block-start-color:var(--mass-line); }
+.section--mass .stat-value{ color:var(--mass-ink); }
+.section--mass .stat-label,
+.section--mass .stat-note,
+.section--mass .stat-unit{ color:var(--mass-ink-soft); }
+
+/* Section 3.7, bleed. Only .media-slot, .marquee and .pin-flow may bleed. Never
+   text, and never .hero-frame (OVERRIDE 2: a frame that bleeds is a frame that
+   can own the scroll). A bleeding element carrying a caption keeps its own
+   inner padding-inline: var(--gutter).
+
+   ---- THE ESCAPE DISTANCE IS DECLARED BY THE COLUMN, NOT GUESSED BY THE CHILD
+
+   These three rules shipped as calc(50% - 50cqw). That 50% resolves against the
+   BLEEDING ELEMENT'S OWN containing block, so the formula only lands on the
+   viewport edge when that containing block is itself centred in the container.
+
+   .bleed-full is always centred - its two users are a child of .site-main and a
+   child of a .site-shell - which is why it measured 0px lost at every width.
+   .bleed-right and .bleed-left are not centred: both sit in a chapter's media
+   column, which is flush with one shell edge, and above 1180 that column is
+   0.38 of the shell. Measured before this fix, outer edge of the .bleed-right
+   slot against documentElement.clientWidth: +368.8 at 1280, +415.5 at 1440,
+   +460.1 at 1920, and .bleed-left the mirror of that off the left. That is 30%
+   of the slot pushed off-screen. Today the slots are empty so only dark ground
+   is lost; the day a capture lands, a third of every frame goes with it.
+
+   So the distance is no longer inferred from the child. Each container states
+   how far its own inline edge sits inside the viewport, and a bleed spends
+   exactly that:
+
+     .site-main  IS the container, so there is nothing to escape:  0.
+     .site-shell is width:min(--w-page, 100% - --gutter*2), centred, so its
+                 inset is --gutter until the --w-page cap bites and
+                 (100cqw - --w-page)/2 once it does. max() is those two facts
+                 in one expression, not a guess between them.
+
+   The token is INHERITED, which is what fixes the marquee: it is a direct child
+   of .site-main, not of any shell, so it now reads 0 and stops paying a gutter
+   it never owed. Measured before this fix at 390, the marquee was 415px wide in
+   a 375px content box - 20px past both edges - and 816.25px in 753 at 768.
+
+   It is also why the sub-860 rewrite of these three rules is deleted rather
+   than corrected: max() already returns --gutter at every width below the cap,
+   so the degrade that block hand-wrote is what this formula computes anyway.
+   The 380px block that restates a shell as calc(100% - 40px) does not move the
+   inset either - --gutter is clamped to its 20px floor everywhere below 476, so
+   both expressions are the same 20px there.
+
+   The var() fallback is 0px, so a .bleed-* authored outside every container
+   that declares an inset does nothing at all rather than overshooting by an
+   arbitrary distance. A bleed that fails flat is inspectable; one that flies
+   off the viewport under overflow-x:clip is not, which is exactly how both of
+   these survived to be measured. */
+.site-main         { --bleed-inset:0px; }
+.site-shell        { --bleed-inset:max(var(--gutter), (100cqw - var(--w-page)) / 2); }
+.site-shell--narrow{ --bleed-inset:max(var(--gutter), (100cqw - var(--w-narrow)) / 2); }
+
+.bleed-full  { inline-size:100cqw; margin-inline:calc(var(--bleed-inset, 0px) * -1); }
+.bleed-right { margin-inline-end:calc(var(--bleed-inset, 0px) * -1); }
+.bleed-left  { margin-inline-start:calc(var(--bleed-inset, 0px) * -1); }
+/* .bleed-gutter is DELETED. Section 3.7 introduced it as the sub-860 degrade
+   target, but the degrade is no longer a rewrite at a breakpoint - it is the
+   same --bleed-inset the wide layout uses, which resolves to one gutter on its
+   own below the cap. No page ever authored the class and none does. One
+   mechanism for the bleed at every width, not two. */
+
+/* Section 3.5, Grid */
+.grid-12{ display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:var(--gap); }
+.col-3 { grid-column:span 3; }
+.col-4 { grid-column:span 4; }
+.col-5 { grid-column:span 5; }
+.col-6 { grid-column:span 6; }
+.col-7 { grid-column:span 7; }
+.col-8 { grid-column:span 8; }
+.col-12{ grid-column:span 12; }
+.start-2{ grid-column-start:2; }
+.start-6{ grid-column-start:6; }
+.start-7{ grid-column-start:7; }
+.start-8{ grid-column-start:8; }
+
+/* .split-2 (the plain 1fr 1fr) is DELETED: no page authors it, and the three
+   named layouts below each declare their own display and gap rather than
+   extending it, so it was never a base class in practice. The 12-column
+   primitives above it are NOT deleted even though no page authors them either
+   - see the note at the end of this file. */
+.split-2--lead-left  { display:grid; grid-template-columns:1.15fr 0.85fr; gap:clamp(28px,4vw,72px); align-items:start; }
+.split-2--media-right{ display:grid; grid-template-columns:0.44fr 0.56fr; gap:clamp(28px,4vw,72px); align-items:start; }
+.split-3             { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--gap); align-items:start; }
+/* A .split-3 has no block-end margin of its own, so in #videos-cta the measured
+   gap between the bottom of the grid and the "OPEN FEATURE VIDEOS" link under
+   it was exactly 0px - the link touched the cards. Every other block-to-block
+   distance on the page is --rhythm-block; this one is now too. */
+.split-3 + .hero-actions{ margin-block-start:var(--rhythm-block); }
+
+/* Same bug, second site. On 404.html a bare .copy paragraph is followed directly
+   by the REPORT A BROKEN LINK button, and the measured gap is -22px: the button
+   box overlaps the paragraph rather than merely touching it. The three
+   .copy.section-lead + .hero-actions pairs on index and videos are NOT affected
+   and are deliberately excluded - a .section-lead carries its own block-end
+   margin, so those already sit at --rhythm-block and moving them would shift
+   signed-off blocks. Only the bare .copy case is short one margin. */
+.copy:not(.section-lead) + .hero-actions{ margin-block-start:var(--rhythm-block); }
+
+/* Section 1.4 was the bilingual contract; OWNER OVERRIDE 1 revoked it. A .bilingual
+   wrapper existed only to pair an EN claim with a KO explanation, so with the KO
+   gone the wrapper is gone too, and index.html now carries a single paragraph.
+   .copy is that paragraph: exactly what .bilingual + .bilingual-en resolved to,
+   in one class, so nothing about the rendered prose changes.
+
+   The .bilingual* block that used to sit here is DELETED. It was kept alive
+   only until videos.html, privacy.html and 404.html landed their own
+   English-only pass; all three have, and a grep of all four pages now returns
+   zero .bilingual, .bilingual-en and .bilingual-ko nodes. Seven rules went:
+   .bilingual, .bilingual + .bilingual, .bilingual-en, .bilingual-ko,
+   .section--mass .bilingual-en, .section--mass .bilingual-ko, and
+   .footer-lead .bilingual-ko down in section 4.13. */
+.copy{ max-inline-size:var(--w-text); color:var(--ink-700);
+       font-size:var(--fs-body); line-height:1.65; }
+.copy + .copy{ margin-block-start:1.35em; }
+.section--mass .copy{ color:var(--mass-ink); }
+
+/* Utilities.
+   .u-nowrap is DELETED, not merely unused: section 4.6 forbids the thing it
+   does ("line breaks are authored, never forced with white-space:nowrap; the
+   old hand-written nowrap-span system is deleted"). Shipping the utility is
+   shipping the invitation. */
+.u-visually-hidden{
+  position:absolute !important; inline-size:1px; block-size:1px;
+  padding:0; margin:-1px; overflow:hidden; white-space:nowrap;
+  clip:rect(0 0 0 0); clip-path:inset(50%); border:0;
+}
+.u-text-measure{ max-inline-size:var(--w-text); }
+/* Lining is stated with tabular on purpose. Setting `tabular-nums` alone leaves
+   the figure-style axis at the font's default, so a face that ever ships
+   old-style defaults would give a column of numbers with descenders in it.
+   Every numeric role in this file states both. */
+.u-tabular{ font-variant-numeric:lining-nums tabular-nums; }
+
+/* ############################################################################
+   Section 4.2, NAVIGATION
+   ######################################################################### */
+
+.site-header{
+  position:fixed; inset-block-start:0; inset-inline:0; z-index:60;
+  block-size:var(--nav-h); background:transparent;
+  transition:background var(--t-base) var(--ease-out),
+             block-size var(--t-base) var(--ease-out),
+             box-shadow var(--t-base) var(--ease-out);
+}
+.site-header.is-scrolled{
+  block-size:calc(var(--nav-h) - 18px);
+  background:rgba(255,255,255,.86); backdrop-filter:blur(14px) saturate(1.4);
+  box-shadow:0 1px 0 var(--line);
+}
+@supports not (backdrop-filter: blur(1px)){
+  .site-header.is-scrolled{ background:rgba(255,255,255,.97); }
+}
+@media (prefers-reduced-transparency: reduce){
+  .site-header.is-scrolled{ background:var(--paper); backdrop-filter:none; }
+}
+
+.nav-shell{
+  block-size:100%;
+  width:min(var(--w-page), 100% - var(--gutter)*2); margin-inline:auto;
+  display:flex; align-items:center; gap:clamp(16px,2.4vw,40px);
+}
+
+.brand-lockup{
+  display:inline-flex; align-items:center; gap:10px;
+  text-decoration:none; flex:0 0 auto;
+}
+.brand-lockup-img{ display:block; block-size:auto; inline-size:clamp(118px,9vw,154px); }
+.brand-beta{
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1;
+  color:var(--ink-400);
+  border:1px solid var(--line-strong); border-radius:3px;
+  padding:4px 6px;
+}
+
+.nav-links{
+  display:flex; align-items:center; gap:clamp(14px,1.8vw,30px);
+  margin-inline-start:auto; list-style:none; padding:0; margin-block:0;
+}
+.nav-link{
+  position:relative; display:inline-block;
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1;
+  color:var(--ink-700); text-decoration:none;
+  padding-block:6px;
+}
+/* Sanctioned cyan use 4 of 5 (section 2.3): a background, never a color. */
+.nav-link::after{
+  content:''; position:absolute; inset-inline:0; inset-block-end:0;
+  block-size:2px; background:var(--brand-500);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform var(--t-base) var(--ease-out);
+}
+.nav-link[aria-current="page"]{ color:var(--ink-950); }
+.nav-link[aria-current="page"]::after{ transform:scaleX(1); }
+/* The Discord nav link's tooltip. The `title` attribute is dropped in markup so
+   only one tooltip fires (section S11). */
+.nav-link[data-discord-link]::before{
+  content:attr(data-tooltip);
+  position:absolute; inset-block-start:calc(100% + 10px); inset-inline-start:0;
+  padding:6px 8px; border:1px solid var(--line); border-radius:4px;
+  background:var(--paper); color:var(--ink-500);
+  font-size:var(--fs-micro); letter-spacing:.06em; text-transform:none;
+  white-space:nowrap; opacity:0; pointer-events:none;
+  transition:opacity var(--t-fast) var(--ease-out);
+}
+.nav-link[data-discord-link]:hover::before,
+.nav-link[data-discord-link]:focus-visible::before{ opacity:1; }
+
+.nav-actions{ display:flex; align-items:center; gap:10px; flex:0 0 auto; }
+
+.nav-toggle{
+  display:none;
+  inline-size:48px; min-block-size:48px;
+  align-items:center; justify-content:center; gap:5px; flex-direction:column;
+  background:transparent; border:1px solid var(--line-control); border-radius:6px;
+  cursor:pointer;
+}
+.nav-toggle-bar{
+  display:block; inline-size:18px; block-size:1.5px; background:var(--ink-950);
+  transition:transform var(--t-base) var(--ease-out),
+             opacity var(--t-fast) var(--ease-out);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1){ transform:translateY(6.5px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2){ opacity:0; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3){ transform:translateY(-6.5px) rotate(-45deg); }
+
+/* The overlay is `hidden` at rest; JS sets data-open to run the reveal (section 5.8). */
+.nav-overlay{
+  position:fixed; inset:0; z-index:70;
+  background:var(--paper);
+  clip-path:inset(0 0 100% 0);
+  transition:clip-path 420ms var(--ease-in-out);
+  overscroll-behavior:contain; overflow-y:auto;
+}
+.nav-overlay[data-open]{ clip-path:inset(0); }
+.nav-overlay-inner{
+  width:min(var(--w-page), 100% - var(--gutter)*2); margin-inline:auto;
+  padding-block:calc(var(--nav-h) + 24px) var(--pad-xs);
+  display:grid; gap:clamp(24px,4vh,48px); align-content:start;
+}
+.nav-overlay-list{ list-style:none; margin:0; padding:0; display:grid; }
+.nav-overlay-list > li{
+  border-block-start:1px solid var(--line);
+  opacity:0; transform:translate3d(0,10px,0);
+  transition:opacity var(--t-base) var(--ease-out),
+             transform var(--t-base) var(--ease-out);
+  transition-delay:calc(var(--i,0) * 40ms);
+}
+.nav-overlay[data-open] .nav-overlay-list > li{ opacity:1; transform:none; }
+.nav-overlay-link{
+  display:flex; align-items:baseline; gap:.9em;
+  padding-block:clamp(14px,2.2vh,22px);
+  font-family:var(--font-display); font-size:var(--fs-display-3); font-weight:500;
+  line-height:1.02; letter-spacing:-.025em; color:var(--ink-950);
+  text-decoration:none;
+}
+/* ROLE 2. It names its link exactly as the spine ordinal names its chapter, so
+   it is --ink-950 like the spine now, not --ink-400. The overlay link beside it
+   is --fs-display-3, so a 12-14px mark and a 28-56px title in the same ink read
+   as a numbered entry, not as two things competing: the size does the
+   separating. All that is local here is the flex behaviour. */
+.nav-overlay-index{ flex:0 0 auto; }
+/* The overlay's action row. It exists because "Sign in" leaves the header bar
+   at 560 and below and a hidden control must reappear somewhere. It is
+   deliberately outside .nav-overlay-list: the list is the numbered spine, five
+   entries on every page, and an account action does not get a spine ordinal.
+   Shown only where the bar has actually dropped the button, so the overlay
+   never carries a duplicate of something still visible behind it. */
+.nav-overlay-actions{ display:none; }
+@media (max-width:560px){
+  .nav-overlay-actions{ display:flex; flex-wrap:wrap; gap:12px; }
+}
+/* .nav-overlay-meta is DELETED: the overlay on all four pages closes with the
+   link list and no page authors the meta line. */
+
+/* Section 5.8: one body-scroll lock for both overlays. body.modal-open is deleted. */
+body.overlay-open{ overflow:hidden; }
+
+/* ############################################################################
+   Section 4.3, HERO
+   ######################################################################### */
+
+.hero{
+  min-block-size:100svh; display:grid; align-content:center;
+  padding-block-start:var(--nav-h);
+  /* The marquee that follows the hero is a bare <div>, not a .section, so the
+     `.hero + .section` rule above never matched it and .hero-caption sat
+     directly on the marquee's top hairline. The hero closes its own block. */
+  padding-block-end:var(--pad-sm);
+}
+
+/* ---- THE HERO GEOMETRY, in one place -------------------------------------
+   Row 1 of this grid is the frame. .hero-card is an absolutely positioned
+   child placed into that SAME row and column, so its containing block is the
+   frame's grid area, i.e. the frame's own box. Every number below is therefore
+   a percentage OF THE FRAME and holds its ratio at every width, with no JS and
+   no magic pixel offsets. grid-template-rows is declared so row line 2 exists
+   for that placement instead of resolving to the container's padding edge.
+
+   DOM ORDER IS UNCHANGED: frame, card, copy, readout, caption. The overlap is
+   positioning only. Nothing uses `order`, nothing is reordered in the source,
+   so focus order still equals reading order and the card, coming later in the
+   DOM, paints over the frame without needing to win a z-index fight.
+
+   Benchmark geometry, measured on the live easywith.com DOM at 1280x720: the
+   white headline card starts at 73.5% of the hero's height, is 24.7% of it
+   tall, and is anchored to the media's left edge. Ours starts at 75% and is
+   28% tall. Two deliberate departures:
+
+   1. The extra height IS the overhang. 75 + 28 = 103, so the card hangs 3% of
+      the frame's height past its bottom edge. The benchmark's media is
+      full-bleed and has no bottom edge to hang past; ours is a bounded rounded
+      rectangle, and a card that stops short of that edge reads as a panel
+      INSIDE the screen rather than a card in front of it.
+   2. As a share of the box's WIDTH, which is what "box proportions" means for
+      a card, the two land in the same place: the benchmark card is 213/1280 =
+      16.6% of the media width tall, ours is 28% x 9/16 = 15.75%. In aspect
+      that is 2.98:1 against the benchmark's ~2.83:1.
+
+   The card's height is a min-block-size, but at every width from 861 up the
+   minimum wins over the content, so the height is exactly 28% and the overhang
+   is exactly 3%. Measured in Chrome at a 1440 viewport: frame 1305 x 734, card
+   613 x 206, of which the headline plus padding needs 174. Verified at 1600,
+   1440, 1280, 1180, 1024, 900 and 861: top 75.0%, height 28.0%, width 47.0% at
+   every one. If the H1 ever outgrew the minimum the card would simply get
+   taller and hang further, which fails soft rather than clipping.
+
+   The card covers the frame's lower-left only. The two controls the embed
+   exposes, the axis gizmo and the LUX HEATMAP button, are both top-right, and
+   the middle of the scene stays clear. .hero-frame-launch moved to the
+   bottom-right corner for the same reason (see below). ----------------------- */
+.hero-inner{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:auto;
+  row-gap:clamp(24px,3.4vw,48px);
+
+  /* ---- REFINED, not redesigned. The relationship is unchanged: the card is in
+     front of the frame, anchored to its lower-left, at roughly the benchmark's
+     box proportions. What changed is that all three numbers were too timid to
+     read as a decision.
+
+     Measured before, at 1440: the card hung 22.23px past the frame - 3% of a
+     742px frame. A 3% break-out is under the threshold where an overhang reads
+     as intentional; it reads as a rounding error, and it was the only thing
+     saying "in front of" rather than "inside". The overhang is now 8% of the
+     frame's height (72 + 36 - 100), which is 44px at 1440 and 66px at 1920 -
+     far enough that the card is unambiguously a separate object.
+
+     54% width, up from 47%: the card is the H1's measure, and at 47% the
+     headline had only 6% of headroom over the fallback-font wrap point (see the
+     --fs-display-1 table). 54% takes that to ~18% at 1440, which is what lets
+     the frame get shorter (below) without the headline ever overflowing a
+     shorter card - the two are one change, not two.
+
+     The left edge stays flush with the frame at 0. The review proposed breaking
+     it, but that edge is the site's left column: the H1 aligns with the lockup
+     above it and with the lead, the readout, the caption and every section head
+     below it. Breaking the alignment to prove the card is a separate object
+     would cost more than it buys, and the overhang above now carries that job.
+     What IS fixed is the radius mismatch that made the shared edge read as
+     misalignment - see .hero-card. */
+  --card-inline: 54%;   /* of the frame's inline size */
+  --card-top:    72%;   /* of the frame's block size  */
+  --card-block:  36%;   /* of the frame's block size  */
+  /* The overhang is (72 + 36 - 100) = 8% of the frame's HEIGHT. A percentage
+     margin resolves against its containing block's WIDTH, so it has to be
+     restated against width, and THE CONVERSION FACTOR IS THE FRAME'S RATIO:
+     here 8% x 9/16 = 4.5%. That factor is only correct while the frame is
+     16/9, which is why the wide-frame breakpoint below restates this token
+     rather than inheriting it - changing aspect-ratio without changing this
+     silently decouples the margin from the overhang it is supposed to clear.
+     .hero-copy carries it as a top margin, which is what keeps the card from
+     ever landing on the lead. It is deliberately NOT a bottom margin on the
+     frame: that would grow row 1, and row 1 is the card's containing block. */
+  --card-overhang: 4.5%;
+}
+.hero-frame{ grid-area:1 / 1; }
+
+.hero-title{
+  font-family:var(--font-display); font-size:var(--fs-display-1); font-weight:500;
+  line-height:.92; letter-spacing:-.035em; color:var(--ink-950);
+  margin:0;
+}
+/* Line breaks are authored: two lines, and the second one carries the caret.
+   text-wrap:balance is removed here on purpose: with two authored lines of very
+   different length it re-balances them into a shape the copy did not ask for. */
+.hero-title-line{ display:block; }
+
+/* The lead and the CTA row read as one band under the frame, not as two
+   leftovers stacked: the lead holds the left column at its own measure and the
+   buttons sit at the far right on the same optical line. */
+.hero-copy{
+  margin-block-start:var(--card-overhang);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:clamp(20px,2.6vw,44px);
+  align-items:center;
+}
+.hero-lead{
+  font-size:var(--fs-lead); font-weight:400; line-height:1.55;
+  letter-spacing:-.004em; color:var(--ink-500); max-inline-size:var(--w-text);
+}
+.hero-actions{ display:flex; flex-wrap:wrap; align-items:center; gap:clamp(12px,1.4vw,20px); }
+
+/* ---- THE HEADLINE CARD, in front of the frame ----------------------------
+   It carries the H1 and nothing else. That is what holds it to the benchmark's
+   box proportions: put the lead and the buttons in here and the box grows to
+   twice the height and stops being the benchmark's shape. */
+.hero-card{
+  position:absolute; z-index:2;
+  /* ALL FOUR grid lines, not `grid-row:1; grid-column:1`. For an absolutely
+     positioned grid child an `auto` end line does NOT mean "span one track",
+     it resolves to the grid container's padding edge. Written the short way
+     the card's containing block runs from the top of the frame to the bottom
+     of the whole hero, so `inset-block-start:75%` lands 75% of the way down
+     the frame PLUS the lead, the readout and the caption, i.e. off screen.
+     1 / 1 / 2 / 2 pins the containing block to row 1 alone: the frame's box. */
+  grid-area:1 / 1 / 2 / 2;
+  inset-block-start:var(--card-top);
+  /* Flush with the frame's left edge, which is also the site's left column, so
+     the H1 aligns with the lockup above it and with the lead, the readout and
+     every section head below it. */
+  inset-inline-start:0;
+  inline-size:var(--card-inline);
+  min-block-size:var(--card-block);
+  display:grid; align-content:center;
+  padding:clamp(20px,2.4vw,36px);
+  background:var(--paper);
+  border:1px solid var(--line-strong);
+  /* --radius-frame, NOT --radius-card. The two-step radius family is right for
+     a card sitting loose on the page; it is wrong for this one, because this
+     card shares the frame's left edge. Measured at 1440 the frame drew 23.04px
+     and the card 18.72px, so two near-concentric rounded rectangles met on one
+     edge with a 4.32px mismatch - the visual signature of a misaligned box, not
+     of a composition. Same corner treatment on both, and the shared edge reads
+     as intended. --radius-card had no other consumer and is deleted at the token
+     block above. */
+  border-radius:var(--radius-frame);
+  /* Presence, not decoration. Once the embed loads, the thing behind this card
+     is a LIVE scene whose colours are not ours to predict, so the card may not
+     assume the ground is dark:
+       - the fill is opaque --paper, never a translucent panel;
+       - the 1px --line-strong edge is the same edge the frame carries, so on a
+         blown-out white frame the card still has a boundary;
+       - that edge is doubled by an UNOFFSET ring and halo, because every other
+         shadow here points down and would leave the card's top edge holding a
+         1.56:1 hairline on its own the moment the scene renders white;
+       - the tight near-black shadow reads on any ground, light or dark;
+       - the long soft one lifts it off the white paper below the frame, which
+         is where the overhang lands.
+     On the dark scene the first two do nothing visible, which is the point:
+     they cost nothing there and are the whole boundary on a bright frame.
+     Nothing is blended over the measurement image (section 4.4): the card is
+     opaque and sits beside the scene's pixels, it never tints them. */
+  box-shadow:
+    0 0 0 1px rgba(2,37,45,.06),
+    0 0 4px rgba(2,37,45,.10),
+    0 1px 3px rgba(2,37,45,.18),
+    0 4px 14px -3px rgba(2,37,45,.20),
+    0 30px 64px -28px rgba(2,37,45,.55);
+}
+
+/* The hero readout is the same object as a #numbers .stat: a micro label, a
+   ROLE 1 figure, a qualifying note. It is now built from the same three
+   spacing steps as well, so the two blocks measure the same on the same page.
+   .hero-readout-value carries no typography here - it is ROLE 1. */
+.hero-readout{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--gap);
+  border-block-start:1px solid var(--line);
+  padding-block-start:var(--rhythm-rule);
+}
+.hero-readout-item{ display:grid; gap:var(--rhythm-tight); align-content:start; }
+.hero-readout-label{
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1; color:var(--ink-400);
+}
+/* Section 1.3: every lux figure carries its qualifier inline, never in a footnote. */
+.hero-readout-qual{
+  font-size:var(--fs-body-sm); line-height:1.5; color:var(--ink-400);
+  max-inline-size:34ch;
+}
+/* .hero-scroll-hint, its ::after and @keyframes hero-hint are DELETED. The
+   component was part of the retired perspective-monitor hero (OWNER OVERRIDE 2)
+   and the rebuilt hero does not use it; no page has ever authored the class.
+   Its two reduced-motion references went with it. */
+
+/* Typewriter (section 5.5). .type-slot is aria-hidden; the full sentence lives in
+   .type-sr so assistive tech reads one coherent line. No aria-live. */
+.type-slot{ display:inline-flex; align-items:baseline; }
+.type-word{ display:inline; white-space:pre; }
+/* Sanctioned cyan use 3 of 5 (section 2.3). Painted as a solid block cursor via
+   `background`, not as a coloured glyph. Section 5.5's draft rule tinted the "_"
+   glyph with the cyan foreground property; that is a letterform in cyan on white,
+   which section 2.3 forbids and ship gate G2 greps for. The block cursor satisfies
+   both, and reads as a terminal caret rather than an underscore.
+   The caret is DRAWN, not typed: .type-caret ships empty in index.html and the
+   hidden ::before filler below is what gives the painted block its line-box
+   height. Nothing about the blink changes; the reduced-motion rules still own it. */
+.type-caret::before{ content:'_'; visibility:hidden; }
+.type-caret{
+  display:inline-block; inline-size:.62em; color:transparent;
+  background:var(--brand-500);
+  margin-inline-start:.08em;
+  animation:caret 1.06s steps(1,end) infinite;
+}
+@keyframes caret{ 0%,49%{opacity:1} 50%,100%{opacity:0} }
+.type-sr{
+  position:absolute !important; inline-size:1px; block-size:1px;
+  padding:0; margin:-1px; overflow:hidden; white-space:nowrap;
+  clip:rect(0 0 0 0); clip-path:inset(50%); border:0;
+}
+
+/* ############################################################################
+   Sections 4.4 and 6.2b, THE HERO FRAME  (OWNER OVERRIDE 2 replaces the monitor)
+
+   The perspective monitor is retired and its geometry is DELETED, not left
+   dead: .monitor-body, .monitor-screen, .monitor-video, .monitor-inset,
+   .monitor-chin, .monitor-logo, .monitor-neck, .monitor-base, .monitor-shadow,
+   .monitor-stage, .hero-monitor and every --bezel-* usage are gone, along with
+   the --bezel-* declarations themselves (section 9.3: a dead token does not ship).
+   .monitor-controls / .monitor-pause SURVIVE below: the chapter video slots
+   still use them for their WCAG 2.2.2 stop control.
+
+   What replaces it is one fixed rounded rectangle that hosts the real app. It
+   reads as an object on white with two cues and no tricks: one hairline and one
+   soft ambient shadow. No perspective, no rotateX/Y, no bezel faces, no neck,
+   no base, no glare, no sheen, and still nothing is ever blended over the
+   measurement image inside it (section 4.4, section 9.4).
+
+   Ratio: 16 / 9. That is the ratio a 3D viewport is authored and captured at,
+   and the frame has to suit the live embed that will replace the still, not the
+   still's own 1363 x 805. The still is object-fit:cover inside it, which trims
+   ~2.4 % off the top and bottom of the source. Nothing the caption names sits there.
+
+   Width: the full .site-shell, by instruction. At 1440 that is a 1319 x 742
+   object, so the headline card starts below the first screen. That is the cost
+   of a hero you can drag around, and it is deliberate. Do not "fix" it with a
+   height cap, which would leave white gutters either side of the frame.
+   ######################################################################### */
+
+.hero-frame{
+  position:relative;
+  inline-size:100%;
+  aspect-ratio:16 / 9;
+  border-radius:var(--radius-frame);
+  overflow:hidden;
+  border:1px solid var(--line-strong);
+  /* Dark element 1 of 3 (section 2.4): it is dark because it is a screen. */
+  background:var(--mass-950);
+  box-shadow:0 28px 64px -34px rgba(2,37,45,.42);
+  isolation:isolate;
+  /* NOT sticky, NOT bleeding. Together with "the iframe only exists after a
+     click", that is what stops an embedded app owning the page scroll. */
+}
+
+/* ---- THE FOLD, above 1181 ------------------------------------------------
+   16/9 at full shell width is 742px tall at a 1440x900 viewport: 82.4% of the
+   first screen spent on one still, a hero 1.617 screens tall, and - measured -
+   the fold at y=900 fell across .btn--brand at 895.59 to 943.59, cutting 4.41px
+   off the top of a 48px button. The same cut happens at 1280x800 (3.06px). A
+   half-visible button is not an invitation to scroll, it is a control that
+   looks broken, and everything that persuades sat in the 0.617 of a screen
+   nobody had reached yet.
+
+   The instrument is the RATIO, not a height cap: a cap would leave white
+   gutters either side of a full-shell frame (the note above), whereas a wider
+   ratio keeps the frame edge-to-edge and simply crops the still, which is
+   already object-fit:cover.
+
+   WHY 2.4, measured rather than picked. At 1440x900 the readout row's ROLE 1
+   figures sit 40.4px to 104.4px below the top of .hero-readout, and the readout
+   starts 183.3px below the bottom of the frame. For the fold to land inside
+   that band of digits - a row of numbers cut mid-height, which reads as "there
+   is more" - the frame has to be between 537px and 601px tall, i.e. a ratio
+   between 2.19 and 2.45. 2.4 sits inside that window and is a ratio a viewer
+   recognises as a decision.
+
+   COST, checked against the still and the caption. The frame is object-fit:
+   cover over a 1363x805 source, so 2.4/1 shows the middle 70.6% of its height
+   and crops 14.7% top and bottom. Everything .hero-caption commits to is
+   inside that band: the PHYSICS MODEL stamp, the Absolute tab, the 0-500 ramp,
+   Max lux 500 lx, "4 projectors", the Projector 1 distribution row and the
+   13pt Diagnostic probe line all sit between 17% and 58% of the source height.
+   What the crop removes is the top-corner toolbar and the base of the plinth,
+   which no copy on the page names. Re-check this band if the still is replaced.
+
+   Below 1181 the frame stays 16/9: the fold is not the problem there (the CTA
+   clears it at 1181x900 by 114px) and a 2.4/1 frame on a tablet is a letterbox
+   slot, not a screen. */
+@media (min-width:1181px){
+  .hero-frame{ aspect-ratio:2.4 / 1; }
+  /* The overhang is still 8% of the frame's HEIGHT; only the width the
+     percentage resolves against changed. 8% / 2.4 = 3.3333%. Inheriting the
+     16/9 value here would over-reserve by 15px at 1440 and drift with width. */
+  .hero-inner{ --card-overhang:3.3333%; }
+}
+/* tabindex="-1": the frame is a programmatic focus PARK, not a control. The
+   IIFE moves focus here when the launch button removes itself, so focus is
+   never lost. Only the non-keyboard case drops the ring; :focus-visible still
+   paints one, so no focus indicator is ever removed without a replacement. */
+.hero-frame:focus:not(:focus-visible){ outline:none; }
+
+.hero-frame-still,
+.hero-frame-embed{
+  position:absolute; inset:0; inline-size:100%; block-size:100%; display:block;
+}
+.hero-frame-still{ object-fit:cover; object-position:50% 50%; }
+.hero-frame-embed{ border:0; }
+/* Once the embed has painted, the still steps out of the way. */
+.hero-frame[data-embed-state="live"] .hero-frame-still{ visibility:hidden; }
+
+/* The facade affordance. It is an opaque chip in the corner, never a scrim over
+   the image: darkening a lux heatmap to make a button legible would be exactly
+   the "do not touch the measurement image" rule broken from the other side.
+
+   It sits bottom-RIGHT. It used to sit bottom-left, which is now where
+   .hero-card lands, and a button under an opaque card is a button that does
+   not exist. Bottom-right is the one corner the embed leaves free: its axis
+   gizmo and its LUX HEATMAP button are both top-right, and the card owns the
+   lower-left. */
+.hero-frame-launch{
+  position:absolute; z-index:2;
+  inset-block-end:clamp(12px,1.6vw,22px); inset-inline-end:clamp(12px,1.6vw,22px);
+  max-inline-size:min(38ch, calc(100% - clamp(24px,3.2vw,44px)));
+  display:grid; gap:.32em; justify-items:start; text-align:start;
+  padding:clamp(12px,1.1vw,16px) clamp(16px,1.5vw,22px);
+  min-block-size:44px;
+  cursor:pointer;
+  background:var(--mass-950);
+  border:1px solid var(--mass-line);
+  border-radius:calc(var(--radius-frame) / 2);
+  transition:background var(--t-fast) var(--ease-out),
+             border-color var(--t-fast) var(--ease-out);
+}
+.hero-frame-launch:hover{ background:var(--mass-900); border-color:var(--mass-accent); }
+.hero-frame-launch-label{
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1;
+  color:var(--mass-ink);                     /* 16.06:1 on --mass-950 */
+}
+.hero-frame-launch-hint{
+  font-size:var(--fs-body-sm); line-height:1.4;
+  color:var(--mass-ink-soft);                /* 9.74:1 on --mass-950 */
+}
+
+.monitor-controls{
+  position:absolute; z-index:3;
+  inset-block-end:clamp(10px,1.4vw,18px); inset-inline-end:clamp(10px,1.4vw,18px);
+}
+.monitor-pause{
+  inline-size:44px; min-inline-size:44px; block-size:44px; min-block-size:44px;
+  display:grid; place-items:center; cursor:pointer;
+  border-radius:50%; border:1px solid var(--mass-line);
+  background:rgba(4,37,45,.72); color:var(--mass-ink);
+  backdrop-filter:blur(6px);
+  transition:background var(--t-fast) var(--ease-out),
+             border-color var(--t-fast) var(--ease-out);
+}
+/* Pause bars at rest. aria-pressed="true" means "playback is suspended", so the
+   glyph becomes a play triangle, the opt-in affordance under reduced motion,
+   reduced data or a rejected play() (section 6.2). */
+.monitor-pause::before{
+  content:''; inline-size:11px; block-size:12px;
+  background:linear-gradient(to right,
+    currentColor 0 35%, transparent 35% 65%, currentColor 65% 100%);
+}
+.monitor-pause[aria-pressed="true"]::before{
+  background:currentColor;
+  clip-path:polygon(12% 0,100% 50%,12% 100%);
+}
+.monitor-pause:hover{ background:rgba(4,37,45,.9); border-color:var(--mass-accent); }
+
+/* .monitor-caption renamed: it describes .hero-frame now, and a class named
+   after a deleted component is how dead geometry creeps back in. */
+.hero-caption{
+  font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-400);
+  max-inline-size:var(--w-text);
+}
+
+/* ############################################################################
+   Section 4.5, MARQUEE: a full-bleed hairline strip directly below the hero,
+   above #who. It does not sit over the monitor and does not float.
+   ######################################################################### */
+
+.marquee{ overflow:hidden; }
+.marquee--hairline{
+  border-block:1px solid var(--line);
+  padding-block:clamp(14px,1.6vw,22px);
+}
+/* ---- IT STOPPED SCROLLING -------------------------------------------------
+   An auto-scrolling keyword ribbon is the single most template-shaped object a
+   page can carry: it is the stock device of a bought theme, it moves without
+   being asked, and this one carried no information that #product does not carry
+   better 1,100px later. It also masked its own two ends to transparent, so the
+   first and last thing in it was always half-legible.
+
+   It is not deleted, because the ten items in it ARE the ten chapters, in
+   order. Held still and spread across the full bleed it stops being decoration
+   and becomes the document's contents page, sitting exactly where a contents
+   page belongs - between the hero and the first chapter. Same 61px, same
+   markup, and now it earns them.
+
+   The animation, the max-content width, the -50% keyframe, the pause-on-hover
+   pair and the edge mask all go together: with one static row there is no
+   second group to scroll into, nothing to pause, and nothing running off the
+   edge to fade out. The duplicate group is hidden rather than removed so the
+   markup is untouched on all pages that author it. */
+.marquee-track{ display:flex; inline-size:auto; }
+.marquee-group + .marquee-group{ display:none; }
+.marquee-group{
+  display:flex; align-items:center; flex:1 1 auto;
+  justify-content:space-between; gap:clamp(12px,1.6vw,28px);
+  flex-wrap:wrap;
+  list-style:none; margin:0; padding:0 clamp(9px,1.1vw,18px);
+}
+.marquee-item{
+  font-family:var(--font-display); font-size:var(--fs-body-sm); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1;
+  color:var(--ink-500); white-space:nowrap;
+}
+/* The separator is drawn, not typed: .marquee-dot ships empty and the dot is a
+   CSS circle, so the strip needs no middot glyph from the font. */
+.marquee-dot{
+  color:var(--ink-300);
+  display:inline-block; vertical-align:middle;
+  inline-size:.26em; block-size:.26em; border-radius:50%;
+  background:currentColor; margin-inline-start:.3em;
+}
+
+/* ############################################################################
+   THE NUMERIC HIERARCHY  (spec section 3.2 type scale + section 4 class contract)
+
+   ============================ THE INVENTORY ================================
+   Every place a number is printed on the four shipped pages, what role it
+   plays, and which rule now owns it. Counts are class-token counts taken from
+   index.html, videos.html, privacy.html and 404.html as built, not from the
+   spec, and they move as the content agent works - the ROLES are the contract,
+   the tallies are only there to show where the weight is.
+
+   ROLE 1 - HEADLINE STATISTIC.  The number IS the content; it is read first
+   and the words around it are the caption.
+     .stat-value          index #numbers x6   (87, 642, 21, 64, 13, 0)
+     .hero-readout-value  index hero    x3    (4, 0-500 lx, 13 pt)
+     9 sites, 1 page. The only two classes allowed to print at --fs-stat.
+     All six #numbers figures are now BARE, like the hero's three have always
+     been: the noun each one counts moved into its .stat-label, so the two
+     blocks are finally the same object rather than one that carries its noun
+     inside the figure and one that does not. See ROLE 4.
+
+   ROLE 2 - ORDINAL AND INDEX COUNTER.  The number identifies a thing or its
+   position in a set. Never a quantity, never a measurement.
+     .micro-label-ord     index x13  videos x63  privacy x4  404 x1   = 81
+                          the document spine, plus the /videos filter chips and
+                          the (NN) on every video card tag
+                          index dropped 18 -> 13: eight of the eighteen printed
+                          the placeholder "(00)" - on #who, #product, #numbers,
+                          #limits, #videos-cta, #beta, #community and #start -
+                          so a system that announces itself then prints a blank
+                          ran right after "(10) / (10)". The eight spans are
+                          deleted; .micro-label-name alone still reads as an
+                          eyebrow, and every ordinal left on the page is real.
+     .index-counter-*     index x11  videos x21                       = 32 pairs
+                          current / tick / total, in chapter feet, in the ch-06
+                          pin counter, and in every /videos chapter count
+     .speclist-index      index x16  privacy x14  404 x3              = 33
+     .nav-overlay-index   x5 on each of the four pages                = 20
+                          still exactly five per page: index's overlay gained a
+                          "Sign in" action (.nav-overlay-actions) when the
+                          header bar dropped that button at phone width, and it
+                          is deliberately NOT in the numbered list, because the
+                          list is the spine and an account action has no spine
+                          ordinal to take.
+     .pin-counter         index ch-06 x1
+     ~172 sites across all four pages. By a wide margin the most repeated
+     number on the site, and the reason this whole pass exists: it was being
+     set two different ways depending on which component it landed in.
+
+   ROLE 3 - FIGURE INSIDE PROSE.  The number is one word of a sentence.
+     .chapter-point-text  index x58    .limits-text      index x16
+     .copy (all variants) x34          .speclist-body    x33
+     .video-card-desc     videos x42   .stat-note        index x6, privacy x1
+     .media-caption x11, .hero-caption x1, .hero-readout-qual x3,
+     .footer-legal x4 (one per page), .pub-progress-text videos x1
+     ~210 elements over four pages, of which roughly 80 actually contain a
+     digit today. Also covered: figures carried inside .chapter-point-label
+     ("21 MEASURED MATERIALS", "642 COMBINATIONS CHECKED AGAINST THE MAKER'S
+     OWN CALCULATOR: 47 OF 87 HEADS", "13 POINTS, DRAWN ON THE SURFACE"), and
+     the one inside a section title (#beta, "FREE, 2 GB, AND NEVER LOAD
+     TESTED"), which is exempt from ROLE 4 - see there.
+
+   ROLE 4 - UNIT AND QUALIFIER.  The word that says what the figure counts.
+     .stat-unit   index x32   (% x18, lx x8, pt, mm, m, GB, GiB, MB) - every
+                               one a MEASUREMENT UNIT. The six nouns that used
+                               to sit here (projectors, combinations, presets,
+                               max, points, requests) are gone from the class
+                               and into their .stat-label; see the rule.
+                  videos x52  (planned x41 on the duration chips, published x10
+                               on the chapter counts, plus the masthead) -
+                               beside a ROLE 5 figure, which is a much smaller
+                               figure and needs its own size documented at the
+                               rule. These two are nouns as well, and they are
+                               the reason ROLE 4 is "UNIT AND QUALIFIER" rather
+                               than "UNIT": on a duration chip the qualifier is
+                               the whole point. They are not on index.html.
+     STILL UNMARKED, and listed for the content agent: every remaining unit
+     inside prose (cd/m2, mm/px). Rule 4 of the brief cannot reach those without
+     a span, and the span it needs is this same .stat-unit.
+
+   ROLE 5 - DURATION AND COUNT (/videos only).
+     .video-card-duration + --planned   x41   "0:51 planned"
+     .video-chapter-count               x10   "0 / 4 published"
+     the bare .u-tabular count inside .filter-chip  x11   (41, 4, 4, 5, ...)
+     .pub-progress-text                 x1, and it is a SENTENCE - it moves to
+                                        ROLE 3, see its rule for why.
+
+   Sites that print no number and are therefore out of scope: .marquee-item,
+   .micro-label-name, .btn, .nav-link, .footer-col-title, .media-label-badge.
+
+   ============================== THE RULES ==================================
+   (a) Same role => same family, size, weight, colour and tracking on all four
+       pages. Each role below is declared ONCE, as a selector list, and the
+       component sections further down carry only their positional deltas.
+       Where a component used to restate the typography it has been stripped,
+       so there is exactly one owner per property per role.
+   (b) Different roles must be visibly different. The separations are family
+       (num vs body vs display), size (--fs-stat 28-56 vs --fs-counter 12-14 vs
+       inherited body 16-17) and tracking (-.02em vs +.06em vs 0). Any two
+       roles differ on at least two of the three.
+   (c) TABULAR FIGURES ONLY WHERE A COLUMN IS SCANNED VERTICALLY (brief rule 3,
+       "nowhere else"). Roles 1, 2 and 5 are tabular: they stack into columns
+       (6 stats in a 3-up grid, 10 ordinals down the spine, 41 durations pinned
+       to the same corner of a card grid). Role 3 is explicitly
+       PROPORTIONAL - a sentence is read along, not down, and tabular figures
+       in running text open gaps around every 1. Brief rule 2 lists "tabular
+       numerals" under the prose role; rule 3 ends "Nowhere else", is the
+       dedicated rule, and wins. One line reverses this if that reading is
+       wrong: the :where() block under ROLE 3.
+   (d) A unit is never the size of its figure (brief rule 4). One declaration
+       does it at every scale - see ROLE 4.
+   (e) No role uses cyan, and no number is ever bold. The heaviest numeric
+       weight on the site is 500, against body prose at 400 and labels at 600.
+   ######################################################################### */
+
+/* ---- ROLE 1: HEADLINE STATISTIC ------------------------------------------
+   --font-num, the largest numeric step, tight tracking, full ink. The only
+   two classes that may print a number this big. */
+.stat-value,
+.hero-readout-value{
+  font-family:var(--font-num);
+  font-size:var(--fs-stat);           /* 28 to 56 */
+  font-weight:500;
+  line-height:1;
+  letter-spacing:-.02em;
+  font-variant-numeric:lining-nums tabular-nums;
+  color:var(--ink-950);
+}
+
+/* ---- ROLE 2: ORDINAL AND INDEX COUNTER -----------------------------------
+   Before this pass the same ordinal was set two ways: inside .micro-label it
+   inherited --fs-micro (11-12) and the label's +.14em display tracking, while
+   .index-counter / .speclist-index / .pin-counter / .nav-overlay-index used
+   --fs-counter (12-14) at +.06em. So "(03)" on the spine and "(03)" in the
+   /videos filter rail were different objects, and "(01)" in a chapter foot was
+   a third. They are one object now: --fs-counter at +.06em, everywhere, on
+   every page.
+
+   Colour has exactly two states and they are structural, not per-component:
+     --ink-950  an ordinal that NAMES the thing it sits on
+     --ink-400  an ordinal that is context around that name (a total, or the
+                container the current/total pair sits in)
+   and the tick takes the SAME --ink-400 as the total it sits beside. This is
+   why .speclist-index moves from --ink-400 to --ink-950: it names its list item
+   exactly as the spine ordinal names its chapter, and shipping the same mark
+   in two greys on two pages is the thing this task exists to end. */
+.micro-label-ord,
+.index-counter,
+.speclist-index,
+.nav-overlay-index,
+.pin-counter{
+  font-family:var(--font-num);
+  font-size:var(--fs-counter);        /* 12 to 14 */
+  font-weight:500;
+  line-height:1;
+  letter-spacing:.06em;
+  font-variant-numeric:lining-nums tabular-nums;
+  color:var(--ink-400);
+}
+.micro-label-ord,
+.speclist-index,
+.nav-overlay-index,
+.index-counter-current{ color:var(--ink-950); }
+.index-counter-total  { color:var(--ink-400); }
+/* The tick was --ink-300 (3.06:1) on the argument that a separator is not text.
+   SETTLED, do not re-litigate: it is text and it needs 4.5:1.
+     - It is voiced. On /videos the 20 ticks sit in .video-chapter-count, which
+       carries no aria-hidden, so the string a screen reader announces is
+       "0 slash 4 published". A glyph the AT reads out as part of a sentence is
+       a word of that sentence.
+     - Reading it aloud is not the test either way. WCAG 1.4.3 governs VISUAL
+       presentation, and its only outs are large text, incidental/inactive, and
+       logotypes. The tick is 13.6px, in an active component, and carries the
+       "of" relation between the two figures - drop it and "(01)(10)" is not a
+       ratio any more. So the 11 aria-hidden ticks in index.html's chapter feet
+       need 4.5:1 for exactly the same reason, even though nothing voices them.
+   --ink-400 is the lightest token that clears it (5.25:1), and it is already
+   what .index-counter-total beside it uses, so the pair now reads as one mark.
+   Fixing it here fixed all 31 sites on both pages; no markup changed. */
+.index-counter-tick   { color:var(--ink-400); }   /* 5.25:1, text */
+
+/* ---- ROLE 3: FIGURE INSIDE PROSE -----------------------------------------
+   No class marks a figure in running text and none should: a number in a
+   sentence is a word of that sentence and inherits its size, its colour and
+   its measure. What this rule does is state the axis rather than leave it to
+   the font's default, and state it as PROPORTIONAL - see (c) above.
+
+   :where() is deliberate. At zero specificity it loses to .u-tabular, so the
+   handful of nodes whose markup explicitly asks for a column still get one,
+   and nothing here has to fight the utility. */
+:where(p, li, dd, dt, figcaption, blockquote, code,
+       .copy, .hero-lead, .section-lead, .chapter-body, .chapter-point-text,
+       .chapter-point-label, .limits-text, .speclist-body, .stat-note,
+       .media-caption, .hero-caption, .hero-readout-qual, .video-card-desc,
+       .hero-frame-launch-hint, .footer-contact-item, .footer-legal,
+       .footer-link, .pub-progress-text){
+  font-variant-numeric:lining-nums proportional-nums;
+}
+/* "never bold for emphasis" (brief rule 2). Tailwind preflight sets
+   b,strong{font-weight:bolder}, which resolves to 700 against 400 body copy -
+   a weight the type scale does not contain and heavier than any heading on the
+   site. Prose emphasis is 600 in full ink instead, which is what
+   .speclist-body strong already did alone; it is now the rule for all prose,
+   so an emphasised phrase looks the same in #limits, in a chapter point and on
+   /privacy. This cannot un-bold a figure that markup has wrapped in <strong>
+   on its own - those two sites are listed for the content agent. */
+:where(.copy, .chapter-point-text, .limits-text, .speclist-body, .stat-note,
+       .video-card-desc, .media-caption, .hero-caption, p, li) :is(strong, b){
+  font-weight:600;
+  color:var(--ink-950);
+}
+
+/* ---- ROLE 4: UNIT AND QUALIFIER ------------------------------------------
+   ONE ABSOLUTE SIZE, applied everywhere, including inside prose (brief rule 4).
+
+   This rule used to be em-relative:
+
+       font-size: min(.72em, clamp(--fs-body-sm, .4em, --fs-h3))
+
+   which is a fraction of whatever it happens to sit inside, and the site puts
+   .stat-unit inside four wildly different figures. So it rendered the SAME
+   STRING at four sizes. Measured, all four on one page: 25.6px, 14.90px,
+   12.17px, 10.73px. The token `lx` painted at 25.6px in the hero readout and
+   at 10.73px 900px lower inside .hero-caption - a 2.39x range for two
+   characters that mean the identical thing. The 10.73px instance was smaller
+   than the 14.9px prose containing it, so the one place a unit genuinely has
+   to be read was the one place it disappeared.
+
+   A unit is not a fraction of its figure. It is a fixed, small, subordinate
+   step of the type scale, and it is the same object in a 56px stat as in a
+   sentence. Hence one absolute value, --fs-body-sm, at every call site.
+   Measured after, every .stat-unit on index.html: 15px, all of them.
+
+     figure                       unit    ratio
+     stat  51.8 (1440)            15.0    0.29
+     stat  28.0 (390)             14.0    0.50
+     body  16.9 (1440 prose)      15.0    0.89
+     body  15.0 (--fs-body-sm)    15.0    1.00   (caption; see below)
+
+   The last row is the one place size alone stops separating, and it is correct
+   that it does: inside a caption the unit IS a word of the sentence and setting
+   it smaller is what broke it before. The separation there is carried by the
+   other two axes this rule has always had - weight 500 against the prose's 400,
+   and --ink-500 against the caption's --ink-400 - plus the nowrap below, which
+   is the reason the span exists in prose at all.
+
+   ROLE 5 keeps its own value (--fs-micro), for the one reason a second value is
+   justified: its figures are --fs-counter, 12-14px, so a 15px unit would be
+   LARGER than the number it qualifies. See its rule further down.
+
+   .stat-unit CARRIES UNITS, NEVER NOUNS. It used to wrap `projectors`,
+   `combinations`, `presets`, `max`, `points` and `requests` in #numbers, which
+   set six ordinary nouns at 25.6px in --ink-500 - 52% larger than body copy -
+   so a noun read as a second numeric tier while an actual unit read as nothing.
+   Those six are now part of their .stat-label, which is where the thing being
+   counted was always named (the hero readout has always done it that way:
+   "HEADS IN SCENE" over a bare "4"). What is left in .stat-unit across the site
+   is lx, pt, mm, m, %, GB, GiB and MB - measurement units, every one.
+
+   EXEMPT, deliberately: units inside a display heading (--fs-display-1/2/3).
+   #beta reads "FREE, 2 GB, AND NEVER LOAD TESTED" and shrinking GB inside an
+   84px headline is an affectation, not a hierarchy. A headline is set as one
+   optical line; the brief's rule is about figures and their units, and it says
+   "including inside prose", not "including inside headlines". */
+.stat-unit{
+  font-family:var(--font-body);
+  font-size:var(--fs-body-sm);        /* 14 to 15, at EVERY call site */
+  font-weight:500;
+  line-height:1.28;
+  letter-spacing:-.008em;
+  color:var(--ink-500);
+  margin-inline-start:.28em;
+  white-space:nowrap;                 /* a unit never wraps away from its figure */
+}
+
+/* ---- ROLE 5: DURATION AND COUNT (/videos) --------------------------------
+   A duration and a count are the same role: a small tabular number that sits
+   beside a thing and says how much of it there is. They were three different
+   objects - the card duration at --fs-micro, the chapter count at --fs-counter,
+   the filter-rail count at the chip's own --fs-micro display face with the
+   label's +.14em - which is why a card's "0:51" and its chapter's "4 videos"
+   did not look related. One treatment now, and it is deliberately the same
+   metrics as ROLE 2 (--font-num, --fs-counter, +.06em, tabular): an ordinal
+   and a count are both marks in the number face, separated by colour and by
+   where they sit, not by being drawn differently. */
+.video-card-duration,
+.video-chapter-count,
+.filter-chip .u-tabular:not(.micro-label-ord){
+  font-family:var(--font-num);
+  font-size:var(--fs-counter);
+  font-weight:500;
+  line-height:1;
+  letter-spacing:.06em;
+  font-variant-numeric:lining-nums tabular-nums;
+}
+
+/* ############################################################################
+   Section 4.6, SECTION HEAD AND THE DOCUMENT SPINE
+   The ordinal + hairline repeated ten times is what makes the page read as a
+   numbered technical document rather than a marketing page. There is no cyan
+   dash on .micro-label. That device is deleted (section 2.3, section 9.4).
+   ######################################################################### */
+
+.section-head{ display:grid; gap:var(--rhythm-block); }
+.section-head--split{
+  display:grid; grid-template-columns:1.15fr 0.85fr;
+  gap:clamp(28px,4vw,72px); align-items:start;
+}
+.section-head-aside{ display:grid; gap:var(--rhythm-head); align-content:start; }
+
+/* ---- THE SPINE, AND THE GAP UNDER IT --------------------------------------
+   Requirement 5, and the largest rhythm defect on the page. .section-head
+   supplies the spine-to-title gap with its grid `gap`, but only ONE section on
+   index.html actually wraps its head in .section-head (#who). Everywhere else
+   the markup is `<p class="micro-label">` as a plain sibling of the heading:
+   nine of the ten chapters put it beside .split-2--media-right, #ch-06 puts it
+   inside .pin-sticky, and #product, #numbers, #limits, #videos-cta, #beta,
+   #community and #start put it directly beside their <h2>. Tailwind preflight
+   zeroes p margins, so in all of those the hairline sat flush against the
+   title with 0px between them, while #who alone had 14-24px. Same device,
+   sixteen instances, two different rhythms.
+
+   Fixed here rather than by asking for markup, because the fix is a property
+   of the spine and not of its container: .micro-label carries the gap itself
+   and stands down wherever a grid parent is already providing one. That makes
+   every section head dimensionally identical without touching a single page,
+   and a head that IS later wrapped in .section-head does not double up. */
+.micro-label{
+  display:flex; align-items:baseline; gap:.75em;
+  inline-size:100%;
+  border-block-start:1px solid var(--line);
+  padding-block-start:var(--rhythm-rule);
+  margin-block-end:var(--rhythm-head);
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  line-height:1; letter-spacing:.14em; text-transform:uppercase;
+}
+:where(.section-head, .chapter-head, .section-head-aside) > .micro-label{
+  /* The parent grid already puts --rhythm-block under this element, and the
+     spine wants --rhythm-head. Subtract the difference rather than zeroing,
+     so a head that IS wrapped and a head that is not land on the same number
+     instead of on two numbers that are merely both deliberate. */
+  margin-block-end:calc(var(--rhythm-head) - var(--rhythm-block));
+}
+.micro-label::before{ content:none; }          /* explicit: no dash, ever */
+/* "(03)" has no rule of its own here on purpose. Family, size, weight, tracking
+   and colour all belong to ROLE 2 above, which is also what stops it inheriting
+   .micro-label's --fs-micro and +.14em - those are DISPLAY-uppercase values and
+   would pull the spine ordinal a step smaller and a step wider than the
+   identical ordinal in a chapter foot or a /videos filter chip. */
+.micro-label-name{ color:var(--ink-400); }     /* "THE COVERAGE" */
+.micro-label--on-mass .micro-label-ord { color:var(--mass-ink); }
+.micro-label--on-mass .micro-label-name{ color:var(--mass-ink-soft); }
+.micro-label--on-mass  { border-block-start-color:var(--mass-line-soft); }
+
+/* ---- THE TITLE-TO-BODY GAP ------------------------------------------------
+   The other half of the .section-head defect. Preflight zeroes heading margins,
+   so a title only got a gap under it when a grid parent supplied one - which is
+   #who and the two heads on /privacy and /404, and nothing else. #numbers set
+   an 84px headline directly on the first hairline of its stat row; #limits,
+   #videos-cta, #beta, #community, #start and the /videos masthead set one
+   directly on their lead paragraph. The three titles carry the gap themselves
+   now and stand down inside any head that provides one, which is the same
+   device the spine uses six rules above. The :is() form is deliberate: at
+   0-2-0 it outranks .chapter-title's own margin declaration wherever that rule
+   happens to sit in the file. */
+.section-title{
+  font-family:var(--font-display); font-size:var(--fs-display-2); font-weight:500;
+  line-height:.96; letter-spacing:-.03em; color:var(--ink-950);
+  margin:0 0 var(--rhythm-block); text-wrap:balance;
+}
+:is(.section-head, .section-head--split, .chapter-head, .section-head-aside,
+    .pin-sticky, .video-chapter-head) > :is(.section-title, .chapter-title, .video-hero-title){
+  margin-block-end:0;
+}
+/* Line breaks are authored. Never forced with white-space:nowrap. */
+.section-title-line{ display:block; }
+.section-lead{
+  font-size:var(--fs-lead); font-weight:400; line-height:1.55;
+  letter-spacing:-.004em; color:var(--ink-500); max-inline-size:var(--w-text);
+}
+
+/* ############################################################################
+   Section 4.7, FEATURE CHAPTER: the part-by-part explainer, ten of them
+   ######################################################################### */
+
+/* .chapters (display:block, and nothing else) is DELETED: no page wraps the ten
+   chapters in it, they are ten sibling <section>s. */
+.chapter{ position:relative; }
+.chapter-head{ display:grid; gap:var(--rhythm-block); align-content:start; min-inline-size:0; }
+.chapter-title{
+  font-family:var(--font-display); font-size:var(--fs-display-3); font-weight:500;
+  line-height:1.02; letter-spacing:-.025em; color:var(--ink-950);
+  margin:0 0 var(--rhythm-block); text-wrap:balance;
+}
+.chapter-body{ max-inline-size:var(--w-text); }
+
+.chapter-points{ list-style:none; margin:0; padding:0; display:grid; gap:var(--rhythm-block); }
+.chapter-point{
+  border-inline-start:2px solid var(--line);
+  padding-inline-start:clamp(14px,1.4vw,20px);
+  transition:border-color var(--t-fast) var(--ease-out);
+  max-inline-size:var(--w-text);
+}
+.chapter-point-label{
+  font-family:var(--font-body); font-size:var(--fs-h4); font-weight:600;
+  line-height:1.28; letter-spacing:-.008em; color:var(--ink-900);
+  margin-block-end:.45em;
+}
+.chapter-point-text{ font-size:var(--fs-body); line-height:1.65; color:var(--ink-700); }
+
+.chapter-media{ margin:0; min-inline-size:0; }
+/* ---- The right column had nothing in it for half the document -------------
+   .split-2--media-right is align-items:start, so the media sat at the top of a
+   column and the copy ran on without it. Measured, bottom of .chapter-media to
+   bottom of its section, ch-01 to ch-10: 1146, 1503, 1706, 1173, 1145, 5888,
+   1295, 1898, 2694, 1999 - 20,448px of empty right column against a 40,781px
+   document. Almost exactly half the page had a column with nothing in it, and
+   ch-06 after its pin releases was ~700 x 900 of white beside a wall of copy.
+
+   Sticky, not taller: the media is short because it is a shot-list entry, and
+   padding it out would be inventing content. Instead it travels with the copy
+   it illustrates, so the column is occupied for the whole chapter and the entry
+   is still on screen when the point it belongs to is being read.
+
+   Only above 1181, where the split is actually two columns; below that the
+   layout is stacked and a sticky element would hover over the copy. */
+@media (min-width:1181px){
+  .chapter .split-2--media-right > .chapter-media{
+    position:sticky;
+    inset-block-start:calc(var(--nav-h) + var(--rhythm-block));
+  }
+}
+
+/* ---- The wide column was given to the column with nothing in it -----------
+   .split-2--media-right hands the MEDIA 56% and the copy 44%, which is right
+   when the media is a 1918x942 app capture. Eight of the nine two-column
+   chapters have no footage (only ch-07 does), so eight chapters were setting a
+   three-line headline and a full chapter of body copy in 44% of the shell while
+   56% held a two-line shot-list entry. The proportions were backwards, and
+   fixing the slot's height alone would have left them backwards.
+
+   The condition is the media itself, not a hand-authored class, so this cannot
+   fall out of sync with reality: the day a slot gets `has-media` the chapter
+   goes back to 44/56 on its own. That is the same one-line edit the #videos-cta
+   comment already documents for restoring a filled slot, and it now carries the
+   layout with it.
+
+   @supports-gated because the whole rule is an improvement, not a requirement:
+   where :has() is unavailable the page keeps the shipped 44/56 split, which is
+   what it had before this pass. */
+@supports selector(:has(*)){
+  @media (min-width:1181px){
+    .chapter .split-2--media-right:not(:has(.media-slot.has-media)){
+      grid-template-columns:0.62fr 0.38fr;
+    }
+    .chapter--reverse .split-2--media-right:not(:has(.media-slot.has-media)){
+      grid-template-columns:0.38fr 0.62fr;
+    }
+  }
+}
+/* .chapter--reverse flips the MEDIA only, via grid order. Text DOM order
+   never changes (section 4.7, section 5.10). */
+.chapter--reverse .split-2--media-right{ grid-template-columns:0.56fr 0.44fr; }
+.chapter--reverse .chapter-media{ order:-1; }
+.chapter-foot{
+  margin-block-start:var(--rhythm-block);
+  border-block-start:1px solid var(--line); padding-block-start:var(--rhythm-rule);
+  display:flex; flex-wrap:wrap; gap:var(--gap); align-items:baseline;
+}
+/* .chapter-link and .chapter-link:hover are DELETED. Every one of the ten
+   .chapter-foot elements contains exactly one child, the .index-counter, and
+   no page authors a chapter link. If one is wanted later it is .btn--text,
+   which already exists and is what #videos-cta uses for the same job. */
+
+/* ############################################################################
+   Section 4.8, STICKY PIN: used exactly once, on #ch-06 (section 6.10).
+   Pure CSS pinning. No scroll hijack, no JS positioning. Three panels at 62vh
+   is a real pin; the min-block-size floor is removed because the panels already
+   provide the height.
+   ######################################################################### */
+
+.pin{ position:relative; min-block-size:auto; }          /* NOT 300vh */
+.pin-rail{ display:grid; grid-template-columns:0.42fr 0.58fr; gap:var(--gap); align-items:start; }
+/* Requirement 5, and the same defect the spine had: #ch-06 is the one chapter
+   whose head is NOT a .chapter-head, so its title, its body and its counter had
+   no rhythm between them at all and sat flush while the other nine ran on
+   --rhythm-block. It gets the same two distances as a .chapter-head:
+   --rhythm-head from the spine to the title (carried by .micro-label's own
+   margin, exactly as in the other nine) and --rhythm-block for everything
+   after. Written as adjacent-sibling margins rather than a grid gap because a
+   grid gap is uniform and would flatten those two distances into one. */
+.pin-sticky{
+  position:sticky; inset-block-start:calc(var(--nav-h) + clamp(24px,4vh,64px));
+  block-size:fit-content;
+}
+.pin-sticky > * + *{ margin-block-start:var(--rhythm-block); }
+.pin-sticky > .micro-label + *{ margin-block-start:0; }   /* the spine owns this one */
+.pin-flow{ display:grid; gap:clamp(48px,9vh,120px); }
+.pin-panel{ min-block-size:62vh; }                        /* NOT 76vh */
+
+.pin-panel > * + *{ margin-block-start:var(--rhythm-block); }
+.pin-panel .media-slot{ margin-block-end:var(--rhythm-block); }
+/* The three panel heads ship as bare <h3> with no class, so Tailwind preflight's
+   heading reset was leaving them at body size and body weight - the only
+   headings on the site that did not take a step from the scale. Section 3.2
+   assigns .pin-panel heads to --fs-h3, which is what they get here. An element
+   selector is the fix that needs no markup change; the class the spec implies
+   is listed for the content agent. */
+.pin-panel > h3{
+  font-family:var(--font-display); font-size:var(--fs-h3); font-weight:500;
+  line-height:1.12; letter-spacing:-.018em; color:var(--ink-900); margin:0;
+}
+.pin-panel.is-active .micro-label-name{ color:var(--ink-950); }
+.pin-progress{
+  inline-size:100%; block-size:2px; background:var(--line);
+  overflow:hidden;
+}
+/* Sanctioned cyan use 2 of 5 (section 2.3): a fill, not a letterform. */
+.pin-progress-bar{ display:block; block-size:2px; background:var(--brand-500);
+  transform:scaleX(var(--p,0)); transform-origin:left;
+  transition:transform 320ms var(--ease-out); }
+/* Typography and colour are ROLE 2; the (01) / (10) box is the same one
+   .index-counter uses in a chapter foot, kept block-level here because this one
+   is a standalone <p> in .pin-sticky rather than an item in a flex row. Its
+   offset is now the .pin-sticky grid gap, not a margin of its own. */
+.pin-counter{ display:flex; align-items:baseline; gap:.35em; }
+
+/* ############################################################################
+   Section 4.9, MEDIA
+   The placeholder mechanism is the single source of truth for "footage not yet
+   shot" everywhere on the site. Aspect ratios are per-slot, never normalised:
+   set style="--media-ratio: 1912 / 942" on the hover-probe slot.
+   Slots work from the poster alone and pick up the re-encoded file at the
+   filename section 8.2 specifies, whenever it lands.
+   ######################################################################### */
+
+.media-slot{
+  position:relative; aspect-ratio:var(--media-ratio);
+  background:var(--surface-100);
+  border:1px dashed var(--line-strong);
+  display:grid; place-content:center; gap:8px; text-align:center;
+  overflow:hidden;
+}
+.media-slot::before{ content:attr(data-label);
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-400); }
+.media-slot::after { content:attr(data-caption);
+  font-family:var(--font-body); font-size:var(--fs-body-sm); color:var(--ink-400); }
+.media-slot.has-media{ border-style:solid; border-color:var(--line);
+  background:var(--mass-950); }
+.media-slot.has-media::before,
+.media-slot.has-media::after{ content:none; }
+.media-video,.media-img{ inline-size:100%; block-size:100%; object-fit:cover; display:block; }
+
+/* A filled slot stops being a centred placeholder grid. */
+.media-slot.has-media{ display:block; }
+
+/* Dark element 2 of 3 (section 2.4): the full-bleed product letterbox. The ground is
+   the film's own frame. At most three on the home page.
+   Empty --mass slots keep the reserved --media-ratio box; filled ones drop it
+   and band the media instead, so the clip is never cropped to fit a placeholder
+   shape it does not have. */
+.media-slot--mass{
+  background:var(--mass-950);
+  border-color:var(--mass-line-soft);
+}
+.media-slot--mass::before{ color:var(--mass-ink-soft); }
+.media-slot--mass::after { color:var(--mass-ink-soft); }
+.media-slot--mass.has-media{
+  display:grid; place-items:center;
+  aspect-ratio:auto;
+  border-color:transparent;
+  padding-block:var(--pad-xs);
+  padding-inline:var(--gutter);
+}
+.media-slot--mass.has-media .media-img,
+.media-slot--mass.has-media .media-video{
+  inline-size:100%; block-size:auto; object-fit:contain;
+  max-inline-size:var(--w-page); margin-inline:auto;
+}
+.media-slot--wide{ inline-size:100%; max-inline-size:var(--w-page); margin-inline:auto; }
+
+/* ############################################################################
+   AN EMPTY SLOT IS A PLANNED FIGURE, NOT A MISSING ONE
+
+   THE MEASUREMENT.  index.html carries 17 .media-slot; 5 have media and 12 do
+   not. Those 12 reserved their full --media-ratio box anyway, so they painted
+   3,805,971 square pixels of dashed-bordered --surface-100 stamped "RECORDING:
+   TO COME" - 6.55% of the entire rendered page, and more area than all five
+   REAL images put together (3,562,103). Nine grey rectangles between 343px and
+   702px tall is not a page waiting for assets, it is a page that looks broken.
+
+   WHY IT LOOKED BROKEN, precisely: a dashed border on a grey fill at the exact
+   aspect ratio of a missing image is the universal rendering of a BROKEN ASSET.
+   The page was drawing the browser's own error state, twelve times, on purpose.
+
+   THE FIX IS NOT TO HIDE IT.  The footage genuinely does not exist, every one
+   of these captions already says so in its own words ("Not recorded yet: the
+   throw-ratio slider driving beam size, distance and Center Surface Lux
+   together"), and that honesty is the best writing on the page. What was wrong
+   was the FORM, not the content: the slot claimed the visual footprint of a
+   picture while having nothing to show, so it read as an absence rather than as
+   a plan.
+
+   So an empty slot stops being a picture-shaped hole and becomes what it
+   actually is - a named entry in a shot list - drawn in the language the rest
+   of the document already uses: one hairline, the figure's name in the spine's
+   own micro-label, and a bordered status tag identical in build to .brand-beta.
+   The .media-caption underneath is unchanged and now carries the block, which
+   is the right way round: it is the part that has something to say.
+
+   ~36px instead of ~343px per slot, and the reclaimed area is ~3.6M square
+   pixels, without deleting one chapter, one label or one caption.
+
+   NOT THE /videos CARDS.  Every rule here is also scoped :not(.video-card-media).
+   videos.html builds all 41 of its card posters from .video-card-media.media-slot
+   and 41 of those are pending too, but there the slot IS the card's picture area
+   and it carries the positioned duration chip inside it. Collapsing those would
+   take the poster box out of every card and drop the chips - verified in the
+   browser before this exclusion went in, and the card grid did exactly that.
+   The two are different objects that happen to share a class: one is a figure in
+   a document, one is a card's own image well.
+
+   IT FILLS IN WITH NO REDESIGN.  Every rule here is scoped :not(.has-media).
+   The day a clip is shot, the content agent adds `has-media` and the <video> or
+   <img> exactly as the #videos-cta comment already documents, and the slot
+   returns to its reserved --media-ratio box with its dark ground - the styling
+   below simply stops matching. Nothing here has to be undone first.
+   ######################################################################### */
+.media-slot:not(.has-media):not(.video-card-media){
+  aspect-ratio:auto;                 /* stop reserving a 2:1 hole */
+  background:none;
+  border:0;
+  border-block-start:1px solid var(--line-strong);
+  display:flex; flex-wrap:wrap; align-items:center;
+  justify-content:space-between;
+  gap:var(--rhythm-tight) var(--gap);
+  text-align:start;
+  padding-block:var(--rhythm-rule) 0;
+  overflow:visible;
+}
+/* ::before is the figure's NAME, so it takes the --ink-950 that ROLE 2 gives an
+   ordinal that names the thing it sits on, rather than the --ink-400 a
+   placeholder caption had. */
+.media-slot:not(.has-media):not(.video-card-media)::before{ color:var(--ink-950); line-height:1.2; }
+/* ::after is the STATUS, built exactly like .brand-beta: same face, same
+   tracking, same 1px box. A status the page already draws elsewhere reads as
+   part of the system; a centred grey sentence reads as an apology. */
+.media-slot:not(.has-media):not(.video-card-media)::after{
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1;
+  color:var(--ink-400);
+  border:1px solid var(--line-strong); border-radius:3px;
+  padding:4px 6px;
+}
+/* The three empty --mass slots keep their dark ground: they are the page's
+   designed dark beats and a bleed is a deliberate act, not a side effect of
+   having no picture. They just stop being 522 to 702px tall while empty. The
+   bleeding edge gets no inline padding, because on that side the band runs to
+   the viewport and the text should still start on the shell's column. */
+.media-slot--mass:not(.has-media){
+  background:var(--mass-950);
+  border-block-start:0;
+  padding-block:var(--rhythm-block);
+  padding-inline:var(--gutter);
+}
+.media-slot--mass.bleed-right:not(.has-media){ padding-inline-start:0; }
+.media-slot--mass.bleed-left:not(.has-media) { padding-inline-end:0; }
+.media-slot--mass:not(.has-media)::before{ color:var(--mass-ink); }
+.media-slot--mass:not(.has-media)::after {
+  color:var(--mass-ink-soft); border-color:var(--mass-line);
+}
+
+/* .media-frame is DELETED. It was position:relative + overflow:hidden +
+   display:block, which is what .media-slot already declares; no page authors
+   it and every media node on the site is a .media-slot. */
+.media-poster{ display:block; }
+.media-label-badge{
+  position:absolute; inset-block-start:12px; inset-inline-start:12px; z-index:2;
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1;
+  color:var(--mass-ink); background:rgba(4,37,45,.72);
+  border:1px solid var(--mass-line); border-radius:3px; padding:5px 7px;
+}
+.media-caption{
+  margin-block-start:var(--rhythm-rule);
+  font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-400);
+  max-inline-size:var(--w-text);
+}
+/* A bleeding element carrying a caption keeps its own inner gutter (section 3.7). */
+.bleed-full > .media-caption,
+.bleed-full .media-caption{ padding-inline:var(--gutter); }
+/* A caption that sits inside the dark letterbox rather than beside it. */
+.media-slot--mass .media-caption,
+.media-slot--mass .media-label-badge{ color:var(--mass-ink-soft); }
+
+/* ############################################################################
+   Section 4.10, INDEX COUNTER
+   ######################################################################### */
+
+/* Typography and the three colour states are ROLE 2. All that is left here is
+   the layout of the (01) / (10) pair. */
+.index-counter{ display:inline-flex; align-items:baseline; gap:.35em; }
+
+/* ############################################################################
+   Section 4.11, STATS AND LIMITS
+   Deleted by decision and never to be built: .trust-quote*, .trust-logo*,
+   .meter-strip*, .metric-grid* (section 4.11, section 9.4). The three app screenshots carry
+   the app's own legend. The site never draws its own heatmap ramp.
+   ######################################################################### */
+
+.stat-row{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(28px,3.4vw,56px) var(--gap);
+}
+.stat{
+  display:grid; gap:var(--rhythm-tight); align-content:start;
+  border-block-start:1px solid var(--line); padding-block-start:var(--rhythm-rule);
+}
+/* .stat-value is ROLE 1 and .stat-unit is ROLE 4; neither restates its
+   typography here. The whole point of #numbers is that its six figures are the
+   same object as the hero's three, and they now share one declaration. */
+.stat-label{
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1; color:var(--ink-400);
+  order:-1;
+}
+.stat-note{ font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-400); max-inline-size:42ch; }
+
+.limits{ display:grid; border-block-start:1px solid var(--line); }
+.limits-row{
+  display:grid; grid-template-columns:minmax(0,0.32fr) minmax(0,0.68fr);
+  gap:clamp(14px,2vw,32px);
+  border-block-end:1px solid var(--line);
+  padding-block:var(--rhythm-block);
+}
+.limits-key{
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1.35; color:var(--ink-950);
+}
+/* .limits-en / .limits-ko were the two lanes of one row. There is one lane now,
+   and a class called "-en" on an English-only site is a lie waiting to be read
+   as a language hook, so the survivor is renamed. */
+.limits-text{ font-size:var(--fs-body); line-height:1.65; color:var(--ink-700); }
+
+.speclist{ list-style:none; margin:0; padding:0; display:grid; border-block-start:1px solid var(--line); }
+.speclist-item{
+  display:grid; grid-template-columns:auto minmax(0,1fr);
+  gap:clamp(14px,1.8vw,28px);
+  border-block-end:1px solid var(--line);
+  border-inline-start:2px solid transparent;
+  padding:var(--rhythm-block) 0 var(--rhythm-block) clamp(12px,1.2vw,18px);
+  transition:border-inline-start-color var(--t-fast) var(--ease-out),
+             background-color var(--t-fast) var(--ease-out);
+  text-decoration:none; color:inherit;
+}
+/* ROLE 2, with one optical exception that is NOT a hierarchy difference: every
+   other ordinal on the site sits on a single line and takes line-height 1,
+   while this one is a grid item beside a multi-line body and has to land on
+   that body's first baseline. The half-leading it needs is (1.65 - 1) x
+   --fs-body / 2, which is what .5em of its own 12-14px box buys. Size, weight,
+   colour and tracking are the role's; only the leading is local. */
+.speclist-index{ line-height:1; padding-block-start:.5em; }
+.speclist-body{ display:grid; gap:.5em; min-inline-size:0; }
+
+/* .heatmap-mode-grid / .heatmap-mode / .heatmap-mode-title / .heatmap-mode-body
+   are DELETED, along with their two breakpoint entries. Section 4.11 specified
+   a three-up grid for the three heatmap modes; what shipped is #ch-06 carrying
+   them as .copy prose inside the pinned block, so the component has a
+   replacement rather than a gap. Nothing on any of the four pages authors the
+   class. Restorable verbatim from spec section 4.11 if the grid is ever built. */
+
+/* ############################################################################
+   Section 4.12, BUTTONS AND LINKS
+   .button-light and .button-ghost from the old system are deleted. Both were
+   dark-only and invert to invisible on white.
+   ######################################################################### */
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:.6em;
+  min-block-size:48px; border-radius:6px;
+  padding-inline:clamp(18px,1.6vw,26px);
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1;
+  text-decoration:none; cursor:pointer; border:1px solid transparent;
+  background:transparent; color:var(--ink-950);
+  transition:background-color var(--t-fast) var(--ease-out),
+             border-color var(--t-fast) var(--ease-out),
+             color var(--t-fast) var(--ease-out),
+             transform 90ms var(--ease-out);
+}
+.btn:active{ transform:scale(.985); }
+.btn--solid{ background:var(--ink-950); color:var(--paper); }        /* 20.84:1 */
+/* Sanctioned cyan use 1 of 5 (section 2.3): a fill with --ink-950 on top, 11.54:1. */
+.btn--brand{ background:var(--brand-500); color:var(--ink-950); border-color:var(--brand-700); }
+.btn--outline{ background:transparent; color:var(--ink-950); border-color:var(--line-control); }
+.btn--text{
+  background:transparent; color:var(--ink-950);
+  min-block-size:auto; padding-inline:0; border-radius:2px;
+}
+.btn--on-mass{ background:transparent; color:var(--mass-ink); border-color:var(--mass-line); }
+.btn--on-mass.btn--solid{ background:var(--mass-ink); color:var(--mass-950); border-color:transparent; }
+.btn--sm{ min-block-size:40px; }
+.btn-arrow{ display:inline-block; transition:transform var(--t-base) var(--ease-out); }
+/* Kept although no element currently carries it: this is an interaction STATE,
+   in the same family as :hover, [disabled] and .is-active, and a state with
+   nothing in it right now is not dead CSS. It is also the only var(--surface-200)
+   site in the file. */
+.btn.is-disabled{
+  background:var(--surface-200); color:var(--ink-300); border-color:transparent;
+  cursor:not-allowed; pointer-events:none;
+}
+/* Icon-only buttons keep a 48px hit target in both axes. */
+.btn:empty,
+.btn[data-icon-only]{ min-inline-size:48px; padding-inline:0; }
+
+.link{
+  color:var(--brand-800);                                            /* 5.87:1 */
+  text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.22em;
+  transition:color var(--t-fast) var(--ease-out),
+             text-decoration-thickness var(--t-fast) var(--ease-out);
+}
+.link:hover{ color:var(--brand-900); text-decoration-thickness:2px; }
+.link:active{ color:var(--brand-950); }
+
+/* ############################################################################
+   Section 4.13, FOOTER: --paper ground with a --line top rule, not the old dark box.
+   .footer-link targets are /privacy and /videos, never .html (cleanUrls).
+   ######################################################################### */
+
+.site-footer{
+  background:var(--paper);
+  border-block-start:1px solid var(--line);
+  padding-block:var(--pad-sm);
+}
+.footer-inner{ display:grid; gap:clamp(32px,4vw,64px); }
+.footer-lead{
+  font-family:var(--font-display); font-size:var(--fs-display-3); font-weight:500;
+  line-height:1.02; letter-spacing:-.025em; color:var(--ink-950);
+  margin:0; max-inline-size:22ch; text-wrap:balance;
+}
+/* .footer-lead .bilingual-ko is DELETED. It was the last of the four
+   bilingual-ko references, held open only until videos.html and 404.html
+   landed their English-only pass. Both have; all four pages now ship an
+   English-only .footer-lead. */
+.footer-contact{ display:grid; gap:var(--rhythm-tight); }
+.footer-contact-item{
+  display:flex; flex-wrap:wrap; gap:.9em; align-items:baseline;
+  font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-500);
+}
+.footer-cols{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--gap); }
+.footer-col{
+  display:grid; gap:var(--rhythm-tight); align-content:start;
+  border-block-start:1px solid var(--line); padding-block-start:var(--rhythm-rule);
+}
+.footer-col-title{
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1; color:var(--ink-400);
+}
+.footer-links{ list-style:none; margin:0; padding:0; display:grid; gap:var(--rhythm-tight); }
+.footer-link{
+  font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-500);
+  text-decoration:none;
+}
+.footer-link:hover{ color:var(--brand-900); text-decoration:underline; text-underline-offset:.22em; }
+.footer-meta{
+  display:flex; flex-wrap:wrap; gap:var(--gap); align-items:center; justify-content:space-between;
+  border-block-start:1px solid var(--line); padding-block-start:var(--rhythm-rule);
+}
+.footer-legal{ font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-400); }
+
+/* Section 5.9, tri-state. Present on all three pages. */
+.motion-toggle{
+  display:inline-flex; align-items:center; gap:.6em;
+  min-block-size:40px; padding-inline:14px; border-radius:6px;
+  border:1px solid var(--line-control); background:transparent; cursor:pointer;
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1; color:var(--ink-950);
+  transition:background-color var(--t-fast) var(--ease-out),
+             border-color var(--t-fast) var(--ease-out);
+}
+.motion-toggle::before{
+  content:''; inline-size:10px; block-size:10px; border-radius:50%;
+  border:1px solid var(--line-control); background:transparent;
+}
+.motion-toggle[aria-pressed="true"]{ background:var(--surface-100); border-color:var(--ink-950); }
+.motion-toggle[aria-pressed="true"]::before{ background:var(--ink-950); border-color:var(--ink-950); }
+
+/* ############################################################################
+   Section 4.14, VIDEO PAGE (/videos)
+   The .fv-card__* / #video-modal / body.modal-open system is superseded.
+   ######################################################################### */
+
+.videos-page .site-main{ padding-block-start:var(--nav-h); }
+
+.video-hero{
+  min-block-size:52vh; display:grid; align-content:center;
+  padding-block:var(--pad-sm);
+}
+.video-hero-title{
+  font-family:var(--font-display); font-size:var(--fs-display-2); font-weight:500;
+  line-height:.96; letter-spacing:-.03em; color:var(--ink-950);
+  margin:0 0 var(--rhythm-block); text-wrap:balance;
+}
+
+.pub-progress{
+  display:grid; gap:var(--rhythm-tight);
+  max-inline-size:var(--w-text);
+  margin-block-start:var(--rhythm-block);
+}
+.pub-progress-bar{
+  display:block; block-size:2px; inline-size:100%;
+  background:var(--line); position:relative; overflow:hidden;
+}
+/* A fill, not a letterform, consistent with the cyan rule (section 2.3). */
+.pub-progress-bar::after{
+  content:''; position:absolute; inset-block:0; inset-inline-start:0;
+  inline-size:100%; background:var(--brand-500);
+  transform:scaleX(var(--p,0)); transform-origin:left;
+  transition:transform 420ms var(--ease-out);
+}
+/* This one is NOT role 5, and the inventory says so. Its content is a sentence
+   - "All 41 features are written up, with footage still in production", and the
+   script swaps it for "2 of 41 published" once anything is live - and it was
+   being set in the number face at +.06em, which is tracking meant for a bare
+   ordinal and which spaces out running text. It is prose carrying one figure,
+   so it takes role 3: body face, caption size, no tracking, proportional
+   figures. The one number in it is not scanned against anything above or below
+   it, so it does not want a tabular column either. */
+.pub-progress-text{
+  font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-400);
+}
+/* The "41" in that sentence is wrapped in .index-counter-current so the script
+   can rewrite it without rebuilding the node. That is a JS hook, not a claim
+   about the number's role: ROLE 2 would set it in the number face at
+   --fs-counter and +.06em INSIDE a running sentence, which is a figure lifted
+   out of the prose it belongs to. It is a ROLE 3 figure and reads as one -
+   the sentence's own face, size and tracking, proportional figures, and full
+   ink so it is still findable, which is exactly what emphasis in prose does
+   everywhere else on the site. */
+.pub-progress-text .index-counter-current{
+  font:inherit; letter-spacing:inherit; color:var(--ink-950);
+  font-variant-numeric:lining-nums proportional-nums;
+}
+
+/* Filter rail, sticky under the header. Buttons with aria-pressed, never
+   role="tab": it hides and shows multiple sibling sections and sits beside an
+   independent toggle, so a tablist would be a fake tab set (section 5.10). */
+.filter-rail{
+  position:sticky; inset-block-start:var(--nav-h); z-index:40;
+  background:rgba(255,255,255,.92);
+  border-block-end:1px solid var(--line);
+  padding-block:12px;
+  display:flex; gap:8px; align-items:center;
+  overflow-x:auto; overscroll-behavior-x:contain;
+  scroll-snap-type:x proximity;
+  scrollbar-width:none; -ms-overflow-style:none;
+}
+.filter-rail::-webkit-scrollbar{ display:none; }
+@supports (backdrop-filter: blur(1px)){
+  .filter-rail{ backdrop-filter:blur(14px) saturate(1.4); }
+}
+@media (prefers-reduced-transparency: reduce){
+  .filter-rail{ background:var(--paper); backdrop-filter:none; }
+}
+.filter-chip{
+  flex:0 0 auto; scroll-snap-align:start;
+  min-block-size:40px; padding-inline:14px; border-radius:6px;
+  border:1px solid var(--line-control); background:transparent; cursor:pointer;
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1; color:var(--ink-700);
+  display:inline-flex; align-items:center; gap:.55em;
+  transition:background-color var(--t-fast) var(--ease-out),
+             border-color var(--t-fast) var(--ease-out),
+             color var(--t-fast) var(--ease-out);
+}
+/* Two numbers live inside a chip: the ROLE 2 ordinal "(01)" and the ROLE 5
+   count "4". Both had a bug and a hierarchy problem.
+
+   THE BUG: .micro-label-ord is --ink-950 (it is the document-spine mark), and
+   an active chip fills with --ink-950. Every chapter chip therefore printed its
+   ordinal in the fill colour the moment it was selected - black on black,
+   invisible, on the only control that tells you which chapter you filtered to.
+   The default "All" chip has no ordinal, so it never showed at rest.
+
+   THE HIERARCHY: the count sat at the chip's own display face, 600, +.14em -
+   identical to the chip's LABEL - so "THE COVERAGE" and "5" weighed the same
+   and the rail read as eleven two-word labels instead of eleven labels each
+   carrying a tally. It is a count now, in the number face, one ink back.
+
+   .u-tabular:not(.micro-label-ord) is a structural selector, not a hook on a
+   utility: inside a chip, a tabular span that is not the ordinal is the count.
+   The markup change that would let this be a plain class is listed for the
+   content agent. */
+.filter-chip.is-active,
+.filter-chip[aria-pressed="true"]{ background:var(--ink-950); border-color:var(--ink-950); color:var(--paper); }
+.filter-chip .u-tabular:not(.micro-label-ord){ color:var(--ink-400); }
+.filter-chip.is-active .micro-label-ord,
+.filter-chip[aria-pressed="true"] .micro-label-ord{ color:var(--paper); }
+.filter-chip.is-active .u-tabular:not(.micro-label-ord),
+.filter-chip[aria-pressed="true"] .u-tabular:not(.micro-label-ord){
+  color:var(--mass-ink-soft);            /* 12.64:1 on --ink-950, one step back from --paper */
+}
+.filter-chip:disabled .micro-label-ord,
+.filter-chip[disabled] .micro-label-ord,
+.filter-chip:disabled .u-tabular:not(.micro-label-ord),
+.filter-chip[disabled] .u-tabular:not(.micro-label-ord){ color:var(--ink-300); }
+.filter-chip:disabled,
+.filter-chip[disabled]{ color:var(--ink-300); border-color:var(--line-strong); cursor:not-allowed; }
+.filter-toggle{
+  flex:0 0 auto; scroll-snap-align:start; margin-inline-start:auto;
+  min-block-size:40px; padding-inline:14px; border-radius:6px;
+  border:1px solid var(--line-control); background:transparent; cursor:pointer;
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1; color:var(--ink-950);
+  display:inline-flex; align-items:center; gap:.6em;
+}
+.filter-toggle::before{
+  content:''; inline-size:10px; block-size:10px; border-radius:50%;
+  border:1px solid var(--line-control);
+}
+.filter-toggle[aria-pressed="true"]{ background:var(--surface-100); border-color:var(--ink-950); }
+.filter-toggle[aria-pressed="true"]::before{ background:var(--brand-800); border-color:var(--brand-800); }
+/* MEASURED, both states, so the publish checklist in videos.html does not have
+   to guess. The 3.06:1 below belongs to [disabled] ONLY; it is not a colour the
+   enabled control can ever reach, because dropping the attribute drops this
+   whole rule and the label falls back to the .filter-toggle base --ink-950.
+     shipped  ([disabled])  label 3.06:1  border 1.56:1  - inactive, exempt
+     enabled                label 20.84:1 border 5.25:1  - passes 1.4.3 + 1.4.11
+     enabled + pressed      label 19.22:1 border 19.22:1 dot 5.41:1
+   So publishing the first clip - script line `availToggle.disabled = live === 0`
+   - makes this control MORE readable, not less. Nothing here is a time bomb. */
+.filter-toggle[disabled]{ color:var(--ink-300); border-color:var(--line-strong); cursor:not-allowed; }
+.filter-result-sr{
+  position:absolute !important; inline-size:1px; block-size:1px;
+  padding:0; margin:-1px; overflow:hidden; white-space:nowrap;
+  clip:rect(0 0 0 0); clip-path:inset(50%); border:0;
+}
+
+.video-chapter{ padding-block:var(--pad-sm); }
+.video-chapter-head{
+  position:sticky; inset-block-start:calc(var(--nav-h) + 66px); z-index:20;
+  background:var(--paper);
+  border-block-start:1px solid var(--line);
+  padding-block:var(--rhythm-rule);
+  display:grid; gap:var(--rhythm-tight);
+  /* The markup now also carries .chapter-head, so the spine's own margin is
+     zeroed here and the grid gap owns every distance in the head. That gap is
+     --rhythm-tight, which is right between the title and its count line but
+     leaves the spine 11px from its title where every other head on the site
+     has 23px. This adds the difference back to the one distance that is wrong,
+     rather than loosening the whole strip: a sticky head wants to stay short.
+     See the .micro-label rule in section 4.6. */
+  /* The one distance in the file that is off the rhythm scale on purpose: this
+     head is sticky, so the space under it is the space between a PINNED strip
+     and the cards scrolling past beneath it, not a rhythm step. It stays a
+     little larger than --rhythm-block for that reason. */
+  margin-block-end:clamp(24px,3vw,44px);
+}
+.video-chapter-title{
+  font-family:var(--font-display); font-size:var(--fs-h3); font-weight:500;
+  line-height:1.12; letter-spacing:-.018em; color:var(--ink-900); margin:0;
+}
+/* ROLE 5. Only the colour is local; ten of these run down the page under ten
+   titles, which is exactly the vertical column that earns tabular figures.
+   It also carries .index-counter in markup, so its 0 / 4 pair already gets the
+   ROLE 2 box and the ROLE 2 current/tick/total inks - the two roles agree on
+   metrics by design, which is the whole point of giving them the same ones. */
+.video-chapter-count{ color:var(--ink-400); }
+
+/* ---- a unit beside a ROLE 5 figure ---------------------------------------
+   The count line and the duration chip both end in a .stat-unit ("published",
+   "planned"). ROLE 4 is now one absolute size, --fs-body-sm, and these are the
+   one pair of homes where that size is wrong in the other direction: a ROLE 5
+   figure is --fs-counter, 12-14px, so a 15px unit would be LARGER than the
+   number it qualifies and rule (d) would break here rather than in #numbers.
+   --fs-micro is the step below, the smallest the scale contains, and it leaves
+   a clear gap against the figure (11.9 against 13.9 at 1440, 11 against 12 at
+   390). This is one exception, it is a documented step of the same scale, and
+   it is the only place a unit is not --fs-body-sm.
+
+   The colour is the other half, and it is a latent contrast bug being closed
+   rather than a preference. .stat-unit is --ink-500, which is correct beside a
+   near-black #numbers figure and wrong in both role-5 homes: on the count line
+   --ink-500 is DARKER than the --ink-400 figure it qualifies, so the
+   subordinate word out-weighs the number; and on a published card the chip
+   ground is rgba(4,37,45,.72) over the poster, where --ink-500 lands near
+   1.5:1. Every one of the 41 cards is pending today so nothing shows it yet,
+   which is exactly the kind of bug that ships. --mass-ink-soft is the token for
+   soft text on that ground (9.74:1) and --ink-400 is the step back from an
+   --ink-400 figure elsewhere. */
+.video-card-duration .stat-unit,
+.video-chapter-count .stat-unit{
+  font-size:var(--fs-micro);
+  color:var(--mass-ink-soft);
+}
+.video-card-duration--planned .stat-unit,
+.video-chapter-count .stat-unit{ color:var(--ink-400); }
+
+/* Chapter filtering is pure CSS off data-active-chapter, so a chapter stays
+   linkable with ?c= and the page survives with JS off (section 7.2). */
+[data-active-chapter="ch-scene"]    .video-chapter:not([data-chapter="ch-scene"]),
+[data-active-chapter="ch-optics"]   .video-chapter:not([data-chapter="ch-optics"]),
+[data-active-chapter="ch-blend"]    .video-chapter:not([data-chapter="ch-blend"]),
+[data-active-chapter="ch-warp"]     .video-chapter:not([data-chapter="ch-warp"]),
+[data-active-chapter="ch-content"]  .video-chapter:not([data-chapter="ch-content"]),
+[data-active-chapter="ch-measure"]  .video-chapter:not([data-chapter="ch-measure"]),
+[data-active-chapter="ch-render"]   .video-chapter:not([data-chapter="ch-render"]),
+[data-active-chapter="ch-lighting"] .video-chapter:not([data-chapter="ch-lighting"]),
+[data-active-chapter="ch-deliver"]  .video-chapter:not([data-chapter="ch-deliver"]),
+[data-active-chapter="ch-project"]  .video-chapter:not([data-chapter="ch-project"]){ display:none; }
+/* `Available now` is independent and combinable. Chapters with zero live cards
+   collapse out; they are never hidden by anything else (section 7.4). */
+[data-available-only="true"] .video-card--pending{ display:none; }
+[data-available-only="true"] .video-chapter[data-live="0"]{ display:none; }
+
+/* Grid, corrected math. Inside --w-page 1440px this is 3-up, not 4-up. */
+.video-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(min(420px,100%), 1fr));
+  gap:clamp(32px,4vw,56px) var(--gap);
+}
+
+.video-card{ display:grid; gap:var(--rhythm-rule); align-content:start; min-inline-size:0; order:0; }
+/* Live cards sort ahead of pending cards inside their chapter only. */
+.video-card--pending{ order:1; }
+.video-card-link{
+  display:grid; gap:var(--rhythm-tight); text-decoration:none; color:inherit; min-inline-size:0;
+}
+.video-card--pending .video-card-link,
+.video-card-link[aria-disabled="true"]{ cursor:default; }
+.video-card-media{
+  position:relative; display:grid; place-content:center; overflow:hidden;
+  aspect-ratio:var(--media-ratio);
+}
+.video-card-media.has-media{ display:block; }
+.video-card-preview{
+  position:absolute; inset:0; inline-size:100%; block-size:100%;
+  object-fit:cover; display:block; z-index:1;
+}
+/* No play affordance on a card that cannot play (section 7.4). */
+.video-card-play{
+  position:absolute; inset-block-end:12px; inset-inline-start:12px; z-index:2;
+  inline-size:34px; block-size:34px; border-radius:50%;
+  background:rgba(4,37,45,.72); border:1px solid var(--mass-line);
+  display:grid; place-items:center;
+}
+.video-card-play::before{
+  content:''; inline-size:9px; block-size:11px; background:var(--mass-ink);
+  clip-path:polygon(12% 0,100% 50%,12% 100%);
+}
+/* The spine gap correction described above. */
+.video-chapter-head > .micro-label{
+  margin-block-end:calc(var(--rhythm-head) - var(--rhythm-tight));
+}
+
+/* ROLE 5. Typography is the shared declaration; the chip, its position and its
+   ink on the dark poster are local. It was --fs-micro (11-12) and is now
+   --fs-counter (12-14), which is what makes a card's "0:45" the same object as
+   its chapter's "4 videos" 40px above it. */
+.video-card-duration{
+  position:absolute; inset-block-end:12px; inset-inline-end:12px; z-index:2;
+  color:var(--mass-ink); background:rgba(4,37,45,.72);
+  border:1px solid var(--mass-line); border-radius:3px; padding:5px 7px;
+}
+/* A plan, not a fact. Sits last inside the dashed empty slot, after the
+   data-label and data-caption pseudo-elements.
+
+   opacity:.6 is REMOVED, and this is a contrast fix, not a taste one: --ink-400
+   is 5.25:1 on --surface-100 and the slot is --surface-100, so six tenths of it
+   composites to roughly 2.7:1 - below the 4.5:1 floor, on 41 of the 41 cards
+   currently on the page, i.e. on every duration a visitor can read today. The
+   "planned, not measured" signal does not need to be carried by contrast: the
+   word "approx." is already printed in front of the figure, the chip has no
+   fill or border unlike a real duration, and it sits inside the dashed
+   empty-slot state. Full --ink-400 keeps all three signals and passes. */
+.video-card-duration--planned{
+  position:static; order:1;
+  color:var(--ink-400); background:transparent; border-color:transparent; padding:0;
+}
+.video-card-body{ display:grid; gap:.5em; }   /* full opacity, always */
+/* The card tag now carries the same (NN) NAME pair as the section spine, in the
+   same two classes, so it gets the spine's inline layout too: baseline
+   alignment and the same .75em between the ordinal and the name. Without it the
+   two spans butt together on a collapsed whitespace node and the ordinal reads
+   as a prefix of the chapter name rather than as the same mark that runs down
+   the left of the page. Everything else is ROLE 2 on the ordinal and
+   .micro-label-name on the name; only the pairing is local. */
+.video-card-tag{
+  display:flex; align-items:baseline; gap:.75em; flex-wrap:wrap;
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1; color:var(--ink-400);
+}
+.video-card-title{
+  font-family:var(--font-display); font-size:var(--fs-h3); font-weight:500;
+  line-height:1.12; letter-spacing:-.018em; color:var(--ink-900);
+}
+.video-card-desc{ font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-700); }
+/* .video-card-title-ko, .video-card-desc-ko: DELETED. OWNER OVERRIDE 1; the
+   /videos English-only pass has landed and neither class exists in any page.
+   .video-empty-note: DELETED. The empty state that would have used it is
+   handled by chapters with data-live="0" collapsing out entirely (section 7.4),
+   so no page authors the note. */
+
+.video-lightbox{
+  position:fixed; inset:0; z-index:80;
+  display:grid; place-items:center;
+  padding:clamp(12px,2.4vw,40px);
+}
+.video-lightbox__backdrop{
+  position:absolute; inset:0; background:rgba(2,1,2,.72); border:0; padding:0;
+  cursor:pointer;
+}
+.video-lightbox__panel{
+  position:relative; z-index:1;
+  inline-size:min(1100px, 100%); max-block-size:92svh;
+  overflow-y:auto; overscroll-behavior:contain;
+  background:var(--paper); border:1px solid var(--line); border-radius:10px;
+  padding:clamp(16px,2.2vw,32px);
+  display:grid; gap:clamp(14px,1.8vw,24px);
+}
+.video-lightbox__header{ display:flex; gap:16px; align-items:flex-start; justify-content:space-between; }
+.video-lightbox__title{
+  font-family:var(--font-display); font-size:var(--fs-h3); font-weight:500;
+  line-height:1.12; letter-spacing:-.018em; color:var(--ink-950); margin:0;
+}
+.video-lightbox__close{
+  flex:0 0 auto; inline-size:44px; min-inline-size:44px; block-size:44px;
+  display:grid; place-items:center; cursor:pointer;
+  background:transparent; border:1px solid var(--line-control); border-radius:6px;
+  color:var(--ink-950); font-size:var(--fs-body);
+}
+/* Dark element 3 of 3 is NOT this: the player ground is the film's own frame,
+   the same --mass-950 letterbox as .media-slot--mass (section 2.4). */
+.video-lightbox__player{
+  background:var(--mass-950); aspect-ratio:var(--media-ratio); overflow:hidden;
+}
+.video-lightbox__player video{ inline-size:100%; block-size:100%; object-fit:contain; display:block; }
+.video-lightbox__meta{ display:grid; gap:.5em; }
+.video-lightbox__nav{ display:flex; gap:10px; align-items:center; justify-content:space-between; }
+.video-lightbox__prev,
+.video-lightbox__next{
+  min-block-size:44px; padding-inline:14px; border-radius:6px;
+  border:1px solid var(--line-control); background:transparent; cursor:pointer;
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-950);
+}
+.video-lightbox__prev[disabled],
+.video-lightbox__next[disabled]{ color:var(--ink-300); border-color:var(--line-strong); cursor:not-allowed; }
+
+/* ############################################################################
+   Section 4.15, MOTION UTILITIES
+   One-shot: the observer unobserves, nothing re-animates on scroll-back.
+   Stagger is capped at index 5, so nothing waits more than 350ms to be read.
+   ######################################################################### */
+
+.reveal{ opacity:0; transform:translate3d(0,22px,0);
+  transition:opacity var(--t-slow) var(--ease-out),
+             transform var(--t-reveal) var(--ease-out);
+  transition-delay:calc(min(var(--i,0), 5) * var(--stagger)); }
+.reveal.is-in{ opacity:1; transform:none; }
+
+.reveal-line{ overflow:hidden; display:block; }
+.reveal-line-inner{ display:block; transform:translate3d(0,105%,0);
+  transition:transform 700ms var(--ease-out);
+  transition-delay:calc(var(--i,0) * 90ms); }
+.reveal-lines.is-in .reveal-line-inner{ transform:none; }
+
+/* ############################################################################
+   Section 5.7, HOVER AND PRESS: every hover transform is gated on a real pointer
+   ######################################################################### */
+
+@media (hover:hover) and (pointer:fine){
+  .media-slot.has-media,
+  .video-card-media.has-media{ overflow:hidden; }
+  .media-slot.has-media .media-img,
+  .media-slot.has-media .media-video,
+  .video-card-media.has-media .media-img,
+  .video-card-media.has-media .media-video{
+    transition:transform 520ms var(--ease-out);
+  }
+  .media-slot.has-media:hover .media-img,
+  .media-slot.has-media:hover .media-video,
+  .video-card-link:hover .video-card-media.has-media .media-img,
+  .video-card-link:hover .video-card-media.has-media .media-video{ transform:scale(1.014); }
+  .video-card-link[aria-disabled="true"]:hover .media-img{ transform:none; }
+
+  .btn--solid:hover{ background:var(--ink-900); }
+  .btn--brand:hover{ background:var(--brand-600); }
+  .btn--outline:hover{ border-color:var(--ink-950); background:var(--surface-100); }
+  .btn--text:hover .btn-arrow{ transform:translate(3px,-3px); }
+  .btn--on-mass:hover{ background:rgba(255,255,255,.08); border-color:var(--mass-ink); }
+
+  .nav-link:hover::after{ transform:scaleX(1); }
+  .chapter-point:hover{ border-inline-start-color:var(--brand-800); }
+  .speclist-item:hover{ border-inline-start-color:var(--brand-800); background:var(--surface-100); }
+  .filter-chip:hover:not([disabled]){ border-color:var(--ink-950); }
+}
+
+/* ############################################################################
+   Section 3.8, BREAKPOINTS: four, hand-written at 1180 / 860 / 560 / 380.
+   (Custom properties do not work inside media queries; documented, not used.)
+   ######################################################################### */
+
+/* 1180px and below: nav links become .nav-toggle; all two-column splits stack;
+   pin block unpins. The frame has no tilt to soften (OVERRIDE 2). */
+@media (max-width:1180px){
+  .nav-links{ display:none; }
+  /* ---- The header is a BUDGET below 1180, not a row of fixed objects -------
+     It shipped as a flex row of three `flex:0 0 auto` children inside a shell
+     that is only 320px wide at 360. Nothing was allowed to shrink and nothing
+     was allowed to leave, so the row overflowed its shell by ~107px; because
+     html/body are `overflow-x:clip` (section 3.7) the overflow could not even
+     be scrolled to, it was simply gone. Measured before this rule, at 360 /
+     375 / 390 / 414 / 430: the toggle sat at x=426.6 to 430.6 - past the right
+     edge of every one of those viewports - so the site had NO navigation on
+     any phone, and the toggle had additionally been flex-shrunk from 48px to
+     20px, below the 44px touch target.
+
+     Three rules make the row fit, in the order the space is found:
+       1. the gap stops being a desktop gap (16px at these widths, x2);
+       2. .nav-actions may shrink and may be pushed to the right;
+       3. the toggle may NOT shrink - it is the navigation, and it holds 48px.
+     What is still too wide at 560 leaves the bar, in the block below. */
+  .nav-shell{ gap:clamp(10px,2vw,24px); }
+  .nav-actions{ flex:0 1 auto; min-inline-size:0; margin-inline-start:auto; }
+  .nav-toggle{ display:inline-flex; margin-inline-start:0; flex:0 0 auto; }
+
+  .col-3,.col-4,.col-5,.col-6,.col-7,.col-8,.col-12{ grid-column:span 6; }
+  .start-2,.start-6,.start-7,.start-8{ grid-column-start:auto; }
+
+  .split-2--lead-left,
+  .split-2--media-right,
+  .split-3,
+  .section-head--split{ grid-template-columns:minmax(0,1fr); }
+  .chapter--reverse .split-2--media-right{ grid-template-columns:minmax(0,1fr); }
+  .chapter--reverse .chapter-media{ order:0; }
+
+  /* The card still overlaps here; only the lead/CTA band under the frame
+     stacks, so the buttons keep the same left edge as everything else. */
+  .hero-copy{ grid-template-columns:minmax(0,1fr); align-items:start; }
+
+  .pin-rail{ grid-template-columns:minmax(0,1fr); }
+  .pin-sticky{ position:static; }
+  .pin-panel{ min-block-size:auto; }
+
+  .stat-row{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .footer-cols{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+/* 860px and below: everything one column. The bleeds are NOT rewritten here.
+   This block used to carry a three-rule degrade to one negative --gutter, which
+   assumed every bleeding element sits inside a gutter-inset shell. The marquee
+   does not - it is a direct child of .site-main, whose content box already
+   spans the full width - so the degrade pushed it a full gutter past both
+   edges: measured 415px wide in a 375px content box at 390, and 816.25px in 753
+   at 768, with overflow-x:clip hiding the scrollbar so the only symptom was the
+   hairline rules running off both sides and the end items trimmed.
+   --bleed-inset (section 3.7 block above) is now declared per container and
+   already resolves to exactly one --gutter for a shell child at these widths,
+   and to 0 for a .site-main child, so there is nothing left for a breakpoint to
+   restate. */
+@media (max-width:860px){
+  .col-3,.col-4,.col-5,.col-6,.col-7,.col-8,.col-12{ grid-column:span 12; }
+
+  .hero-readout{ grid-template-columns:minmax(0,1fr); gap:clamp(18px,3vw,28px); }
+
+  /* ---- Requirement 6: the overlap degrades, the headline does not ---------
+     Below 860 the card stops overlapping and returns to normal flow under the
+     frame at full shell width. The alternative was to keep the overlap all the
+     way down: the card is 47% of the frame, so at 861 it is a 364px box with
+     324px of inner measure, which puts the H1 at 34px, then ~22px at 560 and
+     ~15px on a phone. That is exactly the "shrink the type into illegibility"
+     outcome the brief rules out, so the thing that goes is the overlap, not
+     the headline. Full width buys the type back: the measure jumps from 324px
+     at 861 to 733px at 860, so the H1 goes to 54px there and never drops below
+     27px. Two lines therefore hold down to ~340px, verified in the browser at
+     390, 375, 360 and 340; below that line two wraps to two rather than
+     shrinking further, and three visual lines on a 320px phone is the designed
+     floor, not a regression.
+     The card keeps its radius, its border and a contact shadow, so stacked it
+     still reads as the same object, just no longer in front of anything. */
+  .hero-inner{ --card-overhang:0%; }
+  .hero-card{
+    position:static;
+    grid-area:auto;                    /* back into flow, row 2, under the frame */
+    inline-size:auto; min-block-size:0;
+    /* On white paper the long lift shadow has nothing to lift off and reads as
+       grime. Only the contact shadow survives. */
+    box-shadow:0 1px 2px rgba(2,37,45,.10);
+    border-color:var(--line);
+  }
+  /* Full width is a much longer measure than 47% of the frame, so the H1 gets
+     its own ramp here: 27px at the floor to 54px at 860. Continuing the
+     overlap ramp would leave a 34px headline in a 731px measure.
+     Measured against the same 8.827 em-width, and against the same real shell:
+       860 -> 54.0 of a possible 82.9    768 -> 49.2 / 73.5    560 -> 38.5 / 50.6
+       390 -> 29.7 of a possible 33.9    375 -> 29.0 / 31.7    360 -> 28.2 / 30.0
+       340 -> 27.2 of a possible 27.8    below ~335 line two wraps.
+     The 54px top end is reached exactly at 860, so the ramp is continuous with
+     the breakpoint rather than stepping at it. */
+  .hero-title{ font-size:clamp(1.6875rem, 5.16vw + 0.601rem, 3.375rem); }
+
+  .limits-row{ grid-template-columns:minmax(0,1fr); }
+  .stat-row{ grid-template-columns:minmax(0,1fr); }
+  .footer-cols{ grid-template-columns:minmax(0,1fr); }
+
+  .video-grid{ grid-template-columns:1fr; }
+  .video-chapter-head{ inset-block-start:calc(var(--nav-h) + 58px); }
+  .video-lightbox__panel{ inline-size:100%; max-block-size:92svh; }
+}
+
+/* 560px and below: marquee items step down; card grids go one-up. */
+@media (max-width:560px){
+  /* Every pixel of card padding is a pixel the two-line H1 does not get, and on
+     a phone the headline needs it more than the frame does. */
+  .hero-card{ padding:clamp(18px,4.6vw,26px); }
+
+  /* --marquee-dur is gone with the animation; the strip is a static index now. */
+  .marquee-item{ font-size:var(--fs-micro); }
+
+  .split-3{ grid-template-columns:minmax(0,1fr); }
+  .speclist-item{ grid-template-columns:minmax(0,1fr); gap:8px; }
+  .footer-meta{ align-items:flex-start; }
+  .nav-actions .btn{ padding-inline:14px; }
+
+  /* ---- What leaves the bar at phone width, and why nothing is lost ---------
+     Even shrunk, brand + BETA + two buttons + a 48px toggle needs ~385px of a
+     320px shell at 360. Two things go, and both are recoverable:
+
+       .brand-beta          the word BETA is printed again in the hero copy and
+                            in #beta's own section head, so the chip is the one
+                            piece of the row that repeats itself twice below.
+
+       .nav-actions .btn--outline   "Sign in" and "Start free" carry the SAME
+                            href - https://app.field-lux.com - on all four
+                            pages, verified in the markup, so hiding one of the
+                            two removes a duplicate, not a destination: the
+                            button still in the bar goes exactly where the
+                            hidden one went. index.html additionally lists it
+                            in #nav-overlay (.nav-overlay-actions) so the label
+                            survives, not just the URL.
+
+     Budget at 360, the narrowest phone measured: 118 lockup + 10 + 108 Start
+     free + 10 + 48 toggle = 294 of a 320px shell. Verified at 360/375/390/414/
+     430: toggle fully inside the viewport, no element clipped, 48px preserved. */
+  .brand-beta{ display:none; }
+  .nav-actions .btn--outline{ display:none; }
+}
+
+/* 380px and below: gutter floor, --fs-display-1 sits at its 44px minimum. */
+@media (max-width:380px){
+  .site-shell,
+  .site-shell--narrow{ width:calc(100% - 40px); }
+  .hero-card{ padding:20px; }
+  .nav-actions{ gap:6px; }
+}
+
+/* Pointer-coarse and data-saver paths: no hover previews at all (section 7.6, section 6.2). */
+@media (pointer:coarse){
+  .video-card-preview{ display:none; }
+}
+/* Under reduced data the chapter <video> elements are NEVER hidden: each one
+   paints its own poster. JS simply does not call play(), and .monitor-pause
+   flips to a play affordance (section 6.2). The hero needs no rule at all: its still
+   is an <img> and the demo embed is behind a click (OVERRIDE 2). Only the
+   injected /videos hover preview, which sits over its own <img>, is suppressed. */
+@media (prefers-reduced-data: reduce){
+  .video-card-preview{ display:none; }
+}
+
+/* ############################################################################
+   Section 5.9, REDUCED MOTION: designed, not merely frozen.
+   Tri-state: no data-motion = follow the OS; data-motion="off" = always off;
+   data-motion="on" = always on, so a reduced-motion user can opt back IN.
+   The !important blanket is the floor; the designed branches below it are the
+   plan. Both are written twice on purpose: once for the OS signal (excluding
+   the explicit opt-in) and once for the explicit opt-out.
+   ######################################################################### */
+
+@media (prefers-reduced-motion: reduce){
+  html:not([data-motion="on"]) *,
+  html:not([data-motion="on"]) *::before,
+  html:not([data-motion="on"]) *::after{
+    animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important; scroll-behavior:auto !important;
+  }
+}
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after{
+  animation:none !important; transition:none !important;
+}
+
+/* --- designed branch A: OS says reduce, and the user has not opted in ------ */
+@media (prefers-reduced-motion: reduce){
+  html:not([data-motion="on"]){ scroll-behavior:auto; }
+
+  /* Reveals must never be left invisible: the observer is skipped entirely
+     under reduced motion, so .is-in may never arrive. */
+  html:not([data-motion="on"]) .reveal{ opacity:1; transform:none; }
+  html:not([data-motion="on"]) .reveal-line-inner{ transform:none; }
+
+  /* The three .marquee branches that lived here are DELETED. WCAG 2.2.2 is
+     about moving content, and the strip does not move at any motion setting
+     any more, so there is no longer a reduced-motion case to answer. */
+
+  /* The caret stops blinking but stays visible as a position marker. */
+  html:not([data-motion="on"]) .type-caret{ animation:none; opacity:.45; }
+
+  /* The hero frame needs no reduced-motion branch at all: it never moves, and
+     the facade means nothing inside it loads until a click (OVERRIDE 2). */
+
+  /* Sticky positioning is not motion and stays; only the transition goes. */
+  html:not([data-motion="on"]) .pin-progress-bar{ transition:none; }
+  html:not([data-motion="on"]) .pub-progress-bar::after{ transition:none; }
+
+  /* Overlays swap instantly instead of wiping. */
+  html:not([data-motion="on"]) .nav-overlay{ transition:none; }
+  html:not([data-motion="on"]) .nav-overlay-list > li{ opacity:1; transform:none; transition:none; }
+}
+
+/* --- designed branch B: the user has explicitly turned motion off ---------- */
+html[data-motion="off"]{ scroll-behavior:auto; }
+html[data-motion="off"] .reveal{ opacity:1; transform:none; }
+html[data-motion="off"] .reveal-line-inner{ transform:none; }
+html[data-motion="off"] .type-caret{ animation:none; opacity:.45; }
+html[data-motion="off"] .pin-progress-bar{ transform:scaleX(var(--p,0)); }
+html[data-motion="off"] .nav-overlay-list > li{ opacity:1; transform:none; }
+
+/* --- the explicit opt-in must actually restore motion ----------------------
+   The four .marquee branches that used to sit in this block, and their three
+   data-motion="off" counterparts, are DELETED with the scroll animation itself:
+   the strip is a static index at every motion setting now, so there is nothing
+   left for either branch to turn off or back on. The typewriter caret is the
+   only motion the hero still owns. */
+html[data-motion="on"] .type-caret{ animation:caret 1.06s steps(1,end) infinite; opacity:1; }
+
+/* ############################################################################
+   Section 5.10, CONTRAST AND FORCED-COLORS MODES
+   forced-color-adjust: none is not used anywhere on this site.
+   ######################################################################### */
+
+@media (prefers-contrast: more){
+  :root{ --line:#8A959B; --ink-500:#2A3338; --ink-400:#566268; }
+  .btn--outline{ border-color:var(--ink-950); }
+}
+@media (forced-colors: active){
+  .hero-frame{ border:2px solid CanvasText; background:Canvas; box-shadow:none; }
+  .hero-frame-launch{ border:1px solid ButtonText; background:ButtonFace; }
+  .hero-card{ border:1px solid CanvasText; }
+  .media-slot{ border:1px solid CanvasText; }
+  .btn{ border:1px solid ButtonText; }
+
+  /* Section 4.2: hide the raster lockup and render live text instead. */
+  .brand-lockup-img{ display:none; }
+  .brand-lockup::after{
+    content:'FieldLux'; color:CanvasText;
+    font-family:var(--font-display); font-weight:600; font-size:var(--fs-h4);
+    letter-spacing:-.008em;
+  }
+  .type-caret{ background:CanvasText; }
+  .pin-progress-bar,
+  .pub-progress-bar::after{ background:Highlight; }
+  .nav-link::after{ background:Highlight; }
+}
+
+/* ############################################################################
+   Section 8.6, DETERMINISTIC STILL CROP
+   The same device as the hero aperture (1918 / 890 + object-position 50% 0%),
+   generalised so a still can be cropped at BOTH ends. Set a --media-ratio on
+   the slot that is shorter than the source, and --media-crop-y = the share of
+   the hidden height taken off the top; the remainder comes off the bottom.
+
+   In use once, on assets/media/analysis-13pt-diagnostics.png (1917 x 944):
+     - slot --media-ratio: 1917 / 852  hides 92 source px
+     - --media-crop-y: 43.5 %          takes 40 px off the top, 52 off the bottom
+   Top 40 px removes the app title band and its BETA V.2 chip; bottom 52 px
+   removes the status bar reading ANALYSIS [Coming Soon] (source rows 894-943)
+   plus the footer strip below it. A site that describes only shipped work
+   cannot show a Coming Soon badge inside its own product (section 1.2, section 8.6).
+   Re-recording without the chip is the long-term fix; this crop needs no
+   re-encode and no new asset.
+   ######################################################################### */
+
+.media-img--crop{ object-position:50% var(--media-crop-y, 50%); }
+
+/* ############################################################################
+   UNUSED BUT DELIBERATELY KEPT
+
+   The dead-rule sweep removed every rule an owner override or a completed
+   migration made permanently unreachable. Three families are unused by all four
+   pages today and were still kept. Each is listed here so the next sweep does
+   not have to re-derive the reasoning, and so the owner can green-light a
+   second pass in one read.
+
+   1. THE 12-COLUMN GRID.  .grid-12, .col-3/4/5/6/7/8/12, .start-2/6/7/8, plus
+      their two breakpoint lines. Section 3.5 names them as the layout
+      primitives; what shipped uses .split-2--* and .split-3 instead. Kept
+      because markup is being edited alongside this file and a section written
+      against the spec's grid would silently lose its columns.
+
+   2. THE DARK-GROUND TEXT SET.  .btn--on-mass x3 (including the hover) only.
+      .section--mass and .micro-label--on-mass ARE NOW LIVE: #numbers carries
+      both, as the page's single dark band, and the family gained five rules for
+      the .stat component that landed on it. Keeping this set through two sweeps
+      is what made that a five-line change instead of a redesign, and the note
+      that it fails INVISIBLY was right - every part of a .stat is a <p>, so
+      without those rules the six figures would have repainted in the qualifier
+      colour and .stat's hairline would have gone to about 1.2:1, silently.
+      .section--mass .link remains the file's only sanctioned cyan-as-text site
+      (G2), so deleting it would still change what the ship gate greps for.
+
+   3. INTERACTION STATES WITH NOTHING IN THEM.  .btn.is-disabled, and the
+      JS-applied .is-in / .is-scrolled / .is-active / .overlay-open /
+      .hero-frame-embed / .video-card-preview. A state is not dead because
+      nothing is in it at rest; the last two are created by script at runtime
+      and would not appear in a class-attribute grep at all.
+
+   Three TOKENS now have zero var() sites: --surface-tint (its only consumer
+   was .section--wash), --brand-100 and --mass-800 (both already dead before
+   this pass). Section 2.1 is pasted verbatim from the spec and is not this
+   task's file to prune, so they are reported rather than removed.
+   ######################################################################### */
+
 @tailwind utilities;
-
-@layer base {
-  :root {
-    --stage: #050607;
-    --stage-2: #090A0B;
-    --ink: #F6F4EF;
-    --muted: #A9A8A1;
-    --soft: #6F726F;
-    --line: rgba(246, 244, 239, 0.12);
-    --line-strong: rgba(246, 244, 239, 0.22);
-    --brand: #20D5DE;
-    --brand-2: #10A9B5;
-    --amber: #E8B44A;
-    --blue: #5078F2;
-    --red: #EF5B4D;
-    --green: #5DCB87;
-  }
-
-  html,
-  body {
-    background: var(--stage);
-    color: var(--ink);
-    font-family: 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    color-scheme: dark;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-  }
-
-  body.modal-open {
-    overflow: hidden;
-  }
-
-  ::selection {
-    background: rgba(32, 213, 222, 0.34);
-    color: #000;
-  }
-}
-
-@layer components {
-  .site-shell {
-    width: min(1520px, calc(100vw - 40px));
-    margin-inline: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  img,
-  video,
-  svg {
-    max-width: 100%;
-  }
-
-  .site-header {
-    position: fixed;
-    inset: 0 0 auto;
-    z-index: 50;
-    border-bottom: 1px solid var(--line);
-    background: rgba(5, 6, 7, 0.82);
-    backdrop-filter: blur(14px);
-  }
-
-  .nav-shell {
-    display: flex;
-    width: min(100% - 32px, 1720px);
-    min-height: 64px;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-  }
-
-  .brand-lockup {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 14px;
-    font-weight: 900;
-    color: #fff;
-  }
-
-  .brand-lockup img {
-    width: auto;
-    height: 40px;
-    object-fit: contain;
-  }
-
-  .brand-beta {
-    border: 1px solid rgba(32, 213, 222, 0.3);
-    border-radius: 4px;
-    background: rgba(32, 213, 222, 0.1);
-    padding: 2px 6px;
-    color: var(--brand);
-    font-family: 'Manrope', 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 26px;
-    color: rgba(246, 244, 239, 0.62);
-    font-size: 11px;
-    font-weight: 750;
-  }
-
-  .nav-links a,
-  .footer-links a {
-    transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
-  }
-
-  .nav-links a:hover,
-  .footer-links a:hover {
-    color: var(--brand);
-  }
-
-  .nav-actions,
-  .hero-actions,
-  .footer-inner,
-  .community-actions {
-    display: flex;
-    align-items: center;
-  }
-
-  .nav-actions {
-    gap: 8px;
-  }
-
-  .button {
-    display: inline-flex;
-    min-height: 42px;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid transparent;
-    padding: 0 16px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--ink);
-    white-space: nowrap;
-    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
-  }
-
-  .button:hover {
-    transform: translateY(-1px);
-  }
-
-  .button-solid {
-    background: var(--brand);
-    color: #031011;
-  }
-
-  .button-solid:hover {
-    background: #63EAF1;
-  }
-
-  .button-light {
-    background: #F8F6F0;
-    color: #050607;
-  }
-
-  .button-light:hover {
-    background: var(--brand);
-  }
-
-  .button-ghost {
-    border-color: var(--line-strong);
-    background: rgba(246, 244, 239, 0.05);
-    color: rgba(246, 244, 239, 0.82);
-  }
-
-  .button-ghost:hover {
-    border-color: rgba(32, 213, 222, 0.58);
-    color: #fff;
-  }
-
-  .nav-discord-link {
-    position: relative;
-  }
-
-  .nav-discord-link::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    top: calc(100% + 18px);
-    left: 50%;
-    z-index: 80;
-    width: min(360px, calc(100vw - 48px));
-    padding: 10px 12px;
-    border: 1px solid rgba(32, 213, 222, 0.28);
-    background: rgba(0, 0, 0, 0.92);
-    color: rgba(246, 244, 239, 0.88);
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1.5;
-    opacity: 0;
-    pointer-events: none;
-    transform: translate3d(-50%, -4px, 0);
-    transition: opacity 140ms ease, transform 140ms ease;
-  }
-
-  .nav-discord-link:hover::after,
-  .nav-discord-link:focus-visible::after {
-    opacity: 1;
-    transform: translate3d(-50%, 0, 0);
-  }
-
-  .hero-section {
-    position: relative;
-    min-height: 100svh;
-    overflow: hidden;
-    background: #000;
-  }
-
-  .hero-media-slot {
-    position: absolute;
-    inset: 0;
-    --hero-video-left: clamp(260px, 18vw, 360px);
-    background:
-      linear-gradient(rgba(246, 244, 239, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(246, 244, 239, 0.035) 1px, transparent 1px),
-      linear-gradient(135deg, rgba(32, 213, 222, 0.12), rgba(232, 180, 74, 0.06) 48%, rgba(239, 91, 77, 0.08)),
-      #050607;
-    background-size: 44px 44px, 44px 44px, auto, auto;
-  }
-
-  .hero-media-slot :is(video, img) {
-    position: absolute;
-    top: 64px;
-    right: 0;
-    bottom: 0;
-    width: calc(100% - var(--hero-video-left));
-    height: calc(100svh - 64px);
-    max-height: none;
-    object-fit: cover;
-    object-position: top right;
-    display: block;
-  }
-
-  .hero-media-slot.has-media::before,
-  .hero-media-slot.has-media::after {
-    display: none;
-  }
-
-  .hero-media-slot::before,
-  .hero-media-slot::after {
-    position: absolute;
-    left: clamp(20px, 5vw, 96px);
-    font-family: 'Manrope', 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    pointer-events: none;
-  }
-
-  .hero-media-slot::before {
-    content: attr(data-label);
-    top: 36%;
-    color: rgba(32, 213, 222, 0.86);
-    font-size: clamp(12px, 1.2vw, 18px);
-    font-weight: 800;
-  }
-
-  .hero-media-slot::after {
-    content: attr(data-caption);
-    top: calc(36% + 32px);
-    color: rgba(246, 244, 239, 0.44);
-    font-size: 11px;
-    font-weight: 700;
-  }
-
-  .hero-wash {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.92) 20%, rgba(0, 0, 0, 0.54) 38%, rgba(0, 0, 0, 0) 58%);
-    pointer-events: none;
-  }
-
-  .hero-layout {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    width: min(100% - 32px, 1720px);
-    min-height: 100svh;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 48px;
-    padding-top: clamp(92px, 10vh, 118px);
-    padding-bottom: clamp(156px, 20vh, 220px);
-  }
-
-  .hero-copy {
-    width: min(660px, 100%);
-  }
-
-  .kicker {
-    color: var(--brand);
-    font-family: 'Manrope', 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 11px;
-    font-weight: 800;
-  }
-
-  .hero-copy h1 {
-    margin-top: 18px;
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: clamp(4.2rem, 8vw, 8.4rem);
-    font-weight: 900;
-    line-height: 0.82;
-    color: #fff;
-  }
-
-  .hero-copy p:not(.kicker) {
-    margin-top: 24px;
-    max-width: 600px;
-    color: rgba(246, 244, 239, 0.84);
-    font-size: clamp(1rem, 1.22vw, 1.28rem);
-    line-height: 1.55;
-  }
-
-  .hero-actions {
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 28px;
-  }
-
-  .hero-readout {
-    display: grid;
-    grid-template-columns: 1fr;
-    width: min(360px, 100%);
-    border: 1px solid var(--line);
-    background: rgba(5, 6, 7, 0.72);
-    backdrop-filter: blur(12px);
-  }
-
-  .hero-readout div {
-    min-height: 72px;
-    padding: 14px 16px;
-  }
-
-  .hero-readout div + div {
-    border-top: 1px solid var(--line);
-  }
-
-  .hero-readout span,
-  .note-row span,
-  .share-step span,
-  .workflow-rail span,
-  .probe-list span,
-  .roadmap-cell span,
-  .metric-grid span {
-    color: var(--soft);
-    font-family: 'Manrope', 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 10px;
-    font-weight: 800;
-  }
-
-  .hero-readout strong {
-    display: block;
-    margin-top: 10px;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 750;
-    line-height: 1.25;
-  }
-
-  .section {
-    padding-block: clamp(76px, 10vw, 140px);
-  }
-
-  .hero-section + .section {
-    padding-top: clamp(24px, 3vw, 44px);
-  }
-
-  .section-stage {
-    border-top: 1px solid var(--line);
-    background:
-      linear-gradient(rgba(246, 244, 239, 0.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(246, 244, 239, 0.018) 1px, transparent 1px),
-      var(--stage);
-    background-size: 56px 56px, 56px 56px, auto;
-  }
-
-  .section-black {
-    border-top: 1px solid var(--line);
-    background: #000;
-  }
-
-  .split-heading {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(340px, 0.58fr);
-    gap: 40px;
-    align-items: end;
-  }
-
-  .split-heading h2,
-  .narrow-heading h2,
-  .probe-layout h2 {
-    margin-top: 14px;
-    max-width: 900px;
-    color: #fff;
-    font-size: clamp(2.35rem, 5.5vw, 5.6rem);
-    font-weight: 850;
-    line-height: 0.94;
-  }
-
-  .split-heading > p,
-  .section-copy {
-    color: rgba(246, 244, 239, 0.64);
-    font-size: 15px;
-    line-height: 1.75;
-  }
-
-  .software-heading {
-    width: min(100% - 32px, 1400px);
-    grid-template-columns: 1fr;
-    gap: 18px;
-    align-items: start;
-  }
-
-  .software-heading h2 {
-    max-width: none;
-    font-size: clamp(3.2rem, 4.45vw, 4.85rem);
-  }
-
-  .software-heading h2 span {
-    display: block;
-    white-space: nowrap;
-  }
-
-  .software-heading > p {
-    justify-self: start;
-    width: min(620px, 52vw);
-    margin-bottom: 0;
-    font-size: 14px;
-    line-height: 1.55;
-  }
-
-  .software-heading > p span {
-    display: block;
-    white-space: nowrap;
-  }
-
-  .analysis-heading {
-    grid-template-columns: 1fr;
-    gap: 18px;
-    align-items: start;
-  }
-
-  .analysis-heading h2 {
-    max-width: none;
-  }
-
-  .analysis-heading h2 span {
-    display: block;
-    white-space: nowrap;
-  }
-
-  .analysis-heading > p {
-    justify-self: start;
-    width: min(760px, 62vw);
-    margin-bottom: 0;
-    font-size: 14px;
-    line-height: 1.55;
-  }
-
-  .analysis-heading > p span {
-    display: block;
-    white-space: nowrap;
-  }
-
-  .probe-heading {
-    width: min(100% - 32px, 1400px);
-    grid-template-columns: 1fr;
-    gap: 18px;
-    align-items: start;
-  }
-
-  .probe-heading h2 {
-    max-width: none;
-    font-size: clamp(3.2rem, 4.45vw, 4.85rem);
-  }
-
-  .probe-heading h2 span {
-    display: block;
-    white-space: nowrap;
-  }
-
-  .probe-heading > p {
-    justify-self: start;
-    width: min(1120px, 100%);
-    margin-bottom: 0;
-    font-size: 14px;
-    line-height: 1.55;
-  }
-
-  .probe-heading > p span {
-    display: block;
-    white-space: nowrap;
-  }
-
-  .software-grid {
-    display: grid;
-    width: min(100% - 32px, 1400px);
-    grid-template-columns: minmax(0, 1fr) clamp(330px, 26vw, 360px);
-    align-items: stretch;
-    gap: 14px;
-    margin-top: 48px;
-  }
-
-  .media-slot {
-    position: relative;
-    min-height: 260px;
-    overflow: hidden;
-    border: 1px solid rgba(246, 244, 239, 0.16);
-    border-radius: 6px;
-    background:
-      linear-gradient(rgba(246, 244, 239, 0.028) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(246, 244, 239, 0.028) 1px, transparent 1px),
-      linear-gradient(135deg, rgba(32, 213, 222, 0.08), rgba(246, 244, 239, 0.025) 48%, rgba(232, 180, 74, 0.06)),
-      #08090A;
-    background-size: 32px 32px, 32px 32px, auto, auto;
-  }
-
-  .media-slot::before,
-  .media-slot::after {
-    position: absolute;
-    left: 14px;
-    right: 14px;
-    font-family: 'Manrope', 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    pointer-events: none;
-  }
-
-  .media-slot::before {
-    content: attr(data-label);
-    top: 14px;
-    width: fit-content;
-    max-width: calc(100% - 28px);
-    border: 1px solid rgba(32, 213, 222, 0.42);
-    background: rgba(0, 0, 0, 0.66);
-    padding: 5px 8px;
-    color: var(--brand);
-    font-size: 10px;
-    font-weight: 850;
-  }
-
-  .media-slot::after {
-    content: attr(data-caption);
-    bottom: 14px;
-    color: rgba(246, 244, 239, 0.44);
-    font-size: 10px;
-    font-weight: 700;
-    text-align: center;
-  }
-
-  .media-slot.has-media::before,
-  .media-slot.has-media::after {
-    display: none;
-  }
-
-  .media-label-badge {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    z-index: 2;
-    border: 1px solid rgba(32, 213, 222, 0.42);
-    background: rgba(0, 0, 0, 0.7);
-    padding: 5px 8px;
-    color: var(--brand);
-    font-family: 'Manrope', 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 10px;
-    font-weight: 850;
-    text-transform: uppercase;
-  }
-
-  .media-slot > video,
-  .media-slot > img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: #050607;
-    object-fit: contain;
-  }
-
-  .heatmap-triptych-slot {
-    min-height: 272px;
-    padding: 44px 12px 12px;
-  }
-
-  .heatmap-triptych {
-    display: grid;
-    height: 100%;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    align-items: stretch;
-  }
-
-  .heatmap-triptych img {
-    width: 100%;
-    height: 100%;
-    min-width: 0;
-    border: 1px solid rgba(246, 244, 239, 0.1);
-    border-radius: 4px;
-    background: #050607;
-    object-fit: contain;
-    object-position: top center;
-  }
-
-  .heatmap-triptych .heatmap-deviation-img {
-    object-position: center -7px;
-  }
-
-  .analysis-wide-slot {
-    min-height: 272px;
-    padding-top: 42px;
-  }
-
-  .analysis-wide-slot > img {
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-
-  .media-large {
-    min-height: 560px;
-  }
-
-  .software-video-slot {
-    align-self: start;
-    min-height: 0;
-    aspect-ratio: var(--media-ratio, 16 / 9);
-  }
-
-  .media-tall {
-    min-height: 620px;
-  }
-
-  .media-portrait {
-    min-height: 520px;
-  }
-
-  .software-notes {
-    display: grid;
-    grid-template-rows: repeat(4, minmax(0, 1fr));
-    align-self: stretch;
-    height: 100%;
-    border: 1px solid var(--line);
-    background: rgba(246, 244, 239, 0.025);
-  }
-
-  .note-row {
-    min-height: 0;
-    padding: 8px 14px;
-  }
-
-  .note-row + .note-row {
-    border-top: 1px solid var(--line);
-  }
-
-  .note-row strong,
-  .share-step h3,
-  .workflow-rail strong,
-  .probe-list strong,
-  .roadmap-cell strong {
-    display: block;
-    margin-top: 5px;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 800;
-    line-height: 1.22;
-  }
-
-  .note-row p,
-  .share-step p,
-  .roadmap-cell li {
-    margin-top: 5px;
-    color: rgba(246, 244, 239, 0.62);
-    font-size: 10px;
-    line-height: 1.32;
-  }
-
-  .analysis-layout,
-  .probe-layout,
-  .share-media-row {
-    display: grid;
-    gap: 18px;
-    margin-top: 42px;
-  }
-
-  .analysis-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(360px, 0.64fr);
-  }
-
-  .analysis-panel {
-    border: 1px solid rgba(32, 213, 222, 0.22);
-    border-radius: 6px;
-    background: rgba(32, 213, 222, 0.04);
-    padding: clamp(20px, 3vw, 34px);
-  }
-
-  .panel-topline {
-    display: block;
-    color: var(--brand);
-    font-family: 'Manrope', 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 13px;
-    font-weight: 850;
-    text-transform: uppercase;
-  }
-
-  .heatmap-mode-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
-    margin-top: 28px;
-  }
-
-  .heatmap-mode-grid article {
-    min-height: 170px;
-    border: 1px solid var(--line);
-    background: rgba(0, 0, 0, 0.25);
-    padding: 18px;
-  }
-
-  .heatmap-mode-grid span {
-    color: var(--brand);
-    font-family: 'Manrope', 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 10px;
-    font-weight: 800;
-  }
-
-  .heatmap-mode-grid strong {
-    display: block;
-    margin-top: 16px;
-    color: #fff;
-    font-size: 18px;
-    line-height: 1.2;
-  }
-
-  .heatmap-mode-grid p {
-    margin-top: 14px;
-    color: rgba(246, 244, 239, 0.62);
-    font-size: 13px;
-    line-height: 1.62;
-  }
-
-  .meter-strip {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    height: 16px;
-    margin-top: 24px;
-    border: 1px solid rgba(246, 244, 239, 0.12);
-    overflow: hidden;
-  }
-
-  .meter-strip span:nth-child(1) { background: #1235D8; }
-  .meter-strip span:nth-child(2) { background: #1BA8E6; }
-  .meter-strip span:nth-child(3) { background: #E8F0DD; }
-  .meter-strip span:nth-child(4) { background: #E8B44A; }
-  .meter-strip span:nth-child(5) { background: #E24D3E; }
-
-  .metric-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    margin-top: 24px;
-    border: 1px solid var(--line);
-  }
-
-  .metric-grid div {
-    min-height: 94px;
-    padding: 16px;
-  }
-
-  .metric-grid div:not(:nth-child(3n)) {
-    border-right: 1px solid var(--line);
-  }
-
-  .metric-grid div:nth-child(-n+3) {
-    border-bottom: 1px solid var(--line);
-  }
-
-  .metric-grid strong {
-    display: block;
-    margin-top: 12px;
-    color: var(--ink);
-    font-family: 'Manrope', 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 13px;
-  }
-
-  .media-stack {
-    display: grid;
-    gap: 18px;
-  }
-
-  .probe-grid {
-    display: grid;
-    width: min(100% - 32px, 1400px);
-    grid-template-columns: minmax(0, 1fr) clamp(330px, 26vw, 360px);
-    align-items: stretch;
-    gap: 14px;
-    margin-top: 48px;
-  }
-
-  .probe-video-slot {
-    min-height: 0;
-    aspect-ratio: var(--media-ratio, 16 / 9);
-  }
-
-  .probe-video-slot > video {
-    object-fit: contain;
-  }
-
-  .probe-layout {
-    grid-template-columns: minmax(360px, 0.72fr) minmax(0, 1fr);
-    align-items: center;
-  }
-
-  .probe-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1px;
-    border: 1px solid var(--line);
-    background: var(--line);
-  }
-
-  .probe-grid .probe-list {
-    height: 100%;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, minmax(0, 1fr));
-    margin-top: 0;
-  }
-
-  .probe-list div {
-    min-height: 130px;
-    background: #060707;
-    padding: 20px;
-  }
-
-  .probe-grid .probe-list div {
-    min-height: 0;
-    padding: 18px;
-  }
-
-  .share-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1px;
-    margin-top: 42px;
-    border: 1px solid var(--line);
-    background: var(--line);
-  }
-
-  .share-step {
-    min-height: 300px;
-    background: #060707;
-    padding: 24px;
-  }
-
-  .share-media-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .narrow-heading {
-    max-width: 960px;
-  }
-
-  .workflow-rail {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 1px;
-    margin-top: 42px;
-    border: 1px solid var(--line);
-    background: var(--line);
-  }
-
-  .workflow-rail div {
-    min-height: 172px;
-    background: #070808;
-    padding: 20px;
-  }
-
-  .case-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
-    margin-top: 42px;
-  }
-
-  .roadmap-grid,
-  .roadmap-modal__grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1px;
-    border: 1px solid var(--line);
-    background: var(--line);
-    margin-top: 42px;
-  }
-
-  .roadmap-cell {
-    min-height: 340px;
-    background: #070808;
-    padding: 34px 36px;
-  }
-
-  .roadmap-cell ul {
-    margin-top: 22px;
-    display: grid;
-    gap: 15px;
-  }
-
-  .roadmap-cell > span {
-    font-size: 13px;
-  }
-
-  .roadmap-cell strong {
-    margin-top: 10px;
-    font-size: 20px;
-    line-height: 1.18;
-  }
-
-  .roadmap-cell li {
-    position: relative;
-    padding-left: 18px;
-    color: rgba(246, 244, 239, 0.72);
-    font-size: 14px;
-    line-height: 1.45;
-  }
-
-  .roadmap-cell li::before {
-    content: '';
-    position: absolute;
-    top: 0.72em;
-    left: 0;
-    width: 5px;
-    height: 5px;
-    background: var(--brand);
-  }
-
-  .community-cta {
-    display: grid;
-    place-items: center;
-    border-top: 1px solid var(--line);
-    background: #000;
-    padding-block: 34px 42px;
-  }
-
-  .community-cta-inner {
-    display: grid;
-    justify-items: center;
-    gap: 12px;
-    width: min(760px, calc(100% - 40px));
-  }
-
-  .community-divider {
-    width: 100%;
-    height: 1px;
-    background: var(--line);
-  }
-
-  .community-label {
-    width: 100%;
-    color: rgba(246, 244, 239, 0.42);
-    font-family: 'Manrope', 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-align: center;
-    text-transform: uppercase;
-  }
-
-  .community-actions {
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .discord-button {
-    display: inline-flex;
-    min-height: 42px;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border: 1px solid rgba(88, 101, 242, 0.34);
-    border-radius: 6px;
-    background: rgba(88, 101, 242, 0.08);
-    padding: 0 18px;
-    color: #f7f7ff;
-    font-size: 13px;
-    font-weight: 800;
-    transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
-  }
-
-  .discord-button:hover {
-    border-color: rgba(88, 101, 242, 0.72);
-    background: rgba(88, 101, 242, 0.16);
-    transform: translateY(-1px);
-  }
-
-  .discord-button span {
-    color: rgba(246, 244, 239, 0.46);
-    font-family: 'Manrope', 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-  }
-
-  .discord-button svg {
-    width: 18px;
-    height: 18px;
-    flex: 0 0 auto;
-    fill: #6f7bff;
-  }
-
-  .community-copy {
-    color: rgba(246, 244, 239, 0.46);
-    font-size: 13px;
-    line-height: 1.6;
-    text-align: center;
-  }
-
-  .site-footer {
-    border-top: 1px solid var(--line);
-    background: #0d0e11;
-    padding-block: 24px;
-  }
-
-  .footer-inner {
-    justify-content: space-between;
-    gap: 18px;
-    color: rgba(246, 244, 239, 0.48);
-    font-size: 12px;
-  }
-
-  .footer-meta {
-    margin: 0;
-    font-family: 'Manrope', 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
-  }
-
-  .footer-links {
-    display: flex;
-    gap: 18px;
-  }
-
-  .roadmap-modal[hidden] {
-    display: none;
-  }
-
-  .roadmap-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-
-  .roadmap-modal__backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.76);
-    backdrop-filter: blur(10px);
-  }
-
-  .roadmap-modal__panel {
-    position: relative;
-    z-index: 1;
-    width: min(1180px, calc(100vw - 32px));
-    max-height: min(760px, calc(100vh - 32px));
-    overflow: auto;
-    border: 1px solid rgba(32, 213, 222, 0.28);
-    border-radius: 8px;
-    background: #050607;
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.64);
-  }
-
-  .roadmap-modal__header {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    border-bottom: 1px solid var(--line);
-    background: rgba(5, 6, 7, 0.94);
-    padding: 24px;
-  }
-
-  .roadmap-modal__header h2 {
-    margin-top: 8px;
-    color: #fff;
-    font-size: clamp(2rem, 5vw, 4.2rem);
-    font-weight: 850;
-    line-height: 0.95;
-  }
-
-  .roadmap-modal__header button {
-    min-height: 40px;
-    border: 1px solid var(--line-strong);
-    border-radius: 4px;
-    background: rgba(246, 244, 239, 0.06);
-    padding: 0 13px;
-    color: rgba(246, 244, 239, 0.82);
-    font-size: 12px;
-    font-weight: 800;
-  }
-
-  .roadmap-modal__header button:hover,
-  .roadmap-modal__header button:focus-visible {
-    border-color: rgba(32, 213, 222, 0.7);
-    color: var(--brand);
-    outline: none;
-  }
-
-  .roadmap-modal__grid {
-    border: 0;
-    margin-top: 0;
-  }
-
-  @media (max-width: 1180px) {
-    .nav-links {
-      display: none;
-    }
-
-    .software-heading {
-      grid-template-columns: 1fr;
-      gap: 22px;
-    }
-
-    .software-heading h2 span {
-      white-space: normal;
-    }
-
-    .software-heading > p {
-      justify-self: start;
-      width: 100%;
-      max-width: 620px;
-      margin-bottom: 0;
-    }
-
-    .software-heading > p span {
-      white-space: normal;
-    }
-
-    .analysis-heading {
-      grid-template-columns: 1fr;
-      gap: 22px;
-    }
-
-    .analysis-heading h2 span,
-    .analysis-heading > p span {
-      white-space: normal;
-    }
-
-    .analysis-heading > p {
-      width: 100%;
-      max-width: 620px;
-    }
-
-    .probe-heading {
-      grid-template-columns: 1fr;
-      gap: 22px;
-    }
-
-    .probe-heading h2 span,
-    .probe-heading > p span {
-      white-space: normal;
-    }
-
-    .probe-heading > p {
-      width: 100%;
-      max-width: 620px;
-    }
-
-    .analysis-layout,
-    .software-grid,
-    .probe-layout,
-    .probe-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .share-grid,
-    .workflow-rail {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 860px) {
-    .site-shell {
-      width: min(100% - 32px, 1520px);
-    }
-
-    .nav-shell {
-      width: min(100% - 24px, 1720px);
-      min-height: 58px;
-      gap: 12px;
-    }
-
-    .brand-lockup {
-      gap: 8px;
-    }
-
-    .brand-lockup img {
-      height: 34px;
-      max-width: 140px;
-    }
-
-    .brand-beta {
-      display: none;
-    }
-
-    .nav-actions {
-      flex: 0 0 auto;
-      gap: 6px;
-    }
-
-    .mobile-hide-cta {
-      display: inline-flex;
-    }
-
-    .button {
-      min-height: 40px;
-      padding-inline: 13px;
-      font-size: 11px;
-    }
-
-    .hero-layout {
-      gap: 34px;
-      min-height: auto;
-      padding-top: 96px;
-      padding-bottom: 48px;
-    }
-
-    .hero-copy h1 {
-      font-size: clamp(3.35rem, 17vw, 4.55rem);
-    }
-
-    .hero-media-slot::before,
-    .hero-media-slot::after {
-      display: none;
-    }
-
-    .hero-media-slot :is(video, img) {
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-
-    .hero-readout,
-    .split-heading,
-    .heatmap-mode-grid,
-    .metric-grid,
-    .probe-list,
-    .share-media-row,
-    .case-grid,
-    .roadmap-grid,
-    .roadmap-modal__grid {
-      grid-template-columns: 1fr;
-    }
-
-    .hero-actions {
-      align-items: stretch;
-      flex-direction: column;
-      width: 100%;
-      max-width: 360px;
-    }
-
-    .hero-actions .button {
-      width: 100%;
-      white-space: normal;
-      text-align: center;
-    }
-
-    .split-heading h2,
-    .narrow-heading h2,
-    .probe-layout h2,
-    .software-heading h2,
-    .probe-heading h2 {
-      font-size: clamp(2.35rem, 13vw, 3.6rem);
-      line-height: 0.98;
-    }
-
-    .split-heading > p,
-    .section-copy,
-    .software-heading > p,
-    .analysis-heading > p,
-    .probe-heading > p {
-      max-width: 100%;
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    .software-grid,
-    .probe-grid {
-      margin-top: 32px;
-      gap: 14px;
-    }
-
-    .software-notes {
-      grid-template-rows: none;
-      height: auto;
-    }
-
-    .note-row,
-    .probe-grid .probe-list div {
-      min-height: auto;
-      padding: 16px;
-    }
-
-    .note-row p,
-    .share-step p,
-    .roadmap-cell li {
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .hero-readout div + div,
-    .metric-grid div,
-    .metric-grid div:not(:nth-child(3n)),
-    .metric-grid div:nth-child(-n+3) {
-      border: 0;
-      border-top: 1px solid var(--line);
-    }
-
-    .hero-readout div:first-child,
-    .metric-grid div:first-child {
-      border-top: 0;
-    }
-
-    .media-large,
-    .media-tall,
-    .media-portrait {
-      min-height: 360px;
-    }
-
-    .software-video-slot,
-    .probe-video-slot {
-      min-height: 0;
-      aspect-ratio: 16 / 10;
-    }
-
-    .heatmap-triptych-slot,
-    .analysis-wide-slot {
-      min-height: 220px;
-    }
-
-    .heatmap-mode-grid article,
-    .metric-grid div,
-    .probe-list div,
-    .share-step,
-    .workflow-rail div {
-      min-height: auto;
-    }
-
-    .roadmap-cell {
-      min-height: auto;
-      padding: 24px;
-    }
-
-    .share-grid,
-    .workflow-rail {
-      grid-template-columns: 1fr;
-    }
-
-    .footer-inner {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-
-    .roadmap-modal {
-      padding: 12px;
-    }
-
-    .roadmap-modal__header {
-      flex-direction: column;
-      padding: 18px;
-    }
-
-    .roadmap-modal__header button {
-      width: 100%;
-    }
-  }
-
-  @media (max-width: 560px) {
-    .site-shell {
-      width: min(100% - 24px, 1520px);
-    }
-
-    .section {
-      padding-block: 58px;
-    }
-
-    .hero-section {
-      min-height: auto;
-    }
-
-    .hero-wash {
-      background:
-        linear-gradient(180deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.34) 42%, #000 100%),
-        linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.72) 52%, rgba(0, 0, 0, 0.24) 100%);
-    }
-
-    .hero-layout {
-      width: min(100% - 24px, 1720px);
-      gap: 28px;
-      padding-top: 88px;
-      padding-bottom: 34px;
-    }
-
-    .hero-copy h1 {
-      margin-top: 14px;
-      font-size: clamp(2.9rem, 16vw, 3.7rem);
-      line-height: 0.9;
-      overflow-wrap: anywhere;
-    }
-
-    .hero-copy p:not(.kicker) {
-      margin-top: 18px;
-      font-size: 15px;
-      line-height: 1.55;
-    }
-
-    .hero-readout {
-      width: 100%;
-    }
-
-    .media-large,
-    .media-tall,
-    .media-portrait {
-      min-height: 260px;
-    }
-
-    .software-video-slot,
-    .probe-video-slot {
-      min-height: 0;
-      aspect-ratio: 4 / 3;
-    }
-
-    .heatmap-triptych {
-      grid-template-columns: 1fr;
-    }
-
-    .heatmap-triptych-slot {
-      min-height: 560px;
-    }
-
-    .analysis-wide-slot {
-      min-height: 240px;
-    }
-
-    .panel-topline,
-    .community-label,
-    .footer-meta {
-      overflow-wrap: anywhere;
-    }
-
-    .analysis-panel {
-      padding: 18px;
-    }
-
-    .roadmap-grid {
-      margin-top: 30px;
-    }
-
-    .community-cta-inner {
-      width: min(100% - 24px, 760px);
-    }
-
-    .discord-button {
-      width: 100%;
-      min-height: auto;
-      flex-wrap: wrap;
-      padding: 12px 14px;
-      text-align: center;
-      white-space: normal;
-    }
-
-    .discord-button span {
-      width: 100%;
-    }
-
-    .footer-links {
-      flex-wrap: wrap;
-      gap: 10px 16px;
-    }
-  }
-
-  @media (max-width: 380px) {
-    .nav-shell {
-      width: min(100% - 20px, 1720px);
-    }
-
-    .brand-lockup img {
-      height: 30px;
-      max-width: 118px;
-    }
-
-    .nav-actions .button-solid {
-      min-height: 36px;
-      padding-inline: 10px;
-      font-size: 10px;
-    }
-
-    .nav-actions .button-ghost {
-      min-height: 36px;
-      padding-inline: 9px;
-      font-size: 10px;
-    }
-
-    .hero-layout,
-    .site-shell,
-    .community-cta-inner {
-      width: min(100% - 20px, 1520px);
-    }
-
-    .hero-actions {
-      max-width: none;
-    }
-
-    .roadmap-cell {
-      padding: 20px;
-    }
-  }
-}

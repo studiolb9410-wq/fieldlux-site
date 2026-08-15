@@ -1,470 +1,1898 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FieldLux - Projection simulation, lux analysis, and cloud share</title>
-  <meta name="description" content="FieldLux is a projection simulation workspace for projector planning, FieldLux heatmaps, hover measurements, 13-point lux diagnostics, and read-only cloud sharing." />
-  <link rel="canonical" href="https://field-lux.com/" />
-  <meta property="og:title" content="FieldLux - Projection simulation workspace" />
-  <meta property="og:description" content="Plan projector placement, analyze lux distribution, inspect hover measurements, and share read-only client views from one workspace." />
-  <meta property="og:url" content="https://field-lux.com/" />
-  <meta property="og:image" content="https://field-lux.com/assets/logo.png" />
-  <link rel="icon" href="/assets/logo-mark.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Inter:wght@400;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/tailwind.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>FieldLux: projector coverage, surface lux, and the error budget behind it</title>
+  <meta name="description" content="A projection planning workspace for the person who has to quote the job: 87 projectors and 113 lenses, edge blend derived from measured footprints, lux heatmaps drawn on the 3D scene, a PDF Tech Rider, and a published error budget for every assumption. Open beta, free.">
+  <link rel="canonical" href="https://field-lux.com/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FieldLux">
+  <meta property="og:title" content="FieldLux: the numbers before you quote">
+  <meta property="og:description" content="Four heads, the real building, the overlaps counted. FieldLux answers it before you quote, and publishes how far off it could be.">
+  <meta property="og:url" content="https://field-lux.com/">
+  <meta property="og:image" content="https://field-lux.com/assets/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FieldLux: the numbers before you quote">
+  <meta name="twitter:description" content="Four heads, the real building, the overlaps counted. FieldLux answers it before you quote, and publishes how far off it could be.">
+  <meta name="twitter:image" content="https://field-lux.com/assets/og-card.png">
+
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="/assets/favicon-16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/assets/logo-mark-180.png">
+
+  <link rel="preload" href="/assets/fonts/geologica-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/pretendard/PretendardVariable.subset.91.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- The hero still. It is the largest contentful paint and, until the demo embed URL
+       lands, the only thing inside .hero-frame, so it is preloaded and not lazy. Repoint
+       this and the .hero-frame-still src together if the still is ever re-cropped. -->
+  <link rel="preload" href="/assets/media/hero-stitch-01.png" as="image" fetchpriority="high">
+
+  <link rel="stylesheet" href="/assets/tailwind.css">
+
+  <script>
+    /* Motion preference, read before first paint (spec 5.9). Tri-state: on / off / follow OS. */
+    (function () {
+      try {
+        var m = window.localStorage.getItem('fieldlux_motion');
+        if (m === 'on' || m === 'off') { document.documentElement.setAttribute('data-motion', m); }
+      } catch (e) { /* storage blocked: follow the OS */ }
+    })();
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
   <header class="site-header">
     <div class="site-shell nav-shell">
-      <a href="/" class="brand-lockup" aria-label="FieldLux home">
-        <img src="/assets/logo.png" alt="FieldLux" />
-        <span class="brand-beta">Beta v.2</span>
+      <a class="brand-lockup" href="/" aria-label="FieldLux home">
+        <img class="brand-lockup-img" src="/assets/logo-ink.png" width="154" height="45" alt="FieldLux">
+        <span class="brand-beta">BETA</span>
       </a>
-      <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#software">Software</a>
-        <a href="#analysis">Analysis</a>
-        <a href="#roadmap" data-roadmap-open>Roadmap</a>
-        <a
-          href="#"
-          data-discord-link
-          data-tooltip="Official community for beta access, product updates, setup feedback, and projection analysis discussion."
-          aria-disabled="true"
-          aria-label="Join Discord"
-          class="nav-discord-link"
-        >Discord</a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a class="nav-link" href="#product">Product</a>
+        <a class="nav-link" href="#measure">Measurement</a>
+        <a class="nav-link" href="/videos" aria-label="Feature videos">Videos</a>
+        <a class="nav-link" href="#limits">Limits</a>
+        <a class="nav-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link data-tooltip="Official FieldLux community: beta access, catalogue submissions and bug reports." target="_blank" rel="noopener noreferrer">Discord</a>
       </nav>
+
       <div class="nav-actions">
-        <a href="https://app.field-lux.com" data-app-link class="button button-ghost mobile-hide-cta">Sign in</a>
-        <a href="https://app.field-lux.com" data-app-link class="button button-solid">Start free</a>
+        <a class="btn btn--outline btn--sm" href="https://app.field-lux.com" data-app-link>Sign in</a>
+        <a class="btn btn--solid btn--sm" href="https://app.field-lux.com" data-app-link>Start free</a>
       </div>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-overlay">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="u-visually-hidden">Menu</span>
+      </button>
     </div>
   </header>
 
-  <main>
-    <section class="hero-section">
-      <div class="hero-media-slot has-media" data-label="FULL WORKSPACE MEDIA SLOT" data-caption="Replace with final image or video">
-        <img src="/assets/media/hero-stitch-01.png" alt="FieldLux heatmap workspace preview" />
-      </div>
-      <div class="hero-wash"></div>
-      <div class="site-shell hero-layout">
-        <div class="hero-copy">
-          <p class="kicker">Projection simulation workspace</p>
-          <h1>FieldLux</h1>
-          <p>
-            Plan projector layouts, inspect lux coverage, and share a read-only
-            client view from the same scene.
-          </p>
-          <div class="hero-actions">
-            <a href="https://app.field-lux.com" data-app-link class="button button-light">Start free</a>
-            <a href="#analysis" class="button button-ghost">Explore analysis tools</a>
-          </div>
-        </div>
-        <div class="hero-readout" aria-label="FieldLux build highlights">
-          <div>
-            <span>Heatmap modes</span>
-            <strong>Absolute, Norm, Deviation</strong>
-          </div>
-          <div>
-            <span>Field probes</span>
-            <strong>13pt distribution + hover lux</strong>
-          </div>
-          <div>
-            <span>Share path</span>
-            <strong>URL, Cloud, Account access</strong>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="software" class="section section-stage">
-      <div class="site-shell split-heading software-heading">
-        <div>
-          <p class="kicker">Software</p>
-          <h2>
-            <span>A working model</span>
-            <span>before the real room is built.</span>
-          </h2>
-        </div>
-        <p>
-          <span>The current app combines projector layout, lens behavior, imported models,</span>
-          <span>target surfaces, analysis, export, and sharing in one production-oriented workspace.</span>
-        </p>
-      </div>
-
-      <div class="site-shell software-grid">
-        <div class="media-slot media-large has-media software-video-slot" style="--media-ratio: 1918 / 942;" data-label="MAIN PRODUCT VIDEO SLOT" data-caption="Add product video or short loop">
-          <video autoplay muted loop playsinline preload="metadata" aria-label="FieldLux software workflow preview">
-            <source src="/assets/media/software-demo.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div class="software-notes">
-          <div class="note-row">
-            <span>01</span>
-            <strong>Project home</strong>
-            <p>Saved projects, account access, cloud restore, and sample scenes for fast entry.</p>
-          </div>
-          <div class="note-row">
-            <span>02</span>
-            <strong>3D simulation</strong>
-            <p>Projectors, lenses, imported models, rooms, target surfaces, and reference media share one scene logic.</p>
-          </div>
-          <div class="note-row">
-            <span>03</span>
-            <strong>Cloud share</strong>
-            <p>Create read-only client links, manage account access, restore cloud projects, and revoke shared views when plans change.</p>
-          </div>
-          <div class="note-row">
-            <span>04</span>
-            <strong>Output handoff</strong>
-            <p>Export analysis summaries, PDF reports, and final review materials without rebuilding the scene.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="analysis" class="section section-black">
-      <div class="site-shell split-heading analysis-heading">
-        <div>
-          <p class="kicker">FieldLux analysis</p>
-          <h2>
-            <span>Three heatmap views,</span>
-            <span>one shared lux model.</span>
-          </h2>
-        </div>
-        <p>
-          <span>FieldLux uses the same lux model for heatmap rendering, 13-point diagnostics,</span>
-          <span>hover probes, lens views, and shared client readouts.</span>
-        </p>
-      </div>
-
-      <div class="site-shell analysis-layout">
-        <div class="analysis-panel">
-          <div class="panel-topline">
-            <span>3 Heatmap Views</span>
-          </div>
-          <div class="heatmap-mode-grid">
-            <article>
-              <span>Absolute</span>
-              <strong>0 lx to max lux</strong>
-              <p>Shows the projected field against a user-defined lux scale.</p>
-            </article>
-            <article>
-              <span>Normalized</span>
-              <strong>Below / at / above reference</strong>
-              <p>Compares each point against the configured reference lux.</p>
-            </article>
-            <article>
-              <span>Deviation</span>
-              <strong>+/- target deviation</strong>
-              <p>Shows how far each area is from the reference using +/-10%, +/-20%, or +/-30% scales.</p>
-            </article>
-          </div>
-          <div class="meter-strip" aria-hidden="true">
-            <span></span><span></span><span></span><span></span><span></span>
-          </div>
-          <div class="metric-grid">
-            <div><span>Center</span><strong>Center lux</strong></div>
-            <div><span>Reference avg</span><strong>9-point mean</strong></div>
-            <div><span>Uniformity</span><strong>Mean uniformity</strong></div>
-            <div><span>Edges</span><strong>Min / Max</strong></div>
-            <div><span>Hotspot</span><strong>Center-to-corner + CV</strong></div>
-            <div><span>Sample set</span><strong>13 points</strong></div>
-          </div>
-        </div>
-        <div class="media-stack">
-          <div class="media-slot has-media heatmap-triptych-slot" data-label="HEATMAP MODE" data-caption="Add Absolute / Norm / Deviation loop">
-            <span class="media-label-badge">Heatmap mode</span>
-            <div class="heatmap-triptych" aria-label="Absolute, normalized, and deviation heatmap modes">
-              <img src="/assets/media/analysis-heatmap-absolute.png" alt="Absolute heatmap mode panel" />
-              <img src="/assets/media/analysis-heatmap-norm.png" alt="Normalized heatmap mode panel" />
-              <img class="heatmap-deviation-img" src="/assets/media/analysis-heatmap-deviation.png" alt="Deviation heatmap mode panel" />
-            </div>
-          </div>
-          <div class="media-slot has-media analysis-wide-slot" data-label="13PT DISTRIBUTION" data-caption="Add 13-point, hover, and lens view demo">
-            <span class="media-label-badge">13pt distribution</span>
-            <img src="/assets/media/analysis-13pt-diagnostics.png" alt="13-point lux diagnostics over the projected facade" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="probe" class="section section-stage">
-      <div class="site-shell split-heading probe-heading">
-        <div>
-          <p class="kicker">Hover measurements</p>
-          <h2>
-            <span>Measure the surface under your cursor,</span>
-            <span>not after export.</span>
-          </h2>
-        </div>
-        <p>
-          <span>FieldLux shows point-level lux and pixel density directly in the viewport.</span>
-          <span>The probe follows the lit receiver surface, ignores unlit or occluded areas, and reveals overlap contribution when multiple projectors stack.</span>
-        </p>
-      </div>
-
-      <div class="site-shell probe-grid">
-        <div class="media-slot has-media probe-video-slot" style="--media-ratio: 1912 / 942;" data-label="LIVE SURFACE PROBE" data-caption="Add cursor measurement demo">
-          <video autoplay muted loop playsinline preload="metadata" aria-label="FieldLux live surface probe demo">
-            <source src="/assets/media/hover-probe-demo.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div class="probe-list">
-          <div>
-            <span>Lux at point</span>
-            <strong>Total lux at the cursor</strong>
-          </div>
-          <div>
-            <span>Pixel density</span>
-            <strong>mm/px at the same hit point</strong>
-          </div>
-          <div>
-            <span>Projector context</span>
-            <strong>Lens view + selected distribution</strong>
-          </div>
-          <div>
-            <span>Receiver safety</span>
-            <strong>Hidden on occluded or unlit surfaces</strong>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="roadmap" class="section section-stage">
-      <div class="site-shell">
-        <div class="narrow-heading">
-          <p class="kicker">Roadmap</p>
-          <h2>Open beta focus.</h2>
-        </div>
-        <div class="roadmap-grid">
-          <div class="roadmap-cell">
-            <span>Now</span>
-            <strong>Core preflight workflow</strong>
-            <ul>
-              <li>Real projectors, lenses, throw, and lens-shift controls</li>
-              <li>Imported models, rooms, surfaces, photos, and LED walls</li>
-              <li>Absolute, normalized, and deviation lux heatmaps</li>
-              <li>13-point diagnostics, hover lux, pixel density, and lens view</li>
-              <li>Multi-projector overlap and peak contribution review</li>
-              <li>PDF export, cloud share, and read-only client viewer</li>
-            </ul>
-          </div>
-          <div class="roadmap-cell">
-            <span>Next</span>
-            <strong>Installation intelligence</strong>
-            <ul>
-              <li>Calibration workflow for on-site correction gain</li>
-              <li>Lighting fixture registration and equipment profiles</li>
-              <li>Projection, lighting, and LED wall stress analysis in one review</li>
-              <li>Clearer desktop app migration and recovery paths</li>
-            </ul>
-          </div>
-          <div class="roadmap-cell">
-            <span>Later</span>
-            <strong>Team operations &amp; integrations</strong>
-            <ul>
-              <li>Founding tester access and plan management</li>
-              <li>Shared libraries, permissions, and account-based review access</li>
-              <li>Expanded manufacturer verification and catalog governance</li>
-              <li>Managed storage cleanup for long-running project libraries</li>
-              <li>Spout / Syphon output for external production workflows</li>
-              <li>Studio workflows for multi-user production teams</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="community-cta">
-      <div class="site-shell community-cta-inner">
-        <div class="community-divider" aria-hidden="true"></div>
-        <p class="community-label">Join the Discord community</p>
-        <div class="community-actions">
-          <a
-            href="https://discord.gg/JpeQ7Hgsnd"
-            data-discord-link
-            class="discord-button"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <path d="M19.5 5.3A16.8 16.8 0 0 0 15.3 4l-.2.4c1.4.4 2 .9 2.8 1.6a12 12 0 0 0-4.8-1.2h-.4A12 12 0 0 0 7.9 6c.8-.7 1.6-1.2 2.8-1.6L10.5 4a16.8 16.8 0 0 0-4.2 1.3C3.7 9.1 3 12.7 3.3 16.2A16.9 16.9 0 0 0 8.4 19l.8-1.1a10.8 10.8 0 0 1-1.7-.8l.4-.3a12.4 12.4 0 0 0 8.2 0l.4.3c-.5.3-1.1.6-1.7.8l.8 1.1a16.9 16.9 0 0 0 5.1-2.8c.5-4-.7-7.6-3.2-10.9ZM9.4 14.2c-.8 0-1.4-.7-1.4-1.5s.6-1.5 1.4-1.5 1.4.7 1.4 1.5-.6 1.5-1.4 1.5Zm5.2 0c-.8 0-1.4-.7-1.4-1.5s.6-1.5 1.4-1.5 1.4.7 1.4 1.5-.6 1.5-1.4 1.5Z" />
-            </svg>
-            Join FieldLux Discord
-            <span>-> #beta-access</span>
+  <div class="nav-overlay" id="nav-overlay" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <div class="nav-overlay-inner">
+      <ul class="nav-overlay-list">
+        <li>
+          <a class="nav-overlay-link" href="#product">
+            <span class="nav-overlay-index" aria-hidden="true">(01)</span>
+            <span>Product</span>
           </a>
-        </div>
-        <p class="community-copy">
-          Showcase your scenes, share analysis results, and discuss projection prescriptions with the core team.
-        </p>
-      </div>
-    </section>
-  </main>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="#measure">
+            <span class="nav-overlay-index" aria-hidden="true">(02)</span>
+            <span>Measurement</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="/videos">
+            <span class="nav-overlay-index" aria-hidden="true">(03)</span>
+            <span>Videos</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="#limits">
+            <span class="nav-overlay-index" aria-hidden="true">(04)</span>
+            <span>Limits</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">
+            <span class="nav-overlay-index" aria-hidden="true">(05)</span>
+            <span>Discord</span>
+          </a>
+        </li>
+      </ul>
 
-  <div id="roadmap-modal" class="roadmap-modal" role="dialog" aria-modal="true" aria-labelledby="roadmap-modal-title" hidden>
-    <div class="roadmap-modal__backdrop" data-roadmap-close></div>
-    <section class="roadmap-modal__panel">
-      <div class="roadmap-modal__header">
-        <div>
-          <p class="kicker">Roadmap</p>
-          <h2 id="roadmap-modal-title">Open beta focus.</h2>
-        </div>
-        <button type="button" data-roadmap-close aria-label="Close roadmap">Close</button>
-      </div>
-      <div class="roadmap-modal__grid">
-        <div class="roadmap-cell">
-          <span>Now</span>
-          <strong>Core preflight workflow</strong>
-          <ul>
-            <li>Real projectors, lenses, throw, and lens-shift controls</li>
-            <li>Imported models, rooms, surfaces, photos, and LED walls</li>
-            <li>Absolute, normalized, and deviation lux heatmaps</li>
-            <li>13-point diagnostics, hover lux, pixel density, and lens view</li>
-            <li>Multi-projector overlap and peak contribution review</li>
-            <li>PDF export, cloud share, and read-only client viewer</li>
-          </ul>
-        </div>
-        <div class="roadmap-cell">
-          <span>Next</span>
-          <strong>Installation intelligence</strong>
-          <ul>
-            <li>Calibration workflow for on-site correction gain</li>
-            <li>Lighting fixture registration and equipment profiles</li>
-            <li>Projection, lighting, and LED wall stress analysis in one review</li>
-            <li>Clearer desktop app migration and recovery paths</li>
-          </ul>
-        </div>
-        <div class="roadmap-cell">
-          <span>Later</span>
-          <strong>Team operations &amp; integrations</strong>
-          <ul>
-            <li>Founding tester access and plan management</li>
-            <li>Shared libraries, permissions, and account-based review access</li>
-            <li>Expanded manufacturer verification and catalog governance</li>
-            <li>Managed storage cleanup for long-running project libraries</li>
-            <li>Spout / Syphon output for external production workflows</li>
-            <li>Studio workflows for multi-user production teams</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <footer class="site-footer">
-    <div class="site-shell footer-inner">
-      <p class="footer-meta">&copy; 2026 FieldLux &middot; Beta v.2</p>
-      <div class="footer-links">
-        <a href="/privacy.html">privacy</a>
-        <a href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">discord</a>
-        <a href="mailto:jay@field-lux.com">jay@field-lux.com</a>
+      <!-- Sign in leaves the header bar at 560 and below (see the 560 block in
+           src/input.css: the row does not fit on a phone). It is NOT a sixth
+           entry in the list above: that list is the document spine, and its
+           (01) to (05) are the same five marks on all four pages. An account
+           action is a different class of thing, so it sits below the spine as
+           an action rather than taking an ordinal it does not own. -->
+      <div class="nav-overlay-actions">
+        <a class="btn btn--outline" href="https://app.field-lux.com" data-app-link>Sign in</a>
       </div>
     </div>
-  </footer>
+  </div>
 
+  <main class="site-main" id="main" tabindex="-1">
+
+    <!-- == S2, Hero ======================================================== -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="site-shell hero-inner">
+
+        <!-- -- OWNER OVERRIDE 2, the perspective monitor is retired ------------
+             .hero-frame is a fixed rounded rectangle that hosts the real app. No
+             perspective, no rotateX/Y, no bezel, no neck, no base and no
+             glare. The retired geometry is deleted from src/input.css, not
+             left dead.
+
+             FACADE PATTERN. The demo app is NOT loaded on page load. At rest this
+             frame is the product still plus one labelled button; the <iframe> is
+             created only by an explicit click. Nothing auto-plays and nothing
+             auto-loads under any preference, so the facade is already the
+             reduced-motion-safe and reduced-data-safe path. There is no
+             motion branch to freeze and no bytes to withhold.
+
+             The frame is not sticky and does not bleed, and the iframe exists only
+             after a click, so an embedded app can never take over page scroll.
+
+             data-embed-src is CONFIGURATION, not a hard-coded string. The demo
+             deployment does not exist yet, so it ships EMPTY: with it empty the
+             button is never revealed (it ships `hidden`, so it stays hidden with
+             JS off too) and the frame is simply a still with its caption. Never a
+             dead button, never an empty iframe, never a console error.
+
+             When the demo lands, paste the URL in exactly this shape:
+                 https://<demo-host>/embed#share=<payload>
+             It is a SEPARATE demo deployment, isolated from app.field-lux.com,
+             and this must never point at the signed-in app. The host is validated
+             against the same allowlist the app-link CTA uses (field-lux.com and
+             its subdomains, *.vercel.app, localhost); anything else is rejected
+             and any stored review override is cleared. -->
+        <div class="hero-frame" tabindex="-1"
+             data-embed-src=""
+             data-embed-title="FieldLux interactive 3D scene, drag to orbit">
+          <img class="hero-frame-still" src="/assets/media/hero-stitch-01.png"
+               alt="A stone building in the FieldLux viewport under an absolute-mode lux heatmap, per-cell surface lux values printed across the facade, with the app's Lux Heatmap panel open beside it."
+               width="1363" height="805" fetchpriority="high" decoding="async">
+          <!-- The launch chip sits bottom-RIGHT. It used to sit bottom-left, which
+               is now where .hero-card lands, and a button under an opaque card is
+               a button that does not exist. Bottom-right is also the one corner
+               the embed leaves empty: the axis gizmo and the LUX HEATMAP button
+               are both top-right, and the card owns the lower-left. -->
+          <button class="hero-frame-launch" type="button" hidden>
+            <span class="hero-frame-launch-label">EXPLORE THE 3D SCENE</span>
+            <span class="hero-frame-launch-hint">Drag to orbit. The lux heatmap is the only control exposed.</span>
+          </button>
+        </div>
+
+        <!-- The headline card. It is IN FRONT of the frame, overlapping its
+             lower-left corner and hanging a little past its bottom edge, which is
+             what makes it read as a card in front of a screen rather than a panel
+             inside one. Geometry is expressed entirely as percentages of the
+             frame (see .hero-inner in src/input.css): the frame's grid area is
+             the card's containing block, so the card cannot drift out of ratio
+             when the shell resizes.
+
+             DOM ORDER IS UNCHANGED and must stay that way: frame, then card, then
+             copy, then readout, then caption. The overlap is positioning, never
+             `order` and never a reordered source, so focus order still equals
+             reading order and the card paints on top for free.
+
+             The card carries the H1 and nothing else, which is what keeps it in
+             the benchmark's box proportions. The lead and the CTAs live below the
+             frame in .hero-copy. -->
+        <div class="hero-card">
+          <h1 class="hero-title" id="hero-title">
+            <span class="hero-title-line">HOW MANY LUX</span>
+            <!-- .type-word SHIPS FACADE, and must keep shipping a real word: it
+                 used to ship empty, so the largest promise on the site painted as
+                 "HOW MANY LUX ON THAT |" until the typewriter's first frame ran.
+                 The word here must stay identical to WORDS[0] in the section 5.5
+                 IIFE below, which now starts its cycle from this finished state
+                 (holds, then deletes) instead of from an empty span. -->
+            <span class="hero-title-line">ON THAT <span class="type-slot" aria-hidden="true"><span class="type-word">FACADE</span><span class="type-caret"></span></span><span class="type-sr">facade, dome, stage or tunnel?</span></span>
+          </h1>
+        </div>
+
+        <!-- The lead and the CTA row, one composed band under the frame. Its
+             top margin is the card's overhang plus the row gap, so the card
+             never lands on the lead at any width. -->
+        <div class="hero-copy">
+          <p class="hero-lead">Four heads, the real building, the overlaps counted. FieldLux answers it before you quote, and publishes how far off it could be.</p>
+          <div class="hero-actions">
+            <a class="btn btn--brand" href="https://app.field-lux.com" data-app-link>START FREE</a>
+            <a class="btn btn--text" href="#limits">SEE THE LIMITS</a>
+          </div>
+        </div>
+
+        <!-- Section 6 S2 builder note, binding: every figure below is read off the
+             frame the site actually shows, today assets/media/hero-stitch-01.png,
+             the still above. The panel in that frame reads Absolute mode, a 0-500
+             scale with Max lux 500 lx, "4 projectors", and "Probe set: 13pt
+             Diagnostic". Its DISTRIBUTION selector sits on "Projector 1", NOT on
+             "Composite", so the surface being shaded is one head's own
+             distribution, and no copy here may describe it as the four-head
+             composite. That is the exact trap section 6 S2 flags: an earlier draft shipped "four projectors on a facade" as
+             final copy against a frame whose panel said otherwise.
+             Re-read all four off whatever the frame shows if the still or the demo
+             scene changes, and change them if they differ: the site never prints a
+             number the visible frame contradicts.
+
+             Section 1.3, the lux-labelling rule, is now carried ENTIRELY here and
+             in .hero-caption. The H1 used to print "350 SURFACE LUX"; it no longer
+             prints a lux figure at all, so every lux number in the hero is one of
+             these, and each one states which of the engine's four lux meanings it
+             is in the same breath, never in a footnote.
+
+             The same binding applies to .hero-caption below, which is written from
+             this still and opens by saying so. It no longer names the colour bar
+             along the building's lower band: .hero-card covers the lower-left of
+             the frame, and a caption must describe what a visitor can see, not
+             what the file contains. When data-embed-src is filled in, rewrite both
+             from the demo scene rather than leaving a description of a picture
+             nobody sees. -->
+        <ul class="hero-readout">
+          <li class="hero-readout-item">
+            <span class="hero-readout-label">HEADS IN SCENE</span>
+            <span class="hero-readout-value u-tabular">4</span>
+            <span class="hero-readout-qual">scene total; the heatmap drawn is Projector 1 alone, not the four-head sum</span>
+          </li>
+          <li class="hero-readout-item">
+            <span class="hero-readout-label">HEATMAP SCALE</span>
+            <span class="hero-readout-value u-tabular">0-500 <span class="stat-unit">lx</span></span>
+            <span class="hero-readout-qual">absolute-mode surface lux, read off the surface itself</span>
+          </li>
+          <li class="hero-readout-item">
+            <span class="hero-readout-label">PROBE SET</span>
+            <span class="hero-readout-value u-tabular">13 <span class="stat-unit">pt</span></span>
+            <span class="hero-readout-qual">9 ANSI + 4 quarter points</span>
+          </li>
+        </ul>
+
+        <p class="hero-caption" id="hero-frame-caption">A still from the shipped app, not a live view: a stone building in the FieldLux viewport under an absolute-mode lux heatmap, with the per-cell surface lux printed across the facade. The Lux Heatmap panel beside it is stamped Physics Model, its absolute ramp runs 0 to 500 surface lux with Max lux set to 500 <span class="stat-unit">lx</span>, the scene holds four projectors, and the probe set reads 13pt Diagnostic. Its distribution selector is on Projector 1 rather than Composite, so the shading on the facade is that one head's contribution, not the four-head sum.</p>
+
+      </div>
+    </section>
+
+    <!-- == S3, Marquee ===================================================== -->
+    <div class="marquee marquee--hairline bleed-full" aria-hidden="true">
+      <div class="marquee-track">
+        <ul class="marquee-group">
+          <li class="marquee-item">THE SCENE<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE OPTICS<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE COVERAGE<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE CORRECTION<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE CONTENT<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE MEASUREMENT<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE LIGHT<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE ROOM AROUND IT<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE DELIVERABLE<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE PROJECT<span class="marquee-dot"></span></li>
+        </ul>
+        <ul class="marquee-group" aria-hidden="true">
+          <li class="marquee-item">THE SCENE<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE OPTICS<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE COVERAGE<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE CORRECTION<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE CONTENT<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE MEASUREMENT<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE LIGHT<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE ROOM AROUND IT<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE DELIVERABLE<span class="marquee-dot"></span></li>
+          <li class="marquee-item">THE PROJECT<span class="marquee-dot"></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- == S4, #who ======================================================== -->
+    <section class="section section--pad-md" id="who" aria-labelledby="who-title">
+      <div class="site-shell--narrow split-2--lead-left">
+
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-name">WHO THIS IS FOR</span>
+          </p>
+          <h2 class="section-title reveal-lines" id="who-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">FOR THE PERSON</span></span>
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">WHO HAS TO QUOTE THE JOB.</span></span>
+          </h2>
+        </div>
+
+        <div class="section-head-aside">
+          <p class="copy u-text-measure reveal">FieldLux is for the technical director, projection designer or AV integrator who has to answer <em>how many, which lens, from where, how bright</em> before anyone signs. It is not a media server, not a warping tool, and not a renderer.</p>
+
+          <p class="copy u-text-measure reveal">The manufacturer's calculator gives you one projector on a flat screen. FieldLux gives you four heads on the actual building, with the overlaps counted and the surface angles honoured. A visualiser gives you a picture; FieldLux gives you a lux figure with its assumptions attached.</p>
+
+          <ol class="speclist reveal">
+            <li class="speclist-item">
+              <span class="speclist-index u-tabular">(01)</span>
+              <div class="speclist-body">
+                <p><strong>Not a media server.</strong> Nothing here plays your show. The Play Dock previews content so the beams show the right picture. It does not run the venue.</p>
+              </div>
+            </li>
+            <li class="speclist-item">
+              <span class="speclist-index u-tabular">(02)</span>
+              <div class="speclist-body">
+                <p><strong>Not a warping tool for the rig.</strong> The Warp &amp; Blend Studio corrects the simulated beam so the coverage picture stays truthful. Your on-site correction still happens on the processor.</p>
+              </div>
+            </li>
+            <li class="speclist-item">
+              <span class="speclist-index u-tabular">(03)</span>
+              <div class="speclist-body">
+                <p><strong>Not a photoreal renderer.</strong> Surfaces are Lambertian. There is no haze, no lens distortion, no chromatic aberration, no specular BRDF. The picture exists to make the number legible, not the other way round.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- == S5, #product ==================================================== -->
+    <section class="section section--pad-sm" id="product" aria-labelledby="product-title">
+      <div class="site-shell">
+
+        <p class="micro-label">
+          <span class="micro-label-name">THE PRODUCT, PART BY PART</span>
+        </p>
+
+        <div class="section-head section-head--split">
+          <h2 class="section-title reveal-lines" id="product-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">TEN PARTS.</span></span>
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">EACH ONE SHIPPED.</span></span>
+          </h2>
+          <p class="copy section-lead u-text-measure reveal">Every chapter below is something you can open in the app today. Where a capability is gated, in beta, or desktop-only, this page says so in the same sentence as the capability.</p>
+        </div>
+
+        <ol class="speclist reveal">
+          <li>
+            <a class="speclist-item" href="#ch-01">
+              <span class="speclist-index u-tabular">(01)</span>
+              <span class="speclist-body">
+                <span>THE SCENE</span>
+                <span>Import, unit/axis detection, layer hierarchy, rooms, curves and domes, materials, walk mode, outliner, undo, units</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="speclist-item" href="#ch-02">
+              <span class="speclist-index u-tabular">(02)</span>
+              <span class="speclist-body">
+                <span>THE OPTICS</span>
+                <span>Catalogue, official cross-check, custom heads, throw ratio and lens shift, out-of-spec refusal, UST, arrays, axis locks</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="speclist-item" href="#ch-03">
+              <span class="speclist-index u-tabular">(03)</span>
+              <span class="speclist-body">
+                <span>THE COVERAGE</span>
+                <span>Auto edge blend, light-conserving ramps, dome/mesh blend, Canvas Sets, Quick Wrap, plane picker</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="speclist-item" href="#ch-04">
+              <span class="speclist-index u-tabular">(04)</span>
+              <span class="speclist-body">
+                <span>THE CORRECTION</span>
+                <span>Corner-pin, mesh warp, feathered masks, per-edge soft edge, calibration patterns</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="speclist-item" href="#ch-05">
+              <span class="speclist-index u-tabular">(05)</span>
+              <span class="speclist-body">
+                <span>THE CONTENT</span>
+                <span>Mapping Stage, media library and drag-to-surface, transport and playlists, content slot budget</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="speclist-item" href="#ch-06">
+              <span class="speclist-index u-tabular">(06)</span>
+              <span class="speclist-body">
+                <span>THE MEASUREMENT</span>
+                <span>Heatmap modes and scales, hover probe, 13-point overlay, lens view, measure tool, beam labels, target picker</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="speclist-item" href="#ch-07">
+              <span class="speclist-index u-tabular">(07)</span>
+              <span class="speclist-body">
+                <span>THE LIGHT</span>
+                <span>Additive projection into PBR, depth occlusion and projector shadows, ambient presets and contrast, exposure and Layout View</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="speclist-item" href="#ch-08">
+              <span class="speclist-index u-tabular">(08)</span>
+              <span class="speclist-body">
+                <span>THE ROOM AROUND IT</span>
+                <span>Stage/architectural fixtures, IES import, isolux working plane, LED walls and their spill</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="speclist-item" href="#ch-09">
+              <span class="speclist-index u-tabular">(09)</span>
+              <span class="speclist-body">
+                <span>THE DELIVERABLE</span>
+                <span>PDF Tech Rider, neutral handoff JSON, blend-domain declaration, share links, capabilities, receipt, what-if</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="speclist-item" href="#ch-10">
+              <span class="speclist-index u-tabular">(10)</span>
+              <span class="speclist-body">
+                <span>THE PROJECT</span>
+                <span>Project Home, sample scenes, autosave, version history, roll-forward restore, read-only safe mode, storage</span>
+              </span>
+            </a>
+          </li>
+        </ol>
+
+      </div>
+    </section>
+    <!-- == S6, Ch 01, #ch-01, THE SCENE ===================================== -->
+    <section class="section section--pad-lg chapter" id="ch-01" aria-labelledby="ch-01-title">
+      <div class="site-shell">
+        <p class="micro-label">
+          <span class="micro-label-ord">(01)</span>
+          <span class="micro-label-name">THE SCENE</span>
+        </p>
+        <div class="split-2--media-right">
+          <div class="chapter-head">
+            <h2 class="chapter-title reveal-lines" id="ch-01-title">
+              <span class="reveal-line"><span class="reveal-line-inner">ONE SCENE HOLDS ALL OF IT.</span></span>
+            </h2>
+            <p class="copy chapter-body u-text-measure">One scene holds the building, the heads, the lens on each, the surfaces you care about and the ones you must not spill onto. Change any of them and every number downstream recomputes from the same geometry. There is no second model to keep in sync.</p>
+            <p class="copy chapter-body u-text-measure">The scene starts from a model you already have, or from parametric rooms, walls, cylinders and domes placed here. It does not draw the venue for you: drawing import and sketch-to-model are disabled in production, so the geometry either arrives in your own file or is built from the shapes in this list.</p>
+            <ul class="chapter-points">
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">IMPORT, UNITS SOLVED</p>
+                <p class="chapter-point-text">Six formats: FBX, GLB/GLTF, OBJ, DAE, STL, PLY. Units come from the file's own metadata; OBJ is sniffed for a <code># Units:</code> comment; STL and PLY fall back to a bounding-box heuristic. Up-axis is read from the file where the format states it, with a Y/Z/X-up toggle as the deterministic fallback and a warning chip when the largest dimension looks implausible.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">THE LAYER TREE SURVIVES</p>
+                <p class="chapter-point-text">The group hierarchy your DCC authored (Cinema 4D, Vectorworks, Blender, Max) arrives intact, with per-node hide, lock, delete, material override, local axes and sub-layer isolate. Tested against a reference FBX with 2,020 meshes and 571 groups; only expanded branches reach the DOM.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">ROOMS, CURVES, DOMES</p>
+                <p class="chapter-point-text">A parametric room resolves as six addressable walls, each with its own basis. Curved walls, cylinders, domes and floor slabs generate with correct normals and a facing rule per shape: a dome is lit on its concave interior, a cylinder from outside.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">21 MEASURED MATERIALS</p>
+                <p class="chapter-point-text">Concrete, brick, glass, limestone, stage wood, screen fabric, scrim and blackout, each carrying reflectance, projection gain, gain half-angle, transmittance, scatter and shadow opacity. An opaque preset's rendered luminance equals its authored reflectance, so a dark preset both looks and calculates dark.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">WALK IT</p>
+                <p class="chapter-point-text">Press <strong>G</strong> and walk the venue in first person. Walk speed re-samples the scene bounds every couple of seconds, so a 10 <span class="stat-unit">m</span> studio and a kilometre-wide site both feel right. Imported reference drawings are excluded from the bounds, so a large plan does not inflate your speed.</p>
+              </li>
+            </ul>
+            <div class="chapter-foot">
+              <p class="index-counter u-tabular" aria-hidden="true">
+                <span class="index-counter-current">(01)</span>
+                <span class="index-counter-tick">/</span>
+                <span class="index-counter-total">(10)</span>
+              </p>
+            </div>
+          </div>
+
+          <figure class="chapter-media reveal">
+            <!-- EMPTY BY EVIDENCE, NOT BY OVERSIGHT.
+                 This slot carried a <video> pointing at
+                 /assets/media/features/viewport-walkthrough.{mp4,jpg}. That directory
+                 does not exist in this repo, so both files 404; videos.html carries the
+                 same clip as a pending card reading RECORDING: TO COME and states that
+                 nothing has been filmed yet. A slot captioned "screen recording" that
+                 shows nothing is the exact overclaim this site argues against, so it
+                 reverts to the designed empty state (spec 6.5) and agrees with /videos.
+                 The source capture assets/media/software-demo.mp4 IS on disk but is
+                 55 MB against the 4 MB per-file ceiling in spec 8.3, so it cannot be
+                 pointed at directly either. Asset task A8 is what fills this.
+                 TO RESTORE IN ONE EDIT once A8 lands: add has-media to the slot below
+                 and put back the <video class="media-video" muted loop playsinline
+                 preload="none" data-chapter-video poster=".../viewport-walkthrough.jpg"
+                 width="1918" height="942"> plus the .monitor-controls / .monitor-pause
+                 pair (WCAG 2.2.2), then reword the figcaption to "Screen recording:". -->
+            <div class="media-slot media-slot--mass bleed-right" data-label="PLACING PROJECTORS IN A SCENE" data-caption="RECORDING: TO COME"></div>
+            <figcaption class="media-caption">Not recorded yet: placing projectors in a scene in the shipped app.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- == S6, Ch 02, #ch-02, THE OPTICS ==================================== -->
+    <section class="section section--pad-sm chapter" id="ch-02" aria-labelledby="ch-02-title">
+      <div class="site-shell">
+        <p class="micro-label">
+          <span class="micro-label-ord">(02)</span>
+          <span class="micro-label-name">THE OPTICS</span>
+        </p>
+        <div class="split-2--media-right">
+          <div class="chapter-head">
+            <h2 class="chapter-title reveal-lines" id="ch-02-title">
+              <span class="reveal-line"><span class="reveal-line-inner">THE NUMBERS COME OFF THE SPEC SHEET.</span></span>
+            </h2>
+            <p class="copy chapter-body u-text-measure">87 projectors and 113 lenses across Epson, Panasonic, Christie and Barco, each field carrying the URL of the manufacturer PDF it came from. Catalogue rebuilt 2026-05-12. No Digital Projection, no Sony, no NEC/Sharp yet.</p>
+            <p class="copy chapter-body u-text-measure">If your head is not in the list you build it as a custom head from its spec sheet, and every number it produces is marked user-entered from then on.</p>
+            <ul class="chapter-points">
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">642 COMBINATIONS CHECKED AGAINST THE MAKER'S OWN CALCULATOR: 47 OF 87 HEADS</p>
+                <p class="chapter-point-text">We ran Panasonic's TDC and Epson's PTDS calculators over every projector-lens pair we could reach and stored the manufacturer's own Center Illuminance formula beside ours: 642 combinations, pulled 2026-06-11, covering 20 Panasonic and 27 Epson heads. When a combination is covered, FieldLux computes from the manufacturer's formula, labels the readout <strong>Center Illuminance</strong>, and clamps lens shift to the official envelope. <strong>Christie and Barco publish no calculator we can query, so their 38 heads carry no cross-check</strong>. The app says so on the head itself, not in a footnote.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">DRAG THE THROW, WATCH THE NUMBERS</p>
+                <p class="chapter-point-text">The throw slider is bounded by the selected lens's real range. Beam W/H, axial distance, Center Surface Lux, surface tilt, pixel density in mm/px and effective projection resolution all move with it, live. Vertical and horizontal lens shift are clamped to the lens's real envelope (rectangular or diamond) and to the official envelope when one exists.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">IT REFUSES TO SHOW AN UNREACHABLE NUMBER</p>
+                <p class="chapter-point-text">Place a head outside its catalogue throw-distance envelope and the beam and lux cards reskin to a muted amber diagnostic block with the values struck through, stating plainly they are not achievable with that projector. Silently showing an unreachable figure is how a plan gets signed and then fails on site.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">UST OPTICS BEND FOR REAL</p>
+                <p class="chapter-point-text">Mirror-UST and periscope lenses resolve to the mirror's beam-exit point and the bent forward vector: in the 3D cone, in the shader, in the depth pass and in blend detection, not just in the picture. Custom heads pick from four modelled lens geometries including Panasonic ET-D75LE95, ET-ELU20 and Epson ELPLX02S.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">ARRAYS THAT STAY PARAMETRIC</p>
+                <p class="chapter-point-text">Generate a linear run, a circular ring on a radius with a shared aim target, or a mirrored pair. Then edit radius, spacing or count and every member re-solves. Freeze any of a head's six transform channels; the lock is enforced at every commit site, including group moves and array re-solves, not just by greying an input.</p>
+              </li>
+            </ul>
+            <div class="chapter-foot">
+              <p class="index-counter u-tabular" aria-hidden="true">
+                <span class="index-counter-current">(02)</span>
+                <span class="index-counter-tick">/</span>
+                <span class="index-counter-total">(10)</span>
+              </p>
+            </div>
+          </div>
+
+          <figure class="chapter-media reveal">
+            <div class="media-slot" data-label="THROW &amp; LENS SHIFT" data-caption="RECORDING: TO COME"></div>
+            <figcaption class="media-caption">Not recorded yet: the throw-ratio slider driving beam size, distance and Center Surface Lux together.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- == S6, Ch 03, #ch-03, THE COVERAGE ================================== -->
+    <section class="section section--pad-sm chapter" id="ch-03" aria-labelledby="ch-03-title">
+      <div class="site-shell">
+        <p class="micro-label">
+          <span class="micro-label-ord">(03)</span>
+          <span class="micro-label-name">THE COVERAGE</span>
+        </p>
+        <div class="split-2--media-right">
+          <div class="chapter-head">
+            <h2 class="chapter-title reveal-lines" id="ch-03-title">
+              <span class="reveal-line"><span class="reveal-line-inner">MANY HEADS, ONE CONTINUOUS IMAGE.</span></span>
+            </h2>
+            <p class="copy chapter-body u-text-measure">Hand-dialling overlap percentages for six heads is the tedious, error-prone middle of every immersive job. FieldLux derives them from the footprints the beams actually make.</p>
+            <p class="copy chapter-body u-text-measure">What it produces is per-edge overlap widths, per-edge on/off flags and one blend curve, written into the group in a single undo step. Those are planning values in light-linear units. They are not sent to a processor, and the export that carries them states the domain they are in, because a light-linear ramp typed into a signal-space blend panel puts a dark band down every seam.</p>
+            <ul class="chapter-points">
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">AUTO EDGE BLEND</p>
+                <p class="chapter-point-text">Analyses the real footprint of every head in the blend group against the target (ray-plane intersection through the optical frame, using fresh raycast distances) and writes per-edge overlap widths, per-edge on/off flags and a blend curve, in one undo step. A stale badge appears when the geometry has moved since the last detect.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">THE SEAM DISAPPEARS, IT DOESN'T MOVE</p>
+                <p class="chapter-point-text">Three curves (linear, gamma 2.2, s-curve) plus a Dynamic Blend profile with Power, Gamma, Sharpness and Black Level. Ramps apply to scene-linear radiance before tone mapping, and the CPU implementation is a bit-for-bit twin of the GLSL, so the invariant <code>blendRamp(t) + blendRamp(1-t) = 1</code> is unit-tested. A blend that does not conserve light produces a visible band at every seam.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">DOMES GET MEASURED, NOT APPROXIMATED</p>
+                <p class="chapter-point-text">For domes and curved models the planar overlap model is abandoned: an image-UV grid is raycast onto the real mesh, each landing point is tested against the partner head's frustum, and feather widths come from measured penetration depth per image edge. A sphere is least-squares fitted to all heads' landing points to detect "these beams are all looking at one dome". On a hemisphere, planar math saturates at its own clamp and writes 50 <span class="stat-unit">%</span> feathers where the real overlap is 30 <span class="stat-unit">%</span>.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">ONE VIDEO ACROSS MANY SURFACES</p>
+                <p class="chapter-point-text">A blend group is one flat plane by design. Continuity across walls, floor and ceiling is a <strong>Canvas Set</strong>: coordinated groups sharing one master video, each taking a crop of the master UV space and mapping it to one face. Created in one undo step with per-panel auto-blend applied as it builds.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">REGIONS FROM WHERE THE LIGHT LANDS</p>
+                <p class="chapter-point-text">Quick Wrap does not unfold a target into named box faces. It detects regions from where the beams actually land: heads landing near each other on similarly-oriented surface form one region, sized to the union of their footprints. Aim, regions appear, pick a video, Apply. Regions freeze as manual plane references on apply, with an explicit <strong>Refit</strong> verb. Moving a projector later never silently re-derives your content geometry.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">THREE CLICKS DEFINE A PLANE</p>
+                <p class="chapter-point-text">Click three points on the geometry to define a canvas plane. It writes the same manual plane reference the eight numeric inputs write, and those stay live for fine tuning. Collinear or coincident picks are rejected with a plain explanation.</p>
+              </li>
+            </ul>
+            <div class="chapter-foot">
+              <p class="index-counter u-tabular" aria-hidden="true">
+                <span class="index-counter-current">(03)</span>
+                <span class="index-counter-tick">/</span>
+                <span class="index-counter-total">(10)</span>
+              </p>
+            </div>
+          </div>
+
+          <figure class="chapter-media reveal">
+            <div class="media-slot" data-label="AUTO EDGE BLEND" data-caption="RECORDING: TO COME"></div>
+            <figcaption class="media-caption">Not recorded yet: auto edge blend measuring four footprints on one facade and writing the per-edge widths it finds.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- == S6, Ch 04, #ch-04, THE CORRECTION ================================ -->
+    <section class="section section--pad-sm chapter chapter--reverse" id="ch-04" aria-labelledby="ch-04-title">
+      <div class="site-shell">
+        <p class="micro-label">
+          <span class="micro-label-ord">(04)</span>
+          <span class="micro-label-name">THE CORRECTION</span>
+        </p>
+        <div class="split-2--media-right">
+          <div class="chapter-head">
+            <h2 class="chapter-title reveal-lines" id="ch-04-title">
+              <span class="reveal-line"><span class="reveal-line-inner">THE CORRECTION CUTS THE REAL BEAM.</span></span>
+            </h2>
+            <p class="copy chapter-body u-text-measure">Corner-pin that only lives in a 2D panel tells you nothing about how the beam lands. In the Warp &amp; Blend Studio the correction renders in the actual 3D beam, and the 2D preview uses the same maths twin, so preview and render agree by construction.</p>
+            <p class="copy chapter-body u-text-measure">What it produces is a corrected beam inside the scene and, for the heads that need one, a baked warp map. It is not a rig tool: your on-site correction still happens on the processor, and nothing authored here is sent to a device.</p>
+            <ul class="chapter-points">
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">CORNER-PIN, LIVE IN 3D</p>
+                <p class="chapter-point-text">Drag four corners to match the surface perspective. The homography goes in as shader uniforms, so the corrected image renders in the beam, not only in the panel.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">MESH WARP AND FEATHERED MASKS</p>
+                <p class="chapter-point-text">Subdividable warp grids with draggable interior points and a Spherize control for domes, plus click-drawn feathered polygon masks that can be inverted and stacked. Heads needing either get a baked RGBA warp map written into one scene-shared array texture. <strong>Cap: 16 map-using heads</strong>, surfaced as a budget chip.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">SEE THE SEAM SOFTEN WHILE YOU DRAG</p>
+                <p class="chapter-point-text">Per-edge blend widths authored in the Studio write straight to the shipped edge-blend pipeline, so the seam softens in the viewport as you drag. An Auto button derives all widths from the group's measured footprint overlaps on that face in one undo step. Setting a blend width is a judgement about how a seam looks, so the seam stays visible while the width changes. A width typed into a field with no seam in view is a guess you find out about on site.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">TEST PATTERNS FROM THE REAL BEAM</p>
+                <p class="chapter-point-text">Grid, crosshair, greyscale and colour bars projected live from a selected head, as a view-tier override: the pattern appears without touching the group's content or the playlist, works mid-video with the shared decoder still running, and toggling off restores the picture with zero undo entries. Exactly the on-site workflow: throw a grid, set the blend and the mask, drop back to content.</p>
+              </li>
+            </ul>
+            <div class="chapter-foot">
+              <p class="index-counter u-tabular" aria-hidden="true">
+                <span class="index-counter-current">(04)</span>
+                <span class="index-counter-tick">/</span>
+                <span class="index-counter-total">(10)</span>
+              </p>
+            </div>
+          </div>
+
+          <figure class="chapter-media reveal">
+            <div class="media-slot" data-label="WARP &amp; BLEND STUDIO" data-caption="RECORDING: TO COME"></div>
+            <figcaption class="media-caption">Not recorded yet: dragging a corner-pin and watching the beam follow in 3D.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- == S6, Ch 05, #ch-05, THE CONTENT =================================== -->
+    <section class="section section--pad-sm chapter" id="ch-05" aria-labelledby="ch-05-title">
+      <div class="site-shell">
+        <p class="micro-label">
+          <span class="micro-label-ord">(05)</span>
+          <span class="micro-label-name">THE CONTENT</span>
+        </p>
+        <div class="split-2--media-right">
+          <div class="chapter-head">
+            <h2 class="chapter-title reveal-lines" id="ch-05-title">
+              <span class="reveal-line"><span class="reveal-line-inner">DRAG THE IMAGE IN 2D, THE BEAMS FOLLOW IN 3D.</span></span>
+            </h2>
+            <p class="copy chapter-body u-text-measure">The Play Dock is the show console at the bottom of the editor. It closes the loop between the 2D content rectangle and the 3D light, and it shows you the parts that get cut, as cut.</p>
+            <p class="copy chapter-body u-text-measure">It previews content so the beams carry the right frame while you judge coverage, and it counts what that content costs on the GPU. It does not run the venue: nothing here plays your show, and nothing here reaches an output.</p>
+            <ul class="chapter-points">
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">MAPPING STAGE</p>
+                <p class="chapter-point-text">A camera-style 2D editor over the group's projection face: wheel zooms at the cursor, drag pans, fit-to-canvas and fit-to-face, a metre grid and a scale chip. Dragging the canvas quad updates the 3D beams live and commits one store batch on release. Beam regions falling outside the canvas render as hatched <strong>no content</strong> zones with a one-click Fit canvas to beams. Feather bands show the stored blend widths the 3D shader actually renders.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">POINT AT THE WALL</p>
+                <p class="chapter-point-text">Upload images (jpeg/png/webp/gif) and video (mp4/webm/ogg) with storage accounting, then drag a media chip into the 3D viewport. The cursor ray resolves against the scene's canonical faces, not render meshes. A hover chip previews the target, and the drop commits one batch, or funnels into Quick Wrap pre-filled when the face has no coverage yet.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">THE FASTSTART WARNING</p>
+                <p class="chapter-point-text">Uploads are sniffed for non-faststart mp4 (<code>moov</code> after <code>mdat</code>) and warned about at the one moment you can still re-export. That is a class of stuttering playback otherwise diagnosed on site.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">A LOUD REFUSAL, BEFORE THE WRITE</p>
+                <p class="chapter-point-text">Distinct content sources are counted against a <strong>4-slot</strong> GPU budget. Groups claim first, then ungrouped projectors, and calibration patterns claim a slot like anything else. A drop that would exceed the budget is refused explicitly <em>before</em> any write. The alternative is a silent texture drop that looks like a bug.</p>
+              </li>
+            </ul>
+            <div class="chapter-foot">
+              <p class="index-counter u-tabular" aria-hidden="true">
+                <span class="index-counter-current">(05)</span>
+                <span class="index-counter-tick">/</span>
+                <span class="index-counter-total">(10)</span>
+              </p>
+            </div>
+          </div>
+
+          <figure class="chapter-media reveal">
+            <div class="media-slot" data-label="MAPPING STAGE" data-caption="RECORDING: TO COME"></div>
+            <figcaption class="media-caption">Not recorded yet: dragging the canvas quad in 2D while the 3D beams follow.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+    <!-- == S6, Ch 06, #ch-06 / #measure, THE MEASUREMENT, the one pinned block ========== -->
+    <section class="section section--pad-lg chapter" id="ch-06" aria-labelledby="ch-06-title">
+      <span id="measure" class="u-visually-hidden" aria-hidden="true"></span>
+      <div class="site-shell">
+
+        <div class="pin">
+          <div class="pin-rail">
+
+            <div class="pin-sticky">
+              <p class="micro-label">
+                <span class="micro-label-ord">(06)</span>
+                <span class="micro-label-name">THE MEASUREMENT</span>
+              </p>
+              <h2 class="chapter-title reveal-lines" id="ch-06-title">
+                <span class="reveal-line"><span class="reveal-line-inner">THE SURFACE BECOMES A LIGHT METER.</span></span>
+              </h2>
+              <p class="copy chapter-body u-text-measure">The measurement layer renders directly on the 3D scene: false-colour maps in three data modes and three scales, a probe that reads any point under the cursor, and the 13-point grid drawn on the surface in world space. A viewport screenshot is already a readable coverage diagram.</p>
+              <p class="copy chapter-body u-text-measure">Every figure it prints is computed from the configured projector specs and the scene geometry. None of it is a field measurement. Each map carries the basis it was drawn from, and the assumptions behind the figures, with the error each one carries, are set out in full under Limits.</p>
+              <p class="pin-counter u-tabular" aria-hidden="true">
+                <span class="index-counter-current">(01)</span>
+                <span class="index-counter-tick">/</span>
+                <span class="index-counter-total">(03)</span>
+              </p>
+              <div class="pin-progress" aria-hidden="true"><span class="pin-progress-bar"></span></div>
+            </div>
+
+            <div class="pin-flow">
+
+              <article class="pin-panel" aria-labelledby="pin-panel-01-title">
+                <h3 class="pin-panel-title" id="pin-panel-01-title">ABSOLUTE</h3>
+                <figure class="chapter-media">
+                  <div class="media-slot has-media" style="--media-ratio: 442 / 673">
+                    <img class="media-img" src="/assets/media/analysis-heatmap-absolute.png"
+                         alt="The app's Lux Heatmap panel in Absolute mode: a blue-to-red ramp labelled low lux to high lux running 0 to 500, a Max lux field set to 500 lx, a Physics Model chip, a Physics Estimate chip, a four-projector scene and the 13pt Diagnostic probe set."
+                         width="442" height="673" loading="lazy" decoding="async">
+                  </div>
+                  <figcaption class="media-caption">The Lux Heatmap panel, captured from the shipped build: Absolute mode, the ramp running 0 to 500 with Max lux set to 500 <span class="stat-unit">lx</span>, and the basis chip reading Physics Model.</figcaption>
+                </figure>
+                <p class="copy u-text-measure">Absolute maps 0 <span class="stat-unit">lx</span> to a Max lux you set. The ramp, the scale and the projector count in this panel are the app's own legend, captured from the shipped build. Three data modes share it: <strong>Surface Lux</strong> in lx, <strong>Pixel Density</strong> in mm/px, and <strong>Luminance</strong> in cd/m2.</p>
+              </article>
+
+              <article class="pin-panel" aria-labelledby="pin-panel-02-title">
+                <h3 class="pin-panel-title" id="pin-panel-02-title">NORMALIZED</h3>
+                <figure class="chapter-media">
+                  <div class="media-slot has-media" style="--media-ratio: 442 / 673">
+                    <img class="media-img" src="/assets/media/analysis-heatmap-norm.png"
+                         alt="The same panel in Norm mode: the ramp runs 0.0x to 2.0x and is labelled below ref, on ref, above ref, with a Ref lux field set to 250 lx."
+                         width="442" height="673" loading="lazy" decoding="async">
+                  </div>
+                  <figcaption class="media-caption">The same panel switched to Norm: the ramp runs 0.0x to 2.0x against a Ref lux of 250 <span class="stat-unit">lx</span>, and the labels change from lux values to below ref, on ref, above ref.</figcaption>
+                </figure>
+                <p class="copy u-text-measure">Normalized maps everything against a Reference lux you set, from 0.0x to 2.0x. Absolute answers "how many lux". Normalized starts answering the question that actually decides whether a blend reads as one image: is it <strong>even</strong>?</p>
+              </article>
+
+              <article class="pin-panel" aria-labelledby="pin-panel-03-title">
+                <h3 class="pin-panel-title" id="pin-panel-03-title">DEVIATION</h3>
+                <figure class="chapter-media">
+                  <div class="media-slot has-media" style="--media-ratio: 442 / 673">
+                    <img class="media-img" src="/assets/media/analysis-heatmap-deviation.png"
+                         alt="The same panel in Deviation mode: a blue-white-red diverging ramp from -20 % to +20 % labelled below ref, on target, above ref, with a Ref lux field set to 250 lx and the +/- 20 % scale selected out of +/- 10 %, +/- 20 % and +/- 30 %."
+                         width="442" height="673" loading="lazy" decoding="async">
+                  </div>
+                  <figcaption class="media-caption">The same panel switched to Deviation: a diverging ramp at +/- 20 <span class="stat-unit">%</span>, the middle of the three scales, against the same 250 <span class="stat-unit">lx</span> reference.</figcaption>
+                </figure>
+                <p class="copy u-text-measure">Deviation shows +/- 10 <span class="stat-unit">%</span>, +/- 20 <span class="stat-unit">%</span> or +/- 30 <span class="stat-unit">%</span> around the reference on a diverging ramp. This is the mode you use to chase uniformity, and the mode that makes a dim corner impossible to miss.</p>
+              </article>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- (a) hover probe, full-bleed mass beat -->
+        <figure class="chapter-media reveal">
+          <!-- Empty for the same reason as the Ch 01 slot, and restored the same way:
+               /assets/media/features/hover-probe.{mp4,jpg} do not exist, and the
+               /videos card for this clip is still pending. The source capture
+               assets/media/hover-probe-demo.mp4 is on disk at 4.1 MB with no poster,
+               which is over the 4 MB ceiling and short of the mandatory poster, so it
+               is asset task A9 that fills this, not a re-point. -->
+          <div class="media-slot media-slot--mass bleed-full" style="--media-ratio: 1912 / 942"
+               data-label="LUX AND MM/PX UNDER THE CURSOR" data-caption="RECORDING: TO COME"></div>
+          <figcaption class="media-caption">Not recorded yet: the hover probe reading lux and mm/px across a normalized-mode heatmap.</figcaption>
+        </figure>
+
+        <ul class="chapter-points">
+          <li class="chapter-point reveal">
+            <p class="chapter-point-label">LUX AND MM/PX UNDER THE CURSOR</p>
+            <p class="chapter-point-text">Move the cursor over any projection receiver and read illuminance in lx, luminance in cd/m2 and pixel density in mm/px at that exact point, with every contributing projector summed and the surface's material and facing honoured. It hides where no projector contributes, and in lens view it hides outside the selected head's lit area. It answers "is that corner dim" without opening a panel, changing a mode or committing anything to the scene.</p>
+          </li>
+        </ul>
+
+        <!-- (b) 13-point diagnostics still.
+             Source is 1917 x 944 and carries two things this site cannot show: the app's
+             title band (rows 0-39, with its BETA V.2 chip) and the bottom status bar (rows
+             894-943, reading ANALYSIS [Coming Soon]). Cropped out deterministically in CSS,
+             exactly like the hero aperture: the slot is 1917 / 852, taking 40 px off the
+             top and 52 px off the bottom, and --media-crop-y puts 40 of the 92 hidden
+             pixels (43.5 %) at the top. Everything the alt text names is inside
+             what is left. -->
+        <figure class="chapter-media reveal">
+          <div class="media-slot media-slot--wide has-media" style="--media-ratio: 1917 / 852; --media-crop-y: 43.5%">
+            <img class="media-img media-img--crop" src="/assets/media/analysis-13pt-diagnostics.png"
+                 alt="The FieldLux app window: Blend Group 1 holds four projectors covering a facade, the 13 probe points are drawn and labelled on the target with their per-point readings in absolute mode, the Lux Heatmap panel reads Physics Model, and the projector panel shows a Panasonic PT-RZ34K2 on a standard zoom lens at a 1.300 : 1 throw ratio."
+                 width="1917" height="944" loading="lazy" decoding="async">
+          </div>
+          <figcaption class="media-caption">Full app window: a blend group of four projectors with the 13 labelled probe points on the target.</figcaption>
+        </figure>
+
+        <ul class="chapter-points">
+          <li class="chapter-point reveal">
+            <p class="chapter-point-label">13 POINTS, DRAWN ON THE SURFACE</p>
+            <p class="chapter-point-text">Nine ANSI points plus four quarter-points, placed on the target's projector-facing plane and drawn in world space with connected grid lines and the numeric readout in the active map mode and unit. A second ring of 16 outer-edge probes covers the perimeter, where the 13-point grid never reaches. Edge falloff is where blends and masking fail. The grid follows a projector as you drag it and recomputes at full quality when you let go.</p>
+          </li>
+          <li class="chapter-point reveal">
+            <p class="chapter-point-label">LENS VIEW</p>
+            <p class="chapter-point-text">One click frames the camera along the selected head's optical axis, fitted to the probe bounds, so you see the field the way that head sees it. Uniformity and keystone read completely differently head-on.</p>
+          </li>
+          <li class="chapter-point reveal">
+            <p class="chapter-point-label">SNAP TO THE LENS EXIT POINT</p>
+            <p class="chapter-point-text">The measure tool snaps to mesh vertices, bounding-box corners, imported-model centres, projector body centres, receiver surface points <strong>and the beam-origin point where light actually leaves the lens</strong>. That last one is the difference between a rough distance and the throw distance the optics use. Measurements save with the scene, list in the outliner, and can be hidden individually.</p>
+          </li>
+        </ul>
+
+        <!-- (c) two trust points, no media -->
+        <ul class="chapter-points">
+          <li class="chapter-point reveal">
+            <p class="chapter-point-label">EVERY MAP SAYS WHERE ITS NUMBERS CAME FROM</p>
+            <p class="chapter-point-text">The legend carries a colour-coded accuracy-basis chip: <strong>Physics Model (estimated)</strong>, <strong>Spec-based (datasheet)</strong>, <strong>Calibrated</strong> or <strong>Measured</strong>. A tooltip lists the inputs: geometry, lumens, throw ratio, surface angle, optical profile, calibration basis. A simulated number should never be mistaken for a measured one.</p>
+          </li>
+          <li class="chapter-point reveal">
+            <p class="chapter-point-label">ONE DROPDOWN FIXES WHAT "THIS SURFACE" MEANS</p>
+            <p class="chapter-point-text">The measurement target picker fixes which surface every lux and mm/px reading is measured against (including which of a room's six walls) for both the viewport and the exported PDF, with an amber chip that appears exactly when the default auto-election would make the two disagree. Ambiguity about which surface a number describes is the quietest way for a report to be wrong.</p>
+          </li>
+        </ul>
+
+        <div class="chapter-foot">
+          <p class="index-counter u-tabular" aria-hidden="true">
+            <span class="index-counter-current">(06)</span>
+            <span class="index-counter-tick">/</span>
+            <span class="index-counter-total">(10)</span>
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- == S6, Ch 07, #ch-07, THE LIGHT ===================================== -->
+    <section class="section section--pad-sm chapter chapter--reverse" id="ch-07" aria-labelledby="ch-07-title">
+      <div class="site-shell">
+        <p class="micro-label">
+          <span class="micro-label-ord">(07)</span>
+          <span class="micro-label-name">THE LIGHT</span>
+        </p>
+        <div class="split-2--media-right">
+          <div class="chapter-head">
+            <h2 class="chapter-title reveal-lines" id="ch-07-title">
+              <span class="reveal-line"><span class="reveal-line-inner">LIGHT BEHAVES LIKE LIGHT.</span></span>
+            </h2>
+            <p class="copy chapter-body u-text-measure">Projector light composites additively onto the surface's own shading rather than being pasted over it. A white beam on a dark wall brightens the wall while its texture stays visible; a black frame adds nothing. This is the whole reason a simulated result reads as light rather than as a sticker.</p>
+            <p class="copy chapter-body u-text-measure">The model stops at direct light plus a single-bounce room estimate, and that estimate carries the widest budget in this product. Surfaces are Lambertian, nothing bounces twice, and what is left out of the calculation altogether is listed under Limits rather than buried here.</p>
+            <ul class="chapter-points">
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">ONE SHADER CORE, TWO PATHS</p>
+                <p class="chapter-point-text">The same GLSL projection core is injected into both the projection-surface path and the imported-model PBR path, so a parametric wall and a 2,000-mesh imported venue behave identically. The practical consequence is that the lux figure for a wall does not depend on whether you built that wall here or imported it: the two paths cannot drift apart, because there is only one of them.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">REAL PROJECTOR SHADOWS</p>
+                <p class="chapter-point-text">Each projector renders a depth map into a shared array texture before the main pass, so objects block the beam and cast real projector shadows. Dirty tracking hashes each projector's matrix and skips unchanged heads entirely: a fully static scene costs zero depth work. Occlusion quality is selectable: Sharp, Normal, Soft. "Will that truss shadow land on the logo?" is only answerable this way.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">IS 20,000 LUMENS ENOUGH? DEPENDS.</p>
+                <p class="chapter-point-text">Grouped ambient presets from direct sunlight at 100,000 <span class="stat-unit">lx</span> down to theatre at 5 <span class="stat-unit">lx</span> and full blackout, or a custom value, with a live contrast-ratio chip rating the result Optimal / Excellent / Good / Fair / Poor / Not viable. Brightness alone means nothing in a lit room.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">SHOW MODE vs LOOK MODE</p>
+                <p class="chapter-point-text">A manual exposure slider, an optional auto-exposure, and a <strong>Layout View</strong> that brightens the whole scene for placement and client demos with its own 10-500 <span class="stat-unit">%</span> brightness scale. All three are display-only, and analysis keeps reading your real ambient value. A blackout scene is correct for the numbers and useless for showing a client where the projectors are; separating the two lets both be right.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">IT REPAIRS ITSELF AFTER A RESTORE</p>
+                <p class="chapter-point-text">After a restore, a share-load or a re-import, the app scans for models whose PBR material never received the projection injection, or that were never registered as receivers or occluders, repairs them in place, and escalates to you if repair fails. The symptom it prevents, "the model loads but nothing projects onto it until you import a second model", is exactly the kind of failure that destroys trust in a simulation.</p>
+              </li>
+            </ul>
+            <div class="chapter-foot">
+              <p class="index-counter u-tabular" aria-hidden="true">
+                <span class="index-counter-current">(07)</span>
+                <span class="index-counter-tick">/</span>
+                <span class="index-counter-total">(10)</span>
+              </p>
+            </div>
+          </div>
+
+          <figure class="chapter-media reveal">
+            <div class="media-slot has-media" style="--media-ratio: 1363 / 805">
+              <img class="media-img" src="/assets/media/hero-stitch-01.png"
+                   alt="A classical stone building in the FieldLux viewport with an absolute-mode lux heatmap over its two lit faces; the Lux Heatmap panel beside it reads Physics Model, Absolute, a ramp scaled 0 to 500, Max lux 500 lx, Physics Estimate, 4 projectors, and a distribution selector set to Projector 1 rather than Composite."
+                   width="1363" height="805" loading="lazy" decoding="async">
+            </div>
+            <figcaption class="media-caption">Composite from the shipped app: a facade with four projectors in the scene, under an absolute-mode lux heatmap scaled 0 to 500. The panel's distribution selector is on Projector 1, so the shading you see is that one head's contribution and not the four-head sum.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+    <!-- == S6, Ch 08, #ch-08, THE ROOM AROUND IT ============================ -->
+    <section class="section section--pad-sm chapter" id="ch-08" aria-labelledby="ch-08-title">
+      <div class="site-shell">
+        <p class="micro-label">
+          <span class="micro-label-ord">(08)</span>
+          <span class="micro-label-name">THE ROOM AROUND IT</span>
+        </p>
+        <div class="split-2--media-right">
+          <div class="chapter-head">
+            <h2 class="chapter-title reveal-lines" id="ch-08-title">
+              <span class="reveal-line"><span class="reveal-line-inner">PROJECTION NEVER SHIPS ALONE.</span></span>
+            </h2>
+            <p class="copy chapter-body u-text-measure">Stage and architectural fixtures and LED walls live in the same scene as the projectors, so the contrast judgement is about the real room. They are kept in a strictly separate estimate lane: the fixture module is forbidden from importing the projector photometry path, and a test checks its import list stays clean.</p>
+            <p class="copy chapter-body u-text-measure">What this lane produces is an ambient number to judge projector contrast against: a working-plane illuminance grid reported as Eavg, Emin and Emax with uniformity U0 and Ud, a washout risk rating for an LED wall, and a fixture schedule you can paste into a spreadsheet. Every figure it produces is direct light only, with no interreflection, and it is stamped an estimate in the code and on screen. It never enters the projector lux figure, and it is not a lighting-design deliverable.</p>
+            <ul class="chapter-points">
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">EIGHT FIXTURE TYPES, SEEDED FROM SPEC SHEETS</p>
+                <p class="chapter-point-text">Moving head spot, wash and beam; LED PAR and static wash; profile/ellipsoidal; Fresnel/PC; flood/cyc/blinder; strobe. Each archetype opens with lumens, CCT, CRI, beam and field angle and power already set to the range that fixture type ships in, and renders a live 3D beam cone you aim by dragging a handle. They are archetypes, not a fixture library: to represent the unit you are actually hiring, type its numbers in or load its IES file.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">REAL PHOTOMETRY, NOT A CONE</p>
+                <p class="chapter-point-text">Upload a manufacturer <code>.ies</code> file (LM-63): the parser reads the vertical-angle/candela distribution and measured peak, stores the profile inline on the fixture so it round-trips with the project, and scales the file's peak to the fixture's current output. The same curve drives the rendered beam cookie <strong>and</strong> the illuminance estimate, so they cannot disagree. Asymmetric IES files are averaged into an axially symmetric approximation, and the app says so.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">THE ISOLUX PLOT, IN THE SAME 3D SCENE</p>
+                <p class="chapter-point-text">The fixture illuminance grid renders as a DIALux-style false-colour plane at your working-plane height, with optional isolux contour lines: the same wall-occluded, all-fixtures estimate the panel reports as Eavg / Emin / Emax and uniformity U0 and Ud. It is display-only: excluded from projector light, from the projector heatmap and from occlusion, and not selectable. <strong>It is stamped "estimate" in code and in the UI: direct light only, no interreflection.</strong></p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">LED WALLS AND THEIR SPILL</p>
+                <p class="chapter-point-text">Add a spatial LED wall from a real cabinet profile (pixel pitch, cabinet dimensions, nits, refresh, viewing angles, weight, average and peak W/m2, service access, curve support), with cabinet resolution derived from pitch. It plays video content and models its own emission into the scene, giving contrast before and after, contrast drop and a LOW/MEDIUM/HIGH washout risk. Hybrid stages are common and the wall routinely washes out the projected image.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">THE PAPERWORK</p>
+                <p class="chapter-point-text">Copy every scene fixture to the clipboard as CSV: name, type, manufacturer, model, lumens, peak candela, beam and field angle, CCT, CRI, watts, pan/tilt and IES source, plus total fixture count and total connected load. It goes to the clipboard, not to a file, and it carries the fixtures only. The projectors have their own document, and that is the Tech Rider in (09).</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">GDTF / MVR: BETA</p>
+                <p class="chapter-point-text">Reads <code>.gdtf</code> fixture files and <code>.mvr</code> scenes with their placement matrices using the browser's native decompression, no extra dependency. <strong>Code-complete but not yet validated against real vendor files. Labelled beta in-product.</strong> We do not promise specific fixture-library compatibility.</p>
+              </li>
+            </ul>
+            <div class="chapter-foot">
+              <p class="index-counter u-tabular" aria-hidden="true">
+                <span class="index-counter-current">(08)</span>
+                <span class="index-counter-tick">/</span>
+                <span class="index-counter-total">(10)</span>
+              </p>
+            </div>
+          </div>
+
+          <figure class="chapter-media reveal">
+            <div class="media-slot" data-label="ISOLUX WORKING PLANE" data-caption="RECORDING: TO COME"></div>
+            <figcaption class="media-caption">Not recorded yet: the isolux working plane and the projector beams in one scene.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- == S6, Ch 09, #ch-09, THE DELIVERABLE =============================== -->
+    <section class="section section--pad-sm chapter chapter--reverse" id="ch-09" aria-labelledby="ch-09-title">
+      <div class="site-shell">
+        <p class="micro-label">
+          <span class="micro-label-ord">(09)</span>
+          <span class="micro-label-name">THE DELIVERABLE</span>
+        </p>
+        <div class="split-2--media-right">
+          <div class="chapter-head">
+            <h2 class="chapter-title reveal-lines" id="ch-09-title">
+              <span class="reveal-line"><span class="reveal-line-inner">WHAT LEAVES THE APP.</span></span>
+            </h2>
+            <p class="copy chapter-body u-text-measure">A one-click PDF an operator types into a media server and a client files with the contract; a vendor-neutral JSON for the integrator; and a read-only link that is a dated receipt of what was planned, not a live mirror.</p>
+            <p class="copy chapter-body u-text-measure">Those three are the whole list, and each one leaves as a document a person reads or a machine parses. Nothing here is sent to a device: no file is written in a media server's own blend or warp format, and no value is pushed to a processor. The PDF carries its disclaimer band and a measurement note on every row, and any export carrying blend values states the domain those values are expressed in.</p>
+            <ul class="chapter-points">
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">PDF TECH RIDER, ONE CLICK</p>
+                <p class="chapter-point-text">A4: the captured 3D viewport with its matching heatmap legend and mode name, a simulation disclaimer band, project setup, a projector settings index, then <strong>one page per projector</strong> carrying equipment, lens model, throw ratio and lens shift, position and orientation, axial throw, shifted centre distance, beam W/H and area at reference, then surface sampling: beam size at the sampled point, <strong>Center Surface Lux</strong>, Center Surface Luminance in cd/m2, surface tilt, pixel density and hits-target. Every row carries a footnoted measurement note. Edge-blending pages carry a blend-domain warning.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">THE DISCLAIMER IS PRINTED, NOT BURIED</p>
+                <p class="chapter-point-text">The PDF prints an explicit banner reading <em>Simulation preview: configured projector specs + scene geometry, not a field measurement</em>. It also prints per-row footnotes clarifying, for example, that surface lux is the manufacturer Lumens/Area figure with angle acting as a facing gate only, not an incidence dimming term. That pre-empts the single most common misreading of a photometric report, on the page a client actually reads.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">EVERY BLEND NUMBER SHIPS WITH ITS DOMAIN</p>
+                <p class="chapter-point-text">Every export carrying blend values also carries an explicit statement that FieldLux ramps are <strong>light-linear</strong> (a partition of unity in luminous flux) and must not be typed verbatim into a signal-space media-server blend UI, which would produce roughly a -56 <span class="stat-unit">%</span> dark band at seam centre. That prevents a specific, expensive and common on-site failure.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">NEUTRAL HANDOFF JSON</p>
+                <p class="chapter-point-text">A versioned, vendor-neutral file (schema 1.2.0) declaring its coordinate system (right-handed, +X/+Y/-Z, metres, degrees), then every projector's transform, optics, lens shift, equipment, blend and warp; every target with an ordered corner plane basis; bindings, blend groups and per-edge blends. The integrator's bridge without a bespoke exporter. <strong>There is no media-server-specific format export</strong>. Only this neutral file.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">A DATED RECEIPT, NOT A LIVE MIRROR</p>
+                <p class="chapter-point-text">A share stores the scene as it was at publish time and pins the version row it came from. The viewer header shows your studio label plus <em>As planned: saved &lt;date&gt;, &lt;time&gt;, v&lt;n&gt;</em>, with the version ordinal computed server-side. Editing the project afterwards cannot rewrite what the client was shown.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">DECIDE WHAT THE RECIPIENT CAN DO</p>
+                <p class="chapter-point-text">Per link: show your measurements, show the layers panel, show the display panel, allow the PDF download, allow walk mode, allow projector zoom within catalogue throw limits, show the projector spec sheet, open with your display state, let viewers switch between blend video and base projection. <strong>Measurements you hide are stripped from the payload at compose time, not hidden in the UI.</strong> An optional password, minimum six characters, is bcrypt-hashed server-side and the resolver withholds the payload until it verifies.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">A BOUNDED WHAT-IF, INSIDE THE LINK</p>
+                <p class="chapter-point-text">Select a projector in the viewer and a throw slider appears, clamped to that lens's catalogue range, with beam, heatmap, labels and spec sheet recomputing live and a Reset. Fixed-throw lenses show no slider. Every viewer interaction is ephemeral: a sandbox latch blocks persistence on the share route, pinned by a contract test. The client's real question, "what if we move it back three metres", gets answered within lenses that are actually procurable.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">EXPIRY THAT DEGRADES INSTEAD OF DYING</p>
+                <p class="chapter-point-text">Links expire on 2 / 7 / 14 / 30 days or never. With the default <em>keep a watermarked, view-only copy</em> on, an expired link still opens, readable, under an <strong>EXPIRED: VIEW ONLY</strong> watermark with the PDF download and the what-if slider disabled. A link sent six months ago is still the evidence, not a 404. Revoke stops a link resolving immediately and purges storage files unique to it.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">THE PUBLIC-BUCKET CAVEAT</p>
+                <p class="chapter-point-text">Model binaries and site photos referenced by a share are served from a <strong>public</strong> storage bucket. Anyone who has already resolved a share can keep downloading those files after you revoke, expire or password-protect the link. This is known, documented and deliberately deferred. Revocation stops the link; it does not un-download a file.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">REPORT BUILDER: BETA, NOT ON</p>
+                <p class="chapter-point-text">A section-composer that adds a branded cover, an equipment schedule and power page and an assumptions page around the optics pages. <strong>It is behind a beta gate and disabled in deployed builds</strong>. The File-menu row is greyed with the hint "Temporarily disabled in the open beta." Listed here so you know it exists, not so you plan around it.</p>
+              </li>
+            </ul>
+            <div class="chapter-foot">
+              <p class="index-counter u-tabular" aria-hidden="true">
+                <span class="index-counter-current">(09)</span>
+                <span class="index-counter-tick">/</span>
+                <span class="index-counter-total">(10)</span>
+              </p>
+            </div>
+          </div>
+
+          <figure class="chapter-media reveal">
+            <div class="media-slot media-slot--mass bleed-left" data-label="PDF TECH RIDER" data-caption="RECORDING: TO COME"></div>
+            <figcaption class="media-caption">Not recorded yet: exporting the Tech Rider and opening the client link it produces.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- == S6, Ch 10, #ch-10, THE PROJECT =================================== -->
+    <section class="section section--pad-sm chapter" id="ch-10" aria-labelledby="ch-10-title">
+      <div class="site-shell">
+        <p class="micro-label">
+          <span class="micro-label-ord">(10)</span>
+          <span class="micro-label-name">THE PROJECT</span>
+        </p>
+        <div class="split-2--media-right">
+          <div class="chapter-head">
+            <h2 class="chapter-title reveal-lines" id="ch-10-title">
+              <span class="reveal-line"><span class="reveal-line-inner">THE WORK SURVIVES THE SESSION.</span></span>
+            </h2>
+            <p class="copy chapter-body u-text-measure">Three independent layers protect work in progress: a debounced local crash draft, a cloud autosave on an append-only version chain, and a non-destructive restore. When a project cannot be fully revived, the app refuses to write rather than overwrite your last good snapshot.</p>
+            <p class="copy chapter-body u-text-measure">What that produces is a project you can hand to a client six weeks later and still show the version they signed off, plus a single <code>.flx.json</code> for the archive. Where it stops: this is not an offline mode. Signing in needs the network, and two people cannot edit one study at the same time. There is no live multi-user editing, no comments and no presence. Sharing is the owner-authored links in (09) and read-only account access, and nothing else.</p>
+            <ul class="chapter-points">
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">LAND ON YOUR PROJECTS, NOT AN EMPTY EDITOR</p>
+                <p class="chapter-point-text">Sign-in lands on the studies you already have, not on an empty viewport: name, last updated, open on click, per-card delete behind a confirmation. The list is a single fetch with no polling and no realtime subscription, so leaving the tab open between two site visits costs nothing.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">TWO FINISHED SCENES, YOURS TO BREAK</p>
+                <p class="chapter-point-text">Two tiles create your own private copy of a fully-built projection study on first click and reuse it afterwards: the FieldLux Test Scene and the Play Dock Demo. Break them freely; they are your copies.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">AUTOSAVE THAT TELLS YOU WHEN IT FAILS</p>
+                <p class="chapter-point-text">Cloud autosave every 10 minutes while the project is dirty, skipping the write entirely when the canonicalised snapshot has not changed. A failed autosave is recorded on the store so the top bar shows a failure chip, and retried after 60-90 seconds with jitter. Quota-exceeded and missing-model-URL cases are reported separately. You find out your work is not reaching the cloud while you can still do something about it.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">REFRESH RECOVERY, AND IT SAYS IF IT'S OFF</p>
+                <p class="chapter-point-text">Every edit debounces a full scene snapshot into browser storage, force-flushed on tab close and hide. On reopen the app compares the draft's timestamp against the server version and hydrates whichever is newer. Refreshing the tab you were working in returns you to that project; a new tab still opens the project list. If the browser refuses the write you get an explicit <strong>Refresh recovery is OFF</strong> warning.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">RESTORE DELETES NOTHING</p>
+                <p class="chapter-point-text">Every save inserts an immutable version row; the project only moves a pointer. Restoring an older version first checkpoints your unsaved edits as their own version, applies the old snapshot, then saves it again as a brand-new latest version annotated <em>Restored from &lt;date&gt;</em>. The state you rolled back from is still in history if the client changes their mind again.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">LOOK, BUT DON'T CLOBBER</p>
+                <p class="chapter-point-text">When a project cannot be fully revived (a broken snapshot shape, a contract validation failure, missing model assets, or someone else's shared project), the app loads what it can, disables both manual save and autosave, and shows a banner naming the reason. A partially-loaded project can never overwrite your last known-good cloud snapshot.</p>
+              </li>
+              <li class="chapter-point reveal">
+                <p class="chapter-point-label">OFFLINE FILE, WHEN THE CLOUD IS NOT AN OPTION</p>
+                <p class="chapter-point-text">Export the whole project to a single <code>.flx.json</code> and re-open it from disk. Photo assets that were offloaded to cloud storage are re-inlined as data URLs on export, so the file is self-contained. This answers the archive and handoff case. It is <strong>not</strong> an offline mode; the app still needs the network to sign in.</p>
+              </li>
+            </ul>
+            <div class="chapter-foot">
+              <p class="index-counter u-tabular" aria-hidden="true">
+                <span class="index-counter-current">(10)</span>
+                <span class="index-counter-tick">/</span>
+                <span class="index-counter-total">(10)</span>
+              </p>
+            </div>
+          </div>
+
+          <figure class="chapter-media reveal">
+            <div class="media-slot" data-label="PROJECT HOME" data-caption="RECORDING: TO COME"></div>
+            <figcaption class="media-caption">Not recorded yet: Project Home, the storage meter and the two sample-scene tiles.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+    <!-- == S7, #numbers ==================================================== -->
+    <section class="section section--pad-lg section--mass" id="numbers" aria-labelledby="numbers-title">
+      <div class="site-shell">
+        <p class="micro-label micro-label--on-mass">
+          <span class="micro-label-name">SCALE</span>
+        </p>
+        <h2 class="section-title reveal-lines" id="numbers-title">
+          <span class="section-title-line reveal-line"><span class="reveal-line-inner">THE NUMBERS THAT BOUND THE TOOL.</span></span>
+        </h2>
+
+        <p class="copy section-lead u-text-measure reveal">Six figures, each read from the shipped build or from a session someone sat through and counted. Every one names where it came from on its own line, and where a figure carries a date, that is the day the data behind it was pulled.</p>
+
+        <div class="stat-row">
+          <div class="stat reveal">
+            <p class="stat-label">PROJECTORS IN CATALOGUE</p>
+            <p class="stat-value u-tabular">87</p>
+            <p class="stat-note">113 lenses across Epson, Panasonic, Christie and Barco. Each field carries the URL of the manufacturer PDF it was read from. Catalogue rebuilt 2026-05-12.</p>
+          </div>
+          <div class="stat reveal">
+            <p class="stat-label">COMBINATIONS CROSS-CHECKED</p>
+            <p class="stat-value u-tabular">642</p>
+            <p class="stat-note">Run against Panasonic TDC and Epson PTDS, the only two manufacturer calculators we can query. 47 of the 87 heads. Pulled 2026-06-11.</p>
+          </div>
+          <div class="stat reveal">
+            <p class="stat-label">MATERIAL PRESETS</p>
+            <p class="stat-value u-tabular">21</p>
+            <p class="stat-note">Each preset sets reflectance, projection gain, gain half-angle, transmittance, scatter and shadow opacity. The count is the shipped preset table.</p>
+          </div>
+          <div class="stat reveal">
+            <p class="stat-label">HEADS PER SCENE, MAX</p>
+            <p class="stat-value u-tabular">64</p>
+            <p class="stat-note">A hard GPU cap, not a plan tier. The runtime detector can set it lower on your machine, and 16 of those heads can carry a mesh warp or a mask.</p>
+          </div>
+          <div class="stat reveal">
+            <p class="stat-label">PROBE GRID POINTS</p>
+            <p class="stat-value u-tabular">13</p>
+            <p class="stat-note">9 ANSI plus 4 quarter-points, drawn on the target. A separate ring of 16 outer-edge probes covers the perimeter, and surface sampling is a 16 x 16 grid.</p>
+          </div>
+          <div class="stat reveal">
+            <p class="stat-label">REQUESTS WHILE YOU WORK</p>
+            <p class="stat-value u-tabular">0</p>
+            <p class="stat-note">Moving, rotating and editing values issue no network request at all. The server is touched at cold load, sign-in, project listing and open/import/save: a measured one-hour session came to about 55 requests.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- == S8, #limits ===================================================== -->
+    <section class="section section--pad-md" id="limits" aria-labelledby="limits-title">
+      <div class="site-shell--narrow">
+        <p class="micro-label">
+          <span class="micro-label-name">LIMITS</span>
+        </p>
+        <h2 class="section-title reveal-lines" id="limits-title">
+          <span class="section-title-line reveal-line"><span class="reveal-line-inner">EVERY RUN CARRIES</span></span>
+          <span class="section-title-line reveal-line"><span class="reveal-line-inner">ITS OWN ERROR BUDGET.</span></span>
+        </h2>
+
+        <p class="copy section-lead u-text-measure reveal">These constants are frozen in one module, each with the industry source it came from and the error it carries. Changing one changes analysis output and breaks a contract test on purpose. We publish them because a field engineer should be able to read a number and know exactly what was assumed to produce it.</p>
+
+        <p class="micro-label">
+          <span class="micro-label-ord">(01)</span>
+          <span class="micro-label-name">WHAT IS ASSUMED</span>
+        </p>
+
+        <p class="copy u-text-measure reveal">Start with the worst one: indirect room bounce carries a self-declared +/- 50 <span class="stat-unit">%</span> budget and an in-code disclaimer that it is for planning, not measurement. Everything else in this table is tighter, and now you know how much.</p>
+
+        <div class="limits reveal">
+          <div class="limits-row">
+            <p class="limits-key">SURFACE REFLECTANCE</p>
+            <p class="limits-text">0.60, ISO 9241-303 reference matte white. Error budget +/- 0.10 absolute, which is ordinary paint variance. If you know the paint that is actually on the surface, set a material preset instead of leaving the default in place.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">PROJECTOR UNIFORMITY</p>
+            <p class="limits-text">ANSI 9-point: centre 1.00, edge 0.90, corner 0.85, average 0.92. Source ANSI/INFOCOMM 2M-2010. Error budget +/- 5 <span class="stat-unit">%</span> per point while the head is inside its spec, +/- 15 <span class="stat-unit">%</span> once it is outside.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">SURFACE SAMPLING</p>
+            <p class="limits-text">16 x 16 = 256 points across the target. Error budget +/- 5 <span class="stat-unit">%</span> on Reliable Surface Lux (full-target p20), falling to +/- 1 <span class="stat-unit">%</span> at 32 x 32. The shipped grid is the 16 x 16 one.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">THROW GEOMETRY</p>
+            <p class="limits-text">Raycast from the optical frame to the target. Error budget +/- 2 <span class="stat-unit">%</span> on flat targets, +/- 15 <span class="stat-unit">%</span> on imported models. On a model you did not build yourself, work to the +/- 15 <span class="stat-unit">%</span> figure.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">NON-PLANAR FALLBACK</p>
+            <p class="limits-text">Bounding-box centroid plane projection. Error budget +/- 15 to 30 <span class="stat-unit">%</span>. It flattens the curve into a plane to get a number at all, so on a curved target carry <strong>the whole band, not the middle of it</strong>.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">ROOM BOUNCE</p>
+            <p class="limits-text">Single-bounce form factor, and it is a heuristic rather than a standard. Error budget +/- 50 <span class="stat-unit">%</span>, and the code says in as many words that it is <strong>for planning, not measurement</strong>. It is the worst budget in this table, which is why it is the one stated first.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">HOW THESE COMBINE</p>
+            <p class="limits-text">They do not. Each budget above is declared on its own, and neither the app nor this page rolls them into a single accuracy figure for a run. A curved imported target lit through bounced light is sitting inside three of these bands at once, and how they interact is not modelled. Read them as separate warnings, not as one number to subtract.</p>
+          </div>
+        </div>
+
+        <p class="micro-label">
+          <span class="micro-label-ord">(02)</span>
+          <span class="micro-label-name">WHAT IS NOT MODELLED</span>
+        </p>
+
+        <p class="copy u-text-measure reveal">These are not approximations that tighten with a longer run. They are absent from the calculation. If the job turns on one of them, this is not the tool that answers it.</p>
+
+        <div class="limits reveal">
+          <div class="limits-row">
+            <p class="limits-key">NOT MODELLED</p>
+            <p class="limits-text">Atmospheric haze, lens distortion, chromatic aberration, lamp aging, specular BRDF, ambient interaction with the surface, content-dependent brightness. Surfaces are Lambertian only. There is no radiosity, no global illumination and no ray tracing anywhere in this product.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">FIXTURE LIGHT IS A SEPARATE LANE</p>
+            <p class="limits-text">Stage and architectural fixture illuminance is stamped "estimate" in code and on screen: direct light only, no interreflection. That module is blocked from importing the projector photometry code at all, and a test checks its import list stays clean every run. A context estimate can never mix into the projector lux figure.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">DIALUX-STYLE, NOT DIALUX-GRADE</p>
+            <p class="limits-text">The working-plane isolux calculation is described as DIALux-<em>style</em>. It is not a certified calculation, and it is not a substitute for one.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">IES CAVEAT</p>
+            <p class="limits-text">Asymmetric IES files are averaged into an axially symmetric approximation, and the app says so on screen. A fixture whose real distribution is not symmetric about its axis will be estimated as though it were.</p>
+          </div>
+        </div>
+
+        <p class="micro-label">
+          <span class="micro-label-ord">(03)</span>
+          <span class="micro-label-name">WHAT IS NOT CLAIMED</span>
+        </p>
+
+        <p class="copy u-text-measure reveal">The rows above are about the model. These are about the sentence someone might put in a proposal after reading this site. Each one is a claim FieldLux does not make, or a claim narrower than it first looks.</p>
+
+        <div class="limits reveal">
+          <div class="limits-row">
+            <p class="limits-key">NO MEASURED VALIDATION</p>
+            <p class="limits-text">Nothing in this product has been compared against lux-meter field data. The error budgets above are <strong>self-declared model uncertainty</strong>, not a measured accuracy figure. We say "simulation preview" and "physics estimate" because that is what it is, and on-site validation is still the thing that tells you whether the room agrees.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">WHICH LUX, ALWAYS LABELLED</p>
+            <p class="limits-text">Four lux figures with different meanings exist in the engine. <strong>Reliable Surface Lux is a full-target 20th percentile</strong>. Not a peak, not an average. Every lux number on this site says which one it is, in the same sentence, and quoting one of them without its label is how the same scene ends up with two different brightness stories.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">NEVER UNDER LOAD</p>
+            <p class="limits-text">This platform has never been load tested. The highest traffic we have observed is 30 requests per second. We publish the measured per-session request cost and nothing else: no uptime figure, no concurrency guarantee.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">WHAT'S IN BETA</p>
+            <p class="limits-text">GDTF and MVR fixture import is code-complete but not yet checked against real vendor files. The Report Builder client-proposal PDF sits behind a beta gate and is off in deployed builds. Both are labelled that way inside the app too.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">WHAT ISN'T HERE</p>
+            <p class="limits-text">Drawing import and sketch-to-model are disabled in production. Realtime video output to other applications is desktop-only and its entry points are removed from the web build entirely. There is no export to a media-server-specific file format. There is no live multi-user editing, no comments and no presence. Sharing is owner-authored links plus read-only account access.</p>
+          </div>
+          <div class="limits-row">
+            <p class="limits-key">SECURITY, STATED NARROWLY</p>
+            <p class="limits-text">What exists: row-level security scoped to the project owner, share payloads readable only through a server-side resolver, bcrypt-hashed share passwords, IP-hashed rate limiting on share resolution, per-user storage path isolation, admin-gated operations, a 7-day grace period on account deletion, and an explicit consent record at signup. That list is the whole claim.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- == S9, #videos-cta ================================================= -->
+    <section class="section section--pad-sm" id="videos-cta" aria-labelledby="videos-cta-title">
+      <div class="site-shell">
+        <p class="micro-label">
+          <span class="micro-label-name">FEATURE VIDEOS</span>
+        </p>
+        <h2 class="section-title reveal-lines" id="videos-cta-title">
+          <span class="section-title-line reveal-line"><span class="reveal-line-inner">WATCH THE NUMBER MOVE.</span></span>
+        </h2>
+
+        <p class="copy section-lead u-text-measure reveal">Short screen recordings of the shipped app, one per part, 15 to 60 seconds each. No narration, no speed-up. You watch the lux figure change when the projector moves. Nothing is published yet: what is on that page today is the shot list, each clip named with the part it belongs to and what it will show, so the order is readable before the footage exists.</p>
+
+        <!-- All three slots are empty-state, and that is deliberate. The first two
+             pointed at /assets/media/features/viewport-walkthrough.jpg and
+             hover-probe.jpg, which are owner assets A8/A9 (spec 8.2). That directory
+             does not exist in this repo, so both files 404. Combined with has-media
+             the result was worse than a broken image: has-media sets ::before and
+             ::after to content:none, so the slot lost BOTH its label and its
+             "RECORDING: TO COME" caption and painted a solid --mass-950 rectangle at
+             the reserved aspect ratio. An <img alt=""> that 404s represents nothing,
+             so a filled-looking dark slot badged THE SCENE claimed footage that has
+             never been shot, sitting beside a sibling slot that honestly said it had
+             not. That is the overclaim this section argues against, and it is the
+             same call already made for the Ch 01 slot above.
+             TO RESTORE IN ONE EDIT once A8/A9 land: add has-media back to the slot,
+             re-add the <span class="media-label-badge"> and the <img class="media-img
+             media-poster"> with real alt text written from the frame (spec 8.5). -->
+        <div class="split-3 reveal">
+          <div class="media-slot" data-label="THE SCENE" data-caption="RECORDING: TO COME"></div>
+          <div class="media-slot" style="--media-ratio: 1912 / 942" data-label="THE MEASUREMENT" data-caption="RECORDING: TO COME"></div>
+          <div class="media-slot" data-label="THE COVERAGE" data-caption="RECORDING: TO COME"></div>
+        </div>
+
+        <div class="hero-actions">
+          <a class="btn btn--text" href="/videos">OPEN FEATURE VIDEOS</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- == S10, #beta ====================================================== -->
+    <section class="section section--pad-md" id="beta" aria-labelledby="beta-title">
+      <div class="site-shell--narrow">
+        <p class="micro-label">
+          <span class="micro-label-name">STATUS</span>
+        </p>
+        <h2 class="section-title reveal-lines" id="beta-title">
+          <span class="section-title-line reveal-line"><span class="reveal-line-inner">FREE, 2 GB, AND NEVER LOAD TESTED.</span></span>
+        </h2>
+
+        <p class="copy section-lead u-text-measure reveal">FieldLux is in open beta and costs nothing to use. There is no pricing page because there are no paid plans yet.</p>
+
+        <ol class="speclist reveal">
+          <li class="speclist-item">
+            <span class="speclist-index u-tabular">(01)</span>
+            <div class="speclist-body">
+              <p class="chapter-point-label">STORAGE</p>
+              <p>2 <span class="stat-unit">GB</span> of imported-model storage per account for the beta, enforced by the database itself. The meter on screen shows the same number the storage policies enforce. 1 <span class="stat-unit">GiB</span> reusable media library. 200 <span class="stat-unit">MB</span> per model file, checked in the browser, in the bucket's own size limit, and again before download when a saved project is reloaded from the cloud.</p>
+            </div>
+          </li>
+          <li class="speclist-item">
+            <span class="speclist-index u-tabular">(02)</span>
+            <div class="speclist-body">
+              <p class="chapter-point-label">FOUNDING MEMBERS</p>
+              <p>Early testers on the original invite list verify with a code, which keeps founding-member standing on the account. That standing carries 12 months of access when paid plans begin. There are no paid plans yet, so nothing is being charged for and nothing is being reserved.</p>
+            </div>
+          </li>
+          <li class="speclist-item">
+            <span class="speclist-index u-tabular">(03)</span>
+            <div class="speclist-body">
+              <p class="chapter-point-label">WHAT RUNS ON THE SERVER</p>
+              <p>Moving objects, rotating projectors and changing values issue no network requests at all: no polling, no realtime subscriptions. The server is touched at four moments: cold load, sign-in, listing projects, and opening, importing or saving. A measured one-hour session is about 55 requests.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- == S11, #community ================================================= -->
+    <section class="section section--pad-sm" id="community" aria-labelledby="community-title">
+      <div class="site-shell--narrow">
+        <p class="micro-label">
+          <span class="micro-label-name">JOIN THE DISCORD COMMUNITY</span>
+        </p>
+        <h2 class="section-title reveal-lines" id="community-title">
+          <span class="section-title-line reveal-line"><span class="reveal-line-inner">SEND US THE PROJECTOR WE'RE MISSING.</span></span>
+        </h2>
+
+        <p class="copy section-lead u-text-measure reveal">40 of the 87 heads in the catalogue have no manufacturer calculator to check against: all 19 Christie, all 19 Barco, and two Panasonic models the calculator does not carry. Four brands is not the whole market either. Post a spec sheet in <code>#catalogue</code> and it goes into the next catalogue build with your name on the source field. Bug reports and spec-sheet corrections go the same way.</p>
+
+        <div class="hero-actions">
+          <a class="btn btn--outline" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">JOIN DISCORD</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- == S12, #start ===================================================== -->
+    <section class="section section--pad-md" id="start" aria-labelledby="start-title">
+      <div class="site-shell--narrow">
+        <p class="micro-label">
+          <span class="micro-label-name">START</span>
+        </p>
+        <h2 class="section-title reveal-lines" id="start-title">
+          <span class="section-title-line reveal-line"><span class="reveal-line-inner">TWO FINISHED SCENES, ALREADY YOURS.</span></span>
+        </h2>
+
+        <p class="copy section-lead u-text-measure reveal">Sign in and open your own copy of the FieldLux Test Scene or the Play Dock Demo. Both are complete projection studies. Move a projector 300 <span class="stat-unit">mm</span> and watch which numbers move with it.</p>
+
+        <div class="hero-actions">
+          <a class="btn btn--solid" href="https://app.field-lux.com" data-app-link>START FREE</a>
+          <a class="btn btn--text" href="/videos">WATCH FEATURE VIDEOS</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- == S13, Footer ======================================================= -->
+  <footer class="site-footer">
+    <div class="site-shell footer-inner">
+
+      <a class="brand-lockup" href="/" aria-label="FieldLux home">
+        <img class="brand-lockup-img" src="/assets/logo-ink.png" width="154" height="45" alt="FieldLux">
+      </a>
+
+      <p class="footer-lead">WE'RE BUILDING THIS WITH THE PEOPLE WHO RIG IT.</p>
+
+      <div class="footer-contact">
+        <p class="footer-contact-item">
+          <span class="footer-col-title">hello</span>
+          <a class="footer-link" href="mailto:jay@field-lux.com">jay@field-lux.com</a>
+        </p>
+      </div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <p class="footer-col-title">links</p>
+          <ul class="footer-links">
+            <li><a class="footer-link" href="/privacy">Privacy</a></li>
+            <li><a class="footer-link" href="/videos">Feature videos</a></li>
+            <li><a class="footer-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">Discord</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-meta">
+        <p class="footer-legal">Copyright 2026 FieldLux. Open beta</p>
+        <button class="motion-toggle" type="button" aria-pressed="false">Reduce motion</button>
+      </div>
+
+    </div>
+  </footer>
   <script>
     (() => {
-      const defaultAppUrl = 'https://app.field-lux.com';
-      const defaultDiscordUrl = 'https://discord.gg/JpeQ7Hgsnd';
+      'use strict';
+
+      const doc  = document;
+      const root = doc.documentElement;
+
+      /* -- storage, guarded ------------------------------------------------ */
+      const store = (() => {
+        try {
+          const s = window.localStorage;
+          const probe = '__fieldlux_probe__';
+          s.setItem(probe, '1'); s.removeItem(probe);
+          return s;
+        } catch (_) { return null; }
+      })();
+      const read  = (k) => { try { return store && store.getItem(k); }  catch (_) { return null; } };
+      const write = (k, v) => { try { store && store.setItem(k, v); }   catch (_) {} };
+      const drop  = (k) => { try { store && store.removeItem(k); }      catch (_) {} };
+
       const params = new URLSearchParams(window.location.search);
-      const suppliedUrl = params.get('flowAppUrl') || window.localStorage.getItem('fieldlux_flow_app_url');
-      const suppliedDiscordUrl = params.get('discordUrl') || window.localStorage.getItem('fieldlux_discord_url');
-      let appUrl = defaultAppUrl;
-      let discordUrl = defaultDiscordUrl;
 
-      if (suppliedUrl) {
+      /* == 10.4 (b), flowAppUrl review override: host allowlist ============ */
+      const DEFAULT_APP_URL = 'https://app.field-lux.com';
+      const APP_KEY = 'fieldlux_flow_app_url';
+
+      function isAllowedAppHost(u) {
         try {
-          const parsed = new URL(suppliedUrl, window.location.href);
-          const isAllowedProtocol = parsed.protocol === 'https:';
-          const isLocalPreview = parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1';
-          if (isAllowedProtocol || isLocalPreview) {
-            appUrl = parsed.href;
-            window.localStorage.setItem('fieldlux_flow_app_url', appUrl);
-          }
-        } catch (_) {
-          appUrl = defaultAppUrl;
+          const p = new URL(u);
+          const h = p.hostname;
+          if (p.protocol === 'http:' && (h === 'localhost' || h === '127.0.0.1')) return true;
+          if (p.protocol !== 'https:') return false;
+          return h === 'field-lux.com' || h.endsWith('.field-lux.com')
+              || h.endsWith('.vercel.app')
+              || h === 'localhost' || h === '127.0.0.1';
+        } catch { return false; }
+      }
+
+      let appUrl = DEFAULT_APP_URL;
+      const suppliedApp = params.get('flowAppUrl') || read(APP_KEY);
+      if (suppliedApp) {
+        if (isAllowedAppHost(suppliedApp)) {
+          appUrl = new URL(suppliedApp).href;
+          write(APP_KEY, appUrl);
+        } else {
+          /* a bad value must not persist for this visitor */
+          appUrl = DEFAULT_APP_URL;
+          drop(APP_KEY);
         }
       }
 
-      if (suppliedDiscordUrl) {
-        try {
-          const parsed = new URL(suppliedDiscordUrl, window.location.href);
-          const isDiscordHost = parsed.hostname === 'discord.gg' || parsed.hostname.endsWith('.discord.com') || parsed.hostname === 'discord.com';
-          if (parsed.protocol === 'https:' && isDiscordHost) {
-            discordUrl = parsed.href;
-            window.localStorage.setItem('fieldlux_discord_url', discordUrl);
-          }
-        } catch (_) {
-          discordUrl = defaultDiscordUrl;
-        }
-      }
-
+      /* == 10.4 (a), data-app-link rewriting, with siteReturnUrl ============ */
       const getAppLinkUrl = () => {
         try {
           const url = new URL(appUrl, window.location.href);
           url.searchParams.set('siteReturnUrl', window.location.href);
           return url.href;
-        } catch (_) {
-          return appUrl;
-        }
+        } catch (_) { return appUrl; }
       };
 
-      document.querySelectorAll('[data-app-link]').forEach((link) => {
+      doc.querySelectorAll('[data-app-link]').forEach((link) => {
         const appLinkUrl = getAppLinkUrl();
         link.href = appLinkUrl;
         link.addEventListener('click', (event) => {
-          if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-            return;
-          }
+          /* modifier-key / middle-click passthrough: let the browser do its thing */
+          if (event.defaultPrevented || event.button !== 0
+              || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
           event.preventDefault();
           window.location.assign(appLinkUrl);
         });
       });
 
-      document.querySelectorAll('[data-discord-link]').forEach((link) => {
-        const hasInvite = discordUrl !== '#';
+      /* == 10.4 (c), discordUrl allowlist ================================== */
+      const DEFAULT_DISCORD_URL = 'https://discord.gg/JpeQ7Hgsnd';
+      const DISCORD_KEY = 'fieldlux_discord_url';
+
+      let discordUrl = DEFAULT_DISCORD_URL;
+      const suppliedDiscord = params.get('discordUrl') || read(DISCORD_KEY);
+      if (suppliedDiscord) {
+        try {
+          const parsed = new URL(suppliedDiscord, window.location.href);
+          const h = parsed.hostname;
+          const isDiscordHost = h === 'discord.gg' || h === 'discord.com' || h.endsWith('.discord.com');
+          if (parsed.protocol === 'https:' && isDiscordHost) {
+            discordUrl = parsed.href;
+            write(DISCORD_KEY, discordUrl);
+          }
+        } catch (_) { discordUrl = DEFAULT_DISCORD_URL; }
+      }
+
+      doc.querySelectorAll('[data-discord-link]').forEach((link) => {
         link.href = discordUrl;
-        link.setAttribute('aria-disabled', hasInvite ? 'false' : 'true');
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        link.title = link.dataset.tooltip || '';
-        link.addEventListener('click', (event) => {
-          if (!hasInvite) {
-            event.preventDefault();
+        link.setAttribute('aria-disabled', 'false');
+        link.removeAttribute('title');   /* the CSS ::after tooltip is the only tooltip */
+      });
+
+      /* == 5.9, Motion: tri-state (on / off / follow the OS) =============== */
+      const MOTION_KEY = 'fieldlux_motion';
+      const osReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const motionAllowed = () => {
+        const m = root.dataset.motion;
+        if (m === 'on')  return true;
+        if (m === 'off') return false;
+        return !osReduce.matches;
+      };
+      const MOTION_EVENT = 'fieldlux:motionchange';
+      const announceMotion = () => doc.dispatchEvent(new CustomEvent(MOTION_EVENT));
+
+      const motionToggles = [...doc.querySelectorAll('.motion-toggle')];
+      const syncMotionToggles = () => {
+        const reduced = !motionAllowed();
+        motionToggles.forEach((b) => b.setAttribute('aria-pressed', reduced ? 'true' : 'false'));
+      };
+      motionToggles.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          root.dataset.motion = motionAllowed() ? 'off' : 'on';
+          write(MOTION_KEY, root.dataset.motion);
+          syncMotionToggles();
+          announceMotion();
+        });
+      });
+      if (osReduce.addEventListener) {
+        osReduce.addEventListener('change', () => { syncMotionToggles(); announceMotion(); });
+      }
+      syncMotionToggles();
+
+      /* data-saver / reduced-data: never fetch video bytes */
+      const conn = navigator.connection;
+      const leanData = (conn && conn.saveData === true)
+                    || window.matchMedia('(prefers-reduced-data: reduce)').matches;
+
+      /* == 5.8, One overlay system, one Escape handler ====================== */
+      const overlays = [];
+      function openOverlay(rec) { overlays.push(rec); doc.body.classList.add('overlay-open'); }
+      function closeTop() {
+        const r = overlays.pop();
+        if (r && r.close) r.close();
+        if (!overlays.length) doc.body.classList.remove('overlay-open');
+      }
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlays.length) closeTop();
+      });
+
+      /* == 5.6, Nav overlay: focus trap, inert, focus return =============== */
+      const navToggle  = doc.querySelector('.nav-toggle');
+      const navOverlay = doc.getElementById('nav-overlay');
+      const siteMain   = doc.getElementById('main');
+      const siteFooter = doc.querySelector('.site-footer');
+      const FOCUSABLE  = 'a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])';
+
+      if (navToggle && navOverlay) {
+        let navReturnFocus = null;
+        let navHideTimer = null;
+
+        const trapStops = () => [navToggle].concat([...navOverlay.querySelectorAll(FOCUSABLE)]);
+
+        const onTrapKeydown = (e) => {
+          if (e.key !== 'Tab') return;
+          const stops = trapStops();
+          if (!stops.length) return;
+          const first = stops[0];
+          const last  = stops[stops.length - 1];
+          if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
+        };
+
+        const closeNav = () => {
+          navOverlay.removeAttribute('data-open');
+          /* the 420 ms exit is still painted and still hit-testable: take it out of
+             the tab order for the whole close, not only once `hidden` lands (spec 5.6) */
+          navOverlay.setAttribute('inert', '');
+          navToggle.setAttribute('aria-expanded', 'false');
+          if (siteMain)   siteMain.removeAttribute('inert');
+          if (siteFooter) siteFooter.removeAttribute('inert');
+          doc.removeEventListener('keydown', onTrapKeydown, true);
+          window.clearTimeout(navHideTimer);
+          navHideTimer = window.setTimeout(() => {
+            navOverlay.hidden = true;
+            navOverlay.removeAttribute('inert');
+          }, motionAllowed() ? 440 : 0);
+          if (navReturnFocus && navReturnFocus.focus) navReturnFocus.focus();
+          navReturnFocus = null;
+        };
+
+        const openNav = () => {
+          navReturnFocus = doc.activeElement;
+          window.clearTimeout(navHideTimer);   /* a reopen mid-exit skips the timer... */
+          navOverlay.removeAttribute('inert'); /* ...so clear the closing inert here   */
+          navOverlay.hidden = false;
+          navToggle.setAttribute('aria-expanded', 'true');
+          if (siteMain)   siteMain.setAttribute('inert', '');
+          if (siteFooter) siteFooter.setAttribute('inert', '');
+          requestAnimationFrame(() => navOverlay.setAttribute('data-open', ''));
+          doc.addEventListener('keydown', onTrapKeydown, true);
+          const first = navOverlay.querySelector(FOCUSABLE);
+          if (first) first.focus();
+          openOverlay({ el: navOverlay, close: closeNav });
+        };
+
+        navToggle.addEventListener('click', () => {
+          if (navToggle.getAttribute('aria-expanded') === 'true') closeTop();
+          else openNav();
+        });
+
+        navOverlay.querySelectorAll('.nav-overlay-link').forEach((link) => {
+          link.addEventListener('click', () => {
+            if (navToggle.getAttribute('aria-expanded') === 'true') closeTop();
+          });
+        });
+      }
+
+      /* == 5.1, Scroll: one passive listener ===============================
+         Header state only. The monitor settle is gone with the monitor (OVERRIDE
+         2): a fixed frame has no tilt to lerp, so there is no rAF loop left. */
+      const header = doc.querySelector('.site-header');
+
+      let isScrolled = false;
+
+      const syncHeader = () => {
+        const y = window.scrollY;
+        if (!isScrolled && y > 24)      { isScrolled = true;  header && header.classList.add('is-scrolled'); }
+        else if (isScrolled && y < 12)  { isScrolled = false; header && header.classList.remove('is-scrolled'); }
+      };
+
+      window.addEventListener('scroll', syncHeader, { passive: true });
+      syncHeader();
+
+      /* == 5.3, Scroll reveal: one-shot, per-section stagger =============== */
+      const revealTargets = [...doc.querySelectorAll('.reveal, .reveal-lines')];
+      if (!motionAllowed() || !('IntersectionObserver' in window)) {
+        revealTargets.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
           }
+        }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
+        revealTargets.forEach((el) => {
+          const group = el.closest('.section') || doc;
+          const sibs = [...group.querySelectorAll('.reveal, .reveal-lines')];
+          el.style.setProperty('--i', String(sibs.indexOf(el) % 6));   // per-section, not global
+          io.observe(el);
         });
-      });
-
-      const roadmapModal = document.getElementById('roadmap-modal');
-      const openRoadmap = () => {
-        if (!roadmapModal) return;
-        roadmapModal.hidden = false;
-        document.body.classList.add('modal-open');
-        const closeButton = roadmapModal.querySelector('button[data-roadmap-close]');
-        closeButton?.focus?.();
-      };
-      const closeRoadmap = () => {
-        if (!roadmapModal) return;
-        roadmapModal.hidden = true;
-        document.body.classList.remove('modal-open');
-      };
-
-      document.querySelectorAll('[data-roadmap-open]').forEach((link) => {
-        link.addEventListener('click', (event) => {
-          event.preventDefault();
-          openRoadmap();
+        /* turning motion off mid-page must not strand un-revealed copy */
+        doc.addEventListener(MOTION_EVENT, () => {
+          if (!motionAllowed()) revealTargets.forEach((el) => el.classList.add('is-in'));
         });
-      });
-      document.querySelectorAll('[data-roadmap-close]').forEach((button) => {
-        button.addEventListener('click', closeRoadmap);
-      });
-      window.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && roadmapModal && !roadmapModal.hidden) {
-          closeRoadmap();
+      }
+
+      /* == 5.4, Pin progress =============================================== */
+      const pinPanels = [...doc.querySelectorAll('.pin-panel')];
+      if (pinPanels.length && 'IntersectionObserver' in window) {
+        const pinCounter = doc.querySelector('.pin-counter .index-counter-current');
+        const pinBar = doc.querySelector('.pin-progress-bar');
+        const pinIo = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            const i = pinPanels.indexOf(e.target);
+            pinPanels.forEach((p, n) => p.classList.toggle('is-active', n === i));
+            if (pinCounter) pinCounter.textContent = '(' + String(i + 1).padStart(2, '0') + ')';
+            if (pinBar) pinBar.style.setProperty('--p', String((i + 1) / pinPanels.length));
+          }
+        }, { threshold: 0.55 });
+        pinPanels.forEach((p) => pinIo.observe(p));
+      }
+
+      /* == 5.5, Typewriter ================================================= */
+      const typeWord = doc.querySelector('.type-word');
+      if (typeWord) {
+        const WORDS = ['FACADE', 'DOME', 'STAGE', 'TUNNEL'];
+        let wi = 0, ci = 0, deleting = false, timer = null;
+
+        const step = () => {
+          const word = WORDS[wi];
+          typeWord.textContent = word.slice(0, ci);
+          let delay;
+          if (!deleting) {
+            if (ci < word.length) { ci += 1; delay = 55; }
+            else { deleting = true; delay = 1900; }
+          } else {
+            if (ci > 0) { ci -= 1; delay = 32; }
+            else { deleting = false; wi = (wi + 1) % WORDS.length; delay = 220; }
+          }
+          timer = window.setTimeout(step, delay);
+        };
+
+        /* Both branches start from the finished word the markup already paints,
+           never from an empty span. The motion branch does NOT call step()
+           immediately: at ci=0 step() would blank the shipped word on its first
+           frame, which is the defect this fixes. It starts fully typed and
+           already deleting, so the first thing that happens is the same 1900ms
+           dwell every other word in the cycle gets. */
+        const restartTypewriter = () => {
+          window.clearTimeout(timer);
+          timer = null;
+          typeWord.textContent = WORDS[0];
+          if (motionAllowed()) {
+            wi = 0; ci = WORDS[0].length; deleting = true;
+            timer = window.setTimeout(step, 1900);
+          }
+        };
+
+        restartTypewriter();
+        doc.addEventListener(MOTION_EVENT, restartTypewriter);
+      }
+
+      /* == OVERRIDE 2, Hero frame: facade embed ============================
+         The demo app is loaded on an explicit click and never before. Because
+         nothing here runs on load, there is no motion or data branch: reduced
+         motion and reduced data get the identical still, which is the point of
+         the facade.
+
+         The URL is configuration. It comes from data-embed-src on the frame,
+         with an optional ?embedSrc= review override validated by exactly the
+         allowlist the app-link CTA uses (isAllowedAppHost above: field-lux.com
+         and its subdomains, *.vercel.app, localhost). A rejected value is
+         dropped and the stored key cleared, same contract as flowAppUrl.
+
+         With no usable URL the launch button stays `hidden` (it ships hidden so
+         the no-JS state is the same) and the frame is just the still. */
+      const heroFrame = doc.querySelector('.hero-frame');
+      if (heroFrame) {
+        const EMBED_KEY   = 'fieldlux_embed_src';
+        const launchBtn   = heroFrame.querySelector('.hero-frame-launch');
+        const declaredSrc = (heroFrame.dataset.embedSrc || '').trim();
+
+        let embedSrc = (declaredSrc && isAllowedAppHost(declaredSrc))
+          ? new URL(declaredSrc).href
+          : '';
+
+        const suppliedEmbed = params.get('embedSrc') || read(EMBED_KEY);
+        if (suppliedEmbed) {
+          if (isAllowedAppHost(suppliedEmbed)) {
+            embedSrc = new URL(suppliedEmbed).href;
+            write(EMBED_KEY, embedSrc);
+          } else {
+            /* a bad value must not persist for this visitor */
+            drop(EMBED_KEY);
+          }
         }
-      });
+
+        if (embedSrc && launchBtn) {
+          launchBtn.hidden = false;   /* the affordance only exists when it can work */
+
+          launchBtn.addEventListener('click', () => {
+            if (heroFrame.dataset.embedState) return;
+            heroFrame.dataset.embedState = 'loading';
+            launchBtn.hidden = true;
+
+            const embed = doc.createElement('iframe');
+            embed.className = 'hero-frame-embed';
+            embed.src   = embedSrc;
+            embed.title = heroFrame.dataset.embedTitle || 'FieldLux interactive 3D scene';
+            embed.loading = 'lazy';
+            embed.referrerPolicy = 'strict-origin-when-cross-origin';
+            embed.setAttribute('allow', 'fullscreen');
+            /* sandbox, token by token:
+                 allow-scripts:     the demo is a WebGL app; with scripts blocked
+                                    the frame renders nothing at all.
+                 allow-same-origin: the app must keep its OWN origin to create a
+                                    WebGL context bound to its assets and to read
+                                    its own storage; in an opaque origin those
+                                    fail. It is a different host from this site,
+                                    so same-origin here means the demo's origin,
+                                    never ours, so the frame can never reach this
+                                    document, its storage or its cookies.
+               Deliberately absent: allow-top-navigation (an embed must never be
+               able to navigate the site away) and allow-forms (nothing in a
+               read-only demo scene is submitted). */
+            embed.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+
+            embed.addEventListener('load', () => {
+              heroFrame.dataset.embedState = 'live';
+            });
+            embed.addEventListener('error', () => {
+              /* the still is still there, so fall back to it silently, no console noise */
+              embed.remove();
+              delete heroFrame.dataset.embedState;
+              launchBtn.hidden = false;
+              launchBtn.focus();
+            });
+
+            heroFrame.appendChild(embed);
+            /* the button just left the tab order: park focus on the frame so it is
+               never lost, and the next Tab steps into the embed (section 5.10). */
+            heroFrame.focus();
+          });
+        }
+      }
+
+      /* == 6.5, Chapter media: play only while visible, allowed and not paused
+         by hand. Each looping slot carries its own .monitor-pause stop control
+         (WCAG 2.2.2), the only surviving use of that class now the hero monitor
+         is retired. The motion listener is symmetric: turning motion off
+         pauses every clip, turning it back on restarts the ones on screen. ======== */
+      const chapterVideos = [...doc.querySelectorAll('[data-chapter-video]')];
+      if (chapterVideos.length) {
+        const vidState = new WeakMap();   /* video -> { visible, userPaused, btn, label } */
+
+        const syncChapterBtn = (v) => {
+          const s = vidState.get(v);
+          if (!s || !s.btn) return;
+          const playing = !v.paused;
+          s.btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
+          if (s.label) s.label.textContent = playing ? 'Pause this video' : 'Play this video';
+        };
+
+        const playIfAllowed = (v) => {
+          const s = vidState.get(v);
+          if (!s || !s.visible || s.userPaused) return;
+          if (!motionAllowed() || leanData) return;
+          const p = v.play();
+          if (p && p.then) p.then(() => syncChapterBtn(v)).catch(() => syncChapterBtn(v));
+          else syncChapterBtn(v);
+        };
+
+        chapterVideos.forEach((v) => {
+          const slot  = v.closest('.media-slot');
+          const btn   = slot ? slot.querySelector('.monitor-pause') : null;
+          const label = btn ? btn.querySelector('.u-visually-hidden') : null;
+          vidState.set(v, { visible: false, userPaused: false, btn: btn, label: label });
+
+          if (btn) {
+            btn.hidden = false;            /* the control only exists when JS does */
+            btn.addEventListener('click', () => {
+              const s = vidState.get(v);
+              if (v.paused) {
+                s.userPaused = false;
+                const p = v.play();
+                if (p && p.then) p.then(() => syncChapterBtn(v)).catch(() => syncChapterBtn(v));
+                else syncChapterBtn(v);
+              } else {
+                s.userPaused = true;       /* a hand-paused clip is not restarted by scroll */
+                v.pause();
+                syncChapterBtn(v);
+              }
+            });
+          }
+          v.addEventListener('play',  () => syncChapterBtn(v));
+          v.addEventListener('pause', () => syncChapterBtn(v));
+          syncChapterBtn(v);
+        });
+
+        if ('IntersectionObserver' in window) {
+          const mediaIo = new IntersectionObserver((entries) => {
+            for (const e of entries) {
+              const s = vidState.get(e.target);
+              if (!s) continue;
+              s.visible = e.isIntersecting;
+              if (e.isIntersecting) playIfAllowed(e.target);
+              else if (!e.target.paused) e.target.pause();
+            }
+          }, { threshold: 0.35 });
+          chapterVideos.forEach((v) => mediaIo.observe(v));
+        } else {
+          chapterVideos.forEach((v) => { vidState.get(v).visible = true; playIfAllowed(v); });
+        }
+
+        doc.addEventListener(MOTION_EVENT, () => {
+          if (!motionAllowed()) chapterVideos.forEach((v) => { v.pause(); syncChapterBtn(v); });
+          else chapterVideos.forEach(playIfAllowed);
+        });
+      }
 
     })();
   </script>
