@@ -7,13 +7,14 @@
                  deleted.
      OVERRIDE 2: the hero is a rounded frame hosting the real app, not a 3D
                  monitor. The section 4.4 / 6.2b geometry and section 4.3's
-                 .hero-notch are deleted; .hero-frame and .hero-card replace them.
+                 .hero-notch are deleted; .hero-frame and .hero-block replace them.
 
    File map, spec section to line block:
      3.1  Fonts .................. @IMPORT + @font-face, below
      2.1  Design tokens .......... :root
      3.2  Type scale ............. :root
-     3.4  Container + spacing .... :root, including the four --rhythm-* steps
+     3.4  Container + spacing .... :root, including the six --rhythm-* steps
+                                    and the three --lede-* measure tokens
      5    Motion tokens .......... :root
      3.7  Bleed rule ............. html / body / .site-main
      5.10 Focus .................. :focus-visible
@@ -31,13 +32,16 @@
      -    Unused-but-kept ........ closing block, above @tailwind utilities
 
    Rules enforced here:
-     - The site is WHITE (--paper). Exactly three dark elements exist:
-       .hero-frame (the screen, formerly .monitor-screen), .media-slot--mass,
-       and nothing else (section 2.4).
+     - The site is WHITE (--paper). Dark ground is PUNCTUATION, and index.html
+       spends it exactly twice below the hero: #numbers and #start, both
+       .section--mass. The hero's own .hero-frame is dark because it is a
+       screen, not a band. Nothing else on the page is dark - the eight empty
+       video plates and the two image plates are all light, and a filled slot's
+       --mass-950 is a mount behind a picture that covers it (section 2.4, 4.9).
      - Cyan (--brand-400/500/600) never carries a letterform on white. It appears
-       on white only as a *fill*: .btn--brand, .pin-progress-bar, .pub-progress-bar,
+       on white only as a *fill*: .btn--brand, .pub-progress-bar,
        .nav-link::after, .type-caret. The cyan-as-text property is used only
-       inside .section--mass / .media-slot--mass  (G2).
+       inside .section--mass  (G2).
      - The x-axis overflow keyword is `clip` everywhere, never the one that turns
        <html> into a scroll container (G3).
      - No animation, transition or transform-driven reveal survives
@@ -97,9 +101,11 @@
   --ink-500: #566268;   /* secondary copy, list bodies               6.28:1 */
   --ink-400: #626E74;   /* captions, micro-labels, control borders   5.25:1 */
   /* NON-TEXT ONLY, and the "non-text" is load-bearing: 3.06:1 is legal only
-     for a drawn object (.marquee-dot) or a control WCAG counts as inactive
-     (:disabled / [disabled] / .is-disabled). A glyph the reader can read is
-     text however small its job sounds - see .index-counter-tick. */
+     for a drawn object or a control WCAG counts as inactive (:disabled /
+     [disabled] / .is-disabled). A glyph the reader can read is text however
+     small its job sounds - see .index-counter-tick. (.marquee-dot was the
+     drawn-object example and is deleted; the disabled controls are the whole
+     remaining consumer set.) */
   --ink-300: #8A959B;   /* disabled glyphs, drawn marks              3.06:1 */
 
   /* -- Brand ramp, sampled from assets/logo-mark.png ------------- */
@@ -154,40 +160,63 @@
 /* -- Section 3.2, Type scale: fluid between 390px and 1440px ------------- */
 :root{
   /* --fs-display-1 sizes the hero H1 and nothing else, and it has now been
-     refitted twice: once when OWNER OVERRIDE 2 replaced the 3D monitor, and
-     again now that the card sits IN FRONT of the frame at 47% of its width,
-     which is a little under half the measure the H1 had when the card was full
-     width. The headline shrank to suit: "CAN YOU HIT 350 SURFACE LUX" was 27
-     characters, "ON THAT FACADE" is 14 plus the drawn caret.
+     refitted three times: once when OWNER OVERRIDE 2 replaced the 3D monitor,
+     again when the block moved IN FRONT of the frame, and now by OWNER CHANGE 4
+     ("bigger type, bigger block"). The headline is short by design: "CAN YOU HIT
+     350 SURFACE LUX" was 27 characters, "ON THAT FACADE" is 14 plus the drawn
+     caret.
 
-     The binding line is line two, "ON THAT " plus the longest rotation word
-     (FACADE and TUNNEL, both 6 characters) plus the drawn caret. MEASURED, not
-     estimated: rendered in Geologica 500 at -0.035em in Chrome it is 8.827 x
-     font-size (FACADE is 8.804, "HOW MANY LUX" only 7.631, so TUNNEL sets the
-     ceiling). It has to hold on one line inside the card's inner width, which
-     is 47% of the shell minus twice the card's padding.
+     THE BINDING LINE IS LINE TWO, "ON THAT " plus the longest rotation word plus
+     the drawn caret. MEASURED IN CHROME, not estimated, and RE-MEASURED for this
+     pass against all four words rather than assumed from the old note - the
+     em-factors came back identical at every width from 1181 to 1920, which is
+     what a font-relative measure should do and is the check that the ramp below
+     can be trusted:
 
-     The shell column below is the REAL one: `scrollbar-gutter:stable` reserves
-     ~15px that vw units still count, so the shell is narrower than
-     (viewport - 2 x gutter) by that much. Sizing off the naive number is how a
-     headline that measured fine ships wrapped.
+       TUNNEL 8.827   FACADE 8.804   STAGE 8.069   DOME 7.994   (line 1: 7.631)
 
-       viewport  shell   card   padding  inner   max F  F at 4vw  headroom
-        1600+    1440    676.8   36.0    604.8   68.5   64 (cap)    6.6%
-        1440     1304    612.9   34.6    543.8   61.6   57.6        6.5%
-        1280     1157    544.0   30.7    482.6   54.7   51.2        6.3%
-        1180     1066    501.0   28.3    444.4   50.3   47.2        6.2%
-         861      774    363.6   20.7    322.3   36.5   34.4        5.7%
+     TUNNEL still sets the ceiling. Geologica 500, letter-spacing -0.035em.
 
-     4vw clears every row by 6%. That margin is not slack, it is the budget for
-     the fallback stack: Geologica is font-display:swap, so the first paint
-     sets this line in Pretendard or the system face, and a headline that fits
-     to the pixel in the webfont wraps for the first 200 ms in the fallback.
-     The 64px cap is where the shell stops growing at 1440 (viewport 1600);
-     past it the card is a fixed 676.8px and a bigger H1 only eats the budget.
-     Below 860 the card leaves the frame and goes full width; the H1 gets its
-     own ramp in that breakpoint block, not this one. */
-  --fs-display-1: clamp(2.125rem, 4vw, 4rem);                    /*  34 to  64 */
+     WHAT CHANGED, AND WHY IT IS SAFE. The ramp goes 4vw -> 4.8vw and the cap
+     64px -> 76px, both +20%, and --block-inline goes 58% -> 64% at the same
+     time so the measure grows with the type instead of being eaten by it. The
+     shell column below is the REAL one: `scrollbar-gutter:stable` reserves ~15px
+     that vw units still count, so the shell is narrower than (viewport - 2 x
+     gutter) by that much. Sizing off the naive number is how a headline that
+     measured fine ships wrapped.
+
+     MEASURED AFTER, in the browser, TUNNEL on line two, every row two lines:
+
+       viewport  shell   block   padding  inner    F      TUNNEL   headroom
+        1920     1440    921.6   36.0     849.6   76.0 c   670.9    21.0%
+        1680     1440    921.6   36.0     849.6   76.0 c   670.9    21.0%
+        1512     1370.0  876.8   36.0     804.8   72.6     640.6    20.4%
+        1440     1304.0  834.6   34.6     765.5   69.1     610.0    20.3%
+        1280     1157.5  740.8   30.7     679.3   61.4     542.2    20.2%
+        1181     1066.8  682.8   28.3     626.1   56.7     500.4    20.1%
+        (c = the 76px cap; F is --fs-display-1 as painted)
+
+     Headroom is 20.1% to 21.0% across the whole 1181-1920 band - FLATTER than
+     the old ramp's 25.9-26.3%, because the type grew faster than the block did,
+     and still 3.3x the 6% the original table was fitted to. That 6% was the
+     budget for the fallback stack: Geologica is font-display:swap, so the first
+     paint sets this line in Pretendard or the system face, and a headline that
+     fits to the pixel in the webfont wraps for the first 200 ms in the fallback.
+     20% buys that several times over, which is the whole reason the size could
+     be raised at all - the headroom was there, unspent.
+
+     THE CAP MOVES WITH THE SHELL, NOT WITH THE VIEWPORT. 4.8vw reaches 76px at
+     viewport 1583, and the shell stops growing at 1440 at viewport 1583 as well
+     (1440 + 2 x 64 gutter + 15 scrollbar). Those two are the same number by
+     arithmetic, not by luck, and that is why headroom is flat past 1583 instead
+     of falling: nothing grows after that point. Picking a cap above 76 would
+     start eating the budget with no measure to pay for it.
+
+     Below 860 the block leaves the frame and goes full width; the H1 gets its
+     own ramp in that breakpoint block, not this one. The step across 861/860 is
+     41.3px -> 54.0px after this change, against 34.4 -> 54.0 before it, so the
+     discontinuity at that breakpoint is smaller than it was, not larger. */
+  --fs-display-1: clamp(2.125rem, 4.8vw, 4.75rem);               /*  34 to  76 */
   --fs-display-2: clamp(2.125rem, 0.964rem + 4.76vw, 5.25rem);   /*  34 to  84 */
   --fs-display-3: clamp(1.75rem, 1.100rem + 2.67vw, 3.5rem);     /*  28 to  56 */
   --fs-h3:        clamp(1.5rem, 1.129rem + 1.52vw, 2.5rem);      /*  24 to  40 */
@@ -213,6 +242,25 @@
      a 29.7px headline. 28 is --fs-display-3's own floor, so the largest figure
      on a phone is still the size of a section title. */
   --fs-stat:      clamp(1.75rem, 3.6vw, 3.5rem);                 /*  28 to  56 */
+
+  /* -- THE LEDE, the one typographic device below the hero ------------------
+     The benchmark, parsed from the live DOM: a section's headline and its lead
+     are ONE sentence at ONE size - 28px / weight 300 / line-height 29.96px
+     (1.07) / letter-spacing -0.28px - and the only thing that changes inside it
+     is the colour. So this is not a heading step and it is not --fs-lead; it is
+     its own size, and it is the only size below the hero that is neither a
+     figure nor a label.
+
+     28px is the benchmark's flat desktop value on a ~1080px content column.
+     This page's shell is 1304px at 1440, so the ramp tops out a little above
+     it at 30 and falls to 22 on a phone, where 28px against a 350px column
+     would set 25 characters to the line.
+       390 -> 22.0    768 -> 24.9    1280 -> 28.8    1440+ -> 30.0
+
+     --fs-lede-mass is the ONE exception the benchmark itself carries: its stats
+     band runs 48px, white on navy. Same weight, same leading, same device. */
+  --fs-lede:      clamp(1.375rem, 1.189rem + 0.762vw, 1.875rem); /*  22 to  30 */
+  --fs-lede-mass: clamp(1.75rem,  1.286rem + 1.905vw, 3rem);     /*  28 to  48 */
 }
 
 /* -- Section 3.4, Container and spacing ----------------------------------- */
@@ -220,9 +268,29 @@
   --gutter:  clamp(20px, 4.2vw, 64px);
   --w-page:  1440px;   /* THE container. one width. */
   --w-narrow:1120px;   /* prose-forward sections, pin panels */
-  --w-text:  68ch;     /* max measure for any paragraph */
+  --w-text:  68ch;     /* max measure for any paragraph (/videos, /privacy, /404) */
   --gap:     clamp(16px, 1.8vw, 28px);
   --nav-h:   clamp(64px, 5.2vw, 84px);
+
+  /* -- THE LEDE MEASURE ------------------------------------------------------
+     The benchmark's section sentences render 312-596px wide - short lines, not
+     full-width prose - and index.html's ledes were inheriting the 68ch that
+     belongs to a paragraph. 68ch of --fs-lede is 1,180px at 1440: twice the
+     ceiling, and the whole reason the sections read as prose blocks.
+
+     Stated in em rather than px so the character measure is CONSTANT while the
+     size ramps, which is the only way one number can serve both the 30px
+     sentence and the 48px stats exception. 19.9em is 40 characters to the line
+     at every width, and it resolves inside the benchmark's own band the whole
+     way up:
+       390 -> 437 (shell caps it at 350)   1280 -> 573
+       768 -> 496                          1440+ -> 596, the ceiling exactly
+     The px ceilings are hard caps, not the usual case: --lede-cap is the
+     benchmark's own 596, and --lede-cap-mass holds the 48px band to the same
+     ~36-40 characters instead of the 955px its em measure would ask for. */
+  --lede-measure:  19.9em;
+  --lede-cap:      596px;
+  --lede-cap-mass: 860px;
 
   --pad-xs: clamp(40px,  5vw,  64px);
   --pad-sm: clamp(64px,  7.5vw,104px);
@@ -230,32 +298,47 @@
   --pad-lg: clamp(140px,16vw, 240px);
 
   /* -- Section 3.6, THE RHYTHM SCALE ----------------------------------------
-     --pad-* sizes the gap BETWEEN sections. Everything INSIDE a section used
-     to be a hand-written clamp, and there were eleven different ones doing
-     four jobs: 10 / 14 / 16 / 18px hairline offsets, three "gap under a label"
-     values, and two head gaps that differed by 2px for no reason. Four steps
-     replace them, one job each, so a section's internal rhythm is the same
-     section to section and page to page.
+     SIX STEPS, ONE RATIO. Each step is 1.5x the one below it, so no two
+     distances on the page are close enough to be mistaken for each other, and
+     the ladder is a perfect fifth the whole way up:
 
-       --rhythm-tight  label -> value -> note inside one stat / readout cell
-       --rhythm-rule   ANY 1px hairline to the text directly under it
-       --rhythm-head   the (00) spine to the title it introduces; head internals
-       --rhythm-block  title -> body, block -> block, table row padding
+       tight   12       within one cell: label -> figure -> note in a .stat
+       rule    18  x1.5 a 1px hairline -> the text under it; a figure -> caption
+       head    27  x1.5 the (00) spine -> the thing it introduces
+       block   40  x1.5 element -> element inside one block; a table row's inset
+       figure  60  x1.5 the sentence -> its picture, table or list
+       group   90  x1.5 block -> block: figure -> figure, table -> next spine
+
+     Values at 1440. Each is a plain vw ramp with a floor, so the 1.5 ratio holds
+     exactly through the fluid band and compresses to about 1.4 at 390 as the
+     floors bite one after another - a phone wants a shallower ladder, not a
+     scaled one.
+
+     WHY SIX AND NOT FOUR. The previous scale had four steps, but --rhythm-head
+     (23.04) and --rhythm-block (28) sat 4.96px apart at 1440, which is not a
+     step, and --rhythm-block was then asked to be NINE different distances:
+     sentence -> media, media -> media, sentence -> stat row, sentence -> CTA,
+     sentence -> list, split -> figure, table -> next label, and two more. A page
+     whose every internal distance is one number reads as a template no matter
+     what is written on it. The two new steps are the two jobs that were being
+     borrowed: --rhythm-figure is text handing off to picture, and
+     --rhythm-group is one finished block handing off to the next.
 
      The scale governs the distance BETWEEN things. A box's own inset is not
-     rhythm and is not on it: .hero-card, .btn, .filter-chip, .marquee--hairline
-     and .video-lightbox__panel keep their own padding clamps, because those are
-     the size of an object rather than the space around one. Nine of those
-     remain and every one is a padding-inline or a box inset.
+     rhythm and is not on it: .hero-block, .btn, .filter-chip and
+     .video-lightbox__panel keep their own padding clamps, because those are the
+     size of an object rather than the space around one.
 
      Distances between things that are NOT on the scale: exactly one,
      .video-chapter-head's margin-block-end, documented at its own rule as a
      sticky offset. Anything else that wants a new number wants one of these
-     four instead. */
-  --rhythm-tight: clamp(8px,  0.8vw, 12px);
-  --rhythm-rule:  clamp(12px, 1.1vw, 16px);
-  --rhythm-head:  clamp(14px, 1.6vw, 24px);
-  --rhythm-block: clamp(18px, 2.0vw, 28px);
+     six instead. */
+  --rhythm-tight:  clamp(8px,  0.85vw, 12px);
+  --rhythm-rule:   clamp(12px, 1.25vw, 18px);
+  --rhythm-head:   clamp(16px, 1.87vw, 27px);
+  --rhythm-block:  clamp(24px, 2.80vw, 40px);
+  --rhythm-figure: clamp(34px, 4.20vw, 60px);
+  --rhythm-group:  clamp(48px, 6.25vw, 90px);
 }
 
 /* -- Section 5, Motion tokens --------------------------------------------- */
@@ -342,7 +425,7 @@ a{ color:inherit; }
   outline:2px solid var(--focus); outline-offset:3px; border-radius:4px;
   box-shadow:0 0 0 5px var(--focus-halo);
 }
-.section--mass :focus-visible, .hero-frame :focus-visible, .media-slot--mass :focus-visible{
+.section--mass :focus-visible, .hero-frame :focus-visible{
   outline-color:var(--focus-on-mass); box-shadow:0 0 0 5px rgba(4,37,45,.9);
 }
 
@@ -372,12 +455,40 @@ a{ color:inherit; }
 .site-shell--narrow{ width:min(var(--w-narrow), 100% - var(--gutter)*2); margin-inline:auto; }
 
 /* Section 3.6, section padding. Rhythm is measure + mass + the ordinal spine.
-   There are no alternating tint bands in this build (section 2.4). */
+   There are no alternating tint bands in this build (section 2.4).
+
+   ---- THE SEAM IS THE SUM OF TWO PADDINGS, SO IT IS DESIGNED AS ONE ---------
+   A gap between two sections is A's padding-block-end plus B's padding-block-
+   start. Written only as symmetric padding-block that sum was whatever the two
+   neighbours happened to be, and index.html shipped four seam values - 208,
+   262, 334 and 389 at 1440 - none of which meant anything: 334 appeared both
+   where the document changes subject (#product -> #ch-01) and in the middle of
+   the chapter run (#ch-01 -> #ch-02), because #ch-01 was --pad-lg for a reason
+   that left with its pinned scroller.
+
+   The four --pad-* steps stay exactly as they were. What is new is that a
+   section may now set ONE side, so a seam can be authored as a single decision
+   by giving both sides the same step. index.html now produces exactly three:
+
+     208 = --pad-sm  x2   the next beat in the same run (chapter to chapter)
+     317 = --pad-md  x2   the next movement (the run ends, a new subject opens)
+     460 = --pad-lg  x2   across the dark punctuation, both sides of #numbers
+
+   Ratios 1.52 and 1.45, the same fifth the rhythm scale runs on. And the
+   largest INTERNAL step, --rhythm-group at 90, is well under half the smallest
+   seam at 208, so "inside a section" and "between sections" can never be read
+   as the same distance. */
 .section{ padding-block:var(--pad-md); position:relative; }
 .section--pad-xs{ padding-block:var(--pad-xs); }
 .section--pad-sm{ padding-block:var(--pad-sm); }
 .section--pad-md{ padding-block:var(--pad-md); }    /* same value as .section, written out so the modifier set is complete */
 .section--pad-lg{ padding-block:var(--pad-lg); }
+/* One side only. Authored in pairs: the section above a seam takes --end-*, the
+   section below it takes the matching --start-*, and the seam is 2x that step. */
+.section--pad-start-md{ padding-block-start:var(--pad-md); }
+.section--pad-start-lg{ padding-block-start:var(--pad-lg); }
+.section--pad-end-md  { padding-block-end:var(--pad-md); }
+.section--pad-end-lg  { padding-block-end:var(--pad-lg); }
 /* .section--wash is DELETED: section 3.6 caps it at one band per page and no
    page uses its one band. --surface-tint keeps its other job (::selection). */
 .section--mass{ background:var(--mass-950); color:var(--mass-ink); }
@@ -385,10 +496,18 @@ a{ color:inherit; }
 
 .section--mass p,
 .section--mass li{ color:var(--mass-ink-soft); }
-.section--mass .section-title,
-.section--mass .chapter-title{ color:var(--mass-ink); }
+.section--mass .section-title{ color:var(--mass-ink); }
 .section--mass .link{ color:var(--brand-400); }          /* 8.87:1 on --mass-950 */
 .section--mass .link:hover{ color:var(--brand-300); }
+/* ---- The three buttons that can land on the dark ground -------------------
+   #start is the page's second and last dark band, and it carries a .btn--solid
+   and a .btn--text. .btn--solid is --ink-950 on --paper, which on --mass-950 is
+   a near-invisible box; .btn--text is --ink-950 type, 1.2:1 there. Both invert
+   here rather than in the markup, because .btn--on-mass would also hand
+   .btn--text the --mass-line border it deliberately does not have. */
+.section--mass .btn--solid  { background:var(--mass-ink); color:var(--mass-950); border-color:transparent; }
+.section--mass .btn--text   { color:var(--mass-ink); }
+.section--mass .btn--outline{ color:var(--mass-ink); border-color:var(--mass-line); }
 /* ---- The stat family on the dark ground ----------------------------------
    #numbers is the page's one --mass band (see its markup), and .section--mass
    shipped without rules for the one component that would ever land on it. Every
@@ -405,26 +524,15 @@ a{ color:inherit; }
 .section--mass .stat-note,
 .section--mass .stat-unit{ color:var(--mass-ink-soft); }
 
-/* Section 3.7, bleed. Only .media-slot, .marquee and .pin-flow may bleed. Never
-   text, and never .hero-frame (OVERRIDE 2: a frame that bleeds is a frame that
-   can own the scroll). A bleeding element carrying a caption keeps its own
-   inner padding-inline: var(--gutter).
+/* Section 3.7, bleed. Only .media-slot may bleed. Never text, and never
+   .hero-frame (OVERRIDE 2: a frame that bleeds is a frame that can own the
+   scroll).
 
    ---- THE ESCAPE DISTANCE IS DECLARED BY THE COLUMN, NOT GUESSED BY THE CHILD
 
-   These three rules shipped as calc(50% - 50cqw). That 50% resolves against the
+   This rule shipped as calc(50% - 50cqw). That 50% resolves against the
    BLEEDING ELEMENT'S OWN containing block, so the formula only lands on the
    viewport edge when that containing block is itself centred in the container.
-
-   .bleed-full is always centred - its two users are a child of .site-main and a
-   child of a .site-shell - which is why it measured 0px lost at every width.
-   .bleed-right and .bleed-left are not centred: both sit in a chapter's media
-   column, which is flush with one shell edge, and above 1180 that column is
-   0.38 of the shell. Measured before this fix, outer edge of the .bleed-right
-   slot against documentElement.clientWidth: +368.8 at 1280, +415.5 at 1440,
-   +460.1 at 1920, and .bleed-left the mirror of that off the left. That is 30%
-   of the slot pushed off-screen. Today the slots are empty so only dark ground
-   is lost; the day a capture lands, a third of every frame goes with it.
 
    So the distance is no longer inferred from the child. Each container states
    how far its own inline edge sits inside the viewport, and a bleed spends
@@ -436,65 +544,55 @@ a{ color:inherit; }
                  (100cqw - --w-page)/2 once it does. max() is those two facts
                  in one expression, not a guess between them.
 
-   The token is INHERITED, which is what fixes the marquee: it is a direct child
-   of .site-main, not of any shell, so it now reads 0 and stops paying a gutter
-   it never owed. Measured before this fix at 390, the marquee was 415px wide in
-   a 375px content box - 20px past both edges - and 816.25px in 753 at 768.
+   The token is INHERITED, and that is now doing a SECOND job: a full-bleed slot
+   is the only element on the page whose own box runs to the viewport while its
+   contents must still start on the shell's column, so it spends --bleed-inset
+   as padding-inline exactly as it spends it as negative margin. One number,
+   both directions, no breakpoint (section 4.9).
 
-   It is also why the sub-860 rewrite of these three rules is deleted rather
-   than corrected: max() already returns --gutter at every width below the cap,
-   so the degrade that block hand-wrote is what this formula computes anyway.
-   The 380px block that restates a shell as calc(100% - 40px) does not move the
+   It is also why the sub-860 rewrite of this rule is deleted rather than
+   corrected: max() already returns --gutter at every width below the cap, so
+   the degrade that block hand-wrote is what this formula computes anyway. The
+   380px block that restates a shell as calc(100% - 40px) does not move the
    inset either - --gutter is clamped to its 20px floor everywhere below 476, so
    both expressions are the same 20px there.
 
-   The var() fallback is 0px, so a .bleed-* authored outside every container
+   The var() fallback is 0px, so a .bleed-full authored outside every container
    that declares an inset does nothing at all rather than overshooting by an
    arbitrary distance. A bleed that fails flat is inspectable; one that flies
-   off the viewport under overflow-x:clip is not, which is exactly how both of
-   these survived to be measured. */
+   off the viewport under overflow-x:clip is not.
+
+   .bleed-right and .bleed-left are DELETED with .split-2--media-right, the
+   two-column chapter layout that was their only caller. A one-sided bleed is
+   only meaningful out of a column that is flush with one shell edge, and there
+   are no columns left. .bleed-gutter was already deleted for never having been
+   authored at all. */
 .site-main         { --bleed-inset:0px; }
 .site-shell        { --bleed-inset:max(var(--gutter), (100cqw - var(--w-page)) / 2); }
 .site-shell--narrow{ --bleed-inset:max(var(--gutter), (100cqw - var(--w-narrow)) / 2); }
 
-.bleed-full  { inline-size:100cqw; margin-inline:calc(var(--bleed-inset, 0px) * -1); }
-.bleed-right { margin-inline-end:calc(var(--bleed-inset, 0px) * -1); }
-.bleed-left  { margin-inline-start:calc(var(--bleed-inset, 0px) * -1); }
-/* .bleed-gutter is DELETED. Section 3.7 introduced it as the sub-860 degrade
-   target, but the degrade is no longer a rewrite at a breakpoint - it is the
-   same --bleed-inset the wide layout uses, which resolves to one gutter on its
-   own below the cap. No page ever authored the class and none does. One
-   mechanism for the bleed at every width, not two. */
+.bleed-full{ inline-size:100cqw; margin-inline:calc(var(--bleed-inset, 0px) * -1); }
 
-/* Section 3.5, Grid */
-.grid-12{ display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:var(--gap); }
-.col-3 { grid-column:span 3; }
-.col-4 { grid-column:span 4; }
-.col-5 { grid-column:span 5; }
-.col-6 { grid-column:span 6; }
-.col-7 { grid-column:span 7; }
-.col-8 { grid-column:span 8; }
-.col-12{ grid-column:span 12; }
-.start-2{ grid-column-start:2; }
-.start-6{ grid-column-start:6; }
-.start-7{ grid-column-start:7; }
-.start-8{ grid-column-start:8; }
+/* Section 3.5, Grid.
+   THE 12-COLUMN PRIMITIVES ARE DELETED. .grid-12, .col-3/4/5/6/7/8/12,
+   .start-2/6/7/8 and their two breakpoint lines had zero instances on all four
+   pages and were kept through two sweeps on the argument that markup was still
+   being written against the spec's grid. That argument has expired: the markup
+   pass is done, every section on every page lays out with .split-3, .stat-row,
+   .limits, .speclist or a plain block stack, and a spec-shaped grid that has
+   never once been authored is not a primitive, it is 12 rules of ballast.
+   Restorable verbatim from spec section 3.5 if a section ever wants columns.
 
-/* .split-2 (the plain 1fr 1fr) is DELETED: no page authors it, and the three
-   named layouts below each declare their own display and gap rather than
-   extending it, so it was never a base class in practice. The 12-column
-   primitives above it are NOT deleted even though no page authors them either
-   - see the note at the end of this file. */
-.split-2--lead-left  { display:grid; grid-template-columns:1.15fr 0.85fr; gap:clamp(28px,4vw,72px); align-items:start; }
-.split-2--media-right{ display:grid; grid-template-columns:0.44fr 0.56fr; gap:clamp(28px,4vw,72px); align-items:start; }
-.split-3             { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--gap); align-items:start; }
-/* A .split-3 has no block-end margin of its own, so in #videos-cta the measured
-   gap between the bottom of the grid and the "OPEN FEATURE VIDEOS" link under
-   it was exactly 0px - the link touched the cards. Every other block-to-block
-   distance on the page is --rhythm-block; this one is now too. */
-.split-3 + .hero-actions{ margin-block-start:var(--rhythm-block); }
+   .split-2--lead-left and .split-2--media-right go with them, but for the
+   opposite reason: they WERE authored, by the ten chapters, and the copy cut
+   took their second column away. Deleted here with .chapter--reverse and the
+   two @media/@supports blocks that propped them up - see section 4.7. */
+.split-3{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--rhythm-block); align-items:start;
+}
 
-/* Same bug, second site. On 404.html a bare .copy paragraph is followed directly
+/* On 404.html a bare .copy paragraph is followed directly
    by the REPORT A BROKEN LINK button, and the measured gap is -22px: the button
    box overlaps the paragraph rather than merely touching it. The three
    .copy.section-lead + .hero-actions pairs on index and videos are NOT affected
@@ -698,93 +796,155 @@ body.overlay-open{ overflow:hidden; }
 }
 
 /* ---- THE HERO GEOMETRY, in one place -------------------------------------
-   Row 1 of this grid is the frame. .hero-card is an absolutely positioned
-   child placed into that SAME row and column, so its containing block is the
-   frame's grid area, i.e. the frame's own box. Every number below is therefore
-   a percentage OF THE FRAME and holds its ratio at every width, with no JS and
-   no magic pixel offsets. grid-template-rows is declared so row line 2 exists
-   for that placement instead of resolving to the container's padding edge.
+   OWNER CHANGE 1 rebuilt this. The old .hero-card was ABSOLUTELY POSITIONED
+   into the frame's grid area, which made every offset a clean percentage of
+   the frame - and made the row below it uncleared, because an out-of-flow box
+   contributes no height. The old .hero-copy therefore carried a hand-computed
+   --card-overhang top margin to dodge it, and that only held while the card's
+   min-block-size beat its own content. Once the lead and the CTAs move INTO
+   the block (change 1) the content wins at some widths and loses at others,
+   and a fixed clearance token would have the readout under the block at 1280
+   and a hole at 1600.
 
-   DOM ORDER IS UNCHANGED: frame, card, copy, readout, caption. The overlap is
-   positioning only. Nothing uses `order`, nothing is reordered in the source,
-   so focus order still equals reading order and the card, coming later in the
-   DOM, paints over the frame without needing to win a z-index fight.
+   So the block is IN FLOW now, pulled up over the frame by a negative top
+   margin. The browser therefore knows how tall it is, and the readout below it
+   clears it by exactly one row gap at every width and every copy length. There
+   is no clearance token left to get wrong, and a longer headline or a third
+   line of lead just hangs further past the frame instead of colliding.
 
-   Benchmark geometry, measured on the live easywith.com DOM at 1280x720: the
-   white headline card starts at 73.5% of the hero's height, is 24.7% of it
-   tall, and is anchored to the media's left edge. Ours starts at 75% and is
-   28% tall. Two deliberate departures:
+   THE ARITHMETIC. Grid, one column. Row 1 is the frame (painted height H). Row 2
+   is the block, whose top would sit at H + G, where G is the row gap. Giving the
+   FRAME `margin-block-end: -(G + overlap)` makes row 1 measure H - G - overlap,
+   so row 2's top lands at H - overlap: `overlap` above the frame's painted
+   bottom edge, which is where the block's border-box top goes. Row 2 is then the
+   block's own height, and row 3 starts one full G below the block's real bottom
+   edge. That is the whole mechanism.
 
-   1. The extra height IS the overhang. 75 + 28 = 103, so the card hangs 3% of
-      the frame's height past its bottom edge. The benchmark's media is
-      full-bleed and has no bottom edge to hang past; ours is a bounded rounded
-      rectangle, and a card that stops short of that edge reads as a panel
-      INSIDE the screen rather than a card in front of it.
-   2. As a share of the box's WIDTH, which is what "box proportions" means for
-      a card, the two land in the same place: the benchmark card is 213/1280 =
-      16.6% of the media width tall, ours is 28% x 9/16 = 15.75%. In aspect
-      that is 2.98:1 against the benchmark's ~2.83:1.
+   THE PULL IS ON THE FRAME, NOT ON THE BLOCK, and that is load-bearing rather
+   than arbitrary. It used to be `margin-block-start:-(G + overlap)` on the
+   block, which is arithmetically identical ONLY while the block is taller than
+   the pull: a grid track is floored at 0, so once the pull exceeds the block's
+   height the block's margin box goes negative, the track collapses, and every
+   distance below it silently gains the difference. OWNER CHANGE 4 crossed that
+   line (208.7px of pull against a 196.3px block at 1440) and the gap under the
+   headline came out 39.4px against a rule asking for 26.9px. Moved onto the
+   frame, the same pull is 208.7 against 704.9px and the floor is unreachable.
+   Full note at .hero-frame. Do not move it back.
 
-   The card's height is a min-block-size, but at every width from 861 up the
-   minimum wins over the content, so the height is exactly 28% and the overhang
-   is exactly 3%. Measured in Chrome at a 1440 viewport: frame 1305 x 734, card
-   613 x 206, of which the headline plus padding needs 174. Verified at 1600,
-   1440, 1280, 1180, 1024, 900 and 861: top 75.0%, height 28.0%, width 47.0% at
-   every one. If the H1 ever outgrew the minimum the card would simply get
-   taller and hang further, which fails soft rather than clipping.
+   PERCENTAGES ARE OF WIDTH, AND THE CONVERSION FACTOR IS THE FRAME'S RATIO.
+   A percentage margin resolves against the containing block's INLINE size, so
+   an overlap expressed as a share of the frame's HEIGHT has to be divided by
+   the frame's aspect ratio to be written here. THE TARGET IS STATED ONCE, IN
+   HEIGHT, AND CONVERTED PER RATIO: the block's top edge sits at 77.2% of the
+   frame's height, so 22.8% of the frame's height is overlapped.
 
-   The card covers the frame's lower-left only. The two controls the embed
-   exposes, the axis gizmo and the LUX HEATMAP button, are both top-right, and
-   the middle of the scene stays clear. .hero-frame-launch moved to the
-   bottom-right corner for the same reason (see below). ----------------------- */
+       16 / 9   (default)       - see the note at --block-overlap below
+       1.70 / 1 (>= 1181px)     22.8% / 1.70  = 13.4118%
+
+   OWNER CHANGE 4 IS EXACTLY WHY THIS CONVERSION IS WRITTEN OUT. The frame's
+   ratio changed (2.4/1 -> 1.70/1, +41.2% height) and 22.8/2.4 = 9.5% would have
+   left the block at 83.8% of the frame - drifting UP the frame as the frame grew,
+   which is the one thing owner change 5 rules out. Changing aspect-ratio without
+   restating --block-overlap silently moves the block, which is why the wide
+   breakpoint below restates it rather than inheriting.
+
+   MEASURED IN CHROME, not estimated. Block top / block bottom as a share of
+   the frame's height, before and after the taller frame:
+
+     BEFORE, 2.4/1, --block-inline:58%, --block-overlap:9.5%
+       vw     frame          block        top     bottom   hangs
+      1680  1440   x 600    835 x 190    77.2%   108.8%     8.8%
+      1512  1370.0 x 570.8  794 x 183    77.2%   109.3%     9.3%
+      1440  1304.0 x 543.3  756 x 175    77.2%   109.4%     9.4%
+      1280  1157.5 x 482.3  671 x 156    77.2%   109.5%     9.5%
+
+     AFTER, 1.70/1, --block-inline:64%, --block-overlap:13.4118%
+       vw     frame          block        top     bottom   hangs
+      1680  1440   x 847.1  922 x 212    77.2%   105.0%     5.0%
+      1512  1370.0 x 805.9  877 x 206    77.2%   105.3%     5.3%
+      1440  1304.0 x 767.1  835 x 196    77.2%   105.4%     5.4%
+      1280  1157.5 x 680.9  741 x 175    77.2%   105.5%     5.5%
+
+   The top edge holds 77.2% on every row of both tables, which is the check that
+   matters: it is the one number the conversion could get wrong and still look
+   plausible. The block is bigger in absolute terms at every width (175 -> 196px
+   tall at 1440, +12%) and covers LESS of the frame, because the frame grew
+   faster than the block did: 81.6% of the frame's area is untouched after,
+   against 74.6% before. The product got more room, which was the point of
+   owner change 1.
+
+   THE HANG SHRINKS FROM 9.4% TO 5.4% OF THE FRAME AND THAT IS FINE. What carries
+   "in front of" is that the frame's bottom-left corner, its radius and its border
+   are visibly interrupted, not how far past the edge the interruption runs. In
+   absolute pixels the hang is barely changed (51.2px -> 41.4px at 1440); it is
+   only smaller as a SHARE of a frame that is 224px taller.
+
+   WHAT THE BLOCK COVERS. The frame's lower-left, up to 64% of its width and
+   from 77.2% of its height down. The embed's own furniture is elsewhere: the
+   axis gizmo and the LUX HEATMAP button are both top-right (verified in the
+   app's EmbedViewer.jsx, the button at right:16 / top:92, the gizmo at a 46px
+   margin with a 37.7px extent), so both stay clear, and .hero-ticker is inset
+   clear of both as well - see its own block. The one thing the block DOES cover
+   is the embed's bottom-centre "Drag to look around" hint chip, which is
+   aria-hidden and fades on first interaction - that instruction is carried in
+   our own copy instead, in the live state of .hero-caption and in
+   .hero-frame-launch-hint. .hero-frame-launch sits bottom-RIGHT for the same
+   reason. ------------------------------------------------------------------ */
 .hero-inner{
   position:relative;
   display:grid;
   grid-template-columns:minmax(0,1fr);
   grid-template-rows:auto;
-  row-gap:clamp(24px,3.4vw,48px);
+  /* Declared as a token because the block's negative margin has to subtract
+     exactly this value; `row-gap` alone is not readable from a calc(). */
+  --hero-gap: clamp(24px,3.4vw,48px);
+  row-gap:var(--hero-gap);
 
-  /* ---- REFINED, not redesigned. The relationship is unchanged: the card is in
-     front of the frame, anchored to its lower-left, at roughly the benchmark's
-     box proportions. What changed is that all three numbers were too timid to
-     read as a decision.
+  /* 64% width. OWNER CHANGE 4 raised this from 58% at the same time it raised
+     --fs-display-1 from 4vw/64 to 4.8vw/76, and the two moves are one decision:
+     the type is +20% and the measure is +10.3%, so line two's headroom lands at
+     20.1-21.0% across 1181-1920 instead of 25.9-26.3%. Raising the size without
+     raising the measure would have spent the whole margin (58% would leave
+     11.7% at 1440), and raising the measure without the size would have widened
+     a block nobody asked to widen. The full table is at --fs-display-1.
 
-     Measured before, at 1440: the card hung 22.23px past the frame - 3% of a
-     742px frame. A 3% break-out is under the threshold where an overhang reads
-     as intentional; it reads as a rounding error, and it was the only thing
-     saying "in front of" rather than "inside". The overhang is now 8% of the
-     frame's height (72 + 36 - 100), which is 44px at 1440 and 66px at 1920 -
-     far enough that the card is unambiguously a separate object.
+     It is still a left-anchored block over a media panel, not a slab: 36% of the
+     frame's width is untouched, and because owner change 4 also made the frame
+     41.2% taller, the block covers a SMALLER share of the frame than it did at
+     58% - 18.4% of the frame's area, against 25.4% before. Wider and less
+     covering at once, which only works because the height came first.
 
-     54% width, up from 47%: the card is the H1's measure, and at 47% the
-     headline had only 6% of headroom over the fallback-font wrap point (see the
-     --fs-display-1 table). 54% takes that to ~18% at 1440, which is what lets
-     the frame get shorter (below) without the headline ever overflowing a
-     shorter card - the two are one change, not two.
+     The left edge stays flush with the frame at 0. That edge is the site's
+     left column: the H1 aligns with the lockup above it and with the readout,
+     the caption and every section head below it. The overhang, not a broken
+     alignment, is what says "separate object". */
+  --block-inline: 64%;
+  /* THE DEFAULT, WHICH IS THE 861-1180 BAND ONLY. Below 861 the block stops
+     overlapping altogether and this value is inert; at and above 1181 the
+     breakpoint below restates it against the 1.70/1 frame. So the only widths
+     this number governs are the ones where the frame is 16/9.
+     KNOWN DIVERGENCE, MEASURED AND LEFT ALONE. Run 40% through the same
+     conversion the wide branch uses. A percentage margin resolves against WIDTH,
+     so a 40% pull on a 16/9 frame is 40 x 16/9 = 71.1% of the frame's HEIGHT,
+     which puts the block's TOP edge at 28.9% of the frame and its BOTTOM edge at
+     55.7% - measured at 1180, 1000 and 900, identical at all three because the
+     ratio is fixed through the band.
 
-     The left edge stays flush with the frame at 0. The review proposed breaking
-     it, but that edge is the site's left column: the H1 aligns with the lockup
-     above it and with the lead, the readout, the caption and every section head
-     below it. Breaking the alignment to prove the card is a separate object
-     would cost more than it buys, and the overhang above now carries that job.
-     What IS fixed is the radius mismatch that made the shared edge read as
-     misalignment - see .hero-card. */
-  --card-inline: 54%;   /* of the frame's inline size */
-  --card-top:    72%;   /* of the frame's block size  */
-  --card-block:  36%;   /* of the frame's block size  */
-  /* The overhang is (72 + 36 - 100) = 8% of the frame's HEIGHT. A percentage
-     margin resolves against its containing block's WIDTH, so it has to be
-     restated against width, and THE CONVERSION FACTOR IS THE FRAME'S RATIO:
-     here 8% x 9/16 = 4.5%. That factor is only correct while the frame is
-     16/9, which is why the wide-frame breakpoint below restates this token
-     rather than inheriting it - changing aspect-ratio without changing this
-     silently decouples the margin from the overhang it is supposed to clear.
-     .hero-copy carries it as a top margin, which is what keeps the card from
-     ever landing on the lead. It is deliberately NOT a bottom margin on the
-     frame: that would grow row 1, and row 1 is the card's containing block. */
-  --card-overhang: 4.5%;
+     So in this band the block does not hang past the frame's bottom edge at all;
+     it floats inside the scene, which is the "caption on a picture" shape the
+     wide branch's own note rejects, and the occlusion argument .hero-block makes
+     for "in front of" does not hold here. The value that would match the wide
+     branch is 22.8% / (16/9) = 12.825%.
+
+     IT IS NOT CHANGED HERE, and the reason is scope, not agreement. Owner change
+     5 asks that the block not drift up the frame AS THE FRAME GROWS; the frame's
+     ratio is untouched below 1181, so nothing in the five changes reaches this
+     number, and moving the block ~48% of the frame's height down at 1180 would
+     re-solve a fold nobody measured for this pass. Flagged, not fixed: if this
+     band is revisited, 12.825% is the number, and the fold at 1180, 1024 and 768
+     is what has to be re-checked with it. */
+  --block-overlap: 40%;
 }
-.hero-frame{ grid-area:1 / 1; }
 
 .hero-title{
   font-family:var(--font-display); font-size:var(--fs-display-1); font-weight:500;
@@ -796,79 +956,183 @@ body.overlay-open{ overflow:hidden; }
    different length it re-balances them into a shape the copy did not ask for. */
 .hero-title-line{ display:block; }
 
-/* The lead and the CTA row read as one band under the frame, not as two
-   leftovers stacked: the lead holds the left column at its own measure and the
-   buttons sit at the far right on the same optical line. */
-.hero-copy{
-  margin-block-start:var(--card-overhang);
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:clamp(20px,2.6vw,44px);
-  align-items:center;
-}
+/* STALE COMMENT CORRECTED (owner change 4 pass). What stood here said
+   ".hero-copy is DELETED, not left dead" - and it is not: OWNER CHANGE 3 brought
+   the wrapper back, index.html authors it, and it has a live rule 60 lines
+   below. The deletion note was written for OWNER CHANGE 1, which folded the lead
+   and the CTAs into .hero-block, and it was never revised when change 3 moved
+   them back out onto the page's own ground. A comment that says a shipping
+   component does not exist is worse than no comment.
+   WHAT IS STILL TRUE from it, and worth keeping: the wrapper's old two-column
+   lead/buttons split is gone and is not coming back. The lead needs the full
+   measure at any of the widths this block is used at, and side-by-side would
+   leave the buttons a ~330px column and the lead five lines. Its 1180px
+   breakpoint rule is deleted too. */
 .hero-lead{
   font-size:var(--fs-lead); font-weight:400; line-height:1.55;
   letter-spacing:-.004em; color:var(--ink-500); max-inline-size:var(--w-text);
 }
 .hero-actions{ display:flex; flex-wrap:wrap; align-items:center; gap:clamp(12px,1.4vw,20px); }
 
-/* ---- THE HEADLINE CARD, in front of the frame ----------------------------
-   It carries the H1 and nothing else. That is what holds it to the benchmark's
-   box proportions: put the lead and the buttons in here and the box grows to
-   twice the height and stops being the benchmark's shape. */
-.hero-card{
-  position:absolute; z-index:2;
-  /* ALL FOUR grid lines, not `grid-row:1; grid-column:1`. For an absolutely
-     positioned grid child an `auto` end line does NOT mean "span one track",
-     it resolves to the grid container's padding edge. Written the short way
-     the card's containing block runs from the top of the frame to the bottom
-     of the whole hero, so `inset-block-start:75%` lands 75% of the way down
-     the frame PLUS the lead, the readout and the caption, i.e. off screen.
-     1 / 1 / 2 / 2 pins the containing block to row 1 alone: the frame's box. */
-  grid-area:1 / 1 / 2 / 2;
-  inset-block-start:var(--card-top);
-  /* Flush with the frame's left edge, which is also the site's left column, so
-     the H1 aligns with the lockup above it and with the lead, the readout and
-     every section head below it. */
-  inset-inline-start:0;
-  inline-size:var(--card-inline);
-  min-block-size:var(--card-block);
-  display:grid; align-content:center;
+/* ---- THE HERO BLOCK: headline, lead and CTAs as ONE surface ---------------
+   OWNER CHANGE 1. This was .hero-card, which held the H1 alone while the lead
+   and the buttons sat under the frame in .hero-copy. Two surfaces carrying one
+   argument read as a card with leftovers under it, which is exactly what the
+   owner called out. They are one block now: one border, one fill, one padding
+   box, headline to lead to CTAs.
+
+   WHAT IS *NOT* IN HERE, AND WHY. .hero-readout and .hero-caption stay outside
+   it, below. Three reasons, in order of weight:
+
+   1. THEY ARE A DIFFERENT OBJECT. The block is the promise: a claim and the
+      two buttons that act on it. The readout and the caption are the evidence
+      for the PICTURE - what the frame shows, what the panel in it reads, which
+      of the engine's four lux meanings each figure is. Folding the evidence
+      into the promise is how a marketing block starts looking like an
+      instrument panel, which is the failure section 6 S2 already flagged once
+      for this exact component.
+   2. THE READOUT IS A SHARED COMPONENT. It is the same object as a #numbers
+      .stat, down to the three rhythm steps and the hairline spine (see
+      .hero-readout below). That spine is the document's rule, not a card's
+      divider. Inside an opaque block it stops being the page's spine and
+      becomes decoration, and the two blocks stop measuring the same on the
+      same page.
+   3. THE SHAPE WOULD GO. Measured at 1440x900 the block is 765 x 346, 2.21:1,
+      with 71% of its height on the frame. The readout measures 148px there and
+      the caption 191px; fold both in and the block is ~733px tall against a
+      550px frame - taller than the thing it is supposed to be in front of, at
+      58% of its width, so it would have to start above the frame's top edge to
+      fit. That is the full-width slab the brief rules out, and it would bury
+      the scene it is meant to sit on.
+
+   The caption has a fourth, specific reason: it DESCRIBES the frame, and this
+   block is the thing occluding the frame's lower left. A description printed
+   inside the object blocking the view is the same mistake as a caption naming
+   the colour bar the card covers, which this page has already corrected once.
+
+   What keeps them from reading as loose text is not membership, it is the
+   join: the block's bottom border and the readout's top hairline are one row
+   gap apart on the same left edge, so the readout reads as the next component
+   in the column rather than as an orphan of the block. */
+.hero-block{
+  /* In flow, in row 2, riding up over row 1 because ROW 1 GIVES BACK the height
+     rather than because this box pulls itself up. The pull used to live here as
+     margin-block-start:calc(-1 * (--hero-gap + --block-overlap)); it moved to
+     .hero-frame's margin-block-end during OWNER CHANGE 4, and the move is a
+     correctness fix, not a preference - the full argument is at .hero-frame.
+     Short form: an item's grid row can never be shorter than 0, so a negative
+     top margin larger than this box's own height silently stops working, and
+     owner change 4 made it larger (209px of pull against a 196px block at
+     1440). The frame is 705px tall and can absorb the same 209px with room to
+     spare, so the pull sits there and this box is a plain, positive-height grid
+     item again.
+     z-index needs no fight: the block is later in the DOM than the frame. */
+  position:relative; z-index:2;
+  justify-self:start;
+  align-self:start;
+  inline-size:var(--block-inline);
+
+  display:grid; gap:var(--rhythm-block); justify-items:start;
   padding:clamp(20px,2.4vw,36px);
+
+  /* ---- OWNER CHANGE 2: NO SHADOW. Edge, ground and overlap instead. --------
+     The five-layer box-shadow (ring, halo, contact, lift, long soft pool) is
+     deleted. Three things carry "in front of" without it:
+
+     EDGE. 1px --line-control, not --line-strong. This border crosses two
+     grounds - the frame's --mass-950 above, white paper below - and it is the
+     only palette hairline that survives both: 5.25:1 on paper, 3.06:1 on the
+     mass ground. --line-strong measures 10.28:1 on the frame but 1.56:1 on
+     paper, so the half of the border below the frame's bottom edge would all
+     but vanish, and that is precisely the half doing the new work. It also
+     buys the hierarchy the shadow used to buy for free: the block's edge is
+     now darker than the frame's own --line-strong edge, so the nearer object
+     has the stronger boundary, which is how a flat composition says "in
+     front".
+     This is also what answers the live embed. Once the scene loads, the ground
+     behind the top half of this block is a 3D view whose colours are not ours
+     to predict; the old ring and halo existed to hold the top edge if that
+     scene rendered white. A border that already passes 3:1 on both extremes
+     does that job without painting anything over the measurement image
+     (section 4.4) - the fill stays opaque --paper and never tints a pixel of
+     the scene.
+
+     OVERLAP. The block's top-left corner sits ON the frame and its bottom edge
+     hangs 10-29% of the frame's height past the frame's bottom-left corner,
+     visibly interrupting that corner's radius and its border. Occlusion is the
+     one depth cue that cannot be faked from behind, and unlike a shadow it
+     does not need a light source the rest of this page does not have.
+
+     GROUND. There is no depth to sell on the lower half - opaque paper on
+     white paper - so the block does not float there, it TERMINATES. Its bottom
+     border and the readout's top hairline sit one row gap apart on the same
+     left edge, and the document resumes. That reads as a plate set down on the
+     page's own spine, which is what the long soft shadow was faking. */
+  /* ---- OWNER CHANGE 3: NO BOUNDARY. -------------------------------------
+     The border is gone and the fill is the page's own --paper, so this stops
+     being an object placed on the scene and becomes the page cutting into it.
+     Occlusion still carries "in front": the paper interrupts the frame's
+     lower-left corner, its radius and its border, and occlusion is the one
+     depth cue that cannot be faked from behind.
+     The block now holds the HEADLINE ALONE - the lead and the CTAs moved out
+     to .hero-copy, in flow below - so nothing here needs to read as a
+     container, and there is no edge between this and the section under it. */
   background:var(--paper);
-  border:1px solid var(--line-strong);
   /* --radius-frame, NOT --radius-card. The two-step radius family is right for
      a card sitting loose on the page; it is wrong for this one, because this
-     card shares the frame's left edge. Measured at 1440 the frame drew 23.04px
+     block shares the frame's left edge. Measured at 1440 the frame drew 23.04px
      and the card 18.72px, so two near-concentric rounded rectangles met on one
      edge with a 4.32px mismatch - the visual signature of a misaligned box, not
      of a composition. Same corner treatment on both, and the shared edge reads
      as intended. --radius-card had no other consumer and is deleted at the token
      block above. */
-  border-radius:var(--radius-frame);
-  /* Presence, not decoration. Once the embed loads, the thing behind this card
-     is a LIVE scene whose colours are not ours to predict, so the card may not
-     assume the ground is dark:
-       - the fill is opaque --paper, never a translucent panel;
-       - the 1px --line-strong edge is the same edge the frame carries, so on a
-         blown-out white frame the card still has a boundary;
-       - that edge is doubled by an UNOFFSET ring and halo, because every other
-         shadow here points down and would leave the card's top edge holding a
-         1.56:1 hairline on its own the moment the scene renders white;
-       - the tight near-black shadow reads on any ground, light or dark;
-       - the long soft one lifts it off the white paper below the frame, which
-         is where the overhang lands.
-     On the dark scene the first two do nothing visible, which is the point:
-     they cost nothing there and are the whole boundary on a bright frame.
-     Nothing is blended over the measurement image (section 4.4): the card is
-     opaque and sits beside the scene's pixels, it never tints them. */
-  box-shadow:
-    0 0 0 1px rgba(2,37,45,.06),
-    0 0 4px rgba(2,37,45,.10),
-    0 1px 3px rgba(2,37,45,.18),
-    0 4px 14px -3px rgba(2,37,45,.20),
-    0 30px 64px -28px rgba(2,37,45,.55);
+  /* Only the corner that bites INTO the scene is rounded. The other three sit
+     on paper against paper, where a radius would draw an edge the owner asked
+     to remove. This is the notch shape the benchmark uses. */
+  border-radius:0 var(--radius-frame) 0 0;
+  box-shadow:none;
 }
+
+/* The lead and the CTAs, on the page's own ground, one rhythm step below the
+   headline that overlaps the frame. No fill, no border, no rule: the hero ends
+   by becoming the page rather than by closing a box. */
+.hero-copy{
+  display:grid;
+  gap:var(--rhythm-block);
+  justify-items:start;
+  /* ---- OWNER CHANGE 4: CLOSED ONE STEP, TO --rhythm-head ------------------
+     History: the hero grid's own row gap put 88px here, which read as two
+     unrelated blocks. OWNER CHANGE 3 closed that to --rhythm-block (40px at
+     1440). The owner wants it closer still, so it drops ONE STEP on the page's
+     own six-step ladder, to --rhythm-head: 40 -> 27 at 1440, 35.8 -> 23.9 at
+     1280, a third out of the distance.
+
+     --rhythm-head, and not a hand-picked number, because the ladder is a perfect
+     fifth and 27 is the step whose documented job is "the (00) spine -> the thing
+     it introduces" - a label handing off to the thing it labels, which is exactly
+     what a headline handing off to its lead is. The next step down, --rhythm-rule
+     at 18, is the hairline-to-text distance, and at 18px under a 69px headline
+     the lead stops being a second thought and becomes a third line of the
+     headline's own block. 27 is the last step that still reads as a join.
+
+     WHAT THE EYE ACTUALLY SEES IS LARGER THAN 27, and that is stated rather than
+     hidden: .hero-block carries its own padding (34.6px at 1440), and below the
+     frame's bottom edge that padding is paper on paper, so the optical distance
+     from the headline's last line to the lead is 34.6 + 27 = 61.6px, down from
+     74.6px. The block's inset is NOT on the rhythm scale by rule (see the scale's
+     own note: "a box's own inset is not rhythm"), and it is not trimmed here
+     because the same inset is what holds the headline off the frame's left edge
+     ABOVE the fold line, where it is doing visible work. Spending a symmetric
+     inset to buy 34px under the headline would break the notch. */
+  margin-block-start:calc(var(--rhythm-head) - var(--hero-gap));
+  max-inline-size:var(--w-text);
+}
+/* NO .hero-block .hero-lead OVERRIDE. An earlier pass set max-inline-size:100%
+   here to "state the real cap"; it does the opposite. Above 860 the block is
+   already narrower than --w-text so the override changes nothing, and BELOW
+   860 the block goes full width, where the override would strip the 68ch
+   measure and run the lead the full 788px of the shell. The inherited
+   --w-text cap is the correct rule at both. */
 
 /* The hero readout is the same object as a #numbers .stat: a micro label, a
    ROLE 1 figure, a qualifying note. It is now built from the same three
@@ -938,21 +1202,53 @@ body.overlay-open{ overflow:hidden; }
    no base, no glare, no sheen, and still nothing is ever blended over the
    measurement image inside it (section 4.4, section 9.4).
 
-   Ratio: 16 / 9. That is the ratio a 3D viewport is authored and captured at,
-   and the frame has to suit the live embed that will replace the still, not the
-   still's own 1363 x 805. The still is object-fit:cover inside it, which trims
-   ~2.4 % off the top and bottom of the source. Nothing the caption names sits there.
+   Ratio: 16 / 9 below 1181, 1.70 / 1 at and above it (see THE FOLD below, which
+   OWNER CHANGE 4 re-solved). 16/9 is the ratio a 3D viewport is authored and
+   captured at, and the frame has to suit the live embed that will replace the
+   still, not the still's own 1363 x 805. The still is object-fit:cover inside
+   it, which trims ~2.4 % off the top and bottom of the source at 16/9 and 0.2 %
+   at 1.70/1. Nothing the caption names sits there.
 
-   Width: the full .site-shell, by instruction. At 1440 that is a 1319 x 742
-   object, so the headline card starts below the first screen. That is the cost
-   of a hero you can drag around, and it is deliberate. Do not "fix" it with a
-   height cap, which would leave white gutters either side of the frame.
+   Width: the full .site-shell, by instruction. At 1440 that is a 1304 x 767
+   object. Do not "fix" its height with a cap: the cap itself would work (with
+   inline-size:100% the width is not what gives), but the block's overlap is a
+   percentage of WIDTH tuned to a known ratio, so a height that stops tracking
+   the width would drift the headline off the 77.2% line the moment the cap bit -
+   which is the exact failure owner change 5 was written to prevent.
    ######################################################################### */
 
 .hero-frame{
   position:relative;
   inline-size:100%;
   aspect-ratio:16 / 9;
+  /* ---- THE OVERLAP PULL LIVES HERE, NOT ON .hero-block --------------------
+     OWNER CHANGE 4 moved it, and the move fixed a real break rather than tidying
+     one. The mechanism is unchanged in intent - row 1 ends (--hero-gap +
+     --block-overlap) EARLIER than the frame's painted bottom edge, so row 2's
+     top lands --block-overlap above it and the block's border-box top sits
+     exactly there - but it is now expressed as row 1 giving height back instead
+     of row 2 taking it.
+
+     WHY IT HAD TO MOVE. A grid track's size is floored at 0, so an item whose
+     margin box is negative contributes nothing and the mechanism quietly stops
+     describing the layout. Measured at 1440 after owner change 4 raised the type
+     and the frame: the pull is 48 + 160.7 = 208.7px against a block that is only
+     196.3px tall, so the block's margin box was -12.4px, row 2 collapsed to 0,
+     and every distance below it inherited that 12.4px. The symptom was the one
+     number owner change 4 exists to set: the gap under the headline measured
+     39.4px where the rule asked for 26.9px, and it was WRONG BY THE BLOCK'S OWN
+     HEIGHT - so it would have drifted again the next time the headline grew.
+
+     The frame cannot hit that floor. It is 625-778px tall across 1181-1920
+     against a 186-225px pull, a 3.4x margin at the worst width, and both terms
+     scale with the same shell, so the ratio is stable rather than lucky.
+
+     WHAT DID NOT CHANGE: the block's top still lands at frame.bottom minus
+     --block-overlap; the readout still clears the block's real bottom edge by
+     exactly one --hero-gap; DOM order is still frame, block, copy, readout,
+     caption; and .hero-copy's margin is still (target - --hero-gap). Verified by
+     measurement at all four sweep viewports after the move. */
+  margin-block-end:calc(-1 * (var(--hero-gap) + var(--block-overlap)));
   border-radius:var(--radius-frame);
   overflow:hidden;
   border:1px solid var(--line-strong);
@@ -964,46 +1260,120 @@ body.overlay-open{ overflow:hidden; }
      click", that is what stops an embedded app owning the page scroll. */
 }
 
-/* ---- THE FOLD, above 1181 ------------------------------------------------
-   16/9 at full shell width is 742px tall at a 1440x900 viewport: 82.4% of the
-   first screen spent on one still, a hero 1.617 screens tall, and - measured -
+/* ---- THE FOLD, above 1181 -- OWNER CHANGE 4 RE-SOLVES IT -------------------
+   HISTORY, kept because the new answer contradicts the old one and the reader
+   is owed the reason. 16/9 at full shell width was 742px tall at 1440x900, and
    the fold at y=900 fell across .btn--brand at 895.59 to 943.59, cutting 4.41px
-   off the top of a 48px button. The same cut happens at 1280x800 (3.06px). A
-   half-visible button is not an invitation to scroll, it is a control that
-   looks broken, and everything that persuades sat in the 0.617 of a screen
-   nobody had reached yet.
+   off a 48px button (3.06px at 1280x800). A half-visible button is not an
+   invitation to scroll, it is a control that looks broken. The frame was moved
+   to 2.4/1 to clear it, and the rule was solved for ONE viewport pair.
 
-   The instrument is the RATIO, not a height cap: a cap would leave white
-   gutters either side of a full-shell frame (the note above), whereas a wider
-   ratio keeps the frame edge-to-edge and simply crops the still, which is
-   already object-fit:cover.
+   OWNER CHANGE 4 EXTENDS THE FRAME DOWNWARD BY ABOUT 30%, and that instruction
+   and "the CTA clears the fold" cannot both be satisfied. Measured, not argued:
+   the CTA row's bottom edge sits a fixed 203-217px below the frame's bottom
+   edge (it is a fixed stack of hang + --rhythm-head + lead + --rhythm-block +
+   48px button), so the CTA clears the fold only while
 
-   WHY 2.4, measured rather than picked. At 1440x900 the readout row's ROLE 1
-   figures sit 40.4px to 104.4px below the top of .hero-readout, and the readout
-   starts 183.3px below the bottom of the frame. For the fold to land inside
-   that band of digits - a row of numbers cut mid-height, which reads as "there
-   is more" - the frame has to be between 537px and 601px tall, i.e. a ratio
-   between 2.19 and 2.45. 2.4 sits inside that window and is a ratio a viewer
-   recognises as a decision.
+       frameHeight <= viewportHeight - navHeight - ~215
 
-   COST, checked against the still and the caption. The frame is object-fit:
-   cover over a 1363x805 source, so 2.4/1 shows the middle 70.6% of its height
-   and crops 14.7% top and bottom. Everything .hero-caption commits to is
-   inside that band: the PHYSICS MODEL stamp, the Absolute tab, the 0-500 ramp,
-   Max lux 500 lx, "4 projectors", the Projector 1 distribution row and the
-   13pt Diagnostic probe line all sit between 17% and 58% of the source height.
-   What the crop removes is the top-corner toolbar and the base of the plinth,
-   which no copy on the page names. Re-check this band if the still is replaced.
+   which is 530px at 1280x800, 610px at 1440x900, 686px at 1512x982 and 752px at
+   1680x1050 - i.e. a ratio of 2.18 or wider at every one of them. 2.18 is only
+   10.1% taller than 2.4. ANY frame ~30% taller puts the primary CTA below the
+   fold at all four viewports. That is stated here as a finding, not buried: the
+   rule this block was written to hold no longer holds, and it was not traded
+   away cheaply - it was measured out.
 
-   Below 1181 the frame stays 16/9: the fold is not the problem there (the CTA
-   clears it at 1181x900 by 114px) and a 2.4/1 frame on a tablet is a letterbox
-   slot, not a screen. */
+   SO THE RULE CHANGES FROM "THE CTA CLEARS THE FOLD" TO "THE FOLD NEVER CUTS
+   THE CTA", which is the brief's own fallback: a scroll cue rather than a cut
+   button. Swept in the browser at the four viewports, with --block-overlap
+   restated as 22.8/R at every step so the block held 77.2% throughout. What the
+   fold lands on, and how far the CTA's top edge sits BELOW the fold:
+
+     R      1280x800        1440x900        1512x982        1680x1050
+    1.62   gap    +115.5   gap    +124.6   lead   +87.1    lead   +64.1
+    1.68   lead 3 +95.9    lead 3 +102.4   lead   +63.8    gap    +39.6
+    1.70   lead 9 +89.6    lead10 +95.3    lead   +56.4    gap    +31.8
+    1.74   lead22 +77.5    lead23 +81.7    lead   +42.1    gap    +16.8
+    1.78   lead   +66.0    lead   +68.7    gap    +28.4    gap     +2.5
+    1.80   lead   +60.4    lead   +62.4    gap    +21.8    CUT     -4.5
+    1.85   lead52 +47.0    lead58 +47.3    gap     +5.9    CUT    -21.2
+    1.90   gap    +34.3    gap    +33.0    CUT     -9.1    CUT    -37.0
+    2.40   gap    -63.7    gap    -77.4    readout          readout
+    ("lead N" = the fold clips N px into the lead's first line. "gap" = it lands
+     in the 40px --rhythm-block between the lead and the CTA row: no cut, but no
+     cue either. Negative = the CTA starts above the fold.)
+
+   WHY NOT 1.85, WHICH IS WHAT "30% TALLER" LITERALLY ARITHMETICS TO (2.4/1.3 =
+   1.846). Because the sweep says it ships a cut button: at 1680x1050 the fold
+   crosses .btn--brand 21.2px from its top, and at 1512x982 it misses by 5.9px,
+   which is not a margin. 1.85 is the best row in the table at 1280x800 and
+   1440x900 - 52 and 58px of the lead's first line showing, a properly readable
+   cut - and it fails the one rule that is not negotiable.
+
+   WHY 1.70. It is the widest ratio in the no-cut window whose worst-case
+   clearance is still a real distance: the CTA's top edge sits 31.8px below the
+   fold at 1680x1050, against 16.8px at 1.74 and 2.5px at 1.78. It puts the fold
+   on prose at three of the four, and at the fourth in the gap above the CTA.
+   Below 1.68 the clearance grows but the cue goes: the fold rises off the lead
+   entirely at 1280x800 and 1440x900, leaving a first screen of frame and
+   headline and nothing else. 1.70 is the balance, and it is a measured number
+   rather than a recognisable one - which is the honest way round when a fold is
+   what picks it.
+
+   THE COST, STATED. 2.4 -> 1.70 is 41.2% taller, not 30%: the extra 11.5 points
+   are what the no-cut rule costs over the brief's arithmetic. The frame is 85.2%
+   of the first screen at 1440x900, against the 82.4% this block once called too
+   much - and that objection does not survive OWNER CHANGE 1, because the
+   headline no longer sits BELOW the frame. It overlaps it at 77.2%, so the first
+   screen is the scene plus the whole promise plus the top of the lead, not
+   "82.4% spent on one still".
+
+   TWO VIEWPORTS OUTSIDE THE SWEEP, MEASURED AND REPORTED RATHER THAN ASSUMED:
+     1920x1080  the CTA's top edge clears the fold by 1.8px. Not cut, but that
+                is a knife edge, and it is the reason no ratio above 1.70 is
+                acceptable. It is inherent, not fixable here: the shell caps at
+                1440 from viewport 1583 up, so past that width the hero is frozen
+                in size while the screen keeps growing and the fold sweeps down
+                through fixed copy. No single ratio can park a 48px button off
+                every screen height.
+     1366x768   the frame alone is 727px of a 768px screen and the headline is
+                entirely below the fold. This is the real price of change 1 on a
+                short laptop, and no ratio in the no-cut window avoids it - at
+                1.85 the headline is still cut, just later. Flagged for the owner
+                as a consequence of the instruction, not as a defect to patch.
+
+   COST TO THE STILL, checked against the caption. The frame is object-fit:cover
+   over a 1363x805 source (1.693:1). At 2.4/1 it showed the middle 70.6% of the
+   source's height and cropped 14.7% top and bottom; at 1.70/1 it shows 99.6% and
+   crops 0.2% at each end. The taller frame does not cost the still anything - it
+   GIVES it back. Everything .hero-caption commits to was already inside the old
+   band (the PHYSICS MODEL stamp, the Absolute tab, the 0-500 ramp, Max lux
+   500 lx, "4 projectors", the Projector 1 distribution row, the 13pt Diagnostic
+   probe line, all between 17% and 58% of the source height); what returns is the
+   top-corner toolbar and the base of the plinth. Neither is named by any copy on
+   the page, so nothing has to be rewritten - but the caption describes what a
+   visitor CAN see, so re-read it if the still is replaced.
+
+   Below 1181 the frame stays 16/9. It is now only 4.6% away from the wide
+   branch's 1.70 rather than the 41% it was away from 2.4, so the breakpoint no
+   longer changes the frame's character at all - it changes only which overlap
+   conversion applies. Keeping 16/9 there is still right: it is the ratio a 3D
+   viewport is captured at, and it is the ratio the still was authored against. */
 @media (min-width:1181px){
-  .hero-frame{ aspect-ratio:2.4 / 1; }
-  /* The overhang is still 8% of the frame's HEIGHT; only the width the
-     percentage resolves against changed. 8% / 2.4 = 3.3333%. Inheriting the
-     16/9 value here would over-reserve by 15px at 1440 and drift with width. */
-  .hero-inner{ --card-overhang:3.3333%; }
+  .hero-frame{ aspect-ratio:1.70 / 1; }
+  /* OWNER CHANGE 5 RESTATES THIS, and restating it is the whole job. The target
+     is a share of the frame's HEIGHT (22.8% overlapped, top edge at 77.2%); this
+     token is a share of the frame's WIDTH, because percentage margins resolve
+     against the inline axis. So the value is 22.8 / ratio, and the ratio just
+     changed:
+         2.4 / 1   ->  22.8 / 2.4  =  9.5%      (what shipped before)
+         1.70 / 1  ->  22.8 / 1.70 = 13.4118%   (what ships now)
+     Leaving 9.5% against the taller frame would have overlapped only
+     9.5 x 1.70 = 16.2% of its height, putting the block's top at 83.8% of the
+     frame - it would have DRIFTED UP the frame as the frame grew, which is the
+     one outcome owner change 5 names. Measured after the change: 77.20% at 1280,
+     1440, 1512 and 1680, the same number the 2.4/1 frame held. */
+  .hero-inner{ --block-overlap:13.4118%; }
 }
 /* tabindex="-1": the frame is a programmatic focus PARK, not a control. The
    IIFE moves focus here when the launch button removes itself, so focus is
@@ -1016,18 +1386,37 @@ body.overlay-open{ overflow:hidden; }
   position:absolute; inset:0; inline-size:100%; block-size:100%; display:block;
 }
 .hero-frame-still{ object-fit:cover; object-position:50% 50%; }
-.hero-frame-embed{ border:0; }
-/* Once the embed has painted, the still steps out of the way. */
-.hero-frame[data-embed-state="live"] .hero-frame-still{ visibility:hidden; }
+/* transparent, explicitly: the iframe ELEMENT's own background paints behind
+   the embedded document, and the whole poster-underneath scheme depends on
+   this layer staying out of the way while the app boots. */
+.hero-frame-embed{ border:0; background:transparent; }
 
-/* The facade affordance. It is an opaque chip in the corner, never a scrim over
-   the image: darkening a lux heatmap to make a button legible would be exactly
-   the "do not touch the measurement image" rule broken from the other side.
+/* ---- THE STILL IS NEVER HIDDEN (OWNER CHANGE 3) --------------------------
+   The rule that used to live here - `[data-embed-state="live"] .hero-frame-
+   still { visibility:hidden }` - is DELETED, and its deletion is the guard,
+   not an omission. The still is the poster the embed is layered over for the
+   life of the page.
+
+   It works because the embed document paints nothing of its own until its
+   scene mounts. Verified in the app's EmbedViewer.jsx on branch 0814-embed:
+   its injected stylesheet sets `html, body { background: transparent
+   !important }` (!important because the app's index.html sets a black body
+   background inline), its React root is `background:'transparent'`, and the
+   scene's own near-black is painted on a layer INSIDE the error boundary. So
+   "still booting", "resolved no scene" and "canvas crashed" are all
+   transparent, and all three land on this still instead of on a black
+   rectangle. Hiding the still on the iframe's load event would break exactly
+   those three cases, because load fires for an empty frame too. */
+
+/* The reduced-motion / data-saver opt-in. It is an opaque chip in the corner,
+   never a scrim over the image: darkening a lux heatmap to make a button
+   legible would be exactly the "do not touch the measurement image" rule
+   broken from the other side.
 
    It sits bottom-RIGHT. It used to sit bottom-left, which is now where
-   .hero-card lands, and a button under an opaque card is a button that does
+   .hero-block lands, and a button under an opaque block is a button that does
    not exist. Bottom-right is the one corner the embed leaves free: its axis
-   gizmo and its LUX HEATMAP button are both top-right, and the card owns the
+   gizmo and its LUX HEATMAP button are both top-right, and the block owns the
    lower-left. */
 .hero-frame-launch{
   position:absolute; z-index:2;
@@ -1052,6 +1441,210 @@ body.overlay-open{ overflow:hidden; }
 .hero-frame-launch-hint{
   font-size:var(--fs-body-sm); line-height:1.4;
   color:var(--mass-ink-soft);                /* 9.74:1 on --mass-950 */
+}
+
+/* ---- OWNER CHANGE 6, THE FEATURE TICKER ----------------------------------
+   A band of the product's own vocabulary scrolling LEFT along the top of the
+   scene, continuously. The copy and its provenance are argued in index.html at
+   .hero-ticker; five things are argued here, in the order they can go wrong.
+
+   1. IT REUSES .marquee BECAUSE IT CANNOT: .marquee DOES NOT EXIST.
+      The brief for this pass said to reuse the .marquee component "used below
+      the hero". There is no such component. Section 4.5 above is its headstone:
+      all seven rules (.marquee, --hairline, -track, -group, -group + -group,
+      -item, -dot), the .marquee-item line in the 560px block, the three
+      reduced-motion branches, the four motion-opt-in branches and --ink-300's
+      .marquee-dot consumer were deleted in an earlier pass, and no page on the
+      site authors any of the classes - verified by grep across index.html,
+      videos.html, privacy.html and 404.html: zero matches, markup and CSS.
+      So there was nothing to reuse and nothing to duplicate.
+
+      IT WOULD NOT HAVE FIT EVEN IF IT HAD SURVIVED, which matters more than the
+      grep, because "restore the deleted rules and extend them" was the other
+      option. The dead .marquee was a full-bleed hairline strip, a direct child
+      of .site-main, IN FLOW on white paper between the hero and #who, STATIC at
+      every motion setting (it had already been re-argued as a contents page),
+      one line of --ink-400 on --paper, and a normal participant in hit-testing.
+      This band is absolutely positioned INSIDE a media frame, over a live 3D
+      scene of unknown colour, rail-inset away from another application's
+      controls, pointer-transparent, and moving. Every one of those six is a
+      different rule. What the two share is "a row of uppercase micro-labels",
+      which is .micro-label's typography, and THAT is what is reused below -
+      family, size, weight, .14em tracking, uppercase, and separation by
+      whitespace rather than by a glyph (see .micro-label::before{content:none}
+      / "no dash, ever"). The gap is opened from .75em to clamp(28px,3vw,48px)
+      because a micro-label separates two halves of one label and this separates
+      thirty independent ones; at .75em the band reads as one long string.
+
+   2. LEGIBILITY OVER A GROUND WE DO NOT OWN, WITHOUT PAINTING OVER IT.
+      The band sits on a live scene whose colours are not ours to predict, and
+      section 4.4 forbids blending anything over the measurement image - the same
+      rule that keeps .hero-frame-launch an opaque chip instead of a scrim. A
+      gradient band, a tint, a blur or a scrim under the text is therefore out,
+      and so is picking a colour that happens to suit today's still.
+
+      So the treatment is at GLYPH level, not band level: .hero-ticker paints no
+      background at all, and each glyph carries its own opaque halo -
+      -webkit-text-stroke 3px of --mass-950 with paint-order:stroke fill, so the
+      stroke is laid down first and the --mass-ink fill covers its inner half,
+      leaving a 1.5px opaque outline and a letterform at full weight.
+
+      MEASURED, and measured the hard way: the shipped band was screenshotted at
+      1440x900 over three synthetic grounds with the still switched off, and the
+      COMPOSITED PIXELS were sampled. No token arithmetic - this is what the
+      compositor actually produced.
+
+        ground                     ground%   halo #04252D   core #FFFFFF
+        dark grid  #04252D          83.72       5.52%          3.90%
+        white facade #FFFFFF        70.59       5.52%          3.90%
+        mid grey   #808080          66.70       5.52%          3.90%
+
+      The halo and the core measure IDENTICALLY on all three, to two decimals,
+      and that is the whole argument in one table: the ground changes nothing
+      about the pair the eye resolves. Core against halo is #FFFFFF on #04252D =
+      16.06:1 on every one of them. (The extreme-pixel ratio inside the crop
+      reads 16.23:1 on the dark grid rather than 16.06 - antialiasing rounding a
+      halo pixel one step darker than the token, not a different result.)
+
+      The scene only decides what the HALO is seen against, and that is a
+      secondary question: 16.06:1 on white, 4.07:1 on mid grey, and 1:1 on the
+      dark grid - invisible there, and it does not need to be visible there,
+      because that is exactly the ground the white core is already at 16.06:1
+      against. The two tones cover for each other at every ground.
+
+      COVERAGE, since "does not hide the scene" is a quantity, not an opinion.
+      The band's box is transparent; the only opaque pixels are glyphs and their
+      halos. Measured at 1440x900: the band is 1022.0 x 21.9px in a 1304.0 x
+      767.1px frame - 2.85% of the frame's height, 2.24% of its area - and the
+      ink inside it covers 33.3% of the band (counted on the mid-grey ground,
+      where every ink pixel is distinguishable from the ground; on the dark grid
+      the same ink reads 16.3% because half the halo's antialiasing is the same
+      colour as the ground). So the ticker replaces 0.75% of the frame's pixels.
+      Nothing is tinted: a pixel is either untouched or replaced.
+
+      THE ONE EXCEPTION IS STATED RATHER THAN HIDDEN. The mask below fades the
+      band's own last 40px at each end so words enter and leave instead of being
+      chopped mid-letter. In those two 40px zones the glyph pixels are partially
+      transparent, so ink and scene do mix - the only place on the frame where
+      they do. No contrast is claimed there, because that is the zone a word is
+      arriving in or leaving from, not being read in, and the alternative (a hard
+      cut through a letterform) reads as a rendering fault. The mask attenuates
+      the TICKER only; it paints nothing onto the scene at any alpha.
+
+   3. IT KEEPS OFF ANOTHER APPLICATION'S CONTROLS.
+      Numbers read out of the app, not guessed (pm-embed-wt, EmbedViewer.jsx and
+      Engine3D.jsx on the embed branch):
+        axis gizmo       EMBED_GIZMO_MARGIN 46, extent 37.7 at 0.72 scale
+                         -> occupies x [right-83.7, right-46], y [46, 83.7]
+        LUX HEATMAP      right:16, top:92, ~116px wide with its padding+border
+                         -> occupies x [right-132, right-16], y [92, ~119]
+      and the app's own note says more controls are coming to the left and right
+      rails. A rail is vertical, so clearing it is an INLINE reservation, and it
+      is stated in px because the thing being cleared is stated in px - a vw
+      ramp would shrink the clearance exactly where the frame is tightest.
+      --ticker-rail is 140px each side, mirrored on the left for the rail that
+      does not exist yet. Measured inset from the frame's edge: 141px (the token
+      plus the frame's own 1px border), which clears the LUX HEATMAP button by
+      9.0px and the gizmo by 57.3px.
+      The band ALSO sits entirely above the gizmo's first pixel, so the two clear
+      each other on both axes rather than on one: measured bottom edge 36.6px at
+      1440 and 37.0px at 1920 against the gizmo's y=46, i.e. 9.4px and 9.0px.
+
+   4. IT DOES NOT EAT THE DRAG. pointer-events:none, inherited by the track and
+      the items, so a pointerdown anywhere in the band lands on the iframe under
+      it and orbits the scene. Verified with elementFromPoint at the band's
+      centre: it returns the frame's content, never .hero-ticker.
+      z-index:1 is what puts it over the embed: .hero-frame-embed is positioned
+      with z-index:auto, so it stacks at 0 however late it is appended, and
+      .hero-frame-launch stays above both at 2.
+
+   5. REDUCED MOTION: IT STOPS, IT DOES NOT HIDE. Same decision as .type-caret
+      two blocks up, for the same reason - the caret stops blinking and stays
+      visible as a position marker. WCAG 2.2.2 asks that moving content can be
+      paused, stopped or hidden, and stopping is the option that costs the reader
+      nothing: hiding would delete a band of product vocabulary from precisely
+      the visitors who asked for less movement, which is a worse outcome than the
+      motion was. Frozen it holds a static line of the first few items, which is
+      a legible index rather than a fragment, and every word in it is authored
+      again below in reading order, so nothing is unreachable. The site-wide
+      motion toggle (.motion-toggle, data-motion) is the WCAG mechanism and the
+      opt-in restores it, exactly as it does for the caret.
+      `animation:none` and not `animation-play-state:paused` because the global
+      reduced-motion blanket forces animation-duration to .001ms !important; a
+      paused animation would be paused at its .001ms end state, i.e. mid-loop at
+      translate3d(-50%), showing the seam. Setting animation-name:none takes the
+      transform out of play entirely and the track sits at 0.
+
+   BELOW 861 IT DOES NOT SHIP. 280px of fixed rail against a frame that is itself
+   only ~774px wide at 861 leaves a 494px window; at 560 the shell is 498px and
+   the window is 218px, one and a half words sliding past. It is cut at the same
+   861/860 line where the hero re-composes and .hero-block leaves the frame,
+   because that is where this composition stops existing. */
+.hero-frame{
+  /* Read by .hero-ticker below. Declared on the frame, not on :root, because
+     every one of them is a measurement of THIS box or of the app inside it. */
+  --ticker-rail: 140px;
+  --ticker-top:  clamp(10px, 0.95vw, 14px);
+  --ticker-gap:  clamp(28px, 3vw, 48px);
+  --ticker-fade: 40px;
+  --ticker-pad:  5px;
+  /* Set for a reading speed, not for a loop length. MEASURED: one group is
+     4698.1px wide at 1440, so 84s is 55.9 px/s there - slow enough to read a
+     word without tracking it, fast enough to be obviously alive. The duration is
+     fixed while the type ramps, so the speed varies a little with width:
+     52.3 px/s at 1181, 55.9 at 1440, 58.1 at 1920 and up. An 11% spread across
+     the whole band, which is below the point at which a change of pace reads as
+     a different component. One full pass of the vocabulary takes 84s. */
+  --ticker-dur:  84s;
+}
+.hero-ticker{
+  position:absolute; z-index:1;
+  inset-block-start:var(--ticker-top);
+  inset-inline:var(--ticker-rail);
+  /* overflow:hidden is here to clip the track at the two rails, and it clips
+     BOTH axes. .hero-ticker-item sets line-height:1, which is the micro-label's
+     value and leaves the line box shorter than the glyphs' own ink - add the
+     1.5px halo and the top and bottom of every letter is cut off flat by this
+     rule. --ticker-pad is the clearance that stops that, and it is measured, not
+     guessed. VERIFIED by screenshotting the band and counting ink per pixel row:
+     of the 22 rows at 1440, rows 0-3 and 17-21 are 100% ground and every ink
+     pixel sits in rows 4-16. Four clear rows above the tallest letterform and
+     five below, so nothing - glyph or halo - meets this rule's clip edge. It is
+     padding rather than a taller line-height because the typography is borrowed
+     verbatim from .micro-label and should stay that way. Re-run that row count
+     if --fs-micro or the stroke width ever moves. */
+  padding-block:var(--ticker-pad);
+  overflow:hidden;
+  /* The drag belongs to the scene, always. */
+  pointer-events:none;
+  /* Fades the BAND's own glyphs at the two ends. Paints nothing on the scene. */
+  -webkit-mask-image:linear-gradient(to right, transparent 0,
+    #000 var(--ticker-fade), #000 calc(100% - var(--ticker-fade)), transparent 100%);
+          mask-image:linear-gradient(to right, transparent 0,
+    #000 var(--ticker-fade), #000 calc(100% - var(--ticker-fade)), transparent 100%);
+}
+.hero-ticker-track{
+  display:flex; inline-size:max-content;
+  animation:hero-ticker var(--ticker-dur) linear infinite;
+}
+/* -50% is exactly one group, which is why the two groups in index.html must
+   stay identical down to the item. */
+@keyframes hero-ticker{
+  from{ transform:translate3d(0,0,0); }
+  to  { transform:translate3d(-50%,0,0); }
+}
+.hero-ticker-group{
+  display:flex; align-items:center; gap:var(--ticker-gap);
+  padding:0 var(--ticker-gap) 0 0; margin:0; list-style:none;
+}
+/* ROLE 3 typography, borrowed from .micro-label rather than re-invented. */
+.hero-ticker-item{
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1;
+  white-space:nowrap;
+  color:var(--mass-ink);
+  -webkit-text-stroke:3px var(--mass-950);
+  paint-order:stroke fill;
 }
 
 .monitor-controls{
@@ -1087,56 +1680,38 @@ body.overlay-open{ overflow:hidden; }
   font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-400);
   max-inline-size:var(--w-text);
 }
+/* ---- TWO AUTHORED CAPTIONS, ONE SELECTOR (OWNER CHANGE 3) ----------------
+   "A still from the shipped app, not a live view" was true only while nothing
+   loaded. Both states now ship in the markup and the frame's own
+   data-embed-state picks one, so no JS writes copy - the same principle the
+   /videos page uses for a slot's published state, and the reason the still
+   copy is what paints with JS off.
+
+   The general sibling combinator does the work: .hero-frame and .hero-caption
+   are both children of .hero-inner, frame first. If either ever stops being a
+   direct sibling of the other this silently reverts to the still copy, which
+   is the safe direction to fail.
+
+   The flag is "an iframe is mounted", NOT "the scene painted" - a cross-origin
+   frame cannot be inspected, which is why the live copy commits to the app's
+   controls and to the fallback, and to nothing about the scene's contents. */
+.hero-caption-state[data-when="live"]{ display:none; }
+.hero-frame[data-embed-state="mounted"] ~ .hero-caption .hero-caption-state[data-when="still"]{ display:none; }
+.hero-frame[data-embed-state="mounted"] ~ .hero-caption .hero-caption-state[data-when="live"]{ display:inline; }
 
 /* ############################################################################
-   Section 4.5, MARQUEE: a full-bleed hairline strip directly below the hero,
-   above #who. It does not sit over the monitor and does not float.
+   Section 4.5, MARQUEE: DELETED, component and all.
+
+   The strip was a full-bleed hairline band between the hero and #who carrying
+   the ten chapter names. A previous pass had already stopped it scrolling and
+   re-argued it as a contents page; the copy cut then deleted its markup, on the
+   grounds that #product restates the same ten names as a jump table twenty
+   lines below it. Six rules go with it (.marquee, .marquee--hairline,
+   .marquee-track, .marquee-group, .marquee-group + .marquee-group,
+   .marquee-item, .marquee-dot), plus the .marquee-item line in the 560px block.
+   No page on the site authors any of them. Its reduced-motion and opt-in
+   branches were already deleted when the animation was.
    ######################################################################### */
-
-.marquee{ overflow:hidden; }
-.marquee--hairline{
-  border-block:1px solid var(--line);
-  padding-block:clamp(14px,1.6vw,22px);
-}
-/* ---- IT STOPPED SCROLLING -------------------------------------------------
-   An auto-scrolling keyword ribbon is the single most template-shaped object a
-   page can carry: it is the stock device of a bought theme, it moves without
-   being asked, and this one carried no information that #product does not carry
-   better 1,100px later. It also masked its own two ends to transparent, so the
-   first and last thing in it was always half-legible.
-
-   It is not deleted, because the ten items in it ARE the ten chapters, in
-   order. Held still and spread across the full bleed it stops being decoration
-   and becomes the document's contents page, sitting exactly where a contents
-   page belongs - between the hero and the first chapter. Same 61px, same
-   markup, and now it earns them.
-
-   The animation, the max-content width, the -50% keyframe, the pause-on-hover
-   pair and the edge mask all go together: with one static row there is no
-   second group to scroll into, nothing to pause, and nothing running off the
-   edge to fade out. The duplicate group is hidden rather than removed so the
-   markup is untouched on all pages that author it. */
-.marquee-track{ display:flex; inline-size:auto; }
-.marquee-group + .marquee-group{ display:none; }
-.marquee-group{
-  display:flex; align-items:center; flex:1 1 auto;
-  justify-content:space-between; gap:clamp(12px,1.6vw,28px);
-  flex-wrap:wrap;
-  list-style:none; margin:0; padding:0 clamp(9px,1.1vw,18px);
-}
-.marquee-item{
-  font-family:var(--font-display); font-size:var(--fs-body-sm); font-weight:600;
-  letter-spacing:.14em; text-transform:uppercase; line-height:1;
-  color:var(--ink-500); white-space:nowrap;
-}
-/* The separator is drawn, not typed: .marquee-dot ships empty and the dot is a
-   CSS circle, so the strip needs no middot glyph from the font. */
-.marquee-dot{
-  color:var(--ink-300);
-  display:inline-block; vertical-align:middle;
-  inline-size:.26em; block-size:.26em; border-radius:50%;
-  background:currentColor; margin-inline-start:.3em;
-}
 
 /* ############################################################################
    THE NUMERIC HIERARCHY  (spec section 3.2 type scale + section 4 class contract)
@@ -1224,8 +1799,9 @@ body.overlay-open{ overflow:hidden; }
      .pub-progress-text                 x1, and it is a SENTENCE - it moves to
                                         ROLE 3, see its rule for why.
 
-   Sites that print no number and are therefore out of scope: .marquee-item,
-   .micro-label-name, .btn, .nav-link, .footer-col-title, .media-label-badge.
+   Sites that print no number and are therefore out of scope: .micro-label-name,
+   .btn, .nav-link, .footer-col-title, and the empty slot's ::before, which
+   prints a figure's NAME (section 4.9).
 
    ============================== THE RULES ==================================
    (a) Same role => same family, size, weight, colour and tracking on all four
@@ -1269,11 +1845,13 @@ body.overlay-open{ overflow:hidden; }
 /* ---- ROLE 2: ORDINAL AND INDEX COUNTER -----------------------------------
    Before this pass the same ordinal was set two ways: inside .micro-label it
    inherited --fs-micro (11-12) and the label's +.14em display tracking, while
-   .index-counter / .speclist-index / .pin-counter / .nav-overlay-index used
+   .index-counter / .speclist-index / .nav-overlay-index used
    --fs-counter (12-14) at +.06em. So "(03)" on the spine and "(03)" in the
    /videos filter rail were different objects, and "(01)" in a chapter foot was
    a third. They are one object now: --fs-counter at +.06em, everywhere, on
    every page.
+
+   (.pin-counter was the fifth member and is deleted with the pinned scroller.)
 
    Colour has exactly two states and they are structural, not per-component:
      --ink-950  an ordinal that NAMES the thing it sits on
@@ -1286,8 +1864,7 @@ body.overlay-open{ overflow:hidden; }
 .micro-label-ord,
 .index-counter,
 .speclist-index,
-.nav-overlay-index,
-.pin-counter{
+.nav-overlay-index{
   font-family:var(--font-num);
   font-size:var(--fs-counter);        /* 12 to 14 */
   font-weight:500;
@@ -1328,7 +1905,7 @@ body.overlay-open{ overflow:hidden; }
    handful of nodes whose markup explicitly asks for a column still get one,
    and nothing here has to fight the utility. */
 :where(p, li, dd, dt, figcaption, blockquote, code,
-       .copy, .hero-lead, .section-lead, .chapter-body, .chapter-point-text,
+       .copy, .hero-lead, .section-lead, .lede,
        .chapter-point-label, .limits-text, .speclist-body, .stat-note,
        .media-caption, .hero-caption, .hero-readout-qual, .video-card-desc,
        .hero-frame-launch-hint, .footer-contact-item, .footer-legal,
@@ -1343,7 +1920,7 @@ body.overlay-open{ overflow:hidden; }
    so an emphasised phrase looks the same in #limits, in a chapter point and on
    /privacy. This cannot un-bold a figure that markup has wrapped in <strong>
    on its own - those two sites are listed for the content agent. */
-:where(.copy, .chapter-point-text, .limits-text, .speclist-body, .stat-note,
+:where(.copy, .lede, .limits-text, .speclist-body, .stat-note,
        .video-card-desc, .media-caption, .hero-caption, p, li) :is(strong, b){
   font-weight:600;
   color:var(--ink-950);
@@ -1440,30 +2017,83 @@ body.overlay-open{ overflow:hidden; }
    dash on .micro-label. That device is deleted (section 2.3, section 9.4).
    ######################################################################### */
 
-.section-head{ display:grid; gap:var(--rhythm-block); }
-.section-head--split{
-  display:grid; grid-template-columns:1.15fr 0.85fr;
-  gap:clamp(28px,4vw,72px); align-items:start;
+/* ---- ONE HEAD, FOUR DISTANCES, NOT ONE DISTANCE FOUR TIMES ----------------
+   .section-head and .chapter-head are the same object and always were: a spine,
+   the thing it introduces, and whatever that thing hands off to. They shipped
+   as a grid with a single `gap`, which is why the audit found --rhythm-block
+   doing nine jobs - a uniform gap CANNOT express a hierarchy, it can only
+   express a list.
+
+   So the gap goes to zero and the distance is a property of the RELATIONSHIP,
+   read off the pair of elements it sits between:
+
+     .micro-label -> anything     --rhythm-head   27   a spine introducing
+     .lede -> anything            --rhythm-figure 60   text handing to picture
+     .lede -> .micro-label        --rhythm-group  90   ... unless it hands to
+                                                       another spine, which
+                                                       starts a whole new block
+     a finished block -> anything --rhythm-group  90   figure -> figure,
+                                                       table -> the next spine
+     anything else                --rhythm-block  40   the default
+
+   Still grid rather than block flow, deliberately: grid does not collapse
+   margins, so every one of these distances is exactly the number written here
+   and never the larger of two. That is also why .micro-label's own
+   margin-block-end is zeroed inside a head instead of being left to collapse.
+
+   .section-head--split (a 1.15fr/0.85fr two-column head) and .section-head-aside
+   are DELETED. Their only caller was the two-column chapter, which the copy cut
+   removed; zero instances on all four pages.
+
+   .video-chapter-head is excluded by name. It carries .chapter-head in its
+   markup but it is a sticky filter strip with a --rhythm-tight gap of its own,
+   and inheriting these margins would add a second distance on top of that gap
+   rather than replacing it. */
+.section-head,
+.chapter-head:not(.video-chapter-head){
+  display:grid; gap:0; align-content:start; min-inline-size:0;
 }
-.section-head-aside{ display:grid; gap:var(--rhythm-head); align-content:start; }
+/* :is(), NOT :where(). This has to outrank the components it positions, and
+   three of them - .lede, .chapter-media and .speclist - declare `margin:0` at
+   0-1-0 further down the file, which a 0-0-0 :where() selector loses to on
+   source order alone. Measured before this correction: five of the seven
+   distances below silently collapsed to 0px while the two whose components
+   happen to declare no margin took their step, which is a worse failure than a
+   wrong number because it looks deliberate. :is() puts the group at 0-2-0 and
+   each named relationship at 0-3-0, so a component that zeroes its own margin
+   still sits where the head says it sits. */
+:is(.section-head, .chapter-head:not(.video-chapter-head)) > * + *{
+  margin-block-start:var(--rhythm-block);
+}
+:is(.section-head, .chapter-head:not(.video-chapter-head)) > .micro-label + *{
+  margin-block-start:var(--rhythm-head);
+}
+:is(.section-head, .chapter-head:not(.video-chapter-head)) > .lede + *{
+  margin-block-start:var(--rhythm-figure);
+}
+/* A completed block hands off to the next block, not to a line of type. */
+:is(.section-head, .chapter-head:not(.video-chapter-head))
+  > :is(figure, .limits, .speclist, .stat-row, .split-3) + *{
+  margin-block-start:var(--rhythm-group);
+}
+/* #limits only: the sentence is followed by the first group's own spine rather
+   than by a figure, so it is block -> block and takes the group step. At 0-4-0
+   it beats the .lede + * rule above it whichever order they land in. */
+:is(.section-head, .chapter-head:not(.video-chapter-head)) > .lede + .micro-label{
+  margin-block-start:var(--rhythm-group);
+}
 
 /* ---- THE SPINE, AND THE GAP UNDER IT --------------------------------------
-   Requirement 5, and the largest rhythm defect on the page. .section-head
-   supplies the spine-to-title gap with its grid `gap`, but only ONE section on
-   index.html actually wraps its head in .section-head (#who). Everywhere else
-   the markup is `<p class="micro-label">` as a plain sibling of the heading:
-   nine of the ten chapters put it beside .split-2--media-right, #ch-06 puts it
-   inside .pin-sticky, and #product, #numbers, #limits, #videos-cta, #beta,
-   #community and #start put it directly beside their <h2>. Tailwind preflight
-   zeroes p margins, so in all of those the hairline sat flush against the
-   title with 0px between them, while #who alone had 14-24px. Same device,
-   sixteen instances, two different rhythms.
+   The spine carries its own margin-block-end so that a .micro-label authored
+   outside a head still sits the right distance from what follows it. Inside a
+   head that margin is zeroed and the sibling rules above own the distance,
+   which is the only way to keep grid margins from adding rather than
+   collapsing. Both routes land on the same --rhythm-head.
 
-   Fixed here rather than by asking for markup, because the fix is a property
-   of the spine and not of its container: .micro-label carries the gap itself
-   and stands down wherever a grid parent is already providing one. That makes
-   every section head dimensionally identical without touching a single page,
-   and a head that IS later wrapped in .section-head does not double up. */
+   The previous form of this rule subtracted the head gap from the parent's grid
+   gap - calc(--rhythm-head - --rhythm-block) - which was a correction for a
+   uniform gap that no longer exists. That was a spacing hack propping up a
+   layout, and it goes with the layout. */
 .micro-label{
   display:flex; align-items:baseline; gap:.75em;
   inline-size:100%;
@@ -1473,12 +2103,8 @@ body.overlay-open{ overflow:hidden; }
   font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
   line-height:1; letter-spacing:.14em; text-transform:uppercase;
 }
-:where(.section-head, .chapter-head, .section-head-aside) > .micro-label{
-  /* The parent grid already puts --rhythm-block under this element, and the
-     spine wants --rhythm-head. Subtract the difference rather than zeroing,
-     so a head that IS wrapped and a head that is not land on the same number
-     instead of on two numbers that are merely both deliberate. */
-  margin-block-end:calc(var(--rhythm-head) - var(--rhythm-block));
+:is(.section-head, .chapter-head:not(.video-chapter-head)) > .micro-label{
+  margin-block-end:0;
 }
 .micro-label::before{ content:none; }          /* explicit: no dash, ever */
 /* "(03)" has no rule of its own here on purpose. Family, size, weight, tracking
@@ -1492,23 +2118,17 @@ body.overlay-open{ overflow:hidden; }
 .micro-label--on-mass  { border-block-start-color:var(--mass-line-soft); }
 
 /* ---- THE TITLE-TO-BODY GAP ------------------------------------------------
-   The other half of the .section-head defect. Preflight zeroes heading margins,
-   so a title only got a gap under it when a grid parent supplied one - which is
-   #who and the two heads on /privacy and /404, and nothing else. #numbers set
-   an 84px headline directly on the first hairline of its stat row; #limits,
-   #videos-cta, #beta, #community, #start and the /videos masthead set one
-   directly on their lead paragraph. The three titles carry the gap themselves
-   now and stand down inside any head that provides one, which is the same
-   device the spine uses six rules above. The :is() form is deliberate: at
-   0-2-0 it outranks .chapter-title's own margin declaration wherever that rule
-   happens to sit in the file. */
+   .section-title is /videos, /privacy and /404 only now; index.html has no
+   display headline below the hero at all, it has .lede. A title carries its own
+   block-end margin so it works outside a head, and stands down inside one,
+   which is the same device the spine uses above. */
 .section-title{
   font-family:var(--font-display); font-size:var(--fs-display-2); font-weight:500;
   line-height:.96; letter-spacing:-.03em; color:var(--ink-950);
   margin:0 0 var(--rhythm-block); text-wrap:balance;
 }
-:is(.section-head, .section-head--split, .chapter-head, .section-head-aside,
-    .pin-sticky, .video-chapter-head) > :is(.section-title, .chapter-title, .video-hero-title){
+:is(.section-head, .chapter-head, .video-chapter-head)
+  > :is(.section-title, .video-hero-title){
   margin-block-end:0;
 }
 /* Line breaks are authored. Never forced with white-space:nowrap. */
@@ -1519,88 +2139,94 @@ body.overlay-open{ overflow:hidden; }
 }
 
 /* ############################################################################
+   THE LEDE: index.html's one typographic device below the hero.
+
+   THE DEVICE, from the benchmark's live DOM: a section's headline and its lead
+   are ONE sentence at ONE size and ONE weight, and the only thing that changes
+   inside it is the colour - the claim clause is ink, the qualifying
+   continuation is grey. That colour change inside a single sentence IS the
+   whole idea. Two sizes would make it a headline plus a paragraph again, which
+   is exactly the shape this pass removed.
+
+   So every property below is shared by both clauses and only `color` is not:
+     size    --fs-lede, one ramp, 22 -> 30       (48 on the dark band)
+     weight  300, the lightest the variable face carries
+     leading 1.07, the benchmark's 29.96/28 to two decimal places
+     track   -0.01em, which IS its -0.28px at 28px, so it holds at every size
+     measure --lede-measure, 40 characters, capped at the benchmark's own 596px
+
+   FAMILY IS --font-display, NOT --font-body. The brief says "not display type",
+   and it is not: no uppercase, no --fs-display-* step, no display tracking. But
+   weight 300 has to be REAL, and @font-face declares 300-700 for Geologica
+   while font-synthesis-weight is none, so a family that cannot reach 300 would
+   silently paint 400 and lose the device's other half. Geologica is also the
+   only self-hosted face on the site; --font-body's Pretendard arrives with
+   asset A6 and 404s until then.
+
+   NOT .reveal's business: .lede carries .reveal in the markup and that is a
+   22px transform on the whole element, which does not touch either clause.
+
+   The two spans are separated by a newline in index.html, which is the single
+   space between the clauses. Do not close that gap in markup: the sentence has
+   to be one sentence to the reader and to a screen reader both. */
+.lede{
+  font-family:var(--font-display);
+  font-size:var(--fs-lede);
+  font-weight:300;
+  line-height:1.07;
+  letter-spacing:-.01em;
+  color:var(--ink-950);
+  margin:0;
+  max-inline-size:min(var(--lede-measure), var(--lede-cap));
+  text-wrap:pretty;
+}
+.lede-ink { color:var(--ink-950); }   /* the claim              20.84:1 */
+.lede-soft{ color:var(--ink-500); }   /* the qualifier           6.28:1 */
+
+/* The one exception the benchmark itself carries: its stats band runs 48px,
+   white on navy. Same weight, same leading, same tracking, same device - only
+   the size and the ground change, and the measure grows with the size so the
+   line still breaks at about the same word count. */
+.lede--on-mass{
+  font-size:var(--fs-lede-mass);
+  max-inline-size:min(var(--lede-measure), var(--lede-cap-mass));
+}
+.section--mass .lede     { color:var(--mass-ink); }
+.section--mass .lede-ink { color:var(--mass-ink); }       /* 16.06:1 on --mass-950 */
+.section--mass .lede-soft{ color:var(--mass-ink-soft); }  /*  9.74:1 on --mass-950 */
+
+/* ############################################################################
    Section 4.7, FEATURE CHAPTER: the part-by-part explainer, ten of them
    ######################################################################### */
 
 /* .chapters (display:block, and nothing else) is DELETED: no page wraps the ten
-   chapters in it, they are ten sibling <section>s. */
-.chapter{ position:relative; }
-.chapter-head{ display:grid; gap:var(--rhythm-block); align-content:start; min-inline-size:0; }
-.chapter-title{
-  font-family:var(--font-display); font-size:var(--fs-display-3); font-weight:500;
-  line-height:1.02; letter-spacing:-.025em; color:var(--ink-950);
-  margin:0 0 var(--rhythm-block); text-wrap:balance;
-}
-.chapter-body{ max-inline-size:var(--w-text); }
+   chapters in it, they are ten sibling <section>s.
 
-.chapter-points{ list-style:none; margin:0; padding:0; display:grid; gap:var(--rhythm-block); }
-.chapter-point{
-  border-inline-start:2px solid var(--line);
-  padding-inline-start:clamp(14px,1.4vw,20px);
-  transition:border-color var(--t-fast) var(--ease-out);
-  max-inline-size:var(--w-text);
-}
+   WHAT THE COPY CUT ORPHANED HERE, and why none of it is worth keeping:
+
+     .chapter-title      a --fs-display-3 headline. A chapter has no headline
+                         any more - it has a .lede, which is the same sentence
+                         as its lead. Zero instances on all four pages.
+     .chapter-body       a --w-text prose wrapper. There is no prose.
+     .chapter-points     the bullet list, and .chapter-point / .chapter-point-
+                         text with it. The facts moved to #numbers and #limits.
+     .split-2--media-right + .chapter--reverse + the @media sticky rule + the
+                         @supports :has() re-proportioning block. All four
+                         existed to manage a two-column chapter; there is one
+                         column now, and a rule whose whole job was deciding
+                         which half of a split gets the wide side is not a rule
+                         that can be repaired, it is one that has no subject.
+
+   .chapter-point-label SURVIVES: /privacy authors four of them inside its
+   .speclist. It is the one member of the family with a caller. */
+.chapter{ position:relative; }
 .chapter-point-label{
   font-family:var(--font-body); font-size:var(--fs-h4); font-weight:600;
   line-height:1.28; letter-spacing:-.008em; color:var(--ink-900);
   margin-block-end:.45em;
 }
-.chapter-point-text{ font-size:var(--fs-body); line-height:1.65; color:var(--ink-700); }
 
 .chapter-media{ margin:0; min-inline-size:0; }
-/* ---- The right column had nothing in it for half the document -------------
-   .split-2--media-right is align-items:start, so the media sat at the top of a
-   column and the copy ran on without it. Measured, bottom of .chapter-media to
-   bottom of its section, ch-01 to ch-10: 1146, 1503, 1706, 1173, 1145, 5888,
-   1295, 1898, 2694, 1999 - 20,448px of empty right column against a 40,781px
-   document. Almost exactly half the page had a column with nothing in it, and
-   ch-06 after its pin releases was ~700 x 900 of white beside a wall of copy.
-
-   Sticky, not taller: the media is short because it is a shot-list entry, and
-   padding it out would be inventing content. Instead it travels with the copy
-   it illustrates, so the column is occupied for the whole chapter and the entry
-   is still on screen when the point it belongs to is being read.
-
-   Only above 1181, where the split is actually two columns; below that the
-   layout is stacked and a sticky element would hover over the copy. */
-@media (min-width:1181px){
-  .chapter .split-2--media-right > .chapter-media{
-    position:sticky;
-    inset-block-start:calc(var(--nav-h) + var(--rhythm-block));
-  }
-}
-
-/* ---- The wide column was given to the column with nothing in it -----------
-   .split-2--media-right hands the MEDIA 56% and the copy 44%, which is right
-   when the media is a 1918x942 app capture. Eight of the nine two-column
-   chapters have no footage (only ch-07 does), so eight chapters were setting a
-   three-line headline and a full chapter of body copy in 44% of the shell while
-   56% held a two-line shot-list entry. The proportions were backwards, and
-   fixing the slot's height alone would have left them backwards.
-
-   The condition is the media itself, not a hand-authored class, so this cannot
-   fall out of sync with reality: the day a slot gets `has-media` the chapter
-   goes back to 44/56 on its own. That is the same one-line edit the #videos-cta
-   comment already documents for restoring a filled slot, and it now carries the
-   layout with it.
-
-   @supports-gated because the whole rule is an improvement, not a requirement:
-   where :has() is unavailable the page keeps the shipped 44/56 split, which is
-   what it had before this pass. */
-@supports selector(:has(*)){
-  @media (min-width:1181px){
-    .chapter .split-2--media-right:not(:has(.media-slot.has-media)){
-      grid-template-columns:0.62fr 0.38fr;
-    }
-    .chapter--reverse .split-2--media-right:not(:has(.media-slot.has-media)){
-      grid-template-columns:0.38fr 0.62fr;
-    }
-  }
-}
-/* .chapter--reverse flips the MEDIA only, via grid order. Text DOM order
-   never changes (section 4.7, section 5.10). */
-.chapter--reverse .split-2--media-right{ grid-template-columns:0.56fr 0.44fr; }
-.chapter--reverse .chapter-media{ order:-1; }
 .chapter-foot{
   margin-block-start:var(--rhythm-block);
   border-block-start:1px solid var(--line); padding-block-start:var(--rhythm-rule);
@@ -1612,57 +2238,24 @@ body.overlay-open{ overflow:hidden; }
    which already exists and is what #videos-cta uses for the same job. */
 
 /* ############################################################################
-   Section 4.8, STICKY PIN: used exactly once, on #ch-06 (section 6.10).
-   Pure CSS pinning. No scroll hijack, no JS positioning. Three panels at 62vh
-   is a real pin; the min-block-size floor is removed because the panels already
-   provide the height.
+   Section 4.8, STICKY PIN: DELETED, twelve rules and the component with them.
+   .pin, .pin-rail, .pin-sticky (and its two sibling-margin rules), .pin-flow,
+   .pin-panel (and its two), .pin-panel > h3, .pin-panel.is-active,
+   .pin-progress, .pin-progress-bar and .pin-counter.
+
+   It was used exactly once, by #ch-06, as a three-panel sticky scroller for
+   reading Absolute / Normalized / Deviation in sequence. The copy cut replaced
+   those three paragraphs with the three shipped panel captures side by side in
+   a .split-3, and deleted the JS that drove the progress bar. Zero instances on
+   all four pages, and the mechanism has nothing left to sequence.
+
+   Going with it: the .pin-rail / .pin-sticky / .pin-panel lines in the 1180px
+   breakpoint, the two .pin-progress-bar reduced-motion branches, the
+   .pin-progress-bar entry in forced-colors, and .pin-sticky in the title-margin
+   :is() list. That also retires SANCTIONED CYAN USE 2 of 5 (section 2.3): the
+   remaining fills are .btn--brand, .pub-progress-bar, .nav-link::after and
+   .type-caret.
    ######################################################################### */
-
-.pin{ position:relative; min-block-size:auto; }          /* NOT 300vh */
-.pin-rail{ display:grid; grid-template-columns:0.42fr 0.58fr; gap:var(--gap); align-items:start; }
-/* Requirement 5, and the same defect the spine had: #ch-06 is the one chapter
-   whose head is NOT a .chapter-head, so its title, its body and its counter had
-   no rhythm between them at all and sat flush while the other nine ran on
-   --rhythm-block. It gets the same two distances as a .chapter-head:
-   --rhythm-head from the spine to the title (carried by .micro-label's own
-   margin, exactly as in the other nine) and --rhythm-block for everything
-   after. Written as adjacent-sibling margins rather than a grid gap because a
-   grid gap is uniform and would flatten those two distances into one. */
-.pin-sticky{
-  position:sticky; inset-block-start:calc(var(--nav-h) + clamp(24px,4vh,64px));
-  block-size:fit-content;
-}
-.pin-sticky > * + *{ margin-block-start:var(--rhythm-block); }
-.pin-sticky > .micro-label + *{ margin-block-start:0; }   /* the spine owns this one */
-.pin-flow{ display:grid; gap:clamp(48px,9vh,120px); }
-.pin-panel{ min-block-size:62vh; }                        /* NOT 76vh */
-
-.pin-panel > * + *{ margin-block-start:var(--rhythm-block); }
-.pin-panel .media-slot{ margin-block-end:var(--rhythm-block); }
-/* The three panel heads ship as bare <h3> with no class, so Tailwind preflight's
-   heading reset was leaving them at body size and body weight - the only
-   headings on the site that did not take a step from the scale. Section 3.2
-   assigns .pin-panel heads to --fs-h3, which is what they get here. An element
-   selector is the fix that needs no markup change; the class the spec implies
-   is listed for the content agent. */
-.pin-panel > h3{
-  font-family:var(--font-display); font-size:var(--fs-h3); font-weight:500;
-  line-height:1.12; letter-spacing:-.018em; color:var(--ink-900); margin:0;
-}
-.pin-panel.is-active .micro-label-name{ color:var(--ink-950); }
-.pin-progress{
-  inline-size:100%; block-size:2px; background:var(--line);
-  overflow:hidden;
-}
-/* Sanctioned cyan use 2 of 5 (section 2.3): a fill, not a letterform. */
-.pin-progress-bar{ display:block; block-size:2px; background:var(--brand-500);
-  transform:scaleX(var(--p,0)); transform-origin:left;
-  transition:transform 320ms var(--ease-out); }
-/* Typography and colour are ROLE 2; the (01) / (10) box is the same one
-   .index-counter uses in a chapter foot, kept block-level here because this one
-   is a standalone <p> in .pin-sticky rather than an item in a flex row. Its
-   offset is now the .pin-sticky grid gap, not a margin of its own. */
-.pin-counter{ display:flex; align-items:baseline; gap:.35em; }
 
 /* ############################################################################
    Section 4.9, MEDIA
@@ -1685,153 +2278,218 @@ body.overlay-open{ overflow:hidden; }
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-400); }
 .media-slot::after { content:attr(data-caption);
   font-family:var(--font-body); font-size:var(--fs-body-sm); color:var(--ink-400); }
-.media-slot.has-media{ border-style:solid; border-color:var(--line);
-  background:var(--mass-950); }
 .media-slot.has-media::before,
 .media-slot.has-media::after{ content:none; }
 .media-video,.media-img{ inline-size:100%; block-size:100%; object-fit:cover; display:block; }
 
-/* A filled slot stops being a centred placeholder grid. */
-.media-slot.has-media{ display:block; }
+/* A filled slot stops being a centred placeholder grid.
 
-/* Dark element 2 of 3 (section 2.4): the full-bleed product letterbox. The ground is
-   the film's own frame. At most three on the home page.
-   Empty --mass slots keep the reserved --media-ratio box; filled ones drop it
-   and band the media instead, so the clip is never cropped to fit a placeholder
-   shape it does not have. */
-.media-slot--mass{
+   THE FRAME IS AN INSET SHADOW, NOT A BORDER. A 1px border on a box with
+   `aspect-ratio` is inside the border box, so a slot that gains a border when it
+   gains its picture loses 2px of content height at the same moment. box-shadow
+   is drawn, not laid out, so the empty box and the filled box are the same box
+   to the pixel - which is the whole requirement. forced-colors drops shadows
+   and gets a real border back in its own block at the end of this file.
+
+   The ground stays --mass-950 and is never seen: every filled slot declares the
+   source's own ratio and every .media-img is object-fit:cover, so the picture
+   covers the box exactly. It is the mount behind a loading image, not one of
+   the page's two dark bands. */
+.media-slot.has-media{
+  display:block;
+  border:0;
   background:var(--mass-950);
-  border-color:var(--mass-line-soft);
+  box-shadow:inset 0 0 0 1px var(--line);
 }
-.media-slot--mass::before{ color:var(--mass-ink-soft); }
-.media-slot--mass::after { color:var(--mass-ink-soft); }
-.media-slot--mass.has-media{
-  display:grid; place-items:center;
-  aspect-ratio:auto;
-  border-color:transparent;
-  padding-block:var(--pad-xs);
-  padding-inline:var(--gutter);
-}
-.media-slot--mass.has-media .media-img,
-.media-slot--mass.has-media .media-video{
-  inline-size:100%; block-size:auto; object-fit:contain;
-  max-inline-size:var(--w-page); margin-inline:auto;
-}
+/* --wide and .bleed-full are ALTERNATIVES, never both. This rule sits after
+   .bleed-full in the cascade at equal specificity, so a slot carrying the pair
+   would take inline-size:100% and margin-inline:auto from here and the bleed
+   would silently do nothing. The three bleeding slots (#ch-01, #ch-06, #ch-09)
+   are therefore bare `media-slot bleed-full`: a full-bleed box is already the
+   widest thing on the page and has no --w-page cap to want. */
 .media-slot--wide{ inline-size:100%; max-inline-size:var(--w-page); margin-inline:auto; }
 
 /* ############################################################################
-   AN EMPTY SLOT IS A PLANNED FIGURE, NOT A MISSING ONE
+   AN EMPTY SLOT IS A RESERVATION, AND IT IS NOT A BROKEN PICTURE
 
-   THE MEASUREMENT.  index.html carries 17 .media-slot; 5 have media and 12 do
-   not. Those 12 reserved their full --media-ratio box anyway, so they painted
-   3,805,971 square pixels of dashed-bordered --surface-100 stamped "RECORDING:
-   TO COME" - 6.55% of the entire rendered page, and more area than all five
-   REAL images put together (3,562,103). Nine grey rectangles between 343px and
-   702px tall is not a page waiting for assets, it is a page that looks broken.
+   TWO REQUIREMENTS THAT PULL IN OPPOSITE DIRECTIONS, and the whole design is
+   the resolution of them:
 
-   WHY IT LOOKED BROKEN, precisely: a dashed border on a grey fill at the exact
-   aspect ratio of a missing image is the universal rendering of a BROKEN ASSET.
-   The page was drawing the browser's own error state, twelve times, on purpose.
+     (1) RESERVE THE SPACE. Every slot holds the exact aspect ratio it will
+         receive, empty or filled, so the day a capture lands nothing below it
+         moves. That rules out the previous pass's answer, which was to collapse
+         an empty slot to a ~36px hairline entry - honest, compact, and it meant
+         ten slots filling in would each shove ~600px of document downward.
 
-   THE FIX IS NOT TO HIDE IT.  The footage genuinely does not exist, every one
-   of these captions already says so in its own words ("Not recorded yet: the
-   throw-ratio slider driving beam size, distance and Center Surface Lux
-   together"), and that honesty is the best writing on the page. What was wrong
-   was the FORM, not the content: the slot claimed the visual footprint of a
-   picture while having nothing to show, so it read as an absence rather than as
-   a plan.
+     (2) DO NOT DRAW THE BROWSER'S ERROR STATE. A dashed border on a grey fill
+         at an image's aspect ratio is exactly what a browser paints when an
+         <img> 404s. Reserving the ratio while drawing that is a page that looks
+         broken in ten places.
 
-   So an empty slot stops being a picture-shaped hole and becomes what it
-   actually is - a named entry in a shot list - drawn in the language the rest
-   of the document already uses: one hairline, the figure's name in the spine's
-   own micro-label, and a bordered status tag identical in build to .brand-beta.
-   The .media-caption underneath is unchanged and now carries the block, which
-   is the right way round: it is the part that has something to say.
+   So the ratio comes back and the dashed box does not. What sits in the
+   reserved space instead is a PLATE: a flat tone, no border at all, the
+   figure's name set at --fs-h4 where the eye lands first, its status as the
+   same 1px chip .brand-beta uses, and a drawn mark at the trim. Nothing about
+   it is an outline of a missing thing; it is a labelled reservation, which is
+   what it actually is.
 
-   ~36px instead of ~343px per slot, and the reclaimed area is ~3.6M square
-   pixels, without deleting one chapter, one label or one caption.
+   VIDEO AND IMAGE ARE DIFFERENT OBJECTS AND ARE DRAWN AS SUCH. data-slot is
+   already on the markup, so the type is declared, not inferred:
 
-   NOT THE /videos CARDS.  Every rule here is also scoped :not(.video-card-media).
-   videos.html builds all 41 of its card posters from .video-card-media.media-slot
-   and 41 of those are pending too, but there the slot IS the card's picture area
-   and it carries the positioned duration chip inside it. Collapsing those would
-   take the poster box out of every card and drop the chips - verified in the
-   browser before this exclusion went in, and the card grid did exactly that.
-   The two are different objects that happen to share a class: one is a figure in
-   a document, one is a card's own image well.
+     [data-slot="video"]  --surface-200, the deeper tone, and a TIME RULE across
+                          the floor of the frame: a hairline with ticks along it.
+                          A moving picture is measured in time and the mark says
+                          so. 8 of the 10 empty slots.
+     [data-slot="image"]  --surface-100, the lighter tone, and CROP MARKS at the
+                          four corners - the printer's mark for "a picture trims
+                          to here". 2 of the 10.
 
-   IT FILLS IN WITH NO REDESIGN.  Every rule here is scoped :not(.has-media).
-   The day a clip is shot, the content agent adds `has-media` and the <video> or
-   <img> exactly as the #videos-cta comment already documents, and the slot
-   returns to its reserved --media-ratio box with its dark ground - the styling
-   below simply stops matching. Nothing here has to be undone first.
+   Both marks are hairlines, which is the only drawing vocabulary this site has:
+   there is not one icon anywhere on it, and a play triangle would be the first.
+   Both are background layers, so they cost no markup and disappear with the
+   background the moment .has-media arrives.
+
+   NOT THE /videos CARDS. Every rule here is scoped :not(.video-card-media).
+   videos.html builds all 41 of its card posters from .video-card-media
+   .media-slot and 41 are pending; there the slot IS the card's picture area and
+   carries a positioned duration chip inside it, so it keeps the centred
+   treatment declared at the top of this section. The two are different objects
+   that happen to share a class: one is a figure in a document, one is a card's
+   own image well.
+
+   IT FILLS IN WITH NO REDESIGN, AND WITH NO REFLOW. Every rule here is scoped
+   :not(.has-media). Add `has-media` and the <video> or <img> and the plate
+   stops matching; the box it leaves behind is the same box, to the pixel.
    ######################################################################### */
 .media-slot:not(.has-media):not(.video-card-media){
-  aspect-ratio:auto;                 /* stop reserving a 2:1 hole */
-  background:none;
+  /* The inline inset is a variable because a full-bleed slot runs to the
+     viewport while its label must still start on the shell's own column.
+     --bleed-inset is declared by .site-shell and inherited (section 3.7), so the
+     label lines up with every other first character on the page at every width,
+     with no breakpoint and no second number. */
+  --slot-inset-inline:var(--rhythm-block);
+
+  background-color:var(--surface-100);
   border:0;
-  border-block-start:1px solid var(--line-strong);
-  display:flex; flex-wrap:wrap; align-items:center;
-  justify-content:space-between;
-  gap:var(--rhythm-tight) var(--gap);
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-content:start;
+  column-gap:var(--rhythm-block);
+  row-gap:var(--rhythm-tight);
   text-align:start;
-  padding-block:var(--rhythm-rule) 0;
-  overflow:visible;
+  /* The block inset has to CLEAR the trim marks, or the status chip lands on
+     top of the top-right crop mark - measured, they overlapped by 20px at 800.
+     A mark reaches --rhythm-tight + 18px from its corner; --rhythm-figure is
+     the next step up the scale that is larger than that at every width
+     (34 against 26 at 390, 60 against 30 at 1440), so one token clears it
+     rather than a hand-fitted number that would have to be re-derived the next
+     time the marks change size. */
+  padding-block:var(--rhythm-figure);
+  padding-inline:var(--slot-inset-inline);
 }
-/* ::before is the figure's NAME, so it takes the --ink-950 that ROLE 2 gives an
-   ordinal that names the thing it sits on, rather than the --ink-400 a
-   placeholder caption had. */
-.media-slot:not(.has-media):not(.video-card-media)::before{ color:var(--ink-950); line-height:1.2; }
+.media-slot.bleed-full:not(.has-media):not(.video-card-media){
+  --slot-inset-inline:var(--bleed-inset, var(--rhythm-block));
+}
+/* ::before is the figure's NAME. It is the largest thing in the plate on
+   purpose: at --fs-micro it was a 12px caption adrift in a 640px field, which
+   is what made an empty slot read as an absence. --fs-h4 is the same step the
+   site gives any short titling line that is not display type. */
+.media-slot:not(.has-media):not(.video-card-media)::before{
+  grid-column:1;
+  font-family:var(--font-display); font-size:var(--fs-h4); font-weight:500;
+  letter-spacing:.04em; line-height:1.15; color:var(--ink-950);
+}
 /* ::after is the STATUS, built exactly like .brand-beta: same face, same
    tracking, same 1px box. A status the page already draws elsewhere reads as
    part of the system; a centred grey sentence reads as an apology. */
 .media-slot:not(.has-media):not(.video-card-media)::after{
+  grid-column:2; justify-self:end;
   font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
   letter-spacing:.14em; text-transform:uppercase; line-height:1;
-  color:var(--ink-400);
+  color:var(--ink-400); white-space:nowrap;
   border:1px solid var(--line-strong); border-radius:3px;
-  padding:4px 6px;
+  padding:5px 7px;
 }
-/* The three empty --mass slots keep their dark ground: they are the page's
-   designed dark beats and a bleed is a deliberate act, not a side effect of
-   having no picture. They just stop being 522 to 702px tall while empty. The
-   bleeding edge gets no inline padding, because on that side the band runs to
-   the viewport and the text should still start on the shell's column. */
-.media-slot--mass:not(.has-media){
-  background:var(--mass-950);
-  border-block-start:0;
-  padding-block:var(--rhythm-block);
-  padding-inline:var(--gutter);
+
+/* Both marks are drawn in --ink-300, the token section 2.1 reserves for exactly
+   this - "disabled glyphs, drawn marks", 3.06:1, NON-TEXT ONLY. That is the
+   right level and the right permission: a 1px --line-strong hairline measures
+   about 1.15:1 on these grounds and vanished at any real viewing distance,
+   which would have left the two plate types telling apart only by a 2% tonal
+   difference. WCAG is satisfied by the ::after chip, which says VIDEO or IMAGE
+   in words at --ink-400 / 5.25:1; the mark is the redundant, faster cue, which
+   is precisely the job 3.06:1 is allowed to do. */
+
+/* ---- THE VIDEO PLATE: a time rule on the floor of the frame --------------- */
+.media-slot[data-slot="video"]:not(.has-media):not(.video-card-media){
+  background-color:var(--surface-200);
+  background-image:
+    linear-gradient(var(--ink-300), var(--ink-300)),                         /* the rule */
+    repeating-linear-gradient(90deg, var(--ink-300) 0 1px, transparent 1px 48px); /* its ticks */
+  background-size:
+    calc(100% - var(--slot-inset-inline) * 2) 1px,
+    calc(100% - var(--slot-inset-inline) * 2) 10px;
+  background-position:
+    left var(--slot-inset-inline) bottom var(--rhythm-block),
+    left var(--slot-inset-inline) bottom var(--rhythm-block);
+  background-repeat:no-repeat;
 }
-.media-slot--mass.bleed-right:not(.has-media){ padding-inline-start:0; }
-.media-slot--mass.bleed-left:not(.has-media) { padding-inline-end:0; }
-.media-slot--mass:not(.has-media)::before{ color:var(--mass-ink); }
-.media-slot--mass:not(.has-media)::after {
-  color:var(--mass-ink-soft); border-color:var(--mass-line);
+
+/* ---- THE IMAGE PLATE: crop marks at the trim ------------------------------ */
+.media-slot[data-slot="image"]:not(.has-media):not(.video-card-media){
+  background-color:var(--surface-100);
+  background-image:
+    linear-gradient(var(--ink-300), var(--ink-300)),
+    linear-gradient(var(--ink-300), var(--ink-300)),
+    linear-gradient(var(--ink-300), var(--ink-300)),
+    linear-gradient(var(--ink-300), var(--ink-300)),
+    linear-gradient(var(--ink-300), var(--ink-300)),
+    linear-gradient(var(--ink-300), var(--ink-300)),
+    linear-gradient(var(--ink-300), var(--ink-300)),
+    linear-gradient(var(--ink-300), var(--ink-300));
+  background-size:
+    18px 1px, 1px 18px,   18px 1px, 1px 18px,
+    18px 1px, 1px 18px,   18px 1px, 1px 18px;
+  background-position:
+    left var(--rhythm-tight) top var(--rhythm-tight),
+    left var(--rhythm-tight) top var(--rhythm-tight),
+    right var(--rhythm-tight) top var(--rhythm-tight),
+    right var(--rhythm-tight) top var(--rhythm-tight),
+    left var(--rhythm-tight) bottom var(--rhythm-tight),
+    left var(--rhythm-tight) bottom var(--rhythm-tight),
+    right var(--rhythm-tight) bottom var(--rhythm-tight),
+    right var(--rhythm-tight) bottom var(--rhythm-tight);
+  background-repeat:no-repeat;
 }
 
 /* .media-frame is DELETED. It was position:relative + overflow:hidden +
    display:block, which is what .media-slot already declares; no page authors
-   it and every media node on the site is a .media-slot. */
+   it and every media node on the site is a .media-slot.
+
+   .media-label-badge is DELETED TOO: an absolutely positioned chip for naming a
+   filled slot, zero instances on all four pages, and the two things that do
+   this job now both exist - the empty plate's own ::after, and /videos'
+   .video-card-duration, which is the same object built for the one place that
+   authors it.
+
+   .media-slot--mass is DELETED, all eight rules, and that is a colour decision
+   rather than a cleanup - see the note above .section--mass. Its three callers
+   (#ch-01, #ch-06, #ch-09) keep .bleed-full and lose the navy: a dark band with
+   nothing in it is decoration, and this page spends navy twice, on #numbers and
+   #start, where it punctuates something. The filled variant went with it - it
+   dropped the reserved ratio to letterbox a clip, which is now forbidden by the
+   no-reflow rule at the top of this section.
+
+   .bleed-right / .bleed-left and the .bleed-full .media-caption pair went the
+   same way: a caption is a sibling of the bleeding slot, not a child of it, so
+   those two selectors never matched anything. */
 .media-poster{ display:block; }
-.media-label-badge{
-  position:absolute; inset-block-start:12px; inset-inline-start:12px; z-index:2;
-  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
-  letter-spacing:.14em; text-transform:uppercase; line-height:1;
-  color:var(--mass-ink); background:rgba(4,37,45,.72);
-  border:1px solid var(--mass-line); border-radius:3px; padding:5px 7px;
-}
 .media-caption{
   margin-block-start:var(--rhythm-rule);
   font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-400);
   max-inline-size:var(--w-text);
 }
-/* A bleeding element carrying a caption keeps its own inner gutter (section 3.7). */
-.bleed-full > .media-caption,
-.bleed-full .media-caption{ padding-inline:var(--gutter); }
-/* A caption that sits inside the dark letterbox rather than beside it. */
-.media-slot--mass .media-caption,
-.media-slot--mass .media-label-badge{ color:var(--mass-ink-soft); }
 
 /* ############################################################################
    Section 4.10, INDEX COUNTER
@@ -1848,9 +2506,15 @@ body.overlay-open{ overflow:hidden; }
    the app's own legend. The site never draws its own heatmap ramp.
    ######################################################################### */
 
+/* Both gaps come off the scale now. They were clamp(28px,3.4vw,56px) and
+   --gap, two hand-written numbers that landed at 49 and 26 at 1440 - close
+   enough to --rhythm-block's 28 to read as the same distance while being
+   neither. A cell steps to the next cell across a row break at --rhythm-figure
+   and across a column at --rhythm-block, which is the same relationship the
+   heads use between a block and the block after it. */
 .stat-row{
   display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:clamp(28px,3.4vw,56px) var(--gap);
+  gap:var(--rhythm-figure) var(--rhythm-block);
 }
 .stat{
   display:grid; gap:var(--rhythm-tight); align-content:start;
@@ -1869,7 +2533,7 @@ body.overlay-open{ overflow:hidden; }
 .limits{ display:grid; border-block-start:1px solid var(--line); }
 .limits-row{
   display:grid; grid-template-columns:minmax(0,0.32fr) minmax(0,0.68fr);
-  gap:clamp(14px,2vw,32px);
+  gap:var(--rhythm-block);
   border-block-end:1px solid var(--line);
   padding-block:var(--rhythm-block);
 }
@@ -1885,7 +2549,7 @@ body.overlay-open{ overflow:hidden; }
 .speclist{ list-style:none; margin:0; padding:0; display:grid; border-block-start:1px solid var(--line); }
 .speclist-item{
   display:grid; grid-template-columns:auto minmax(0,1fr);
-  gap:clamp(14px,1.8vw,28px);
+  gap:var(--rhythm-block);
   border-block-end:1px solid var(--line);
   border-inline-start:2px solid transparent;
   padding:var(--rhythm-block) 0 var(--rhythm-block) clamp(12px,1.2vw,18px);
@@ -2369,8 +3033,8 @@ body.overlay-open{ overflow:hidden; }
   background:transparent; border:1px solid var(--line-control); border-radius:6px;
   color:var(--ink-950); font-size:var(--fs-body);
 }
-/* Dark element 3 of 3 is NOT this: the player ground is the film's own frame,
-   the same --mass-950 letterbox as .media-slot--mass (section 2.4). */
+/* Not one of the page's dark bands: the player ground is the film's own frame,
+   the same --mass-950 mount a filled .media-slot uses (section 2.4). */
 .video-lightbox__player{
   background:var(--mass-950); aspect-ratio:var(--media-ratio); overflow:hidden;
 }
@@ -2429,9 +3093,12 @@ body.overlay-open{ overflow:hidden; }
   .btn--outline:hover{ border-color:var(--ink-950); background:var(--surface-100); }
   .btn--text:hover .btn-arrow{ transform:translate(3px,-3px); }
   .btn--on-mass:hover{ background:rgba(255,255,255,.08); border-color:var(--mass-ink); }
+  /* The inverted pair in #start: .section--mass .btn--solid is 0-2-0 and would
+     otherwise outrank .btn--solid:hover above and leave the button inert. */
+  .section--mass .btn--solid:hover { background:var(--mass-ink-soft); }
+  .section--mass .btn--outline:hover{ background:rgba(255,255,255,.08); border-color:var(--mass-ink); }
 
   .nav-link:hover::after{ transform:scaleX(1); }
-  .chapter-point:hover{ border-inline-start-color:var(--brand-800); }
   .speclist-item:hover{ border-inline-start-color:var(--brand-800); background:var(--surface-100); }
   .filter-chip:hover:not([disabled]){ border-color:var(--ink-950); }
 }
@@ -2465,23 +3132,18 @@ body.overlay-open{ overflow:hidden; }
   .nav-actions{ flex:0 1 auto; min-inline-size:0; margin-inline-start:auto; }
   .nav-toggle{ display:inline-flex; margin-inline-start:0; flex:0 0 auto; }
 
-  .col-3,.col-4,.col-5,.col-6,.col-7,.col-8,.col-12{ grid-column:span 6; }
-  .start-2,.start-6,.start-7,.start-8{ grid-column-start:auto; }
+  /* The 12-column primitives, both .split-2--* layouts, .chapter--reverse,
+     .section-head--split and the three .pin-* lines that used to sit here are
+     deleted with their components. .split-3 is the only multi-column layout
+     index.html still authors below the hero, and it is the one that has to
+     stack: three portrait app captures at 336px each is a comparison, at 250px
+     it is three thumbnails of a legend nobody can read. */
+  .split-3{ grid-template-columns:minmax(0,1fr); }
 
-  .split-2--lead-left,
-  .split-2--media-right,
-  .split-3,
-  .section-head--split{ grid-template-columns:minmax(0,1fr); }
-  .chapter--reverse .split-2--media-right{ grid-template-columns:minmax(0,1fr); }
-  .chapter--reverse .chapter-media{ order:0; }
-
-  /* The card still overlaps here; only the lead/CTA band under the frame
-     stacks, so the buttons keep the same left edge as everything else. */
-  .hero-copy{ grid-template-columns:minmax(0,1fr); align-items:start; }
-
-  .pin-rail{ grid-template-columns:minmax(0,1fr); }
-  .pin-sticky{ position:static; }
-  .pin-panel{ min-block-size:auto; }
+  /* The hero needs NOTHING here now. The rule that used to sit at this line
+     stacked .hero-copy's lead/buttons split; .hero-copy is gone and the block
+     stacks its three children at every width, so the breakpoint has nothing
+     left to restate. The block still overlaps down to 861. */
 
   .stat-row{ grid-template-columns:repeat(2,minmax(0,1fr)); }
   .footer-cols{ grid-template-columns:repeat(2,minmax(0,1fr)); }
@@ -2500,44 +3162,77 @@ body.overlay-open{ overflow:hidden; }
    and to 0 for a .site-main child, so there is nothing left for a breakpoint to
    restate. */
 @media (max-width:860px){
-  .col-3,.col-4,.col-5,.col-6,.col-7,.col-8,.col-12{ grid-column:span 12; }
-
+  /* The .col-* line that sat here went with the 12-column primitives. */
   .hero-readout{ grid-template-columns:minmax(0,1fr); gap:clamp(18px,3vw,28px); }
 
   /* ---- Requirement 6: the overlap degrades, the headline does not ---------
-     Below 860 the card stops overlapping and returns to normal flow under the
-     frame at full shell width. The alternative was to keep the overlap all the
-     way down: the card is 47% of the frame, so at 861 it is a 364px box with
-     324px of inner measure, which puts the H1 at 34px, then ~22px at 560 and
-     ~15px on a phone. That is exactly the "shrink the type into illegibility"
-     outcome the brief rules out, so the thing that goes is the overlap, not
-     the headline. Full width buys the type back: the measure jumps from 324px
-     at 861 to 733px at 860, so the H1 goes to 54px there and never drops below
-     27px. Two lines therefore hold down to ~340px, verified in the browser at
-     390, 375, 360 and 340; below that line two wraps to two rather than
-     shrinking further, and three visual lines on a 320px phone is the designed
-     floor, not a regression.
-     The card keeps its radius, its border and a contact shadow, so stacked it
-     still reads as the same object, just no longer in front of anything. */
-  .hero-inner{ --card-overhang:0%; }
-  .hero-card{
-    position:static;
-    grid-area:auto;                    /* back into flow, row 2, under the frame */
-    inline-size:auto; min-block-size:0;
-    /* On white paper the long lift shadow has nothing to lift off and reads as
-       grime. Only the contact shadow survives. */
-    box-shadow:0 1px 2px rgba(2,37,45,.10);
-    border-color:var(--line);
+     Below 860 the block stops overlapping and sits under the frame. The
+     alternative was to keep the overlap all the way down: the block is 64% of
+     the frame, so at 861 it is a 495px box with 454px of inner measure, which
+     puts the H1 at 41px, then ~26px at 560 and ~19px on a phone. That is the
+     "shrink the type into illegibility" outcome the brief rules out, so the
+     thing that goes is the overlap, not the headline. Releasing the width buys
+     the type back: the H1 goes to 54px at 860 and never drops below 27px. Two
+     lines therefore hold down to ~340px, verified in the browser at 390, 375,
+     360 and 340; below that line two wraps to two rather than shrinking
+     further, and three visual lines on a 320px phone is the designed floor,
+     not a regression.
+
+     "FULL SHELL WIDTH" IS WHAT THIS COMMENT USED TO CLAIM AND IT IS NOT WHAT
+     SHIPS - corrected here rather than left to mislead. The base rule sets
+     justify-self:start, so releasing inline-size gives the block SHRINK-TO-FIT,
+     not stretch: measured 517px of a 773px shell at 860 and 298px of a 350px
+     shell at 390. It wraps the headline instead of running the full column.
+     That is a fine result and it is why nobody caught it - the H1 gets its own
+     ramp two rules down and holds two lines at every width - but the old note
+     sized that ramp against a 733px measure that does not exist. The ramp is
+     unchanged because it is measured against the real block below, not against
+     the number in the sentence. Pre-existing, not introduced by owner change 4.
+
+     The degrade is two lines now, not four: the pull is released on the FRAME
+     (see the rule below and .hero-frame) and the width is released here. Under
+     the old absolutely-positioned card this needed position, grid-area,
+     inline-size and min-block-size all reset.
+
+     NO SHADOW HERE EITHER. The old rule swapped the five-layer stack for a
+     contact shadow, on the argument that a stacked card still needs to read as
+     an object. OWNER CHANGE 2 removes that too: stacked, the block is not in
+     front of anything, so there is nothing for a shadow to sell. Its edge is
+     the whole boundary, and on white paper --line-control measures 5.25:1 -
+     five times what the old --line-strong border gave it here, so the block
+     reads MORE clearly stacked than it did with the shadow. */
+  /* The pull is released on the FRAME now, not on the block - it moved there in
+     OWNER CHANGE 4 (see .hero-frame). Zeroing it on the block would zero nothing
+     and the block would still ride up. */
+  .hero-frame{ margin-block-end:0; }
+  .hero-block{
+    inline-size:auto;                  /* back to a normal row under the frame */
   }
-  /* Full width is a much longer measure than 47% of the frame, so the H1 gets
-     its own ramp here: 27px at the floor to 54px at 860. Continuing the
-     overlap ramp would leave a 34px headline in a 731px measure.
-     Measured against the same 8.827 em-width, and against the same real shell:
+
+  /* The hero ticker (OWNER CHANGE 6) does not ship below this line. It reserves
+     140px of fixed rail on each side to clear the embed's own controls, and
+     those controls are stated in px by the app, so the reservation cannot ramp
+     down with the frame. 280px against a 774px frame at 861 leaves a 494px
+     window; at 560 the shell is 498px and the window is 218px - one and a half
+     words. It is cut at the same line where this whole composition stops
+     existing: the block leaves the frame three rules up, and a band laid over a
+     scene the headline no longer overlaps is a band with no argument left.
+     Nothing is lost: every word in it is authored again below, in the ten spine
+     labels and the chapter ledes. */
+  .hero-ticker{ display:none; }
+  /* Off the overlap, the block is sized by its own content rather than by 64% of
+     the frame, so the H1 gets its own ramp here: 27px at the floor to 54px at
+     860. Measured against the same 8.827 em-width and the same real shell:
        860 -> 54.0 of a possible 82.9    768 -> 49.2 / 73.5    560 -> 38.5 / 50.6
        390 -> 29.7 of a possible 33.9    375 -> 29.0 / 31.7    360 -> 28.2 / 30.0
        340 -> 27.2 of a possible 27.8    below ~335 line two wraps.
      The 54px top end is reached exactly at 860, so the ramp is continuous with
-     the breakpoint rather than stepping at it. */
+     the breakpoint rather than stepping at it.
+     OWNER CHANGE 4 IMPROVED THE JOIN WITHOUT TOUCHING THIS RAMP. The step across
+     861/860 used to be 34.4 -> 54.0px because the wide ramp was 4vw; at 4.8vw it
+     is 41.3 -> 54.0. Still a step, but a third smaller than the one that shipped
+     before, and in the direction that closes rather than opens. Verified 2 lines
+     on both sides of the breakpoint. */
   .hero-title{ font-size:clamp(1.6875rem, 5.16vw + 0.601rem, 3.375rem); }
 
   .limits-row{ grid-template-columns:minmax(0,1fr); }
@@ -2549,17 +3244,23 @@ body.overlay-open{ overflow:hidden; }
   .video-lightbox__panel{ inline-size:100%; max-block-size:92svh; }
 }
 
-/* 560px and below: marquee items step down; card grids go one-up. */
+/* 560px and below: the jump table goes one column; two items leave the bar. */
 @media (max-width:560px){
-  /* Every pixel of card padding is a pixel the two-line H1 does not get, and on
-     a phone the headline needs it more than the frame does. */
-  .hero-card{ padding:clamp(18px,4.6vw,26px); }
+  /* Every pixel of block padding is a pixel the two-line H1 does not get, and
+     on a phone the headline needs it more than the frame does. */
+  .hero-block{ padding:clamp(18px,4.6vw,26px); }
 
-  /* --marquee-dur is gone with the animation; the strip is a static index now. */
-  .marquee-item{ font-size:var(--fs-micro); }
+  /* The .marquee-item and .split-3 lines that sat here are deleted: the strip
+     is gone, and .split-3 has already stacked 620px further up. */
+  .speclist-item{ grid-template-columns:minmax(0,1fr); gap:var(--rhythm-tight); }
 
-  .split-3{ grid-template-columns:minmax(0,1fr); }
-  .speclist-item{ grid-template-columns:minmax(0,1fr); gap:8px; }
+  /* The empty plate is the one object whose inset has to give at phone width:
+     --rhythm-block is 24px there, and a 24px inset on a 350px plate leaves a
+     302px column for a name set at 19px. The plate keeps its full block inset -
+     it is what makes the reservation read as designed - and spends inline. */
+  .media-slot:not(.has-media):not(.video-card-media){
+    --slot-inset-inline:var(--rhythm-rule);
+  }
   .footer-meta{ align-items:flex-start; }
   .nav-actions .btn{ padding-inline:14px; }
 
@@ -2591,7 +3292,7 @@ body.overlay-open{ overflow:hidden; }
 @media (max-width:380px){
   .site-shell,
   .site-shell--narrow{ width:calc(100% - 40px); }
-  .hero-card{ padding:20px; }
+  .hero-block{ padding:20px; }
   .nav-actions{ gap:6px; }
 }
 
@@ -2642,16 +3343,34 @@ html[data-motion="off"] *::after{
 
   /* The three .marquee branches that lived here are DELETED. WCAG 2.2.2 is
      about moving content, and the strip does not move at any motion setting
-     any more, so there is no longer a reduced-motion case to answer. */
+     any more, so there is no longer a reduced-motion case to answer. The hero
+     ticker (OWNER CHANGE 6) is a different component and does move, so it
+     brings its own branch, immediately below. */
+
+  /* The hero ticker STOPS, it does not hide: WCAG 2.2.2 offers pause, stop or
+     hide, and hiding would delete product vocabulary from exactly the visitors
+     who asked for less movement. It holds a static line. `animation:none`, not
+     `animation-play-state:paused` - the blanket at the top of this section
+     forces animation-duration to .001ms !important, so a paused animation would
+     hold at its END state, translate3d(-50%), showing the seam between the two
+     groups. animation-name:none takes the transform out of play and the track
+     rests at 0. The reasoning in full is at .hero-ticker. */
+  html:not([data-motion="on"]) .hero-ticker-track{ animation:none; transform:none; }
 
   /* The caret stops blinking but stays visible as a position marker. */
   html:not([data-motion="on"]) .type-caret{ animation:none; opacity:.45; }
 
-  /* The hero frame needs no reduced-motion branch at all: it never moves, and
-     the facade means nothing inside it loads until a click (OVERRIDE 2). */
+  /* The hero frame still needs no reduced-motion branch IN CSS, but the reason
+     changed with OVERRIDE 3 and is worth stating so nobody adds one. The frame
+     itself never moves. What reduced motion now withholds is the EMBED, and
+     that is a decision about whether to fetch and mount an iframe at all -
+     JS, not a transition to freeze. The IIFE's embedAllowed() gate is the
+     branch; .hero-frame-launch is its visible opt-in, and it is revealed by
+     that same JS. A CSS rule here could only hide a thing that was never
+     created. */
 
-  /* Sticky positioning is not motion and stays; only the transition goes. */
-  html:not([data-motion="on"]) .pin-progress-bar{ transition:none; }
+  /* The .pin-progress-bar branch that sat here went with the pinned scroller
+     (section 4.8). /videos' own progress bar is the last of that family. */
   html:not([data-motion="on"]) .pub-progress-bar::after{ transition:none; }
 
   /* Overlays swap instantly instead of wiping. */
@@ -2664,16 +3383,21 @@ html[data-motion="off"]{ scroll-behavior:auto; }
 html[data-motion="off"] .reveal{ opacity:1; transform:none; }
 html[data-motion="off"] .reveal-line-inner{ transform:none; }
 html[data-motion="off"] .type-caret{ animation:none; opacity:.45; }
-html[data-motion="off"] .pin-progress-bar{ transform:scaleX(var(--p,0)); }
+html[data-motion="off"] .hero-ticker-track{ animation:none; transform:none; }
 html[data-motion="off"] .nav-overlay-list > li{ opacity:1; transform:none; }
 
 /* --- the explicit opt-in must actually restore motion ----------------------
    The four .marquee branches that used to sit in this block, and their three
    data-motion="off" counterparts, are DELETED with the scroll animation itself:
    the strip is a static index at every motion setting now, so there is nothing
-   left for either branch to turn off or back on. The typewriter caret is the
-   only motion the hero still owns. */
+   left for either branch to turn off or back on. The typewriter caret and the
+   hero ticker (OWNER CHANGE 6) are the two motions the hero owns, and both are
+   restored here - an opt-in that only restores half the page's motion is a
+   toggle that lies. */
 html[data-motion="on"] .type-caret{ animation:caret 1.06s steps(1,end) infinite; opacity:1; }
+html[data-motion="on"] .hero-ticker-track{
+  animation:hero-ticker var(--ticker-dur) linear infinite;
+}
 
 /* ############################################################################
    Section 5.10, CONTRAST AND FORCED-COLORS MODES
@@ -2687,7 +3411,12 @@ html[data-motion="on"] .type-caret{ animation:caret 1.06s steps(1,end) infinite;
 @media (forced-colors: active){
   .hero-frame{ border:2px solid CanvasText; background:Canvas; box-shadow:none; }
   .hero-frame-launch{ border:1px solid ButtonText; background:ButtonFace; }
-  .hero-card{ border:1px solid CanvasText; }
+  .hero-block{ border:1px solid CanvasText; }
+  /* The halo is the whole legibility argument at .hero-ticker, and forced-colors
+     does not force a text stroke. The frame's ground is Canvas here, so the
+     stroke becomes Canvas and the glyph CanvasText: the same figure/ground pair
+     the system picked, still with an opaque outline around every letter. */
+  .hero-ticker-item{ color:CanvasText; -webkit-text-stroke-color:Canvas; }
   .media-slot{ border:1px solid CanvasText; }
   .btn{ border:1px solid ButtonText; }
 
@@ -2699,7 +3428,6 @@ html[data-motion="on"] .type-caret{ animation:caret 1.06s steps(1,end) infinite;
     letter-spacing:-.008em;
   }
   .type-caret{ background:CanvasText; }
-  .pin-progress-bar,
   .pub-progress-bar::after{ background:Highlight; }
   .nav-link::after{ background:Highlight; }
 }
@@ -2727,39 +3455,60 @@ html[data-motion="on"] .type-caret{ animation:caret 1.06s steps(1,end) infinite;
 /* ############################################################################
    UNUSED BUT DELIBERATELY KEPT
 
-   The dead-rule sweep removed every rule an owner override or a completed
-   migration made permanently unreachable. Three families are unused by all four
-   pages today and were still kept. Each is listed here so the next sweep does
-   not have to re-derive the reasoning, and so the owner can green-light a
-   second pass in one read.
+   THIS PASS DELETED, not kept: the marquee (7 rules), the sticky pin (12), the
+   12-column grid (12), both .split-2--* layouts and .chapter--reverse (4) with
+   the @media sticky and @supports :has() blocks that propped them up (3),
+   .section-head--split and .section-head-aside (2), .chapter-title /
+   .chapter-body / .chapter-points / .chapter-point / .chapter-point-text (5),
+   .media-slot--mass (8), .media-label-badge (2), .bleed-right / .bleed-left (2),
+   .split-3 + .hero-actions (1), and the eleven breakpoint, reduced-motion and
+   forced-colors lines that referenced them. Every one was verified at zero
+   instances across index.html, videos.html, privacy.html and 404.html, and
+   against every classList/className write in all four files' scripts.
 
-   1. THE 12-COLUMN GRID.  .grid-12, .col-3/4/5/6/7/8/12, .start-2/6/7/8, plus
-      their two breakpoint lines. Section 3.5 names them as the layout
-      primitives; what shipped uses .split-2--* and .split-3 instead. Kept
-      because markup is being edited alongside this file and a section written
-      against the spec's grid would silently lose its columns.
+   Two families are still unused by all four pages and are still kept. Each is
+   listed so the next sweep does not have to re-derive the reasoning.
 
-   2. THE DARK-GROUND TEXT SET.  .btn--on-mass x3 (including the hover) only.
-      .section--mass and .micro-label--on-mass ARE NOW LIVE: #numbers carries
-      both, as the page's single dark band, and the family gained five rules for
-      the .stat component that landed on it. Keeping this set through two sweeps
-      is what made that a five-line change instead of a redesign, and the note
-      that it fails INVISIBLY was right - every part of a .stat is a <p>, so
-      without those rules the six figures would have repainted in the qualifier
-      colour and .stat's hairline would have gone to about 1.2:1, silently.
+   1. THE DARK-GROUND TEXT SET.  .btn--on-mass x3 (including the hover) only.
+      .section--mass and .micro-label--on-mass ARE LIVE and are now the page's
+      TWO dark bands, #numbers and #start. Keeping this set through three sweeps
+      is what made that a small change rather than a redesign, and the note that
+      it fails INVISIBLY was right - every part of a .stat is a <p>, so without
+      those rules the six figures would have repainted in the qualifier colour
+      and .stat's hairline would have gone to about 1.2:1, silently.
       .section--mass .link remains the file's only sanctioned cyan-as-text site
       (G2), so deleting it would still change what the ship gate greps for.
+      .btn--on-mass itself stays unauthored on purpose: #start's two buttons
+      invert through .section--mass instead, because .btn--on-mass would also
+      hand .btn--text a border it does not want.
 
-   3. INTERACTION STATES WITH NOTHING IN THEM.  .btn.is-disabled, and the
-      JS-applied .is-in / .is-scrolled / .is-active / .overlay-open /
+   2. INTERACTION STATES WITH NOTHING IN THEM.  .btn.is-disabled, .btn-arrow,
+      and the JS-applied .is-in / .is-scrolled / .is-active / .overlay-open /
       .hero-frame-embed / .video-card-preview. A state is not dead because
       nothing is in it at rest; the last two are created by script at runtime
       and would not appear in a class-attribute grep at all.
 
-   Three TOKENS now have zero var() sites: --surface-tint (its only consumer
-   was .section--wash), --brand-100 and --mass-800 (both already dead before
-   this pass). Section 2.1 is pasted verbatim from the spec and is not this
-   task's file to prune, so they are reported rather than removed.
+   Also unauthored and also kept, for one reason each:
+     .monitor-controls / .monitor-pause  the WCAG 2.2.2 pause pair. index.html's
+        #ch-01 and #ch-06 comments name both by class as part of the one-edit
+        restore path for a filled video slot; deleting them would silently make
+        that restore ship a video with no pause control.
+     .section--pad-xs  the modifier set is written out complete on purpose so
+        that adding a fifth step is never the reason a section invents a number.
+     .btn--on-mass  see item 1.
+
+   Three TOKENS still have zero var() sites: --surface-tint (its only consumer
+   was .section--wash), --brand-100 and --mass-800. Section 2.1 is pasted
+   verbatim from the spec and is not this task's file to prune, so they are
+   reported rather than removed. --mass-line-soft lost .media-slot--mass but
+   keeps .micro-label--on-mass's hairline, so it is NOT on that list.
+
+   --gap is down to four consumers (.hero-readout, .chapter-foot, .footer-cols,
+   .footer-meta, .video-grid) and --w-text to six, and every distance index.html
+   still spends BELOW the hero now comes off the six-step rhythm scale. Neither
+   token is dead, but neither is a layout decision any more either: --gap is a
+   footer and /videos number, and --w-text is the prose measure on the three
+   pages that still have prose.
    ######################################################################### */
 
 @tailwind utilities;
