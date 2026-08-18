@@ -108,8 +108,27 @@ const VERCEL_STUBS =
    speech bubble with a tail here, in CSS only — rewriting its TEXT from out
    here would fight React the moment data-seen re-renders it. */
 const HERO_UX = `    <style>
-      /* --- cursor ------------------------------------------------------- */
-      .flx-embed-stage canvas { cursor: grab; }
+      /* --- cursor -------------------------------------------------------
+         The owner's pointer: white arrow, cyan edge, ring at the tail. Drawn
+         as an inline SVG data URI rather than a PNG so it stays sharp on a
+         HiDPI display and costs no request.
+
+         The trailing ', grab' is not decoration. A url() cursor is IGNORED in
+         several real cases — the SVG failing to parse, a size over the
+         platform cap, and every browser with SVG cursors disabled — and
+         without a keyword after it the element would silently fall back to the
+         default arrow, which is the one thing this replaces. grab is the
+         honest fallback: it still says draggable.
+
+         '6 4' is the hotspot, on the arrow's point. It has to be stated: the
+         default is 0,0, which here is empty canvas above and left of the tip,
+         so every click would land up-left of where the visitor aimed. */
+      .flx-embed-stage canvas {
+        cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><g fill='%23FFFFFF' stroke='%2322D3EE' stroke-width='2.4' stroke-linejoin='round' stroke-linecap='round'><path d='M6 4 L6 22.5 L10.8 18 L14.2 25 L17.8 23.2 L14.4 16.4 L20.6 16.2 Z'/><circle cx='24' cy='7.5' r='4.2'/></g></svg>") 6 4, grab;
+      }
+      /* Closed hand while the pointer is down — the drag itself keeps the
+         convention every visitor already knows, and the custom arrow would
+         read as "still idle" mid-drag. */
       .flx-embed-stage canvas:active { cursor: grabbing; }
 
       /* --- the prompt, as a bubble ---------------------------------------

@@ -1,1 +1,0 @@
-import{aN as r}from"./index-BNHZOqPN.js";import"./jspdf-vendor-BiK-KV4l.js";import"./r3f-D6fmtK_Y.js";import"./three-core-BMWLQXGG.js";import"./three-bvh-Ctn6wH7V.js";async function m(){await r("plugin:process|restart")}export{m as relaunch};
