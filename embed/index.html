@@ -169,6 +169,20 @@
           var stage = document.querySelector('.flx-embed-stage[data-engaged="true"]');
           if (stage && stage.contains(event.target)) event.preventDefault();
         }, { capture: true, passive: false });
+
+        /* Middle-button autoscroll — see (f) in scripts/build-embed.mjs.
+           PAN on this viewer is a MIDDLE-button drag, and nothing cancels the
+           middle mousedown, so Chrome arms its autoscroll on top of every pan.
+           This document has nothing of its own to scroll, so that autoscroll
+           resolves up the frame tree and drags the host page instead. Cancel
+           the default for button 1 only, inside the stage only. */
+        var middleOnStage = function (event) {
+          if (event.button !== 1) return;
+          var stage = document.querySelector('.flx-embed-stage');
+          if (stage && stage.contains(event.target)) event.preventDefault();
+        };
+        document.addEventListener('mousedown', middleOnStage, { capture: true, passive: false });
+        document.addEventListener('auxclick', middleOnStage, { capture: true, passive: false });
       })();
     </script>
   </head>
@@ -185,7 +199,7 @@
             window.requestAnimationFrame = (cb) => setTimeout(() => cb(performance.now()), 16);
             window.cancelAnimationFrame = (h) => clearTimeout(h);
         }
-    </script>
+    </script>
 </body>
 
 </html>

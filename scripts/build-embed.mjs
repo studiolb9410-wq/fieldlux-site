@@ -106,7 +106,44 @@ const VERCEL_STUBS =
    interaction (.flx-embed-hint[data-seen="true"]). What it lacked was any
    presence: 306x28 of plain text lying on a dark 3D scene. It becomes a
    speech bubble with a tail here, in CSS only — rewriting its TEXT from out
-   here would fight React the moment data-seen re-renders it. */
+   here would fight React the moment data-seen re-renders it.
+
+   (f) MIDDLE-BUTTON AUTOSCROLL, added 0818 after a visitor reported the page
+   running away under a pan. Traced, not guessed:
+
+     PAN IS A MIDDLE-BUTTON DRAG ON THIS VIEWER. `navigationMode` defaults to
+     'mouse-pro' (the app's useAppStore), which maps MIDDLE to THREE.MOUSE.PAN
+     (Engine3D), and the embed renders no navigation-mode control, so on /embed
+     pan can never be anything else. Two comments in Engine3D still claim
+     trackpad is the default and are stale.
+
+     NOTHING CANCELS THE MIDDLE MOUSEDOWN. three-stdlib's OrbitControls
+     onPointerDown never calls preventDefault (three's own r160 build differs),
+     and no app code filters button 1. Chrome therefore arms its autoscroll
+     anchor on top of the pan.
+
+     THE GESTURE ESCAPES UPWARD. This document has no scrollable extent of its
+     own, so the autoscroll resolves to the nearest scrollable box, which is
+     the framing page. Autoscroll velocity scales with distance from the
+     anchor, so a pan dragged toward the bottom edge of a short hero frame
+     scrolls the host page far and fast. That is the reported bug exactly.
+
+   It is cancelled HERE rather than in the app because the whole host-side
+   interaction layer lives here, and because the wheel guard above already owns
+   this contract; the app-side fix would be the same two lines in EmbedViewer.
+
+   Deliberately narrower and wider than the wheel guard in two ways. Narrower:
+   button 1 only, so left (rotate, and click-to-select-a-projector) and right
+   (dolly) are untouched, and middle-click has no other default action worth
+   keeping over a WebGL canvas. Wider: the selector is `.flx-embed-stage` with
+   NO [data-engaged="true"], because the middle-drag IS the engagement —
+   EmbedViewer sets that attribute from React state in onPointerDown and the
+   re-render has not committed when mousedown fires, so gating on it would let
+   the first and worst pan through.
+
+   The wheel contract above is untouched, byte for byte: un-engaged the wheel
+   still belongs to the host page (no scroll trap on hover), engaged it still
+   belongs to the scene. */
 const HERO_UX = `    <style>
       /* --- the headline face, inside the frame ---------------------------
          The prompt is set in the same face as the hero headline above it, so
@@ -247,6 +284,20 @@ const HERO_UX = `    <style>
           var stage = document.querySelector('.flx-embed-stage[data-engaged="true"]');
           if (stage && stage.contains(event.target)) event.preventDefault();
         }, { capture: true, passive: false });
+
+        /* Middle-button autoscroll — see (f) in scripts/build-embed.mjs.
+           PAN on this viewer is a MIDDLE-button drag, and nothing cancels the
+           middle mousedown, so Chrome arms its autoscroll on top of every pan.
+           This document has nothing of its own to scroll, so that autoscroll
+           resolves up the frame tree and drags the host page instead. Cancel
+           the default for button 1 only, inside the stage only. */
+        var middleOnStage = function (event) {
+          if (event.button !== 1) return;
+          var stage = document.querySelector('.flx-embed-stage');
+          if (stage && stage.contains(event.target)) event.preventDefault();
+        };
+        document.addEventListener('mousedown', middleOnStage, { capture: true, passive: false });
+        document.addEventListener('auxclick', middleOnStage, { capture: true, passive: false });
       })();
     </script>
 `;
