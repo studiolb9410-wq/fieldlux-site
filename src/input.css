@@ -1251,13 +1251,37 @@ body.overlay-open{ overflow:hidden; }
   margin-block-end:calc(-1 * (var(--hero-gap) + var(--block-overlap)));
   border-radius:var(--radius-frame);
   overflow:hidden;
-  border:1px solid var(--line-strong);
+  /* ---- OWNER CHANGE 5: NO EDGE, NO SHADOW -------------------------------
+     Both were drawn for a frame holding a STILL. Against a live scene they
+     stopped describing anything and started fighting it.
+
+     The border was 1px --line-strong, a light warm grey, ringing a viewport
+     whose own colours change as the scene renders. A hairline that is lighter
+     than what it contains on one side and darker on the other is not an edge,
+     it is a seam, and it read as one.
+
+     The shadow was worse. It pooled --mass-950 at 42% under the frame, on
+     white paper, one row above a headline block whose whole job is to sit ON
+     the frame and read as the page cutting into the scene. A cast shadow says
+     "this object floats above the page"; the composition says "the page is cut
+     away here". They cannot both be true, and the shadow was the one lying —
+     it tinted the paper the headline is made of, which is why the white looked
+     off rather than looking like the surrounding page.
+
+     What still carries depth is unchanged and does not need a light source:
+     the headline block OCCLUDES the frame's lower-left corner, interrupting
+     its radius. Occlusion cannot be faked from behind. See .hero-block. */
+  border:0;
   /* Dark element 1 of 3 (section 2.4): it is dark because it is a screen. */
   background:var(--mass-950);
-  box-shadow:0 28px 64px -34px rgba(2,37,45,.42);
+  box-shadow:none;
   isolation:isolate;
-  /* NOT sticky, NOT bleeding. Together with "the iframe only exists after a
-     click", that is what stops an embedded app owning the page scroll. */
+  /* NOT sticky, NOT bleeding — and that is now the WHOLE of it. The old note
+     here leaned on "the iframe only exists after a click", which stopped being
+     true when the scene began mounting on load. What actually stops the embed
+     owning the page scroll is the sandbox omitting allow-top-navigation, plus
+     the app registering its wheel listener as passive; both are verified in
+     index.html at .hero-frame. */
 }
 
 /* ---- THE FOLD, above 1181 -- OWNER CHANGE 4 RE-SOLVES IT -------------------

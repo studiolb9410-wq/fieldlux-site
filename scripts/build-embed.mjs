@@ -52,6 +52,34 @@ const OUT = join(tmpdir(), `fieldlux-embed-build-${process.pid}`);
 const HERO_CLIP = 'test-patterns/fieldlux-ripple-1080p.mp4';
 const SOURCE_CLIP_URL = '/test-patterns/fieldlux-ripple-4k.mp4';
 
+/* (d) Vercel Analytics and Speed Insights are compiled into the app bundle and
+   each requests /_vercel/<name>/script.js as it boots. That endpoint is served
+   by the Vercel platform only where the feature is switched on for the project;
+   here the path is nothing, so every hero load spent two requests to earn two
+   404s, two "Refused to execute script" MIME errors and two library warnings —
+   six console lines on the marketing site's front page, on every visit.
+
+   These two tags are the fix, and they are not a hack: BOTH libraries guard
+   their injection with
+
+       if (document.head.querySelector(`script[src*="${src}"]`)) return;
+
+   so finding a script already claiming that src is the supported way to tell
+   them the page has this handled. The type is deliberately not a JavaScript
+   MIME type, which makes the element non-executable and — this is the part that
+   matters — means the browser never fetches its src. So the tags satisfy the
+   guard, the libraries return before creating anything, and no request is made
+   at all. Same result in development and in production, which serving a stub
+   file could not promise: /_vercel is a reserved path that the platform routes
+   before it ever reaches our static files.
+
+   TO TURN ANALYTICS ON: delete these two tags and enable Web Analytics on the
+   SITE's Vercel project. The libraries then inject normally and the platform
+   serves the real scripts. */
+const VERCEL_STUBS =
+  '    <script type="text/fieldlux-disabled" src="/_vercel/insights/script.js"></script>\n' +
+  '    <script type="text/fieldlux-disabled" src="/_vercel/speed-insights/script.js"></script>\n';
+
 const die = (msg) => { console.error(`\n  FAILED: ${msg}\n`); process.exit(1); };
 const step = (msg) => console.log(`  ${msg}`);
 
@@ -165,7 +193,7 @@ if (!html.includes('background: #000000')) die('the inline body background was n
 html = html.replace('background: #000000', 'background: transparent');
 html = html.replace('</head>',
   '    <style>\n      /* see scripts/build-embed.mjs — transparent from the first paint */\n' +
-  '      html, body, #root { background: transparent !important; }\n    </style>\n  </head>');
+  '      html, body, #root { background: transparent !important; }\n    </style>\n' + VERCEL_STUBS + '  </head>');
 
 writeFileSync(join(SITE, 'embed/index.html'), html);
 rmSync(OUT, { recursive: true, force: true });
