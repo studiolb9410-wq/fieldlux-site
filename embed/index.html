@@ -53,33 +53,51 @@
          read as "still idle" mid-drag. */
       .flx-embed-stage canvas:active { cursor: grabbing; }
 
-      /* --- the prompt, as a bubble ---------------------------------------
+      /* --- the prompt, as a brand bubble ----------------------------------
          !important on exactly the properties the component writes INLINE
-         (colour, size, padding, radius, fill, edge) and on nothing else. A
-         stylesheet rule cannot outrank an inline declaration, and without this
-         the bubble silently kept the app's 10.5px grey pill — which is how it
-         first shipped from here. The app also writes 'transform:
-         translateX(-50%)' inline to centre it: that one is deliberately NOT
-         overridden, it is preserved inside the keyframes below.
-         (No backticks in this block — it lives inside a template literal.) */
+         (position, colour, size, padding, radius, fill, edge) and on nothing
+         else. A stylesheet rule cannot outrank an inline declaration, and
+         without this the bubble silently kept the app's 10.5px grey pill --
+         which is how it first shipped from here.
+         (No backticks in this block -- it lives inside a template literal.)
+
+         PLACED UNDER THE TICKER, not at the foot of the frame. The app pins it
+         with an inline 'bottom: 18px', so releasing that needs BOTH a top and
+         an explicit 'bottom: auto' -- setting top alone leaves both edges bound
+         and the box stretches instead of moving.
+
+         46px is measured, not chosen. The site's ticker band sits at
+         --ticker-top, clamp(10px, 0.95vw, 14px), and stands 21-22px tall, so
+         its lowest pixel is 31px at the narrow end and 36px at the wide end.
+         46 clears the worst case by 10px. That variable lives on .hero-frame in
+         the PARENT document and cannot be read from inside this iframe, which
+         is why the number is inlined here with its derivation. Re-measure if
+         --ticker-top or --fs-micro moves.
+
+         BRAND FILL. --brand-500 #20D5DE is the logo's own mid cyan. The site's
+         palette marks it OBJECT ONLY and failing as text -- which is exactly
+         what this is: a filled object, with the ink dark rather than light.
+         #04252D on it measures about 8.9:1, so the prompt is legible over
+         whatever the scene happens to be rendering behind it. Solid, not
+         translucent: a blurred fill would take its colour from the scene and
+         stop being the brand. */
       .flx-embed-hint {
+        top: 46px !important;
+        bottom: auto !important;
         padding: 9px 15px 10px !important;
         border-radius: 13px !important;
-        background: rgba(8, 22, 28, 0.82) !important;
-        border: 1px solid rgba(190, 240, 255, 0.22) !important;
-        color: #EAF7FB !important;
+        background: #20D5DE !important;
+        border: 1px solid rgba(0, 86, 107, 0.35) !important;
+        color: #04252D !important;
         font-size: 12.5px !important;
+        font-weight: 600 !important;
         letter-spacing: 0.005em !important;
         line-height: 1.25;
-        /* The scene behind it is unpredictable, so the bubble carries its own
-           ground rather than trusting contrast with whatever is rendered. */
-        backdrop-filter: blur(9px) saturate(1.15);
-        -webkit-backdrop-filter: blur(9px) saturate(1.15);
-        box-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.85);
+        box-shadow: 0 10px 30px -12px rgba(0, 63, 78, 0.75);
       }
-      /* The tail. Rotated square rather than a border triangle so the 1px
-         edge and the blur continue around it instead of stopping at a
-         hard-cornered wedge. */
+      /* The tail points DOWN, into the scene the prompt is talking about. A
+         rotated square rather than a border triangle so the 1px edge carries
+         around the corner instead of stopping at a hard wedge. */
       .flx-embed-hint::after {
         content: "";
         position: absolute;
@@ -89,15 +107,14 @@
         block-size: 10px;
         margin-inline-start: -5px;
         background: inherit;
-        border-inline-end: 1px solid rgba(190, 240, 255, 0.22);
-        border-block-end: 1px solid rgba(190, 240, 255, 0.22);
+        border-inline-end: 1px solid rgba(0, 86, 107, 0.35);
+        border-block-end: 1px solid rgba(0, 86, 107, 0.35);
         transform: rotate(45deg);
-        backdrop-filter: inherit;
-        -webkit-backdrop-filter: inherit;
       }
       /* One slow breath, so it reads as an invitation without becoming motion
-         the visitor has to wait out. It stops the moment the hint is seen, and
-         never starts under reduced motion. */
+         the visitor has to wait out. It drifts DOWNWARD now: the bubble hangs
+         under the band and points into the scene, so the motion should lead the
+         eye there rather than back up into the band. */
       @media (prefers-reduced-motion: no-preference) {
         .flx-embed-hint[data-seen="false"] { animation: flx-hint-breathe 3.2s ease-in-out 1.1s infinite; }
         /* BOTH axes, every frame. An animated 'transform' replaces the whole
@@ -107,7 +124,7 @@
            animation. Keep the centring in each stop. */
         @keyframes flx-hint-breathe {
           0%, 100% { transform: translate(-50%, 0); }
-          50%      { transform: translate(-50%, -3px); }
+          50%      { transform: translate(-50%, 3px); }
         }
       }
       /* The app fades it on data-seen; stop the loop so a faded bubble is not
