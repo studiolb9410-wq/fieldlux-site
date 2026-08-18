@@ -1,6 +1,0 @@
-import{c as e}from"./index-BCXnkl-F.js";/**
- * @license lucide-react v0.370.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const c=e("PenLine",[["path",{d:"M12 20h9",key:"t2du7b"}],["path",{d:"M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z",key:"ymcmye"}]]);let t=null,u=null,l=null;function d(n){t=(n==null?void 0:n.single)||null,u=(n==null?void 0:n.multi)||null}function m(){t=null,u=null}function f(n){l=n||null}function p(){l=null}function y(){const n=r=>{const i=r==null?void 0:r.current;i&&(i.axis=null)};n(t),n(u),n(l)}function a(n){return(n==null?void 0:n.nativeEvent)||(n==null?void 0:n.sourceEvent)||n||null}function s(n,r){if(!(!n||!r||n.dragging===!0)&&!(typeof n.getPointer!="function"||typeof n.pointerHover!="function"))try{n.pointerHover(n.getPointer(a(r)))}catch{}}function C(n=null){const r=i=>{const o=i==null?void 0:i.current;return o?o.axis||o.dragging===!0?!0:(s(o,n),!!(o.axis||o.dragging===!0)):!1};return r(t)||r(u)||r(l)}function h(){const n=r=>{const i=r==null?void 0:r.current;i&&i.dragging===!0&&(i.axis=null,i.dragging=!1,i.dispatchEvent({type:"dragging-changed",value:!1}))};n(t),n(u),n(l)}export{c as P,m as a,d as b,y as c,h as f,C as i,f as r,p as u};

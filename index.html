@@ -1658,6 +1658,10 @@
              with fetchpriority=high, so it wins the race against this fetch. */
           embed.loading = 'eager';
           embed.referrerPolicy = 'strict-origin-when-cross-origin';
+          /* Unchanged, and deliberately so. Pointer lock — which Walk inside
+             needs — is NOT a Permissions Policy feature: adding it here logs
+             "Unrecognized feature: 'pointer-lock'" and grants nothing. It is a
+             sandbox flag, and it is set as one below. */
           embed.setAttribute('allow', 'fullscreen');
           /* sandbox, token by token:
                allow-scripts:     the demo is a WebGL app; with scripts blocked
@@ -1677,12 +1681,24 @@
                                   stops being acceptable the moment this frame
                                   points at anything we do not build, which is
                                   why ?embedSrc= keeps its host allowlist.
+               allow-pointer-lock: Walk inside locks the cursor so the view
+                                  turns with the mouse instead of the pointer
+                                  running out of the frame. MEASURED, both ways:
+                                  without this flag the browser refuses with
+                                  "the element's frame is sandboxed and the
+                                  'allow-pointer-lock' permission is not set"
+                                  while the button still reports itself active,
+                                  and putting `pointer-lock` in the `allow`
+                                  attribute instead does nothing at all — it is
+                                  a sandbox flag, not a Permissions Policy
+                                  feature, and naming it there only logs
+                                  "Unrecognized feature".
              Deliberately absent: allow-top-navigation (an embed must never be
              able to navigate the site away) and allow-forms (nothing in a
              read-only demo scene is submitted). Now that the frame mounts
              without a click, these two absences are the whole of the site-side
              scroll and navigation guarantee, so neither is negotiable. */
-          embed.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+          embed.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-pointer-lock');
 
           /* No `load` handler. There is nothing left for one to do: the still is
              never hidden, so there is no reveal to time, and load fires for a
