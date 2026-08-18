@@ -80,6 +80,110 @@ const VERCEL_STUBS =
   '    <script type="text/fieldlux-disabled" src="/_vercel/insights/script.js"></script>\n' +
   '    <script type="text/fieldlux-disabled" src="/_vercel/speed-insights/script.js"></script>\n';
 
+/* (e) HOST-SIDE INTERACTION LAYER.
+   Three things the hero needs that the chromeless route does not ship. All
+   three attach to contracts the app already publishes — the .flx-embed-stage
+   element, its data-engaged attribute, and the .flx-embed-hint node — so none
+   of this reaches into React state or depends on a minified name.
+
+   CURSOR. The canvas computed `cursor: auto`, so a viewport you are meant to
+   drag looked like a picture. grab/grabbing is the one convention every visitor
+   already knows. :active rather than [data-engaged] is deliberate — engagement
+   outlives the pointer (it is about who owns the WHEEL, and is only released
+   when the pointer leaves the hero), so keying the closed hand to it would
+   leave the cursor grabbing over a scene nobody is holding.
+
+   SCROLL. The app's own wheel listener is registered passive, so it is
+   structurally unable to cancel anything: un-engaged it declines to zoom and
+   hands the wheel to this page, which is right — a hero that eats the wheel on
+   hover is a scroll trap. But once a visitor HAS engaged, the page scrolling
+   out from under the scene they are steering is the bug they reported. This
+   listener is non-passive and cancels the default ONLY while the stage says it
+   is engaged. preventDefault stops the page scrolling; it does not stop
+   propagation, so the scene still receives the wheel and still zooms.
+
+   BUBBLE. The app already renders the prompt and already fades it on first
+   interaction (.flx-embed-hint[data-seen="true"]). What it lacked was any
+   presence: 306x28 of plain text lying on a dark 3D scene. It becomes a
+   speech bubble with a tail here, in CSS only — rewriting its TEXT from out
+   here would fight React the moment data-seen re-renders it. */
+const HERO_UX = `    <style>
+      /* --- cursor ------------------------------------------------------- */
+      .flx-embed-stage canvas { cursor: grab; }
+      .flx-embed-stage canvas:active { cursor: grabbing; }
+
+      /* --- the prompt, as a bubble ---------------------------------------
+         !important on exactly the properties the component writes INLINE
+         (colour, size, padding, radius, fill, edge) and on nothing else. A
+         stylesheet rule cannot outrank an inline declaration, and without this
+         the bubble silently kept the app's 10.5px grey pill — which is how it
+         first shipped from here. The app also writes 'transform:
+         translateX(-50%)' inline to centre it: that one is deliberately NOT
+         overridden, it is preserved inside the keyframes below.
+         (No backticks in this block — it lives inside a template literal.) */
+      .flx-embed-hint {
+        padding: 9px 15px 10px !important;
+        border-radius: 13px !important;
+        background: rgba(8, 22, 28, 0.82) !important;
+        border: 1px solid rgba(190, 240, 255, 0.22) !important;
+        color: #EAF7FB !important;
+        font-size: 12.5px !important;
+        letter-spacing: 0.005em !important;
+        line-height: 1.25;
+        /* The scene behind it is unpredictable, so the bubble carries its own
+           ground rather than trusting contrast with whatever is rendered. */
+        backdrop-filter: blur(9px) saturate(1.15);
+        -webkit-backdrop-filter: blur(9px) saturate(1.15);
+        box-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.85);
+      }
+      /* The tail. Rotated square rather than a border triangle so the 1px
+         edge and the blur continue around it instead of stopping at a
+         hard-cornered wedge. */
+      .flx-embed-hint::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -5px;
+        inline-size: 10px;
+        block-size: 10px;
+        margin-inline-start: -5px;
+        background: inherit;
+        border-inline-end: 1px solid rgba(190, 240, 255, 0.22);
+        border-block-end: 1px solid rgba(190, 240, 255, 0.22);
+        transform: rotate(45deg);
+        backdrop-filter: inherit;
+        -webkit-backdrop-filter: inherit;
+      }
+      /* One slow breath, so it reads as an invitation without becoming motion
+         the visitor has to wait out. It stops the moment the hint is seen, and
+         never starts under reduced motion. */
+      @media (prefers-reduced-motion: no-preference) {
+        .flx-embed-hint[data-seen="false"] { animation: flx-hint-breathe 3.2s ease-in-out 1.1s infinite; }
+        /* BOTH axes, every frame. An animated 'transform' replaces the whole
+           property, inline value included, so a keyframe that named only
+           translateY would drop the app's translateX(-50%) and throw the
+           bubble half its own width to the right for the length of the
+           animation. Keep the centring in each stop. */
+        @keyframes flx-hint-breathe {
+          0%, 100% { transform: translate(-50%, 0); }
+          50%      { transform: translate(-50%, -3px); }
+        }
+      }
+      /* The app fades it on data-seen; stop the loop so a faded bubble is not
+         still animating. Its transform is left to the inline rule. */
+      .flx-embed-hint[data-seen="true"] { animation: none !important; }
+    </style>
+    <script>
+      /* Scroll containment — see (e) in scripts/build-embed.mjs. */
+      (function () {
+        document.addEventListener('wheel', function (event) {
+          var stage = document.querySelector('.flx-embed-stage[data-engaged="true"]');
+          if (stage && stage.contains(event.target)) event.preventDefault();
+        }, { capture: true, passive: false });
+      })();
+    </script>
+`;
+
 const die = (msg) => { console.error(`\n  FAILED: ${msg}\n`); process.exit(1); };
 const step = (msg) => console.log(`  ${msg}`);
 
@@ -193,7 +297,7 @@ if (!html.includes('background: #000000')) die('the inline body background was n
 html = html.replace('background: #000000', 'background: transparent');
 html = html.replace('</head>',
   '    <style>\n      /* see scripts/build-embed.mjs — transparent from the first paint */\n' +
-  '      html, body, #root { background: transparent !important; }\n    </style>\n' + VERCEL_STUBS + '  </head>');
+  '      html, body, #root { background: transparent !important; }\n    </style>\n' + VERCEL_STUBS + HERO_UX + '  </head>');
 
 writeFileSync(join(SITE, 'embed/index.html'), html);
 rmSync(OUT, { recursive: true, force: true });
