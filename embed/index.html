@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- theme-color drives the browser's own chrome tint (mobile address
+         bar, some desktop PWA window frames, OS window border on platforms
+         that honor it). Black keeps the browser-chrome strip visually
+         continuous with the FieldLux brand header below it instead of
+         showing as a pale OS-theme strip above our UI. -->
+    <meta name="theme-color" content="#000000" />
+    <!-- color-scheme tells the browser to use dark variants of its built-
+         in controls (scrollbars, form widgets) — keeps native UI from
+         flashing white against the app's dark surfaces. -->
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="/embed/fieldlux-logo-mark.png" />
+
+    <title>FieldLux — Projection Mapping Simulator</title>
+  <script type="module" crossorigin src="/embed/assets/index-BCXnkl-F.js"></script>
+  <link rel="modulepreload" crossorigin href="/embed/assets/jspdf-vendor-BiK-KV4l.js">
+  <link rel="modulepreload" crossorigin href="/embed/assets/three-core-BMWLQXGG.js">
+  <link rel="modulepreload" crossorigin href="/embed/assets/r3f-D6fmtK_Y.js">
+  <link rel="modulepreload" crossorigin href="/embed/assets/three-bvh-Ctn6wH7V.js">
+  <link rel="stylesheet" crossorigin href="/embed/assets/index-jT7Wt1XT.css">
+    <style>
+      /* see scripts/build-embed.mjs — transparent from the first paint */
+      html, body, #root { background: transparent !important; }
+    </style>
+  </head>
+
+<body style="font-family: 'Geist', 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; background: transparent; margin: 0;">
+    <div id="root"></div>
+    <!-- Headless-verification escape hatch (?flxheadless=1): hidden windows
+         never fire requestAnimationFrame, so the R3F loop schedules once
+         against a callback that never runs and the canvas stays frozen for
+         automated drivers (Claude preview, future E2E). The flag swaps rAF
+         for a 16 ms timer BEFORE the app boots. No effect without the flag. -->
+    <script>
+        if (new URLSearchParams(location.search).has('flxheadless')) {
+            window.requestAnimationFrame = (cb) => setTimeout(() => cb(performance.now()), 16);
+            window.cancelAnimationFrame = (h) => clearTimeout(h);
+        }
+    </script>
+</body>
+
+</html>

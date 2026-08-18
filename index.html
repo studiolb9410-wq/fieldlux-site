@@ -193,7 +193,7 @@
              to frame-src is a vercel.json change and has to land in the same
              commit as the URL, or the hero is a still with a CSP error. -->
         <div class="hero-frame" tabindex="-1"
-             data-embed-src=""
+             data-embed-src="/embed?scene=hero"
              data-embed-title="FieldLux interactive 3D scene, drag to look around">
           <img class="hero-frame-still" src="/assets/media/hero-stitch-01.png"
                alt="A stone building in the FieldLux viewport under an absolute-mode lux heatmap, per-cell surface lux values printed across the facade, with the app's Lux Heatmap panel open beside it."
@@ -1572,17 +1572,60 @@
         const launchBtn   = heroFrame.querySelector('.hero-frame-launch');
         const declaredSrc = (heroFrame.dataset.embedSrc || '').trim();
 
-        let embedSrc = (declaredSrc && isAllowedAppHost(declaredSrc))
-          ? new URL(declaredSrc).href
-          : '';
+        /* SAME-ORIGIN DECLARED SRC. The embed now ships inside this site at
+           /embed, so the declared value is a ROOT-RELATIVE path, and it has to
+           be: a hard-coded absolute URL would name exactly one origin and so
+           break on the other two this site is served from (localhost while
+           authoring, the vercel.app preview, field-lux.com in production).
+
+           isAllowedAppHost cannot judge it — it calls `new URL(u)` with no
+           base, which THROWS on a relative string and is caught into `false`,
+           so a relative value would be silently dropped and the hero would
+           stay a still with no error to explain it.
+
+           A leading single slash is this origin by construction. The `//` guard
+           is the whole reason this is written out rather than inlined:
+           `//evil.example` is also "leading slash" and is protocol-relative,
+           i.e. CROSS-origin. */
+        const isSameOriginPath = (v) => v.startsWith('/') && !v.startsWith('//');
+
+        /* EVERY FRAME TARGET IS SAME-ORIGIN, and this is a statement about what
+           the browser permits, not a policy we chose. This page's CSP is
+           `default-src 'self'` with no frame-src, so frame-src inherits 'self'
+           and the browser REFUSES to frame any other origin. A cross-origin
+           value therefore does not degrade gracefully — it mounts an empty
+           frame and logs a CSP violation, which reads exactly like the app
+           being broken.
+
+           That mattered because ?embedSrc= PERSISTS. A reviewer who once
+           pointed the hero at a colleague's laptop kept that value forever, and
+           once the host went away their hero was a still on every future visit,
+           with no failing request they would think to look for. There is no
+           reliable way to detect it either: an iframe fires no `error` event
+           for a refused connection or a blocked frame, so the fallback path
+           that was supposed to catch this could never run.
+
+           Rejecting the value up front removes the whole class, and clears any
+           debris a visitor is already carrying on their next load. */
+        const resolveSameOrigin = (v) => {
+          try {
+            const u = isSameOriginPath(v)
+              ? new URL(v, window.location.origin)
+              : new URL(v);
+            return u.origin === window.location.origin ? u.href : '';
+          } catch { return ''; }
+        };
+
+        let embedSrc = declaredSrc ? resolveSameOrigin(declaredSrc) : '';
 
         const suppliedEmbed = params.get('embedSrc') || read(EMBED_KEY);
         if (suppliedEmbed) {
-          if (isAllowedAppHost(suppliedEmbed)) {
-            embedSrc = new URL(suppliedEmbed).href;
-            write(EMBED_KEY, embedSrc);
+          const supplied = resolveSameOrigin(suppliedEmbed);
+          if (supplied) {
+            embedSrc = supplied;
+            write(EMBED_KEY, supplied);
           } else {
-            /* a bad value must not persist for this visitor */
+            /* a value that cannot be framed must not persist for this visitor */
             drop(EMBED_KEY);
           }
         }
@@ -1619,13 +1662,21 @@
           /* sandbox, token by token:
                allow-scripts:     the demo is a WebGL app; with scripts blocked
                                   the frame renders nothing at all.
-               allow-same-origin: the app must keep its OWN origin to create a
-                                  WebGL context bound to its assets and to read
-                                  its own storage; in an opaque origin those
-                                  fail. It is a different host from this site,
-                                  so same-origin here means the demo's origin,
-                                  never ours, so the frame can never reach this
-                                  document, its storage or its cookies.
+               allow-same-origin: the app needs a real origin to create a WebGL
+                                  context bound to its assets and to read its
+                                  own storage; in an opaque origin both fail.
+                                  READ THIS BEFORE RELYING ON THE SANDBOX: the
+                                  embed now ships INSIDE this site at /embed, so
+                                  that origin is OURS. This pair of tokens on a
+                                  same-origin frame is not a boundary — the
+                                  frame can reach this document, its storage and
+                                  its cookies, exactly as if the app were
+                                  scripted into the page. That is acceptable
+                                  only because it IS our code, built from our
+                                  repository and served from our deployment. It
+                                  stops being acceptable the moment this frame
+                                  points at anything we do not build, which is
+                                  why ?embedSrc= keeps its host allowlist.
              Deliberately absent: allow-top-navigation (an embed must never be
              able to navigate the site away) and allow-forms (nothing in a
              read-only demo scene is submitted). Now that the frame mounts
@@ -1642,6 +1693,14 @@
                flag: the caption returns to its still state and nothing is logged */
             embed.remove();
             delete heroFrame.dataset.embedState;
+
+            /* MEASURED, NOT ASSUMED: this handler is very nearly unreachable.
+               An iframe fires no `error` for a refused connection, a DNS
+               failure or a CSP-blocked frame — the cases anyone would write it
+               for. It is kept because it costs nothing and a future src could
+               fail in a way that does report, but nothing may DEPEND on it.
+               The unreachable-target problem it looks like it solves is handled
+               where the src is chosen, by refusing anything cross-origin. */
             if (manual && launchBtn) {
               /* the button removed itself a moment ago; it is this visitor's only
                  door, so give it back and do not strand their focus */
@@ -1658,10 +1717,28 @@
           }
         };
 
-        if (embedSrc) {
-          if (embedAllowed()) mountEmbed(false);
-          else if (launchBtn) launchBtn.hidden = false;
-        }
+        /* THE SCENE ALWAYS MOUNTS. Both vetoes are retired, for two different
+           reasons, and neither is "the owner asked" alone:
+
+           reduced motion   the veto was belt-and-braces. The app honours
+                            reduced motion INSIDE its own document — it parks
+                            the projected clip on a single frame — and the
+                            viewport does not move until a visitor drags it, so
+                            there was never autonomous motion here for the veto
+                            to spare anyone. It withheld the whole feature to
+                            prevent motion that does not occur.
+
+           data saver       this one WAS real: the frame is the heaviest thing
+                            the page fetches. It is now the smallest it can be
+                            without changing what is shown — the projected clip
+                            ships at 1080p instead of 4K and every byte is
+                            immutably cached — and the hero is the page's entire
+                            argument, so a visitor who never sees it has been
+                            served a worse page than a slow one.
+
+           embedAllowed() is kept for the chapter clips below, which DO
+           autoplay and where both preferences still decide correctly. */
+        if (embedSrc) mountEmbed(false);
 
         /* Registered unconditionally, and harmless when it can never fire: with
            no usable embedSrc the button is never revealed, and mountEmbed bails
