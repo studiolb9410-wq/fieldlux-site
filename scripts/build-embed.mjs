@@ -108,6 +108,25 @@ const VERCEL_STUBS =
    speech bubble with a tail here, in CSS only — rewriting its TEXT from out
    here would fight React the moment data-seen re-renders it. */
 const HERO_UX = `    <style>
+      /* --- the headline face, inside the frame ---------------------------
+         The prompt is set in the same face as the hero headline above it, so
+         the two read as one voice rather than as the site and a widget. That
+         face is Geologica, and it is SELF-HOSTED BY THE SITE -- this document
+         is a different one, with the app's Geist loaded and no Geologica at
+         all, so it has to be declared again here. Same-origin path, which is
+         also what keeps it inside the CSP's font-src 'self'.
+
+         The variable range and unicode-range are copied from the site's own
+         declaration; narrowing either would silently drop weights or glyphs
+         that the headline is allowed to use. */
+      @font-face {
+        font-family: 'Geologica';
+        src: url('/assets/fonts/geologica-var-latin.woff2') format('woff2-variations');
+        font-weight: 300 700; font-style: normal; font-display: swap;
+        unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+2000-206F,U+2074,
+                       U+20AC,U+2122,U+2190-2193,U+2197,U+2212,U+2215,U+00B7;
+      }
+
       /* --- cursor -------------------------------------------------------
          The owner's pointer: white arrow, cyan edge, ring at the tail. Drawn
          as an inline SVG data URI rather than a PNG so it stays sharp on a
@@ -162,16 +181,28 @@ const HERO_UX = `    <style>
       .flx-embed-hint {
         top: 46px !important;
         bottom: auto !important;
-        padding: 9px 15px 10px !important;
-        border-radius: 13px !important;
-        background: #20D5DE !important;
-        border: 1px solid rgba(0, 86, 107, 0.35) !important;
+        padding: 11px 20px 12px !important;
+        border-radius: 15px !important;
+        /* Translucent, but only just, and with a blur behind it. The fill was
+           solid to stop the scene tinting the brand; 0.86 plus a saturating
+           blur keeps the hue where it belongs while letting the building read
+           through, which is what stops a bar of flat colour sitting on top of
+           the product shot. */
+        background: rgba(32, 213, 222, 0.86) !important;
+        -webkit-backdrop-filter: blur(6px) saturate(1.2);
+        backdrop-filter: blur(6px) saturate(1.2);
+        border: 1px solid rgba(0, 86, 107, 0.32) !important;
         color: #04252D !important;
-        font-size: 12.5px !important;
-        font-weight: 600 !important;
-        letter-spacing: 0.005em !important;
-        line-height: 1.25;
-        box-shadow: 0 10px 30px -12px rgba(0, 63, 78, 0.75);
+        /* The headline's face and weight. font-family is NOT one of the
+           properties the component writes inline, so it needs no !important --
+           but the embed's own <body> sets Geist inline and that value is
+           INHERITED, which any direct rule outranks. */
+        font-family: 'Geologica', 'Pretendard Variable', Pretendard, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        font-size: 15px !important;
+        font-weight: 500 !important;
+        letter-spacing: -0.005em !important;
+        line-height: 1.3;
+        box-shadow: 0 12px 34px -12px rgba(0, 63, 78, 0.7);
       }
       /* The tail points DOWN, into the scene the prompt is talking about. A
          rotated square rather than a border triangle so the 1px edge carries
