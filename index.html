@@ -456,30 +456,30 @@
       </div>
     </section>
 
-    <!-- == THE LEDE, THE ONE TYPOGRAPHIC DEVICE BELOW THE HERO ==============
-         Every section below is now: ordinal, ONE sentence, media. The sentence
-         is an <h2> so it still labels its section for aria-labelledby, and it
-         is split across two spans because the colour change INSIDE the sentence
-         is the device: the claim clause is ink, the qualifying continuation is
-         grey, and they are the same size and weight so the eye reads one line
-         of thought, not a headline plus a paragraph.
+    <!-- == THE BELOW-HERO GRAMMAR (0818 renewal) ============================
+         A light-ground section is four objects in reading order: a short
+         UPPERCASE display claim (.feature-title, the h2 for aria-labelledby),
+         a plain-language subhead that carries the numbers and their inline
+         qualifiers (.feature-sub), the media, then a hairline row of fact
+         cards (.feature-cards). Two rules carried over unchanged and binding:
 
-         CSS CONTRACT, now SUPPLIED by src/input.css (section 4.6):
-           .lede        --fs-lede (22 to 30) / weight 300 / line-height 1.07 /
-                        letter-spacing -0.01em, which IS -0.28px at 28px and so
-                        holds at every size. Measure is --lede-measure, 19.9em,
-                        capped at the benchmark's own 596px. Not display type,
-                        not uppercase; --font-display only because weight 300
-                        has to be real and Geologica is the one self-hosted face
-                        that declares it. No margin of its own: the head owns
-                        the distance to whatever follows (--rhythm-figure).
-           .lede-ink    the claim clause, --ink-950.
-           .lede-soft   the continuation, --ink-500.
-           .lede--on-mass  the #numbers exception only: 48px, and the measure
-                        grows with it. Colour on either dark band comes from
-                        .section--mass .lede-ink / .lede-soft, not from a class.
-         The newline between the two spans is the space between the clauses and
-         is load-bearing: do not close it. -->
+           THE EVIDENCE RULE (spec 1.2): a claim ships only if a visitor could
+           reach it in the deployed web build today. Every figure in a card
+           below was re-verified against the app repo on 2026-08-18. The
+           banned-vocabulary grep gate and the stat pool still apply.
+
+           THE LUX-LABELLING RULE (spec 1.3): every lux figure names which of
+           the engine's four lux meanings it is, inline, in the same sentence.
+
+         The ticker in the hero may only carry words that are claimed below;
+         each chapter keeps the exact phrases the ticker prints (SIX MODEL
+         FORMATS, AUTO EDGE BLEND, FEATHERED MASKS, MAPPING STAGE, PROBE SET,
+         ISOLUX WORKING PLANE, IES IMPORT, PDF TECH RIDER, HANDOFF JSON,
+         READ-ONLY LINK, CLOUD AUTOSAVE, VERSION CHAIN and the ten spine
+         names). Delete a phrase here and the ticker ships an unearned claim.
+
+         The .lede device survives on the two dark bands (#numbers, #start),
+         where the one-sentence form still carries the drama. -->
 
     <!-- == S4, #who ======================================================== -->
     <section class="section section--pad-sm" id="who" aria-labelledby="who-title">
@@ -490,10 +490,27 @@
             <span class="micro-label-name">WHO THIS IS FOR</span>
           </p>
 
-          <h2 class="lede reveal" id="who-title">
-            <span class="lede-ink">FieldLux answers how many heads, which lens, from where and how bright before anyone signs,</span>
-            <span class="lede-soft">and it stops there: not a media server, not a rig warping tool, not a photoreal renderer, and nothing authored in it is ever sent to a device.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="who-title">BUILT FOR THE PERSON WHO QUOTES THE JOB.</h2>
+
+          <p class="feature-sub reveal">FieldLux answers how many projectors, which lens, from where, and how bright &mdash; in the browser, before anyone signs. It is not a media server, it is not a rig warping tool, and nothing authored here is ever sent to a device. It is the planning step, done properly.</p>
+
+          <ul class="feature-cards reveal">
+            <li class="feature-card">
+              <span class="feature-card-step" aria-hidden="true">(1)</span>
+              <h3 class="feature-card-title">BRING THE VENUE IN</h3>
+              <p class="feature-card-body">Import a model, or build the room in the app. Then place projectors from a catalogue built off real spec sheets.</p>
+            </li>
+            <li class="feature-card">
+              <span class="feature-card-step" aria-hidden="true">(2)</span>
+              <h3 class="feature-card-title">MEASURE THE LIGHT</h3>
+              <p class="feature-card-body">Lux heatmaps on the surface, a probe under the cursor, and a 13-point probe set drawn on the target.</p>
+            </li>
+            <li class="feature-card">
+              <span class="feature-card-step" aria-hidden="true">(3)</span>
+              <h3 class="feature-card-title">HAND OFF THE PROOF</h3>
+              <p class="feature-card-body">A PDF Tech Rider, a neutral handoff JSON and a read-only link &mdash; each stating its own assumptions.</p>
+            </li>
+          </ul>
 
           <figure class="chapter-media reveal">
             <div class="media-slot media-slot--wide" data-slot="image"
@@ -519,70 +536,79 @@
             <span class="micro-label-name">THE PRODUCT, PART BY PART</span>
           </p>
 
-          <h2 class="lede reveal" id="product-title">
-            <span class="lede-ink">Ten parts, and every one of them opens in the deployed web app today,</span>
-            <span class="lede-soft">so where a part is gated, still in beta, or desktop-only, this page says so in the same sentence that claims it.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="product-title">TEN PARTS. ALL LIVE IN THE APP TODAY.</h2>
+
+          <p class="feature-sub reveal">Where a part is gated, still in beta, or desktop-only, this page says so in the same sentence that claims it.</p>
 
           <ol class="speclist reveal">
             <li>
               <a class="speclist-item" href="#ch-01">
                 <span class="speclist-index u-tabular">(01)</span>
-                <span class="speclist-body"><span>THE SCENE</span></span>
+                <span class="speclist-body"><span>THE SCENE</span>
+                  <span class="speclist-desc">Bring the venue in as a model, or build it here.</span></span>
               </a>
             </li>
             <li>
               <a class="speclist-item" href="#ch-02">
                 <span class="speclist-index u-tabular">(02)</span>
-                <span class="speclist-body"><span>THE OPTICS</span></span>
+                <span class="speclist-body"><span>THE OPTICS</span>
+                  <span class="speclist-desc">87 projectors, 113 lenses, every field off a real spec sheet.</span></span>
               </a>
             </li>
             <li>
               <a class="speclist-item" href="#ch-03">
                 <span class="speclist-index u-tabular">(03)</span>
-                <span class="speclist-body"><span>THE COVERAGE</span></span>
+                <span class="speclist-body"><span>THE COVERAGE</span>
+                  <span class="speclist-desc">Auto edge blend written from measured footprints.</span></span>
               </a>
             </li>
             <li>
               <a class="speclist-item" href="#ch-04">
                 <span class="speclist-index u-tabular">(04)</span>
-                <span class="speclist-body"><span>THE CORRECTION</span></span>
+                <span class="speclist-body"><span>THE CORRECTION</span>
+                  <span class="speclist-desc">Corner-pin, mesh warp and feathered masks, live in the beam.</span></span>
               </a>
             </li>
             <li>
               <a class="speclist-item" href="#ch-05">
                 <span class="speclist-index u-tabular">(05)</span>
-                <span class="speclist-body"><span>THE CONTENT</span></span>
+                <span class="speclist-body"><span>THE CONTENT</span>
+                  <span class="speclist-desc">Drag media in 2D and the 3D beams follow.</span></span>
               </a>
             </li>
             <li>
               <a class="speclist-item" href="#ch-06">
                 <span class="speclist-index u-tabular">(06)</span>
-                <span class="speclist-body"><span>THE MEASUREMENT</span></span>
+                <span class="speclist-body"><span>THE MEASUREMENT</span>
+                  <span class="speclist-desc">Lux heatmaps, a hover probe, and 13 points on the target.</span></span>
               </a>
             </li>
             <li>
               <a class="speclist-item" href="#ch-07">
                 <span class="speclist-index u-tabular">(07)</span>
-                <span class="speclist-body"><span>THE LIGHT</span></span>
+                <span class="speclist-body"><span>THE LIGHT</span>
+                  <span class="speclist-desc">Additive light over real shading, with ambient and contrast.</span></span>
               </a>
             </li>
             <li>
               <a class="speclist-item" href="#ch-08">
                 <span class="speclist-index u-tabular">(08)</span>
-                <span class="speclist-body"><span>THE ROOM AROUND IT</span></span>
+                <span class="speclist-body"><span>THE ROOM AROUND IT</span>
+                  <span class="speclist-desc">Fixtures and LED walls in the same scene, kept in their own lane.</span></span>
               </a>
             </li>
             <li>
               <a class="speclist-item" href="#ch-09">
                 <span class="speclist-index u-tabular">(09)</span>
-                <span class="speclist-body"><span>THE DELIVERABLE</span></span>
+                <span class="speclist-body"><span>THE DELIVERABLE</span>
+                  <span class="speclist-desc">A PDF Tech Rider, a handoff JSON and a read-only link.</span></span>
               </a>
             </li>
             <li>
               <a class="speclist-item" href="#ch-10">
                 <span class="speclist-index u-tabular">(10)</span>
-                <span class="speclist-body"><span>THE PROJECT</span></span>
+                <span class="speclist-body"><span>THE PROJECT</span>
+                  <span class="speclist-desc">Cloud autosave on a version chain, plus sample scenes.</span></span>
               </a>
             </li>
           </ol>
@@ -610,10 +636,9 @@
             <span class="micro-label-name">THE SCENE</span>
           </p>
 
-          <h2 class="lede reveal" id="ch-01-title">
-            <span class="lede-ink">One scene holds the building, the heads, the lens on each and the surfaces you must not spill onto, and every number downstream recomputes from it,</span>
-            <span class="lede-soft">and it arrives as one of six model formats or is built from the rooms, curves and domes placed here, because FieldLux does not draw the venue for you.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="ch-01-title">ONE SCENE HOLDS THE WHOLE JOB.</h2>
+
+          <p class="feature-sub reveal">The venue, every projector, the lens on each one, and the surfaces you must not spill onto &mdash; all in one scene. Move anything, and every number downstream recomputes from it.</p>
 
           <figure class="chapter-media reveal">
             <!-- EMPTY BY EVIDENCE, NOT BY OVERSIGHT. Nothing has been filmed for
@@ -631,6 +656,27 @@
             <figcaption class="media-caption">Video slot, 1918 x 942: a screen recording of a model being imported and projectors placed on it in the shipped app. Not recorded yet.</figcaption>
           </figure>
 
+          <ul class="feature-cards reveal">
+            <li class="feature-card">
+              <h3 class="feature-card-title">SIX MODEL FORMATS</h3>
+              <p class="feature-card-body">FBX, GLB/GLTF, OBJ, DAE, STL and PLY, up to 200 <span class="stat-unit">MB</span> per file. Units and up-axis are read on import, so a millimetre export lands at real size.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">OR BUILD IT HERE</h3>
+              <p class="feature-card-body">Rooms, curved walls, cylinders and domes are one click each. No 3D software required.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">BIG FILES STAY WORKABLE</h3>
+              <p class="feature-card-body">The reference test model is an FBX with 2,020 meshes in 571 groups. Imports are cleaned on the way in &mdash; embedded lights and cameras are stripped.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">WALK INSIDE</h3>
+              <p class="feature-card-body">Drop to eye level and walk the venue with the beams running.</p>
+            </li>
+          </ul>
+
+          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-scene">ALL 4 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
+
         </div>
       </div>
     </section>
@@ -645,10 +691,9 @@
             <span class="micro-label-name">THE OPTICS</span>
           </p>
 
-          <h2 class="lede reveal" id="ch-02-title">
-            <span class="lede-ink">Every optical number comes off a manufacturer spec sheet, 87 projectors and 113 lenses deep, each field carrying the URL of the PDF it was read from,</span>
-            <span class="lede-soft">and a head placed outside its catalogue throw envelope has its beam and lux cards struck through rather than printing a figure it cannot reach.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="ch-02-title">EVERY NUMBER COMES OFF A SPEC SHEET.</h2>
+
+          <p class="feature-sub reveal">87 projectors and 113 lenses, typed in from the manufacturers' own PDFs &mdash; and every field keeps the URL of the sheet it was read from.</p>
 
           <figure class="chapter-media reveal">
             <div class="media-slot media-slot--wide" data-slot="video"
@@ -656,6 +701,27 @@
                  data-label="THROW &amp; LENS SHIFT" data-caption="VIDEO: TO COME"></div>
             <figcaption class="media-caption">Video slot, 1918 x 942: the throw-ratio slider driving beam size, axial distance and Center Surface Lux together, then a head dragged out of spec so the cards strike through. Not recorded yet.</figcaption>
           </figure>
+
+          <ul class="feature-cards reveal">
+            <li class="feature-card">
+              <h3 class="feature-card-title">THROW RATIO, LIVE</h3>
+              <p class="feature-card-body">Drag the throw ratio and the beam size, axial distance and Center Surface Lux move together &mdash; inside the lens's real range.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">LENS SHIFT THAT PUSHES BACK</h3>
+              <p class="feature-card-body">Shift is clamped to each lens's published travel &mdash; and past a quarter of that travel, edge falloff is modelled instead of ignored.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">CROSS-CHECKED, 642 TIMES</h3>
+              <p class="feature-card-body">642 projector-and-lens combinations verified against Panasonic's and Epson's own calculators &mdash; the only two that can be queried. Pulled 2026-06-11.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">OUT OF SPEC SAYS SO</h3>
+              <p class="feature-card-body">Place a head where its lens cannot reach and the beam and lux cards strike through, rather than print a figure it cannot hit.</p>
+            </li>
+          </ul>
+
+          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-optics">ALL 4 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
 
         </div>
       </div>
@@ -671,10 +737,9 @@
             <span class="micro-label-name">THE COVERAGE</span>
           </p>
 
-          <h2 class="lede reveal" id="ch-03-title">
-            <span class="lede-ink">Auto edge blend measures the footprints the beams actually make and writes per-edge overlap widths and one blend curve in a single undo step,</span>
-            <span class="lede-soft">and those are light-linear planning values for the study, never settings pushed to a processor, which is why every export that carries them states the domain they are in.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="ch-03-title">MANY HEADS, ONE CONTINUOUS IMAGE.</h2>
+
+          <p class="feature-sub reveal">Auto edge blend measures where each beam actually lands and writes the per-edge overlap widths and the blend curve for you. One undo step reverses all of it &mdash; and the values are light-linear planning values for the study, never settings pushed to a processor.</p>
 
           <figure class="chapter-media reveal">
             <div class="media-slot media-slot--wide" data-slot="video"
@@ -682,6 +747,27 @@
                  data-label="AUTO EDGE BLEND" data-caption="VIDEO: TO COME"></div>
             <figcaption class="media-caption">Video slot, 1918 x 942: auto edge blend measuring four footprints on one facade and writing the per-edge widths it finds, then the same detection run on a dome. Not recorded yet.</figcaption>
           </figure>
+
+          <ul class="feature-cards reveal">
+            <li class="feature-card">
+              <h3 class="feature-card-title">MEASURED FOOTPRINTS</h3>
+              <p class="feature-card-body">Overlaps come from each head's real optical frame, lens shift included &mdash; not from an idealised rectangle.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">THE 10&ndash;30% BAND</h3>
+              <p class="feature-card-body">Overlaps outside the industry 10 to 30 percent band get a named warning, not silence.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">DOMES INCLUDED</h3>
+              <p class="feature-card-body">Curved surfaces are measured with 360 rays per head on the actual mesh, never flattened into a plane first.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">STALE MEANS FLAGGED</h3>
+              <p class="feature-card-body">Move a head a centimetre, or half a degree, and its blend is marked stale until you recalculate.</p>
+            </li>
+          </ul>
+
+          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-blend">ALL 5 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
 
         </div>
       </div>
@@ -697,10 +783,9 @@
             <span class="micro-label-name">THE CORRECTION</span>
           </p>
 
-          <h2 class="lede reveal" id="ch-04-title">
-            <span class="lede-ink">Corner-pin, mesh warp and feathered masks render in the actual 3D beam rather than a flat panel, so the seam softens in the viewport while you drag it,</span>
-            <span class="lede-soft">and that is where it stops: your on-site correction still happens on the processor, and 16 heads is the cap on how many can carry a warp map or mask.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="ch-04-title">CORRECTION YOU CAN WATCH IN THE BEAM.</h2>
+
+          <p class="feature-sub reveal">Corner-pin, mesh warp and feathered masks render in the actual 3D beam while you drag, so the seam softens in the viewport in front of you. Up to 16 heads can carry a mesh warp or mask &mdash; and your on-site correction still happens on the processor.</p>
 
           <figure class="chapter-media reveal">
             <div class="media-slot media-slot--wide" data-slot="video"
@@ -708,6 +793,27 @@
                  data-label="WARP &amp; BLEND STUDIO" data-caption="VIDEO: TO COME"></div>
             <figcaption class="media-caption">Video slot, 1918 x 942: a corner-pin handle dragged in the Warp and Blend Studio with the beam following in 3D, then a calibration grid thrown from the same head. Not recorded yet.</figcaption>
           </figure>
+
+          <ul class="feature-cards reveal">
+            <li class="feature-card">
+              <h3 class="feature-card-title">CORNER-PIN</h3>
+              <p class="feature-card-body">Four handles, true perspective math, live in the viewport &mdash; the 2D preview and the 3D render share the same equations.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">MESH WARP</h3>
+              <p class="feature-card-body">A subdividable grid, 8 &times; 6 by default, with a Spherize helper for domes.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">FEATHERED MASKS</h3>
+              <p class="feature-card-body">Click-drawn polygons with feather, invert and stacking, cut into the beam itself.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">CALIBRATION PATTERNS</h3>
+              <p class="feature-card-body">Grid, crosshair, greyscale ramp and colorbars, projected live per head &mdash; even while a video is playing.</p>
+            </li>
+          </ul>
+
+          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-warp">ALL 4 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
 
         </div>
       </div>
@@ -723,10 +829,9 @@
             <span class="micro-label-name">THE CONTENT</span>
           </p>
 
-          <h2 class="lede reveal" id="ch-05-title">
-            <span class="lede-ink">Drag the image in 2D and the beams follow in 3D, with the parts that fall outside the canvas shown as cut,</span>
-            <span class="lede-soft">inside a budget of four distinct content sources, where the fifth drop is refused out loud before anything is written rather than failing silently on the GPU.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="ch-05-title">DRAG IN 2D. THE BEAMS FOLLOW IN 3D.</h2>
+
+          <p class="feature-sub reveal">The Mapping Stage is a zoomable 2D view of the projection face. Move the canvas and the 3D beams track it live &mdash; and the parts of a beam that miss the canvas draw as cut, with a one-click fix.</p>
 
           <figure class="chapter-media reveal">
             <div class="media-slot media-slot--wide" data-slot="video"
@@ -734,6 +839,23 @@
                  data-label="MAPPING STAGE" data-caption="VIDEO: TO COME"></div>
             <figcaption class="media-caption">Video slot, 1918 x 942: the canvas quad dragged in the 2D Mapping Stage while the 3D beams follow, and a media chip dropped onto a wall in the viewport. Not recorded yet.</figcaption>
           </figure>
+
+          <ul class="feature-cards reveal">
+            <li class="feature-card">
+              <h3 class="feature-card-title">VIDEO AND STILLS</h3>
+              <p class="feature-card-body">Per blend group or per single head, with playlists, auto-advance and loop modes.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">FOUR SOURCES, SAID OUT LOUD</h3>
+              <p class="feature-card-body">The budget is four distinct content sources at once. The fifth drop is refused with a message, before anything is written &mdash; not silently on the GPU.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">ONE VIDEO, MANY SURFACES</h3>
+              <p class="feature-card-body">Canvas sets span one video across several surfaces as proportional strips &mdash; or wrap a dome so every head samples the same picture.</p>
+            </li>
+          </ul>
+
+          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-content">ALL 3 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
 
         </div>
       </div>
@@ -756,10 +878,9 @@
             <span class="micro-label-name">THE MEASUREMENT</span>
           </p>
 
-          <h2 class="lede reveal" id="ch-06-title">
-            <span class="lede-ink">The surface becomes a light meter: false-colour maps in three data modes and three scales, a probe under the cursor, and 13 points drawn on the target in world space,</span>
-            <span class="lede-soft">and every figure is computed from the configured projector specs and the scene geometry, never from a field measurement, with the error each assumption carries set out under Limits.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="ch-06-title">THE SURFACE BECOMES A LIGHT METER.</h2>
+
+          <p class="feature-sub reveal">False-colour maps in three data modes &mdash; Surface Lux in lx, Pixel Density in mm/px, Luminance in cd/m&sup2; &mdash; plus a probe under the cursor and a 13-point probe set drawn on the target in world space. Every figure is computed from the projector specs and the scene geometry, never from a field measurement, and the error each assumption carries is set out under Limits.</p>
 
           <div class="split-3 reveal">
             <figure class="chapter-media">
@@ -816,6 +937,8 @@
             <figcaption class="media-caption">Full app window from the shipped build: a blend group of four projectors with the 13 probe points, 9 ANSI plus 4 quarter-points, drawn and labelled on the target.</figcaption>
           </figure>
 
+          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-measure">ALL 5 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
+
         </div>
       </div>
     </section>
@@ -830,10 +953,9 @@
             <span class="micro-label-name">THE LIGHT</span>
           </p>
 
-          <h2 class="lede reveal" id="ch-07-title">
-            <span class="lede-ink">Projector light composites additively onto the surface's own shading, so a white beam brightens a dark wall while its texture stays visible,</span>
-            <span class="lede-soft">and the model stops at direct light plus a single-bounce room estimate carrying the widest error budget in the product, judged against ambient presets from 100,000 <span class="stat-unit">lx</span> direct sunlight down to 5 <span class="stat-unit">lx</span> theatre and full blackout.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="ch-07-title">LIGHT BEHAVES LIKE LIGHT.</h2>
+
+          <p class="feature-sub reveal">Projector light adds to the surface's own shading: a white beam brightens a dark wall and the texture stays visible. Beams stop at the first surface they hit, so occlusion and shadows are part of the picture.</p>
 
           <figure class="chapter-media reveal">
             <div class="media-slot media-slot--wide has-media" data-slot="image" style="--media-ratio: 1363 / 805">
@@ -843,6 +965,23 @@
             </div>
             <figcaption class="media-caption">Composite from the shipped app: a facade with four projectors in the scene under an absolute-mode lux heatmap scaled 0 to 500. The panel's distribution selector is on Projector 1, so the shading is that one head's contribution, not the four-head sum.</figcaption>
           </figure>
+
+          <ul class="feature-cards reveal">
+            <li class="feature-card">
+              <h3 class="feature-card-title">ADDITIVE, ALWAYS</h3>
+              <p class="feature-card-body">Black in the content means no light: the wall simply stays as it was. Nothing is painted over.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">AMBIENT PRESETS</h3>
+              <p class="feature-card-body">From 100,000 <span class="stat-unit">lx</span> direct sunlight down to 5 <span class="stat-unit">lx</span> theatre, plus full blackout &mdash; and the contrast ratio is judged against whichever you set.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">AN ESTIMATE, LABELLED</h3>
+              <p class="feature-card-body">Beyond direct light the model stops at a single-bounce room estimate &mdash; the widest error budget in the product, published under Limits.</p>
+            </li>
+          </ul>
+
+          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-render">ALL 3 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
 
         </div>
       </div>
@@ -858,10 +997,9 @@
             <span class="micro-label-name">THE ROOM AROUND IT</span>
           </p>
 
-          <h2 class="lede reveal" id="ch-08-title">
-            <span class="lede-ink">Stage and architectural fixtures and LED walls sit in the same scene as the projectors, eight archetypes deep with IES (LM-63) import and a washout rating for the wall,</span>
-            <span class="lede-soft">in a strictly separate estimate lane, direct light only with no interreflection, stamped estimate in code and on screen, and blocked from ever reaching the projector lux figure.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="ch-08-title">PROJECTION NEVER SHIPS ALONE.</h2>
+
+          <p class="feature-sub reveal">Stage and architectural fixtures and LED walls sit in the same scene as the projectors &mdash; eight archetypes deep, with IES (LM-63) import and a washout rating for the wall. All of it lives in a strictly separate estimate lane: direct light only, stamped estimate on screen, and blocked from ever reaching a projector lux figure.</p>
 
           <figure class="chapter-media reveal">
             <div class="media-slot media-slot--wide" data-slot="video"
@@ -869,6 +1007,27 @@
                  data-label="ISOLUX WORKING PLANE" data-caption="VIDEO: TO COME"></div>
             <figcaption class="media-caption">Video slot, 1918 x 942: the isolux working plane and its Eavg, Emin, Emax and uniformity readout in the same scene as the projector beams. Not recorded yet.</figcaption>
           </figure>
+
+          <ul class="feature-cards reveal">
+            <li class="feature-card">
+              <h3 class="feature-card-title">THE ISOLUX WORKING PLANE</h3>
+              <p class="feature-card-body">Eavg, Emin, Emax and uniformity on a plane at any height &mdash; direct light only, and walls actually block it.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">IES IMPORT</h3>
+              <p class="feature-card-body">A manufacturer .ies file drives the beam shape, the fixture's lux estimate and the working plane. Asymmetric files are averaged, and the app says so on screen.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">AIM BY CLICK</h3>
+              <p class="feature-card-body">Click a point on the target and pan and tilt solve themselves, inside the fixture's real travel.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">THE SCHEDULE LEAVES WITH YOU</h3>
+              <p class="feature-card-body">One click copies a fixture schedule with per-unit specs and the total power draw.</p>
+            </li>
+          </ul>
+
+          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-lighting">ALL 3 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
 
         </div>
       </div>
@@ -884,10 +1043,9 @@
             <span class="micro-label-name">THE DELIVERABLE</span>
           </p>
 
-          <h2 class="lede reveal" id="ch-09-title">
-            <span class="lede-ink">Three things leave the app: a PDF Tech Rider carrying its printed disclaimer band, a vendor-neutral handoff JSON, and a read-only link that is a dated receipt, not a live mirror,</span>
-            <span class="lede-soft">each one a document a person reads or a machine parses, none of it written in a media server's own blend or warp format or pushed to a device.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="ch-09-title">PROOF THAT LEAVES THE APP.</h2>
+
+          <p class="feature-sub reveal">Three things leave: a PDF Tech Rider, a vendor-neutral handoff JSON, and a read-only link. Each one states its own assumptions on the page &mdash; and none of it is written in a media server's blend or warp format, or pushed to a device.</p>
 
           <figure class="chapter-media reveal">
             <div class="media-slot bleed-full" data-slot="video"
@@ -895,6 +1053,23 @@
                  data-label="PDF TECH RIDER" data-caption="VIDEO: TO COME"></div>
             <figcaption class="media-caption">Video slot, 1918 x 942: the Tech Rider exported in one click, one page per projector, then the client link it produces opened in a second tab. Not recorded yet.</figcaption>
           </figure>
+
+          <ul class="feature-cards reveal">
+            <li class="feature-card">
+              <h3 class="feature-card-title">PDF TECH RIDER, ONE CLICK</h3>
+              <p class="feature-card-body">One page per projector: equipment, lens, position, optical distances, surface readings and per-edge blending &mdash; under a printed &ldquo;simulation preview, not a field measurement&rdquo; band.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">HANDOFF JSON</h3>
+              <p class="feature-card-body">Scene, bindings, blend groups and the analysis summary in one neutral file &mdash; with the blend-domain warning printed inside the file itself.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">A READ-ONLY LINK</h3>
+              <p class="feature-card-body">The recipient lands on your exact camera and can print the same Tech Rider in your units. The link is a dated receipt, not a live mirror &mdash; it can expire, and it can be revoked.</p>
+            </li>
+          </ul>
+
+          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-deliver">ALL 7 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
 
         </div>
       </div>
@@ -910,10 +1085,9 @@
             <span class="micro-label-name">THE PROJECT</span>
           </p>
 
-          <h2 class="lede reveal" id="ch-10-title">
-            <span class="lede-ink">A local crash draft, a cloud autosave on an append-only version chain and a restore that deletes nothing mean the work survives the session,</span>
-            <span class="lede-soft">and where a project cannot be fully revived the app refuses to write rather than overwrite your last good snapshot, which is still not an offline mode: signing in needs the network.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="ch-10-title">THE WORK SURVIVES THE SESSION.</h2>
+
+          <p class="feature-sub reveal">A local crash draft saves a second after you stop; a cloud autosave writes on a schedule you set. Where a project cannot be fully revived, the app refuses to write rather than overwrite your last good save &mdash; which is still not an offline mode: signing in needs the network.</p>
 
           <figure class="chapter-media reveal">
             <div class="media-slot media-slot--wide" data-slot="image"
@@ -921,6 +1095,27 @@
                  data-label="PROJECT HOME" data-caption="IMAGE: TO COME"></div>
             <figcaption class="media-caption">Image slot, 1918 x 942: one still of Project Home showing the saved studies, the storage meter and the two sample-scene tiles. Not captured yet.</figcaption>
           </figure>
+
+          <ul class="feature-cards reveal">
+            <li class="feature-card">
+              <h3 class="feature-card-title">CLOUD AUTOSAVE</h3>
+              <p class="feature-card-body">Every save is a new version on an append-only version chain. Nothing is ever overwritten.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">RESTORE ROLLS FORWARD</h3>
+              <p class="feature-card-body">Restoring first saves what you have, then writes the restored state as a new version. Nothing is deleted.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">SAMPLE SCENES</h3>
+              <p class="feature-card-body">Open your own editable copy of the FieldLux Test Scene or the Play Dock Demo, and break it freely.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">OR KEEP IT YOURSELF</h3>
+              <p class="feature-card-body">Export the whole project as a single file and open it again later &mdash; no cloud required.</p>
+            </li>
+          </ul>
+
+          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-project">ALL 3 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
 
         </div>
       </div>
@@ -939,8 +1134,8 @@
           </p>
 
           <h2 class="lede lede--on-mass reveal" id="numbers-title">
-            <span class="lede-ink">Six figures, each one read off the shipped build or off a session someone sat through and counted,</span>
-            <span class="lede-soft">each naming its own source on its own line, and each dated where a date is what makes it true.</span>
+            <span class="lede-ink">Six figures, each read off the shipped build or a measured session,</span>
+            <span class="lede-soft">each naming its source on its own line, and dated where the date is what makes it true.</span>
           </h2>
 
           <div class="stat-row">
@@ -999,10 +1194,9 @@
             <span class="micro-label-name">LIMITS</span>
           </p>
 
-          <h2 class="lede reveal" id="limits-title">
-            <span class="lede-ink">Every constant the analysis runs on is frozen in one module with the industry source it came from and the error it carries,</span>
-            <span class="lede-soft">and they are published here because a field engineer should be able to read a number off this product and know exactly what was assumed to produce it.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="limits-title">WHAT WE ASSUME, AND WHAT IT COSTS.</h2>
+
+          <p class="feature-sub reveal">Every constant the analysis runs on is frozen in one module, with the industry source it came from and the error it carries. It is all published here, because you should be able to read a number off this product and know exactly what was assumed to produce it.</p>
 
           <p class="micro-label">
             <span class="micro-label-ord">(01)</span>
@@ -1123,10 +1317,9 @@
             <span class="micro-label-name">FEATURE VIDEOS</span>
           </p>
 
-          <h2 class="lede reveal" id="videos-cta-title">
-            <span class="lede-ink">One short screen recording per part, 15 to 60 seconds each, no narration and no speed-up,</span>
-            <span class="lede-soft">and none of them is published yet, so what is on that page today is the shot list, each clip named with the part it belongs to and what it will show.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="videos-cta-title">SEE EVERY TOOL DO ITS ACTUAL JOB.</h2>
+
+          <p class="feature-sub reveal">One short screen recording per part, 15 to 60 seconds each, no narration and no speed-up. None are published yet &mdash; the shot list is public, and every clip is named on that page before it is filmed.</p>
 
           <div class="hero-actions">
             <a class="btn btn--text" href="/videos">OPEN FEATURE VIDEOS</a>
@@ -1145,10 +1338,9 @@
             <span class="micro-label-name">STATUS</span>
           </p>
 
-          <h2 class="lede reveal" id="beta-title">
-            <span class="lede-ink">FieldLux is in open beta, free, and never load tested,</span>
-            <span class="lede-soft">with 2 <span class="stat-unit">GB</span> of imported-model storage, a 1 <span class="stat-unit">GiB</span> media library, a 200 <span class="stat-unit">MB</span> ceiling per file, no pricing page because there are no paid plans yet, and founding-member standing for early testers who verify their invite code, carrying 12 months of access once those plans begin.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="beta-title">OPEN BETA. FREE. HONESTLY LIMITED.</h2>
+
+          <p class="feature-sub reveal">2 <span class="stat-unit">GB</span> of imported-model storage, a 1 <span class="stat-unit">GiB</span> media library, and a 200 <span class="stat-unit">MB</span> ceiling per file. There is no pricing page because there are no paid plans yet &mdash; and early testers who verify their invite code keep founding-member standing: 12 months of access once those plans begin.</p>
 
         </div>
       </div>
@@ -1163,10 +1355,9 @@
             <span class="micro-label-name">JOIN THE DISCORD COMMUNITY</span>
           </p>
 
-          <h2 class="lede reveal" id="community-title">
-            <span class="lede-ink">40 of the 87 heads in the catalogue have no manufacturer calculator to check against: all 19 Christie, all 19 Barco and two Panasonic models,</span>
-            <span class="lede-soft">so post a spec sheet in <code>#catalogue</code> and it goes into the next catalogue build with your name on the source field, and bug reports go the same way.</span>
-          </h2>
+          <h2 class="feature-title reveal" id="community-title">HELP US FINISH THE CATALOGUE.</h2>
+
+          <p class="feature-sub reveal">40 of the 87 heads in the catalogue have no manufacturer calculator to check against &mdash; all 19 Christie, all 19 Barco and two Panasonic models. Post a spec sheet in <code>#catalogue</code> and it ships in the next catalogue build with your name on the source field. Bug reports go the same way.</p>
 
           <div class="hero-actions">
             <a class="btn btn--outline" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">JOIN DISCORD</a>
@@ -1186,8 +1377,8 @@
           </p>
 
           <h2 class="lede reveal" id="start-title">
-            <span class="lede-ink">Sign in and open your own copy of the FieldLux Test Scene or the Play Dock Demo,</span>
-            <span class="lede-soft">both of them complete projection studies that are yours to break, and move a projector 300 <span class="stat-unit">mm</span> to watch which numbers move with it.</span>
+            <span class="lede-ink">Open a scene and push it around.</span>
+            <span class="lede-soft">Sign in free, open your own copy of the FieldLux Test Scene or the Play Dock Demo, and move a projector 300 <span class="stat-unit">mm</span> to watch which numbers move with it.</span>
           </h2>
 
           <div class="hero-actions">
