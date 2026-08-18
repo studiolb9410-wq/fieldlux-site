@@ -184,22 +184,32 @@ const HERO_UX = `    <style>
 
       /* --- cursor -------------------------------------------------------
          THE OWNER'S POINTER, 0818: a solid white rounded triangle with a
-         concave tail, tip at the top right. Drawn to the reference the owner
-         supplied, as an inline SVG data URI rather than a PNG so it stays
-         sharp on a HiDPI display and costs no request.
+         concave tail. Drawn to the reference the owner supplied and then
+         MIRRORED LEFT TO RIGHT at their request, so the tip is at the top
+         LEFT. That is also the orientation every desktop pointer has, which
+         means the shape now leads with its point in the direction the hand
+         expects and the body trails down-right out of the way.
 
-         Geometry, so a future edit can keep the silhouette: the tip is the
-         sharpest corner (about 51 degrees) at 26.6,3.4; the two tails are
-         4.4,13.2 and 18.6,28.4; the edge BETWEEN THE TAILS is the concave
-         one, pulled toward the tip by the quadratic control at 15.5,17.5.
-         Corners are rounded by stroking the same path in the same white with
-         a round linejoin rather than by hand-fitting arcs, which is what keeps
-         the three radii equal.
+         Inline SVG data URI rather than a PNG so it stays sharp on a HiDPI
+         display and costs no request.
+
+         Geometry, so a future edit can keep the silhouette. Every x below is
+         the reference's own x subtracted from 32, which is the whole mirror:
+         the tip is the sharpest corner (about 51 degrees) at 5.4,3.4; the two
+         tails are 27.6,13.2 and 13.4,28.4; the edge BETWEEN THE TAILS is the
+         concave one, pulled toward the tip by the quadratic control at
+         16.5,17.5. Corners are rounded by stroking the same path in the same
+         white with a round linejoin rather than by hand-fitting arcs, which is
+         what keeps the three radii equal.
 
          THE DROP SHADOW IS NOT DECORATION. The scene projects video onto the
          building, and a pure white pointer over a white projection is an
          invisible pointer. The offset black copy at 0.3 keeps the owner's
-         white shape white while giving it an edge on any ground.
+         white shape white while giving it an edge on any ground. Its offset is
+         NOT mirrored with the shape: it stays +1.2,+1.4, down and to the
+         right, because a shadow that flipped with the artwork would put the
+         light source on the wrong side of a pointer that sits on a page lit
+         from the top left like every other object on it.
 
          The trailing ', grab' is not decoration either. A url() cursor is
          IGNORED in several real cases — the SVG failing to parse, a size over
@@ -208,12 +218,13 @@ const HERO_UX = `    <style>
          default arrow, which is the one thing this replaces. grab is the
          honest fallback: it still says draggable.
 
-         '27 3' is the hotspot, on the tip. It has to be stated: the default is
-         0,0, which on this shape is empty canvas to the LEFT of the tip, so
-         every click would land wide of where the visitor aimed. */
+         '5 3' is the hotspot, on the tip, and it moved with the mirror. It has
+         to be stated: the default is 0,0, which on this shape is empty canvas
+         above and left of the tip, so every click would land wide of where the
+         visitor aimed. */
       .flx-embed-stage canvas,
       .flx-embed-stage canvas:active {
-        cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M27.8 4.8 L5.6 14.6 Q16.7 18.9 19.8 29.8 Z' fill='%23000000' stroke='%23000000' stroke-width='3.4' stroke-linejoin='round' stroke-linecap='round' opacity='0.3'/><path d='M26.6 3.4 L4.4 13.2 Q15.5 17.5 18.6 28.4 Z' fill='%23FFFFFF' stroke='%23FFFFFF' stroke-width='3.4' stroke-linejoin='round' stroke-linecap='round'/></svg>") 27 3, grab;
+        cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M6.6 4.8 L28.8 14.6 Q17.7 18.9 14.6 29.8 Z' fill='%23000000' stroke='%23000000' stroke-width='3.4' stroke-linejoin='round' stroke-linecap='round' opacity='0.3'/><path d='M5.4 3.4 L27.6 13.2 Q16.5 17.5 13.4 28.4 Z' fill='%23FFFFFF' stroke='%23FFFFFF' stroke-width='3.4' stroke-linejoin='round' stroke-linecap='round'/></svg>") 5 3, grab;
       }
 
       /* --- the bubble is retired -----------------------------------------
