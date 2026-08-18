@@ -1405,32 +1405,40 @@ body.overlay-open{ overflow:hidden; }
    paints one, so no focus indicator is ever removed without a replacement. */
 .hero-frame:focus:not(:focus-visible){ outline:none; }
 
-.hero-frame-still,
+/* OVERRIDE 4, 0818: .hero-frame-still is deleted from the markup, so its two
+   rules go with it. What replaces the poster is this frame's own ground: the
+   same near-black the app paints on the layer inside its error boundary, so a
+   frame that has not started, cannot start, or has crashed its canvas reads as
+   an unlit stage continuous with the scene rather than as a white hole. It is
+   declared on .hero-frame rather than left to the page ground for exactly that
+   reason. */
+.hero-frame{ background:#0a0a0a; }
 .hero-frame-embed{
   position:absolute; inset:0; inline-size:100%; block-size:100%; display:block;
 }
-.hero-frame-still{ object-fit:cover; object-position:50% 50%; }
 /* transparent, explicitly: the iframe ELEMENT's own background paints behind
-   the embedded document, and the whole poster-underneath scheme depends on
-   this layer staying out of the way while the app boots. */
+   the embedded document, so this layer has to stay out of the way and let
+   .hero-frame's own ground show while the app boots. */
 .hero-frame-embed{ border:0; background:transparent; }
 
-/* ---- THE STILL IS NEVER HIDDEN (OWNER CHANGE 3) --------------------------
-   The rule that used to live here - `[data-embed-state="live"] .hero-frame-
-   still { visibility:hidden }` - is DELETED, and its deletion is the guard,
-   not an omission. The still is the poster the embed is layered over for the
-   life of the page.
+/* ---- WHAT THE POSTER USED TO DO, AND WHAT DOES IT NOW (OVERRIDE 4) -------
+   OWNER CHANGE 3 kept a still under the embed for the life of the page, and
+   its whole argument was that the embed document paints nothing of its own
+   until its scene mounts: EmbedViewer sets `html, body { background:
+   transparent !important }`, its React root is transparent, and the scene's
+   near-black is painted on a layer INSIDE the error boundary. So "still
+   booting", "resolved no scene" and "canvas crashed" are all transparent.
 
-   It works because the embed document paints nothing of its own until its
-   scene mounts. Verified in the app's EmbedViewer.jsx on branch 0814-embed:
-   its injected stylesheet sets `html, body { background: transparent
-   !important }` (!important because the app's index.html sets a black body
-   background inline), its React root is `background:'transparent'`, and the
-   scene's own near-black is painted on a layer INSIDE the error boundary. So
-   "still booting", "resolved no scene" and "canvas crashed" are all
-   transparent, and all three land on this still instead of on a black
-   rectangle. Hiding the still on the iframe's load event would break exactly
-   those three cases, because load fires for an empty frame too. */
+   That mechanism is unchanged and still true. What changed is what those three
+   states land on. The poster was a capture of a different scene, so it showed
+   one building and then swapped it for another; it is deleted, and the three
+   states now land on .hero-frame's own #0a0a0a above, which is the same
+   near-black the app paints. The frame is therefore never white and never
+   empty-looking, and it never advertises a scene it is not running.
+
+   Do not reintroduce a poster keyed on the iframe's load event: load fires for
+   an empty or blocked frame too, which is what made hiding-on-load wrong then
+   and would make showing-on-load wrong now. */
 
 /* The reduced-motion / data-saver opt-in. It is an opaque chip in the corner,
    never a scrim over the image: darkening a lux heatmap to make a button

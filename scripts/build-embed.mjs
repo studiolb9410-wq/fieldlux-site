@@ -102,11 +102,29 @@ const VERCEL_STUBS =
    is engaged. preventDefault stops the page scrolling; it does not stop
    propagation, so the scene still receives the wheel and still zooms.
 
-   BUBBLE. The app already renders the prompt and already fades it on first
-   interaction (.flx-embed-hint[data-seen="true"]). What it lacked was any
-   presence: 306x28 of plain text lying on a dark 3D scene. It becomes a
-   speech bubble with a tail here, in CSS only — rewriting its TEXT from out
-   here would fight React the moment data-seen re-renders it.
+   (g) THE INTRO, 0818, replacing the bubble. The cyan speech bubble is
+   retired at the owner's call. What stands in its place is the invitation set
+   as TYPE, in the scene's own empty top-left: two lines of white display
+   uppercase that rise into their own masks 90ms apart with the tracking
+   settling as they land, then one small spaced line with a cyan caret.
+
+   BUILT HERE, NOT RESTYLED. The previous pass could only dress the app's
+   .flx-embed-hint node, which is React's: its text could not be changed from
+   out here without being overwritten on the next data-seen render. This block
+   hides that node and appends its own to <body>, outside React's tree, so the
+   copy and the motion are both ours and neither can be clobbered mid-frame.
+   The app's hint text stays in the document for assistive tech; the new block
+   is aria-hidden, exactly as the site's own ticker is, because it is a second
+   printing of words already in the tree.
+
+   IT NEVER TAKES THE POINTER. pointer-events:none, so a visitor can start
+   dragging straight through the type, and pointerdown anywhere dismisses it on
+   the way down rather than after the first gesture completes. It rises and
+   blurs out over 420ms and is then removed from the DOM.
+
+   IT WAITS FOR THE CANVAS. The poll is not timing decoration: mounting the
+   type while the app is still booting would advertise a 3D view that is not on
+   screen yet. It gives up quietly after 20 seconds.
 
    (f) MIDDLE-BUTTON AUTOSCROLL, added 0818 after a visitor reported the page
    running away under a pan. Traced, not guessed:
@@ -165,117 +183,184 @@ const HERO_UX = `    <style>
       }
 
       /* --- cursor -------------------------------------------------------
-         The owner's pointer: white arrow, cyan edge, ring at the tail. Drawn
-         as an inline SVG data URI rather than a PNG so it stays sharp on a
-         HiDPI display and costs no request.
+         THE OWNER'S POINTER, 0818: a solid white rounded triangle with a
+         concave tail, tip at the top right. Drawn to the reference the owner
+         supplied, as an inline SVG data URI rather than a PNG so it stays
+         sharp on a HiDPI display and costs no request.
 
-         The trailing ', grab' is not decoration. A url() cursor is IGNORED in
-         several real cases — the SVG failing to parse, a size over the
-         platform cap, and every browser with SVG cursors disabled — and
+         Geometry, so a future edit can keep the silhouette: the tip is the
+         sharpest corner (about 51 degrees) at 26.6,3.4; the two tails are
+         4.4,13.2 and 18.6,28.4; the edge BETWEEN THE TAILS is the concave
+         one, pulled toward the tip by the quadratic control at 15.5,17.5.
+         Corners are rounded by stroking the same path in the same white with
+         a round linejoin rather than by hand-fitting arcs, which is what keeps
+         the three radii equal.
+
+         THE DROP SHADOW IS NOT DECORATION. The scene projects video onto the
+         building, and a pure white pointer over a white projection is an
+         invisible pointer. The offset black copy at 0.3 keeps the owner's
+         white shape white while giving it an edge on any ground.
+
+         The trailing ', grab' is not decoration either. A url() cursor is
+         IGNORED in several real cases — the SVG failing to parse, a size over
+         the platform cap, and every browser with SVG cursors disabled — and
          without a keyword after it the element would silently fall back to the
          default arrow, which is the one thing this replaces. grab is the
          honest fallback: it still says draggable.
 
-         '6 4' is the hotspot, on the arrow's point. It has to be stated: the
-         default is 0,0, which here is empty canvas above and left of the tip,
-         so every click would land up-left of where the visitor aimed. */
-      .flx-embed-stage canvas {
-        cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><g fill='%23FFFFFF' stroke='%2322D3EE' stroke-width='2.4' stroke-linejoin='round' stroke-linecap='round'><path d='M6 4 L6 22.5 L10.8 18 L14.2 25 L17.8 23.2 L14.4 16.4 L20.6 16.2 Z'/><circle cx='24' cy='7.5' r='4.2'/></g></svg>") 6 4, grab;
+         '27 3' is the hotspot, on the tip. It has to be stated: the default is
+         0,0, which on this shape is empty canvas to the LEFT of the tip, so
+         every click would land wide of where the visitor aimed. */
+      .flx-embed-stage canvas,
+      .flx-embed-stage canvas:active {
+        cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M27.8 4.8 L5.6 14.6 Q16.7 18.9 19.8 29.8 Z' fill='%23000000' stroke='%23000000' stroke-width='3.4' stroke-linejoin='round' stroke-linecap='round' opacity='0.3'/><path d='M26.6 3.4 L4.4 13.2 Q15.5 17.5 18.6 28.4 Z' fill='%23FFFFFF' stroke='%23FFFFFF' stroke-width='3.4' stroke-linejoin='round' stroke-linecap='round'/></svg>") 27 3, grab;
       }
-      /* Closed hand while the pointer is down — the drag itself keeps the
-         convention every visitor already knows, and the custom arrow would
-         read as "still idle" mid-drag. */
-      .flx-embed-stage canvas:active { cursor: grabbing; }
 
-      /* --- the prompt, as a brand bubble ----------------------------------
-         !important on exactly the properties the component writes INLINE
-         (position, colour, size, padding, radius, fill, edge) and on nothing
-         else. A stylesheet rule cannot outrank an inline declaration, and
-         without this the bubble silently kept the app's 10.5px grey pill --
-         which is how it first shipped from here.
-         (No backticks in this block -- it lives inside a template literal.)
+      /* --- the bubble is retired -----------------------------------------
+         The cyan speech bubble is gone at the owner's call, and it is hidden
+         rather than restyled: it is the app's own node, it re-renders itself
+         on data-seen, and a hidden node keeps the app's accessibility text in
+         its own document while this layer draws the visible invitation. The
+         intro below replaces it. */
+      .flx-embed-hint { display: none !important; }
 
-         PLACED UNDER THE TICKER, not at the foot of the frame. The app pins it
-         with an inline 'bottom: 18px', so releasing that needs BOTH a top and
-         an explicit 'bottom: auto' -- setting top alone leaves both edges bound
-         and the box stretches instead of moving.
+      /* --- the intro, set as type -----------------------------------------
+         White display type in the scene's own top-left, where the building is
+         not: the frame reads as one composition instead of a widget with a
+         label stuck to it. Every rule here is on OUR node (.flx-intro, built
+         by the script below and appended to <body>), never on a React node, so
+         nothing here can be undone by a re-render.
 
-         46px is measured, not chosen. The site's ticker band sits at
-         --ticker-top, clamp(10px, 0.95vw, 14px), and stands 21-22px tall, so
-         its lowest pixel is 31px at the narrow end and 36px at the wide end.
-         46 clears the worst case by 10px. That variable lives on .hero-frame in
-         the PARENT document and cannot be read from inside this iframe, which
-         is why the number is inlined here with its derivation. Re-measure if
-         --ticker-top or --fs-micro moves.
+         position:fixed, not absolute. The embed root is fixed and inset:0, and
+         appending to <body> keeps this out of React's tree entirely. The block
+         NEVER takes the pointer: the whole point is that a visitor can start
+         dragging through it.
 
-         BRAND FILL. --brand-500 #20D5DE is the logo's own mid cyan. The site's
-         palette marks it OBJECT ONLY and failing as text -- which is exactly
-         what this is: a filled object, with the ink dark rather than light.
-         #04252D on it measures about 8.9:1, so the prompt is legible over
-         whatever the scene happens to be rendering behind it. Solid, not
-         translucent: a blurred fill would take its colour from the scene and
-         stop being the brand. */
-      .flx-embed-hint {
-        top: 46px !important;
-        bottom: auto !important;
-        padding: 11px 20px 12px !important;
-        border-radius: 15px !important;
-        /* Translucent, but only just, and with a blur behind it. The fill was
-           solid to stop the scene tinting the brand; 0.86 plus a saturating
-           blur keeps the hue where it belongs while letting the building read
-           through, which is what stops a bar of flat colour sitting on top of
-           the product shot. */
-        background: rgba(32, 213, 222, 0.86) !important;
-        -webkit-backdrop-filter: blur(6px) saturate(1.2);
-        backdrop-filter: blur(6px) saturate(1.2);
-        border: 1px solid rgba(0, 86, 107, 0.32) !important;
-        color: #04252D !important;
-        /* The headline's face and weight. font-family is NOT one of the
-           properties the component writes inline, so it needs no !important --
-           but the embed's own <body> sets Geist inline and that value is
-           INHERITED, which any direct rule outranks. */
+         86px, measured the same way the retired bubble's 46px was: the site's
+         ticker band sits at --ticker-top, clamp(10px, 0.95vw, 14px), and
+         stands 21-22px tall, so its lowest pixel is 36px at the wide end. 86
+         clears it by 50px and puts the type in open scene rather than under a
+         moving band. That variable lives on .hero-frame in the PARENT document
+         and cannot be read from in here, which is why the number is inlined
+         with its derivation. Re-measure if --ticker-top or --fs-micro moves.
+
+         Every line sits in its own overflow-clip mask so the reveal is the
+         type rising into a window, not a box fading in. */
+      .flx-intro {
+        position: fixed;
+        top: 86px;
+        left: clamp(20px, 3.6vw, 54px);
+        z-index: 40;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
         font-family: 'Geologica', 'Pretendard Variable', Pretendard, -apple-system, 'Segoe UI', Roboto, sans-serif;
-        font-size: 15px !important;
-        font-weight: 500 !important;
-        letter-spacing: -0.005em !important;
-        line-height: 1.3;
-        box-shadow: 0 12px 34px -12px rgba(0, 63, 78, 0.7);
+        /* The scene behind this is dark but it is also MOVING, and a projected
+           frame can go bright white under the type. The shadow is what keeps
+           white legible on white without tinting the letterforms themselves. */
+        text-shadow: 0 2px 18px rgba(0, 0, 0, 0.75), 0 1px 3px rgba(0, 0, 0, 0.55);
+        transition: opacity 420ms cubic-bezier(.4, 0, .2, 1),
+                    transform 420ms cubic-bezier(.4, 0, .2, 1),
+                    filter 420ms cubic-bezier(.4, 0, .2, 1);
       }
-      /* The tail points DOWN, into the scene the prompt is talking about. A
-         rotated square rather than a border triangle so the 1px edge carries
-         around the corner instead of stopping at a hard wedge. */
-      .flx-embed-hint::after {
-        content: "";
-        position: absolute;
-        left: 50%;
-        bottom: -5px;
-        inline-size: 10px;
-        block-size: 10px;
-        margin-inline-start: -5px;
-        background: inherit;
-        border-inline-end: 1px solid rgba(0, 86, 107, 0.35);
-        border-block-end: 1px solid rgba(0, 86, 107, 0.35);
-        transform: rotate(45deg);
+      .flx-intro-mask { display: block; overflow: clip; padding-block: 0.06em; }
+      .flx-intro-line {
+        display: block;
+        color: #FFFFFF;
+        font-weight: 500;
+        font-size: clamp(19px, 2.5vw, 34px);
+        line-height: 1.06;
+        letter-spacing: -0.022em;
+        text-transform: uppercase;
+        white-space: nowrap;
       }
-      /* One slow breath, so it reads as an invitation without becoming motion
-         the visitor has to wait out. It drifts DOWNWARD now: the bubble hangs
-         under the band and points into the scene, so the motion should lead the
-         eye there rather than back up into the band. */
+      /* The third line steps down in size and up in tracking: it is the
+         instruction, not the invitation, and the change of voice is what stops
+         three stacked lines reading as one paragraph. */
+      .flx-intro-line--sub {
+        font-size: clamp(10px, 0.92vw, 12.5px);
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        line-height: 1.5;
+        color: rgba(255, 255, 255, 0.72);
+      }
+      .flx-intro-sub-mask { margin-block-start: 12px; }
+      /* The caret is the one cyan object in here, and it is an object, never a
+         letterform: the site's palette marks --brand-500 OBJECT ONLY. */
+      .flx-intro-caret {
+        display: inline-block;
+        inline-size: 0.5em;
+        block-size: 0.5em;
+        margin-inline-start: 0.7em;
+        background: #20D5DE;
+        vertical-align: baseline;
+        transform: translateY(0.02em);
+      }
+
       @media (prefers-reduced-motion: no-preference) {
-        .flx-embed-hint[data-seen="false"] { animation: flx-hint-breathe 3.2s ease-in-out 1.1s infinite; }
-        /* BOTH axes, every frame. An animated 'transform' replaces the whole
-           property, inline value included, so a keyframe that named only
-           translateY would drop the app's translateX(-50%) and throw the
-           bubble half its own width to the right for the length of the
-           animation. Keep the centring in each stop. */
-        @keyframes flx-hint-breathe {
-          0%, 100% { transform: translate(-50%, 0); }
-          50%      { transform: translate(-50%, 3px); }
+        /* THE REVEAL. Each line starts pushed a full line below its own mask
+           and skewed, then is released on a strong out-ease, 90ms apart. The
+           tracking settles at the same time -- letters arriving spread and
+           closing up is what makes it read as typography rather than as a div
+           sliding. */
+        .flx-intro-line {
+          transform: translate3d(0, 110%, 0) skewY(4deg);
+          opacity: 0;
+          letter-spacing: 0.14em;
+          animation: flx-intro-rise 900ms cubic-bezier(.16, 1, .3, 1) forwards;
         }
+        .flx-intro-mask:nth-child(1) .flx-intro-line { animation-delay: 120ms; }
+        .flx-intro-mask:nth-child(2) .flx-intro-line { animation-delay: 210ms; }
+        .flx-intro-mask:nth-child(3) .flx-intro-line { animation-delay: 330ms; }
+        @keyframes flx-intro-rise {
+          from { transform: translate3d(0, 110%, 0) skewY(4deg); opacity: 0; letter-spacing: 0.14em; }
+          to   { transform: none;                                opacity: 1; letter-spacing: -0.022em; }
+        }
+        /* The sub line keeps its own tracking, so it gets its own keyframe
+           rather than inheriting a settle that would undo the 0.16em. */
+        .flx-intro-line--sub {
+          animation-name: flx-intro-rise-sub;
+        }
+        @keyframes flx-intro-rise-sub {
+          from { transform: translate3d(0, 110%, 0) skewY(4deg); opacity: 0; }
+          to   { transform: none;                                opacity: 1; }
+        }
+        .flx-intro-caret { animation: flx-intro-blink 1.15s steps(1, end) 900ms infinite; }
+        @keyframes flx-intro-blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
       }
-      /* The app fades it on data-seen; stop the loop so a faded bubble is not
-         still animating. Its transform is left to the inline rule. */
-      .flx-embed-hint[data-seen="true"] { animation: none !important; }
+
+      /* SHORT FRAMES. The site's headline block hangs over the frame's lower
+         left, and how far up its top edge sits depends on the frame's height:
+         at 1600x950 the frame is 847px tall and the block starts 654px down,
+         leaving 618px of clear scene; in a 950px-wide window the frame is
+         490px tall and the block starts 145px down, leaving about 110px. This
+         block is the only thing between the type and that white edge, and the
+         iframe's own height is the one honest proxy for the frame's height
+         that is readable from inside here. Measured, not guessed. */
+      @media (max-height: 620px) {
+        /* 48px, not the 86 above: measured at a 960x720 window, where the frame
+           is 487px tall, the ticker's lowest pixel is 36 and the white block
+           starts 141px down. 48 leaves 12px under the band and 15px above the
+           block, which is the tightest this composition gets. */
+        .flx-intro { top: 48px; }
+        .flx-intro-line { font-size: clamp(15px, 2vw, 22px); }
+        .flx-intro-sub-mask { margin-block-start: 6px; }
+      }
+      @media (max-height: 430px) {
+        /* No room for the instruction as well as the invitation; the
+           invitation is the one that has to survive. */
+        .flx-intro-sub-mask { display: none; }
+      }
+
+      /* Leaving. It rises and blurs out rather than simply fading, so the
+         scene reads as arriving rather than as the label switching off. */
+      .flx-intro[data-out="true"] {
+        opacity: 0;
+        transform: translate3d(0, -14px, 0);
+        filter: blur(7px);
+      }
     </style>
     <script>
       /* Scroll containment — see (e) in scripts/build-embed.mjs. */
@@ -298,6 +383,83 @@ const HERO_UX = `    <style>
         };
         document.addEventListener('mousedown', middleOnStage, { capture: true, passive: false });
         document.addEventListener('auxclick', middleOnStage, { capture: true, passive: false });
+
+        /* The intro — see (g) in scripts/build-embed.mjs. Built here rather
+           than styled onto the app's own hint node, because the app owns that
+           node and re-renders it; this one is ours, lives on <body>, outside
+           React's tree, and can never be clobbered mid-animation. */
+        var LINES = ['Drag to', 'look around'];
+        var SUB = 'Click a projector for its light readings';
+
+        var intro = null;
+        var dismissed = false;
+
+        function buildIntro() {
+          if (intro || dismissed) return;
+          intro = document.createElement('div');
+          intro.className = 'flx-intro';
+          /* aria-hidden, and it is not a shortcut: the app still renders its
+             own hint text in this document for assistive tech (hidden only
+             visually), and the framing page names the same two gestures in the
+             iframe title and in the caption under the frame. This is a second,
+             animated printing of words that already exist in the tree. */
+          intro.setAttribute('aria-hidden', 'true');
+
+          for (var i = 0; i < LINES.length; i++) {
+            var mask = document.createElement('span');
+            mask.className = 'flx-intro-mask';
+            var line = document.createElement('span');
+            line.className = 'flx-intro-line';
+            line.textContent = LINES[i];
+            mask.appendChild(line);
+            intro.appendChild(mask);
+          }
+
+          var subMask = document.createElement('span');
+          subMask.className = 'flx-intro-mask flx-intro-sub-mask';
+          var sub = document.createElement('span');
+          sub.className = 'flx-intro-line flx-intro-line--sub';
+          sub.textContent = SUB;
+          var caret = document.createElement('i');
+          caret.className = 'flx-intro-caret';
+          sub.appendChild(caret);
+          subMask.appendChild(sub);
+          intro.appendChild(subMask);
+
+          document.body.appendChild(intro);
+        }
+
+        /* CLICK TAKES IT AWAY AND HANDS OVER THE SCENE. pointerdown rather
+           than click, so a drag dismisses it on the way down instead of
+           leaving it up for the whole first gesture. Removed from the DOM
+           after the transition so nothing is left painting or animating. */
+        function dismissIntro() {
+          dismissed = true;
+          if (!intro) return;
+          var node = intro;
+          intro = null;
+          node.setAttribute('data-out', 'true');
+          window.setTimeout(function () {
+            if (node && node.parentNode) node.parentNode.removeChild(node);
+          }, 500);
+        }
+
+        document.addEventListener('pointerdown', dismissIntro, { capture: true, passive: true });
+        document.addEventListener('keydown', dismissIntro, { capture: true, passive: true });
+
+        /* Wait for the scene, not for the document. Mounting the type over an
+           empty frame while the app is still booting would advertise a 3D view
+           that is not on screen yet, so this polls for the canvas the app
+           creates and gives up quietly after 20 seconds. */
+        var waited = 0;
+        var poll = window.setInterval(function () {
+          waited += 220;
+          if (dismissed || waited > 20000) { window.clearInterval(poll); return; }
+          if (document.querySelector('.flx-embed-stage canvas')) {
+            window.clearInterval(poll);
+            buildIntro();
+          }
+        }, 220);
       })();
     </script>
 `;

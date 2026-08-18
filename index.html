@@ -28,13 +28,15 @@
 
   <link rel="preload" href="/assets/fonts/geologica-var-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/pretendard/PretendardVariable.subset.91.woff2" as="font" type="font/woff2" crossorigin>
-  <!-- The hero still. It is the largest contentful paint and it is PERMANENT: it is the
-       poster the live embed is layered over, not a placeholder the embed replaces, so it
-       is preloaded and never lazy. It has to win the network race against the iframe the
-       hero now mounts on load, which is what stops the frame ever painting empty while
-       the app boots. Repoint this and the .hero-frame-still src together if the still is
-       ever re-cropped. -->
-  <link rel="preload" href="/assets/media/hero-stitch-01.png" as="image" fetchpriority="high">
+  <!-- OWNER OVERRIDE 4, 0818: THE HERO STILL IS RETIRED, PRELOAD AND ALL.
+       It used to be preloaded here at fetchpriority=high as the permanent poster
+       under the embed. It is gone because it was a picture of a DIFFERENT scene —
+       a stone facade under a heatmap — sitting behind a frame that now paints the
+       Play Dock Demo, so the first thing a visitor saw was a building the live
+       scene never shows. See the .hero-frame note below for what replaced it and
+       what that costs. Nothing else preloads in its place: with the still gone the
+       largest contentful paint is the headline, which is text this page already
+       has, so the hero paints sooner rather than later. -->
 
   <link rel="stylesheet" href="/assets/tailwind.css">
 
@@ -192,12 +194,35 @@
              data-embed-src is why that is invisible today. Adding the demo origin
              to frame-src is a vercel.json change and has to land in the same
              commit as the URL, or the hero is a still with a CSP error. -->
+        <!-- -- OWNER OVERRIDE 4, 0818, THE STILL IS RETIRED ------------------
+             The <img class="hero-frame-still"> that used to sit here is deleted.
+             It was assets/media/hero-stitch-01.png, a capture of a stone facade
+             under a lux heatmap, and it was the poster the embed was layered
+             over. The frame now loads the Play Dock Demo, which is a different
+             building in a different scene, so the poster showed a visitor one
+             product shot and then replaced it with another. The owner's call is
+             that the hero is the 3D, and only the 3D.
+
+             WHAT THAT COSTS, STATED RATHER THAN HIDDEN. The still was the answer
+             to four states: booting, no scene resolved, canvas crashed, and
+             JavaScript off. All four now land on .hero-frame's own near-black
+             (src/input.css), which is the same near-black the app paints inside
+             its error boundary, so a failed frame reads as an unlit stage rather
+             than as a hole in the page. That is a weaker fallback than a picture
+             and it is accepted deliberately.
+
+             WHAT IT DOES NOT COST: the figures below. They were read off the old
+             still, which is why the note above them used to carry a deadline.
+             They are now read off demo-scenes/hero.json, the scene file this
+             frame actually loads, so they describe what is on screen whether or
+             not it has painted yet. That is strictly better evidence than a
+             screenshot, and it is what makes the readout honest with no poster.
+
+             The image file stays in assets: chapter 07 still uses it, with a
+             caption that describes it correctly as a capture of the shipped app. -->
         <div class="hero-frame" tabindex="-1"
              data-embed-src="/embed?scene=hero"
              data-embed-title="FieldLux interactive 3D scene, drag to look around">
-          <img class="hero-frame-still" src="/assets/media/hero-stitch-01.png"
-               alt="A stone building in the FieldLux viewport under an absolute-mode lux heatmap, per-cell surface lux values printed across the facade, with the app's Lux Heatmap panel open beside it."
-               width="1363" height="805" fetchpriority="high" decoding="async">
 
           <!-- -- OWNER CHANGE 6, THE FEATURE TICKER ---------------------------
                A single band of the product's own vocabulary scrolling LEFT along
@@ -375,83 +400,81 @@
              rather than as a card placed on top of it. Nothing separates this
              from the section below it: same ground, same left edge, no rule. -->
         <div class="hero-copy">
-          <p class="hero-lead">Four heads, the real building, the overlaps counted. FieldLux answers it before you quote, and publishes how far off it could be.</p>
+          <!-- "Eight heads", not "four": the lead names the scene in the frame
+               beside it, and OVERRIDE 4 made that scene the Play Dock Demo,
+               whose file holds eight projectors. Same rule as the readout. -->
+          <p class="hero-lead">Eight heads, the real building, the overlaps counted. FieldLux answers it before you quote, and publishes how far off it could be.</p>
           <div class="hero-actions">
             <a class="btn btn--brand" href="https://app.field-lux.com" data-app-link>START FREE</a>
             <a class="btn btn--text" href="#limits">SEE THE LIMITS</a>
           </div>
         </div>
 
-        <!-- Section 6 S2 builder note, binding: every figure below is read off the
-             frame the site actually shows, today assets/media/hero-stitch-01.png,
-             the still above. The panel in that frame reads Absolute mode, a 0-500
-             scale with Max lux 500 lx, "4 projectors", and "Probe set: 13pt
-             Diagnostic". Its DISTRIBUTION selector sits on "Projector 1", NOT on
-             "Composite", so the surface being shaded is one head's own
-             distribution, and no copy here may describe it as the four-head
-             composite. That is the exact trap section 6 S2 flags: an earlier draft shipped "four projectors on a facade" as
-             final copy against a frame whose panel said otherwise.
-             Re-read all four off whatever the frame shows if the still or the demo
-             scene changes, and change them if they differ: the site never prints a
-             number the visible frame contradicts.
+        <!-- BINDING, REWRITTEN FOR OVERRIDE 4. The deadline the old note carried
+             is now discharged: these figures were read off a still of another
+             scene, and that still is gone, so all three are re-read off the scene
+             the frame actually loads.
 
-             Section 1.3, the lux-labelling rule, is now carried ENTIRELY here and
-             in .hero-caption. The H1 used to print "350 SURFACE LUX"; it no longer
-             prints a lux figure at all, so every lux number in the hero is one of
-             these, and each one states which of the engine's four lux meanings it
-             is in the same breath, never in a footnote.
+             THE SOURCE IS demo-scenes/hero.json, THE FILE ITSELF, not a
+             screenshot of it. Verified there on 2026-08-18: `objects` holds
+             8 entries of type "projector" (F1 to F4, L1, L2, R2 and one copy),
+             every one of them carrying "throwRatio": 1.15, and `settings` reads
+             {"ambientLux":0,"heatmapMode":"absolute","heatmapMaxLux":875,
+             "heatmapReferenceLux":875}. `meta.name` is "Play Dock Demo".
 
-             The same binding applies to .hero-caption below, which is written from
-             this still and opens by saying so. It no longer names the colour bar
-             along the building's lower band: .hero-block covers the lower-left of
-             the frame, and a caption must describe what a visitor can see, not
-             what the file contains.
+             READING THE SCENE FILE IS BETTER EVIDENCE THAN READING A PICTURE, and
+             that is the whole reason the still could go. A screenshot is true of
+             one frozen frame; the scene file is true of what the visitor is
+             steering, at every camera angle, whether or not it has painted yet.
+             Re-read all three if demo-scenes/hero.json changes. The site never
+             prints a number the frame contradicts.
 
-             OVERRIDE 3 PUTS A DEADLINE ON THESE THREE FIGURES. The frame is now
-             live by default, so the moment data-embed-src is filled in the thing
-             a visitor sees is the demo scene, and these three numbers were read
-             off the still. Until then the live-state caption below says so in as
-             many words - the figures are the still's, not the live scene's -
-             which is the honest holding position, NOT a licence to leave them.
-             When the demo URL lands, re-read all three off the demo scene and
-             rewrite this note, the readout and both caption states together. The
-             site never prints a number the visible frame contradicts. -->
+             THE THIRD FIGURE STATES ITS OWN CONDITION. The heatmap ships OFF: the
+             one control the embed exposes is LUX HEATMAP at the top right, and it
+             opens off. So the scale is written with the instruction attached
+             rather than as though colour were already on the building. The
+             retired PROBE SET row went with the still that showed it - a 13pt
+             overlay the live frame does not draw is not a hero figure, and the
+             13 points keep their place under (06) and in #numbers, where the
+             sentence around them carries the qualifier.
+
+             Section 1.3, the lux-labelling rule, is carried HERE and in
+             .hero-caption. The H1 prints no lux figure at all, so every lux
+             number in the hero is one of these, and each states which of the
+             engine's four lux meanings it is in the same breath. -->
         <ul class="hero-readout">
           <li class="hero-readout-item">
             <span class="hero-readout-label">HEADS IN SCENE</span>
-            <span class="hero-readout-value u-tabular">4</span>
-            <span class="hero-readout-qual">scene total; the heatmap drawn is Projector 1 alone, not the four-head sum</span>
+            <span class="hero-readout-value u-tabular">8</span>
+            <span class="hero-readout-qual">all eight placed and powered in the scene you are steering</span>
+          </li>
+          <li class="hero-readout-item">
+            <span class="hero-readout-label">THROW RATIO</span>
+            <span class="hero-readout-value u-tabular">1.15 : 1</span>
+            <span class="hero-readout-qual">the same lens on every head, inside its catalogue range</span>
           </li>
           <li class="hero-readout-item">
             <span class="hero-readout-label">HEATMAP SCALE</span>
-            <span class="hero-readout-value u-tabular">0-500 <span class="stat-unit">lx</span></span>
-            <span class="hero-readout-qual">absolute-mode surface lux, read off the surface itself</span>
-          </li>
-          <li class="hero-readout-item">
-            <span class="hero-readout-label">PROBE SET</span>
-            <span class="hero-readout-value u-tabular">13 <span class="stat-unit">pt</span></span>
-            <span class="hero-readout-qual">9 ANSI + 4 quarter points</span>
+            <span class="hero-readout-value u-tabular">0-875 <span class="stat-unit">lx</span></span>
+            <span class="hero-readout-qual">absolute-mode surface lux, once you open LUX HEATMAP at the top right</span>
           </li>
         </ul>
 
-        <!-- TWO AUTHORED STATES, SWAPPED IN CSS, NEVER WRITTEN BY JS. "A still
-             from the shipped app, not a live view" stops being true the moment
-             OVERRIDE 3 mounts the iframe, so the sentence is now two sentences
-             and the frame's own data-embed-state picks which one paints (see
-             .hero-caption-state in src/input.css). Both ship in the markup, so
-             the still state is what a visitor gets with JS off, with an empty
-             data-embed-src, under reduced motion and under data saver - every
-             state in which the still is genuinely what is on screen.
+        <!-- TWO AUTHORED STATES, SWAPPED IN CSS, NEVER WRITTEN BY JS, and both
+             rewritten for OVERRIDE 4. The poster is gone, so neither sentence
+             may describe one: the "still" state is now the state where the frame
+             has not started at all, which is what a visitor gets with JavaScript
+             off or with data-embed-src empty, and it says so plainly instead of
+             narrating a picture that is no longer there.
 
-             THE SWITCH IS "AN IFRAME IS MOUNTED", NOT "THE SCENE HAS PAINTED",
-             and it has to be: the frame is cross-origin, so this page cannot
-             observe whether the app resolved a scene or fell back to
-             transparency. That is exactly why the live copy commits to nothing
-             about what the scene contains and states the fallback instead. Do
-             not "improve" this by swapping on the iframe's load event - load
-             fires for a blocked or empty frame too, and the caption would then
-             describe a scene the visitor is not looking at. -->
-        <p class="hero-caption" id="hero-frame-caption"><span class="hero-caption-state" data-when="still">The frame above is holding its still: a stone building in the FieldLux viewport under an absolute-mode lux heatmap, with the per-cell surface lux printed across the facade. The Lux Heatmap panel beside it is stamped Physics Model, its absolute ramp runs 0 to 500 surface lux with Max lux set to 500 <span class="stat-unit">lx</span>, the scene holds four projectors, and the probe set reads 13pt Diagnostic. Its distribution selector is on Projector 1 rather than Composite, so the shading on the facade is that one head's contribution, not the four-head sum. It is a capture of the shipped app rather than a mockup, and it is what the three figures above are read off.</span><span class="hero-caption-state" data-when="live">The frame above is the shipped app running in this page, read-only: drag to look around, and the one button it exposes is LUX HEATMAP at the top right, which opens off. It is sandboxed without top-level navigation or forms, so it cannot take this page anywhere. Until the scene has painted, and any time it cannot, the frame falls back to the still it is layered over, and it is that still, not the live scene, that the three figures above are read off.</span></p>
+             THE SWITCH IS "AN IFRAME IS MOUNTED", NOT "THE SCENE HAS PAINTED".
+             This page cannot observe whether the app resolved its scene, so the
+             live sentence commits to what the frame IS and to what the figures
+             are read off, never to what has finished drawing. Do not "improve"
+             this by swapping on the iframe's load event: load fires for a
+             blocked or empty frame too, and the caption would then describe a
+             scene the visitor is not looking at. -->
+        <p class="hero-caption" id="hero-frame-caption"><span class="hero-caption-state" data-when="still">The frame above has not started. It loads the shipped FieldLux app with the Play Dock Demo scene, and it needs JavaScript to do it, so with scripts blocked it stays the unlit near-black the app itself paints rather than showing a picture of a scene you cannot steer. The three figures beside it are read off that scene's own file, not off a screenshot, so they hold either way.</span><span class="hero-caption-state" data-when="live">The frame above is the shipped app running in this page, read-only: drag to look around, and the one button it exposes is LUX HEATMAP at the top right, which opens off. It is sandboxed without top-level navigation or forms, so it cannot take this page anywhere. The scene is the Play Dock Demo, eight heads on one building with a test pattern playing through a blend group, and the three figures above are read off that scene's file rather than off any capture of it.</span></p>
 
       </div>
     </section>
