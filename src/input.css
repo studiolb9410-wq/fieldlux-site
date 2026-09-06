@@ -1782,8 +1782,8 @@ body.overlay-open{ overflow:hidden; }
                           current / tick / total, in chapter feet, in the ch-06
                           pin counter, and in every /videos chapter count
      .speclist-index      index x16  privacy x14  404 x4  pricing x5   = 39
-     .nav-overlay-index   x6 on each of the five pages                = 30
-                          still exactly six per page: index's overlay gained a
+     .nav-overlay-index   x5 on each of the five pages                = 25
+                          still exactly five per page: index's overlay gained a
                           "Sign in" action (.nav-overlay-actions) when the
                           header bar dropped that button at phone width, and it
                           is deliberately NOT in the numbered list, because the
@@ -1792,7 +1792,9 @@ body.overlay-open{ overflow:hidden; }
                           2026-09-06 when /pricing landed: a page of this
                           document, so it takes an ordinal, and Discord moved to
                           (06). Zero header cost, .nav-links is display:none at
-                          1180 and below.
+                          1180 and below. Then Limits left the spine the same
+                          day when #limits was deleted, so it is six minus one:
+                          Product, Measurement, Videos, Pricing, Discord.
      .pin-counter         index ch-06 x1
      ~186 sites across all five pages. By a wide margin the most repeated
      number on the site, and the reason this whole pass exists: it was being

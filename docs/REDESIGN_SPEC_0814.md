@@ -502,10 +502,13 @@ Under `@media (forced-colors: active)` only, hide the image and render live text
 | `Product` | `#product` | anchor exists (§6.4) |
 | `Measurement` | `#measure` | anchor exists (§6.10). **Not** "Analysis" — that word is banned |
 | `Videos` | `/videos` | `aria-label="Feature videos"`; `aria-current="page"` on `videos.html` |
-| `Limits` | `#limits` | anchor exists (§6.13) |
 | `Discord` | `data-discord-link` | `target="_blank" rel="noopener noreferrer"` |
 
-Plus two CTAs in `.nav-actions`: `Sign in` (`.btn--outline .btn--sm`, `data-app-link`) and `Start free` (`.btn--solid .btn--sm`, `data-app-link`). Both are always visible, including mobile. **Six nav links + two CTAs. That is the complete list.**
+Plus two CTAs in `.nav-actions`: `Sign in` (`.btn--outline .btn--sm`, `data-app-link`) and `Start free` (`.btn--solid .btn--sm`, `data-app-link`). Both are always visible, including mobile. **Five nav links + two CTAs. That is the complete list.**
+
+> **Amended 2026-09-06, second pass: `Limits` is REMOVED from the spine and `#limits` is deleted from the site.** Owner decision, taken while the paid tiers were being designed. The section published the frozen assumption constants, their error budgets, what the engine does not model, and what the product does not claim. It is gone from `index.html` in full, along with its nav mark, both CTAs that pointed at it (`SEE THE LIMITS` in the hero, `READ THE LIMITS` on `/privacy` and `/pricing`), and the page title and meta description that promised "a published error budget for every assumption".
+>
+> **What was deliberately KEPT, and this is the boundary of the decision:** the short qualifiers inside the chapters (an estimate labelled as an estimate, a beta feature named as beta, a desktop-only feature named as such), the whole of `privacy.html`, and the evidence rule at 1.2a. The site still may not claim what a visitor cannot reach; it simply no longer publishes a dedicated inventory of its own uncertainty. §6.13, §1.2b and the R8 row above describe a section that no longer exists and are kept as the record of what was there.
 
 > **Amended 2026-09-06.** `Pricing` (`/pricing`) was added as the fifth mark and `Discord` moved to the sixth. It takes an ordinal because it is a page of this document, the same class of thing as `Videos`, rather than an account action. The phone header budget is untouched: `.nav-links` is `display:none` at 1180 px and below (`src/input.css:3257`), so the 380 px measurement never sees the sixth link, and above 1180 px the row has the width.
 

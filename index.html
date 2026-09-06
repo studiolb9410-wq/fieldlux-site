@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>FieldLux: projector coverage, surface lux, and the error budget behind it</title>
-  <meta name="description" content="A projection planning workspace for the person who has to quote the job: 87 projectors and 113 lenses, edge blend derived from measured footprints, lux heatmaps drawn on the 3D scene, a PDF Tech Rider, and a published error budget for every assumption. Open beta, free.">
+  <title>FieldLux: projector coverage, surface lux, and the numbers before you quote</title>
+  <meta name="description" content="A projection planning workspace for the person who has to quote the job: 87 projectors and 113 lenses, edge blend derived from measured footprints, lux heatmaps drawn on the 3D scene, and a PDF Tech Rider you can hand to a client. Open beta, free.">
   <link rel="canonical" href="https://field-lux.com/">
   <meta name="robots" content="index, follow, max-image-preview:large">
 
@@ -64,7 +64,6 @@
         <a class="nav-link" href="#product">Product</a>
         <a class="nav-link" href="#measure">Measurement</a>
         <a class="nav-link" href="/videos" aria-label="Feature videos">Videos</a>
-        <a class="nav-link" href="#limits">Limits</a>
         <a class="nav-link" href="/pricing">Pricing</a>
         <a class="nav-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link data-tooltip="Official FieldLux community: beta access, catalogue submissions and bug reports." target="_blank" rel="noopener noreferrer">Discord</a>
       </nav>
@@ -104,20 +103,14 @@
           </a>
         </li>
         <li>
-          <a class="nav-overlay-link" href="#limits">
-            <span class="nav-overlay-index" aria-hidden="true">(04)</span>
-            <span>Limits</span>
-          </a>
-        </li>
-        <li>
           <a class="nav-overlay-link" href="/pricing">
-            <span class="nav-overlay-index" aria-hidden="true">(05)</span>
+            <span class="nav-overlay-index" aria-hidden="true">(04)</span>
             <span>Pricing</span>
           </a>
         </li>
         <li>
           <a class="nav-overlay-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">
-            <span class="nav-overlay-index" aria-hidden="true">(06)</span>
+            <span class="nav-overlay-index" aria-hidden="true">(05)</span>
             <span>Discord</span>
           </a>
         </li>
@@ -426,7 +419,7 @@
           <p class="hero-lead">Eight heads, the real building, the overlaps counted. FieldLux answers it before you quote, and publishes how far off it could be.</p>
           <div class="hero-actions">
             <a class="btn btn--brand" href="https://app.field-lux.com" data-app-link>START FREE</a>
-            <a class="btn btn--text" href="#limits">SEE THE LIMITS</a>
+            <a class="btn btn--text" href="#product">SEE THE PRODUCT</a>
           </div>
         </div>
 
@@ -674,7 +667,7 @@
          Each one is exactly three things now: its ordinal, one sentence, and
          its media slot. The .chapter-points bullet lists are deleted; the facts
          they carried either moved into the sentence, into a #numbers stat tile
-         or into a #limits row, and the ones deliberately dropped are named in
+         or into a fact card, and the ones deliberately dropped are named in
          the hand-off note. The two-column split and the (nn)/(10) foot counter
          are gone too: the ordinal is already stated once at the top, and a
          one-sentence chapter has no second column to fill. -->
@@ -1042,7 +1035,7 @@
             </li>
             <li class="feature-card">
               <h3 class="feature-card-title">AN ESTIMATE, LABELLED</h3>
-              <p class="feature-card-body">Beyond direct light the model stops at a single-bounce room estimate. That carries the widest error budget in the product, and it is published under Limits.</p>
+              <p class="feature-card-body">Beyond direct light the model stops at a single-bounce room estimate, and the app labels it an estimate on screen.</p>
             </li>
           </ul>
 
@@ -1241,169 +1234,6 @@
               <p class="stat-label">REQUESTS WHILE YOU WORK</p>
               <p class="stat-value u-tabular">0</p>
               <p class="stat-note">Moving, rotating and editing values issue no network request. The server is touched at cold load, sign-in, project listing and open/import/save: a measured one-hour session came to about 55 requests.</p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- == S8, #limits =====================================================
-         SPECIAL HANDLING, DELIBERATE. Everywhere else on this page the cut was
-         "fewer words". Here it was "fewer words, same facts": every constant,
-         source, budget, absence and caveat that shipped before still ships. The
-         three prose preambles that used to introduce the three groups are gone
-         and their one load-bearing distinction moved into the group labels; the
-         (01) table is reordered so the worst budget, room bounce at +/- 50 %,
-         is stated first rather than announced first in a paragraph. Two rows
-         are NEW here because the chapters that carried them lost their bullet
-         lists: BLEND VALUES ARE LIGHT-LINEAR (was ch-03 and ch-09) and THE
-         PUBLIC BUCKET (was ch-09). -->
-    <section class="section section--pad-md section--pad-start-lg" id="limits" aria-labelledby="limits-title">
-      <div class="site-shell--narrow">
-        <div class="section-head">
-
-          <p class="micro-label">
-            <span class="micro-label-name">LIMITS</span>
-          </p>
-
-          <h2 class="feature-title reveal" id="limits-title">WHAT WE ASSUME, AND WHAT IT COSTS.</h2>
-
-          <p class="feature-sub reveal">Every constant the analysis runs on is frozen in one module, with the industry source it came from and the error it carries. It is all published here, because you should be able to read a number off this product and know exactly what was assumed to produce it.</p>
-
-          <p class="micro-label">
-            <span class="micro-label-ord">(01)</span>
-            <span class="micro-label-name">WHAT IS ASSUMED, AND WHAT EACH ASSUMPTION COSTS</span>
-          </p>
-
-          <div class="limits reveal">
-            <div class="limits-row">
-              <p class="limits-key">ROOM BOUNCE</p>
-              <p class="limits-text">Single-bounce form factor, a heuristic rather than a standard. Error budget +/- 50 <span class="stat-unit">%</span>, and the code says in as many words that it is <strong>for planning, not measurement</strong>. It is the worst budget in this table, which is why it is stated first.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">SURFACE REFLECTANCE</p>
-              <p class="limits-text">0.60, ISO 9241-303 reference matte white. Error budget +/- 0.10 absolute, ordinary paint variance. If you know the paint that is actually on the surface, set a material preset instead.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">PROJECTOR UNIFORMITY</p>
-              <p class="limits-text">ANSI 9-point: centre 1.00, edge 0.90, corner 0.85, average 0.92. Source ANSI/INFOCOMM 2M-2010. Error budget +/- 5 <span class="stat-unit">%</span> per point while the head is inside its spec, +/- 15 <span class="stat-unit">%</span> once it is outside.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">SURFACE SAMPLING</p>
-              <p class="limits-text">16 x 16 = 256 points across the target. Error budget +/- 5 <span class="stat-unit">%</span> on Reliable Surface Lux (full-target p20), falling to +/- 1 <span class="stat-unit">%</span> at 32 x 32. The shipped grid is the 16 x 16 one.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">THROW GEOMETRY</p>
-              <p class="limits-text">Raycast from the optical frame to the target. Error budget +/- 2 <span class="stat-unit">%</span> on flat targets, +/- 15 <span class="stat-unit">%</span> on imported models. On a model you did not build yourself, work to the +/- 15 <span class="stat-unit">%</span> figure.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">NON-PLANAR FALLBACK</p>
-              <p class="limits-text">Bounding-box centroid plane projection. Error budget +/- 15 to 30 <span class="stat-unit">%</span>. It flattens the curve into a plane to get a number at all, so on a curved target carry <strong>the whole band, not the middle of it</strong>.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">HOW THESE COMBINE</p>
-              <p class="limits-text">They do not. Each budget is declared on its own, and neither the app nor this page rolls them into a single accuracy figure for a run. A curved imported target lit through bounced light sits inside three of these bands at once, and how they interact is not modelled. Read them as separate warnings, not as one number to subtract.</p>
-            </div>
-          </div>
-
-          <p class="micro-label">
-            <span class="micro-label-ord">(02)</span>
-            <span class="micro-label-name">WHAT IS NOT MODELLED, ABSENT RATHER THAN APPROXIMATE</span>
-          </p>
-
-          <div class="limits reveal">
-            <div class="limits-row">
-              <p class="limits-key">NOT MODELLED</p>
-              <p class="limits-text">Lens distortion, chromatic aberration, specular BRDF, ambient interaction with the surface and content-dependent brightness are not modelled at all. Surfaces are Lambertian only. There is no radiosity, no global illumination and no ray tracing anywhere in this product. Two items that used to sit on this list now carry a narrower absence instead: atmospheric haze renders as a display-only single-scattering pass and reads out as a labelled visibility estimate, and lamp aging enters the fixture estimate through a maintenance factor slider that is not saved with the scene. Neither writes back into measured projector lux, which stays clear-air and un-aged. The rest do not tighten with a longer run; they are absent from the calculation.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">FIXTURE LIGHT IS A SEPARATE LANE</p>
-              <p class="limits-text">Stage and architectural fixture illuminance is stamped "estimate" in code and on screen: direct light only, no interreflection. That module is blocked from importing the projector photometry code at all, and a test checks its import list stays clean every run. A context estimate can never mix into the projector lux figure.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">DIALUX-STYLE, NOT DIALUX-GRADE</p>
-              <p class="limits-text">The working-plane isolux calculation is described as DIALux-<em>style</em>. It is not a certified calculation and it is not a substitute for one.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">IES CAVEAT</p>
-              <p class="limits-text">Asymmetric IES files are averaged into an axially symmetric approximation, and the app says so on screen. A fixture whose real distribution is not symmetric about its axis is estimated as though it were.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">GRAZING FOLDS READ NARROW</p>
-              <p class="limits-text">Where two faces of a fold meet at a grazing angle, under about 35 degrees, the blend band is still computed as if the surface were flat. Pixel measurement puts the real spill 1.5 to 2.7 times wider than the model there. The app warns on the seam when it happens, and the number it shows you is the narrow one.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">STANDARD TARGETS ARE REFERENCE VALUES</p>
-              <p class="limits-text">The working-plane numbers can be judged against target profiles for five regions, and every figure in those packs is a reference value transcribed from public secondary sources, not a licensed normative table. The app prints that qualifier beside the judgment, and this page repeats it: a pass against one of these profiles is a pass against our transcription of it.</p>
-            </div>
-          </div>
-
-          <p class="micro-label">
-            <span class="micro-label-ord">(03)</span>
-            <span class="micro-label-name">WHAT IS NOT CLAIMED</span>
-          </p>
-
-          <div class="limits reveal">
-            <div class="limits-row">
-              <p class="limits-key">NO MEASURED VALIDATION</p>
-              <p class="limits-text">Nothing in this product has been compared against lux-meter field data. The budgets above are <strong>self-declared model uncertainty</strong>, not a measured accuracy figure. Every map carries its accuracy basis on its own legend: Physics Model (estimated), Spec-based (datasheet), Calibrated or Measured. We say "simulation preview" and "physics estimate" because that is what it is.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">WHICH LUX, ALWAYS LABELLED</p>
-              <p class="limits-text">At least four lux figures with different meanings exist in the engine, and the file that owns them warns at the top that every past bug in this area came from mixing them. <strong>Reliable Surface Lux is a full-target 20th percentile</strong>. Not a peak, not an average. Every lux number on this site says which one it is in the same sentence, and quoting one without its label is how the same scene ends up with two brightness stories.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">BLEND VALUES ARE LIGHT-LINEAR</p>
-              <p class="limits-text">FieldLux blend ramps are a partition of unity in luminous flux, and every export carrying them states that domain. Typed verbatim into a signal-space media-server blend panel they put roughly a -56 <span class="stat-unit">%</span> dark band at seam centre. They are planning values, not processor settings.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">THE DRAWING IS A REFERENCE</p>
-              <p class="limits-text">An imported drawing cannot be edited. You select the lines you want, trace them onto your own sheet, and build from those, and the app refuses the edit in those words. The drawing itself is never a projection receiver: it neither receives nor blocks light and it cannot move a lux number. Only the walls and floors you build from it do.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">A TRACED PLAN CARRIES NO ERROR BUDGET</p>
-              <p class="limits-text">Every other assumption on this page states what it costs. Scale set from a drawing does not, because the error is yours rather than the model's. Typing both sides of an image with the aspect link off stretches it, which is what a copier-skewed scan needs and also means the picture is no longer the same shape as the plan; a scale outside half a metre to 500 metres across is questioned and can be overruled with one button; and a drawing's own unit flag is often wrong, so the app shows you the flag and never obeys it. Walls traced over any of those inherit the error, and no figure downstream knows it happened.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">WHAT LINES CAN BECOME</p>
-              <p class="limits-text">Walls and a floor slab. There are no ceilings, no curved walls, no solid volumes, and no doors or windows as objects: an opening is made by cutting the two footprint lines and deleting the piece between them. A wall's thickness is a light-blocking body only; the receiver plane it carries is zero-thickness, and thickness never moves a measurement.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">THE RECEIVER CEILING</p>
-              <p class="limits-text">Raising lines into walls is refused once the scene would hold more than 695 projection receivers, counted across the whole scene rather than the selection. The figure is derived rather than chosen: it is the point at which scene submit alone consumes a whole 60 <span class="stat-unit">fps</span> frame on the machine it was measured on, before the depth pass runs, so read it as an optimistic ceiling. Importing and drawing are untouched by it, and lines merge into runs on the way, so a selection produces far fewer walls than it has lines. Lines shorter than the drawing's minimum are dropped from the build and counted for you.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">A PICTURE STAYS A PICTURE</p>
-              <p class="limits-text">A PNG, a JPG or a PDF page is placed as a flat underlay on the ground for you to trace over. There is no automatic wall extraction and no room detection: that step was built and then removed. A PDF is rasterised rather than vectorised, since its line art is a print stream and not a model, and the placed underlay is capped at 2,048 <span class="stat-unit">px</span> on its long edge, so there is no sub-pixel geometry under the cursor to snap to. That underlay also rides inside the saved project at up to 1.5 million characters, which is about 3 <span class="stat-unit">MB</span> of a 5 <span class="stat-unit">MiB</span> local save ceiling, and unlike an imported CAD drawing it is not costed for you on screen before you place it.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">WHAT A DWG COSTS</p>
-              <p class="limits-text">No DWG file is uploaded, queued or stored on a server: conversion runs in your own browser. It accepts up to 8 <span class="stat-unit">MB</span> in, gives up above 40 <span class="stat-unit">MB</span> of converted drawing, and stops after 90 <span class="stat-unit">s</span>. Four version families have actually been converted here, AutoCAD 2000 to 2002, 2007 to 2009, 2010 to 2012, and 2018 and later; R13, R14, 2004 to 2006 and 2013 to 2017 are attempted on the converter's stated range and not on our evidence, and anything older than R13 is refused outright. Where the converter cannot start at all the app says so and tells you to export a drawing exchange file from your CAD application instead.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">IMPORTED DRAWINGS DO NOT TRAVEL</p>
-              <p class="limits-text">An imported CAD drawing's geometry is kept in the browser you imported it on, not in the project file, and the app warns you at import and again when the project is opened elsewhere. Another machine, another profile or another browser needs the file again. The walls and floors you built from it are unaffected, and a shared link shows a viewer those walls and floors rather than the reference lines. A placed plan image is the exception and does ride the project file, at the cost that a scene carrying one is too large for a link that packs the scene into the URL and must be shared from the cloud.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">NEVER UNDER LOAD</p>
-              <p class="limits-text">Production has never been load tested. A staging load test on 2026-08-29 did run concurrent snapshot saves, and the compressed save format that production has used since 2026-09-05 finished 64 out of 64 concurrent saves at a 238 <span class="stat-unit">ms</span> 95th percentile with no failure inside that range, while the plain format it replaced failed 6 of 8 at eight concurrent saves. Staging is a smaller free-tier instance, so read both figures as a floor and not as a production number. The highest live traffic we have observed in production is 30 requests per second, measured across one day of edge logs on 2026-08-14 and not re-measured since. We publish the measured per-session request cost and those two floors and nothing else: no uptime figure, no concurrency guarantee.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">THE PUBLIC-BUCKET CAVEAT</p>
-              <p class="limits-text">Model binaries and site photos referenced by a share are served from a <strong>public</strong> storage bucket. Anyone who has already resolved a share can keep downloading those files after you revoke, expire or password-protect the link. This is known, documented and deliberately deferred: revocation stops the link, it does not un-download a file.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">WHAT'S IN BETA</p>
-              <p class="limits-text">GDTF and MVR fixture import is code-complete but not yet checked against real vendor files. The Report Builder client-proposal PDF sits behind a beta gate and is off in deployed builds. Both are labelled that way inside the app too.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">WHAT ISN'T HERE</p>
-              <p class="limits-text">Realtime video output to other applications is desktop-only and its entry points are removed from the web build entirely. There is no export to a media-server-specific file format. There is no live multi-user editing, no comments and no presence. Sharing is owner-authored links plus read-only account access.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">SECURITY, STATED NARROWLY</p>
-              <p class="limits-text">What exists: row-level security scoped to the project owner, share payloads readable only through a server-side resolver, bcrypt-hashed share passwords, IP-hashed rate limiting on share resolution and on both signup and founding-member verification, one-time signup codes stored only as a salted hash, per-user storage path isolation, admin-gated operations, a 7-day grace period on account deletion, and an explicit consent record at signup. That list is the whole claim.</p>
             </div>
           </div>
 
