@@ -49,7 +49,15 @@ customer names in the repo.
 npm install
 npm run build     # tailwindcss -i ./src/input.css -o ./assets/tailwind.css --minify
 npm run watch     # the --watch variant
+npm run preview   # local server on :4173
 ```
+
+`npm run preview` runs `scripts/preview-server.py`, which reproduces the three
+things in `vercel.json` that decide whether a link works: `cleanUrls` (so
+`/videos` serves `videos.html`), `trailingSlash:false` (so `/videos/` redirects),
+and `404.html` for anything missing. **Do not preview this site with
+`python3 -m http.server`**: it answers 404 to every nav link, because every
+internal link on the site is written `/videos` and never `/videos.html`.
 
 `assets/tailwind.css` is a **tracked build artifact** and is not gitignored. Vercel
 regenerates it on every deploy, so production is always fresh - but editing `src/input.css`

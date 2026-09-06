@@ -1,0 +1,74 @@
+#!/usr/bin/env python3
+"""Local preview server that behaves like the Vercel deployment.
+
+vercel.json sets cleanUrls:true and trailingSlash:false, so every internal link
+on this site is written /videos and /pricing, never /videos.html. Python's stock
+http.server does not do that, so a plain `python3 -m http.server` answers 404 to
+every nav link on the site and the local preview disagrees with production on
+the one thing a preview exists to check.
+
+Three behaviours, matching vercel.json:
+  cleanUrls      /videos          -> videos.html
+  trailingSlash  /videos/         -> redirect to /videos
+  404 page       anything missing -> 404.html, with a real 404 status
+
+Nothing else is emulated. The security headers and the cache-control rules in
+vercel.json are production concerns and are deliberately not reproduced here.
+"""
+
+import os
+import sys
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 4173
+
+
+class PreviewHandler(SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=ROOT, **kwargs)
+
+    def send_head(self):
+        path = self.path.split("?", 1)[0].split("#", 1)[0]
+
+        # trailingSlash:false. "/" itself is the index and keeps its slash.
+        if len(path) > 1 and path.endswith("/"):
+            self.send_response(308)
+            self.send_header("Location", path.rstrip("/"))
+            self.end_headers()
+            return None
+
+        local = os.path.join(ROOT, path.lstrip("/"))
+
+        # cleanUrls. Only rewrite when the bare path is not already a real file,
+        # so /assets/logo-ink.png is never touched.
+        if path != "/" and not os.path.isfile(local) and os.path.isfile(local + ".html"):
+            self.path = path + ".html"
+            return super().send_head()
+
+        if path == "/" or os.path.isfile(local) or os.path.isdir(local):
+            return super().send_head()
+
+        return self.send_404()
+
+    def send_404(self):
+        page = os.path.join(ROOT, "404.html")
+        if not os.path.isfile(page):
+            self.send_error(404)
+            return None
+        body = open(page, "rb").read()
+        self.send_response(404)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        return __import__("io").BytesIO(body)
+
+    def log_message(self, fmt, *args):
+        # One line per request, without the date noise, so a failing nav link is
+        # visible at a glance in the preview log.
+        sys.stderr.write("%s %s\n" % (self.address_string(), fmt % args))
+
+
+if __name__ == "__main__":
+    print(f"preview: http://localhost:{PORT} (cleanUrls, 404.html, serving {ROOT})")
+    HTTPServer(("127.0.0.1", PORT), PreviewHandler).serve_forever()

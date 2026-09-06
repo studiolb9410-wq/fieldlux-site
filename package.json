@@ -9,7 +9,8 @@
     "serve": "node scripts/dev-server.mjs",
     "build:embed": "node scripts/build-embed.mjs",
     "dev": "npm run watch",
-    "sync:embed-ux": "node scripts/sync-embed-hero-ux.mjs"
+    "sync:embed-ux": "node scripts/sync-embed-hero-ux.mjs",
+    "preview": "python3 scripts/preview-server.py 4173"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.17",
