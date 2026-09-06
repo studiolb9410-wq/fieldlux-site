@@ -29,24 +29,39 @@ class PreviewHandler(SimpleHTTPRequestHandler):
         super().__init__(*args, directory=ROOT, **kwargs)
 
     def send_head(self):
-        path = self.path.split("?", 1)[0].split("#", 1)[0]
+        raw = self.path
+        path = raw.split("?", 1)[0].split("#", 1)[0]
+        query = raw[len(path):]
+        bare = path.rstrip("/") or "/"
+        local = os.path.join(ROOT, bare.lstrip("/"))
 
-        # trailingSlash:false. "/" itself is the index and keeps its slash.
+        # A DIRECTORY IS SERVED FROM ITS OWN index.html, WITH NO REDIRECT EITHER
+        # WAY. This is the /embed case and it is why this branch comes first.
+        # SimpleHTTPRequestHandler answers a slashless directory with a 301 that
+        # ADDS the slash; the trailingSlash rule below REMOVES it. Run both and
+        # /embed/ and /embed bounce off each other until the browser gives up
+        # with ERR_TOO_MANY_REDIRECTS, which is exactly what happened to the hero
+        # embed the first time this file shipped. Serving the index in place ends
+        # the argument, and relative asset paths inside embed/ still resolve
+        # because the URL the browser holds is unchanged.
+        if os.path.isdir(local) and os.path.isfile(os.path.join(local, "index.html")):
+            self.path = (bare.rstrip("/") + "/index.html") + query
+            return super().send_head()
+
+        # trailingSlash:false, for everything that is not a directory.
         if len(path) > 1 and path.endswith("/"):
             self.send_response(308)
-            self.send_header("Location", path.rstrip("/"))
+            self.send_header("Location", bare + query)
             self.end_headers()
             return None
 
-        local = os.path.join(ROOT, path.lstrip("/"))
-
         # cleanUrls. Only rewrite when the bare path is not already a real file,
         # so /assets/logo-ink.png is never touched.
-        if path != "/" and not os.path.isfile(local) and os.path.isfile(local + ".html"):
-            self.path = path + ".html"
+        if bare != "/" and not os.path.isfile(local) and os.path.isfile(local + ".html"):
+            self.path = bare + ".html" + query
             return super().send_head()
 
-        if path == "/" or os.path.isfile(local) or os.path.isdir(local):
+        if bare == "/" or os.path.isfile(local) or os.path.isdir(local):
             return super().send_head()
 
         return self.send_404()
