@@ -2724,6 +2724,117 @@ body.overlay-open{ overflow:hidden; }
 .speclist-index{ line-height:1; padding-block-start:.5em; }
 .speclist-body{ display:grid; gap:.5em; min-inline-size:0; }
 
+/* ############################################################################
+   Section 4.11b, THE TIER CARDS AND THE PERIOD SWITCH   (/pricing only)
+
+   Added 2026-09-06 with the three-tier plan. Almost everything a tier card
+   needs already exists here: the shell is .feature-card, the name is
+   .chapter-point-label, the list headings are .feature-card-title, the sub-line
+   under a price is .stat-note, the period label is .stat-label, the three
+   buttons are .filter-chip and the CTA is .btn--text. Two things are genuinely
+   new: a figure the site has never printed, and a control that chooses which of
+   three authored blocks is showing.
+
+   .filter-rail is deliberately NOT reused for the switch. It is sticky under
+   the header and scrolls horizontally, and a three-item control sitting under a
+   section lead must do neither.
+
+   WHY THE CARDS ARE NOT BOXES. The reference layout draws three bordered,
+   filled cards and fills one harder to recommend it. This site has no box:
+   every group on all five pages opens with a 1px rule and hangs off it (.stat,
+   .feature-card, .limits-row, .speclist-item). The tiers take the same rule one
+   step up in weight, and all three take it identically. Nothing is emphasised,
+   because emphasis on a priced card is a recommendation to buy and nothing on
+   this page can be bought.
+
+   THE SWITCH IS A CSS SWITCH. All nine price blocks are in the markup.
+   :root[data-pricing-period] is set by a head latch, the same before-first-paint
+   device data-motion uses, and only script ever sets it: no attribute means all
+   nine print. The switch itself is drawn on a SECOND attribute that only the
+   tail block sets, so a page whose script fails shows one period and no control
+   rather than a control that does nothing. Neither degraded state hides a
+   figure: every price on every card is also written as a sentence in
+   #arithmetic or #terms.
+   ######################################################################### */
+.period-switch{ display:none; }              /* drawn only once JS confirms */
+:root[data-pricing-switch="on"] .period-switch{
+  display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+  margin-block-start:var(--rhythm-block);
+}
+
+/* Three columns, never two. .stat-row degrades 3 -> 2 -> 1 because six figures
+   in two rows is still a grid; three tiers in two columns is a comparison with
+   an orphan, so this one goes straight to one column at 860. */
+.tier-grid{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--rhythm-block);
+  margin-block-start:var(--rhythm-figure);
+}
+/* .feature-card's geometry with two changes, both applied to all three cards.
+   A card carrying ten sentences and a price steps between its blocks at
+   --rhythm-block, not at the --rhythm-tight a three-line jump-table cell uses;
+   and the opening rule is the stronger hairline, because that rule is the
+   entire boundary of a priced object. */
+.tier-card{
+  gap:var(--rhythm-block);
+  border-block-start-color:var(--line-strong);
+}
+/* The who-it-is-for line under the tier name. Body copy, one step quiet, and
+   its own class rather than .limits-text so a change to the fine print cannot
+   move it. */
+.tier-who{
+  font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-500); margin:0;
+}
+.tier-includes{
+  list-style:none; margin:0; padding:0;
+  display:grid; gap:var(--rhythm-rule);
+  font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-700);
+}
+/* No bullet and no leading glyph. Section 4.6 authors line breaks rather than
+   drawing marks, and the page is plain ASCII by rule. */
+.tier-period{ display:grid; gap:var(--rhythm-tight); }
+/* Three selectors rather than one, because the match is a pair: an attribute on
+   the root and an attribute on the block. A lone :not() cannot see the root. */
+:root[data-pricing-period="weekly"]  .tier-period:not([data-period="weekly"]),
+:root[data-pricing-period="monthly"] .tier-period:not([data-period="monthly"]),
+:root[data-pricing-period="yearly"]  .tier-period:not([data-period="yearly"]){ display:none; }
+
+/* ---- THE PRICE: a sixth numeric role, and a subordinate one ----------------
+   ROLE 1 is closed (spec 1.2e): .stat-value and .hero-readout-value are the
+   only classes allowed at --fs-stat, reserved for figures verified against
+   shipped source. A price verifies against a decision, so it gets its own step,
+   and the step is sized to sit BELOW --fs-stat at every width: 24 to 32 against
+   28 to 56. It is deliberately LARGER than .chapter-point-label, the tier name
+   above it (--fs-h4, 19 to 24), because on a priced card the figure is what the
+   reader came for; that is the one place this page follows the reference layout
+   rather than the site's own hierarchy.
+   TABULAR, unlike a ROLE 3 figure in a sentence, and for ROLE 1's reason: three
+   prices sit in one row across three cards and have to line up. Declared here
+   rather than as a --fs-* token because it has exactly one consumer, which is
+   how .hero-title's own ramp is declared. */
+.tier-price{
+  font-family:var(--font-num);
+  font-size:clamp(1.5rem, 2.2vw, 2rem);      /* 24 to 32 */
+  font-weight:500;
+  line-height:1.1;
+  letter-spacing:-.02em;
+  font-variant-numeric:lining-nums tabular-nums;
+  color:var(--ink-950);
+}
+/* NOT .stat-unit, and the distinction is the spec's: that class is inventoried
+   as measurement units only, and /user/month is a billing unit. Same weight as
+   a unit so the two read as one system, one ink back, and it never wraps away
+   from its price. */
+.tier-price-per{
+  font-family:var(--font-body);
+  font-size:var(--fs-body-sm);
+  font-weight:500;
+  letter-spacing:-.008em;
+  color:var(--ink-500);
+  margin-inline-start:.34em;
+  white-space:nowrap;
+}
+
 /* .heatmap-mode-grid / .heatmap-mode / .heatmap-mode-title / .heatmap-mode-body
    are DELETED, along with their two breakpoint entries. Section 4.11 specified
    a three-up grid for the three heatmap modes; what shipped is #ch-06 carrying
@@ -3394,6 +3505,10 @@ body.overlay-open{ overflow:hidden; }
   .hero-title{ font-size:clamp(1.6875rem, 5.16vw + 0.601rem, 3.375rem); }
 
   .limits-row{ grid-template-columns:minmax(0,1fr); }
+  /* Stacked, the cards step at --rhythm-figure rather than --rhythm-block: a
+     column gap and a row gap between the same two objects are different
+     distances on the scale, which is the rule .stat-row already follows. */
+  .tier-grid{ grid-template-columns:minmax(0,1fr); gap:var(--rhythm-figure); }
   .stat-row{ grid-template-columns:minmax(0,1fr); }
   .footer-cols{ grid-template-columns:minmax(0,1fr); }
 
@@ -3567,6 +3682,15 @@ html[data-motion="on"] .hero-ticker-track{
   .btn--outline{ border-color:var(--ink-950); }
 }
 @media (forced-colors: active){
+  /* The selected period is the only thing telling a reader which of three
+     prices they are looking at, and aria-pressed's fill is its only affordance.
+     Forced colours overrides both background and color, so all three chips
+     render identically without this. Same defect on /videos, where it costs a
+     filter state; here it costs the price. */
+  .filter-chip[aria-pressed="true"]{
+    forced-color-adjust:none;
+    background:Highlight; color:HighlightText; border-color:Highlight;
+  }
   .hero-frame{ border:2px solid CanvasText; background:Canvas; box-shadow:none; }
   .hero-frame-launch{ border:1px solid ButtonText; background:ButtonFace; }
   .hero-block{ border:1px solid CanvasText; }

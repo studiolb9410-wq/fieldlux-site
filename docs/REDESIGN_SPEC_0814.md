@@ -90,6 +90,9 @@ Ship gate G1b, added 2026-09-06, a manual read and never a green check: `grep -i
 | Wall build ceiling | `695 projection receivers per scene, a measured ceiling, refused above it` | `src/utils/linework/planWallExtrude.js` `WALL_COUNT_HARD_MAX`, forwarding to `src/utils/gpuCapabilities.js` `RECEIVER_SOFT_MAX` = `floor(16.7 / 0.024)`; refusal enforced scene-wide at `src/components/engine/useLineworkOperators.js:1404-1417` |
 | Plan import caps | `DWG 8 MB in, 40 MB converted out, 90 s watchdog; placed underlay 2,048 px long edge, 1.5 M characters, inside a 5 MiB local save ceiling` | `src/utils/dwg/dwgTransport.js` `DWG_MAX_BYTES` / `DWG_MAX_DXF_BYTES` / `DWG_TIMEOUT_MS`; `src/utils/plan/planImageEncode.js` `PLAN_IMAGE_MAX_EDGE_PX` / `PLAN_IMAGE_MAX_CHARS`; `src/utils/safeStorage.js` `STORAGE_HARD_CEILING_BYTES` |
 
+| Fixture catalogue | `29 built-in fixtures on top of 8 archetypes, 16 of them named market units` | `src/core/catalog/customFixtureFactory.js` `FIXTURE_CATALOG` (29) and `FIXTURE_TYPE_PRESETS` (8) |
+| Standard target profiles | `38 target profiles across 5 regional standard sets (EN 12464-1, IES RP, KS A 3011, JIS Z 9110, GB 50034)` | `src/core/analysis/lightingStandards.js` `LIGHTING_PROFILES` (15+8+5+5+5) and `LIGHTING_STANDARD_REGIONS` |
+
 Anything outside this table is not a stat, it is a guess, and it does not ship.
 
 **(e) Prices are not stats, and are deliberately kept out of the pool.** Added 2026-09-06 with
@@ -107,6 +110,16 @@ headline numbers rather than two.
 
 The same clause governs any future figure whose only source is a decision: publish it as prose,
 dated, with what it is a decision *about* stated in the same sentence.
+
+**(f) The tier card price, added 2026-09-06 with the three-tier plan.** The card layout on `/pricing`
+needs a figure larger than body copy, which clause (e)'s "set it as prose" cannot give it. It gets a
+sixth numeric role of its own, `.tier-price`, sized to sit **below** `--fs-stat` at every width (24
+to 32 against 28 to 56) so ROLE 1 stays closed and the pool stays unwidened. It is deliberately
+larger than the tier name above it, which is the one place this page follows the reference layout
+rather than the site's hierarchy. `/user/month` is `.tier-price-per`, not `.stat-unit`: a billing
+unit is not a measurement unit.
+
+Prices are USD and stated before tax. No price is a pool figure, on this or any future page.
 
 ### 1.3 The lux-labelling rule
 

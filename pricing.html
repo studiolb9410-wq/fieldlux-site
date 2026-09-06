@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Pricing | FieldLux</title>
-  <meta name="description" content="FieldLux is in open beta and free. This is the published plan for what it will cost: a 9,900 KRW week pass, 17,900 a month, 149,000 a year, single payments with no auto-renewal, and an expired pass that still opens every project. There is no checkout yet and nothing on this page can be bought.">
+  <meta name="description" content="FieldLux is in open beta and free. This is the published plan for what it will cost: three tiers in USD, a USD 9 week on the entry tier, ten months' price for twelve on the year, and an expired plan that still opens every project. There is no checkout yet and nothing on this page can be bought.">
   <link rel="canonical" href="https://field-lux.com/pricing">
   <meta name="robots" content="index, follow, max-image-preview:large">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="FieldLux">
   <meta property="og:title" content="Pricing | FieldLux">
-  <meta property="og:description" content="The published plan for what FieldLux will cost, and the plain statement that none of it is built. There is no checkout, no payment code and no plan enforcement in the app: every account today is open beta and free.">
+  <meta property="og:description" content="Three tiers, three billing periods, and one step in the ladder: fixtures and fog are Pro. None of it is built. There is no checkout and no plan enforcement in the app, so every account today is open beta and free.">
   <meta property="og:url" content="https://field-lux.com/pricing">
   <!-- og-pricing.png does not exist. videos.html carries the same note: a social
        card that 404s renders blank, so a page without its own card falls back to
@@ -22,7 +22,7 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Pricing | FieldLux">
-  <meta name="twitter:description" content="The published plan for what FieldLux will cost, and the plain statement that none of it is built. There is no checkout, no payment code and no plan enforcement in the app: every account today is open beta and free.">
+  <meta name="twitter:description" content="Three tiers, three billing periods, and one step in the ladder: fixtures and fog are Pro. None of it is built. There is no checkout and no plan enforcement in the app, so every account today is open beta and free.">
   <meta name="twitter:image" content="https://field-lux.com/assets/og-card.png">
 
   <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
@@ -41,6 +41,21 @@
         var m = window.localStorage.getItem('fieldlux_motion');
         if (m === 'on' || m === 'off') { document.documentElement.setAttribute('data-motion', m); }
       } catch (e) { /* storage blocked: follow the OS */ }
+    })();
+
+    /* Billing period, latched before first paint so nine price blocks never
+       flash down to three. Only this line ever sets the attribute, so a
+       visitor with scripting off gets no attribute and therefore all nine
+       blocks, which is the honest degraded state rather than a blank card.
+       The switch itself is drawn by the tail block on a SECOND attribute, so a
+       failed tail script leaves one period and no control. */
+    (function () {
+      var p = 'monthly';
+      try {
+        var saved = window.localStorage.getItem('fieldlux_pricing_period');
+        if (saved === 'weekly' || saved === 'monthly' || saved === 'yearly') p = saved;
+      } catch (e) { /* storage blocked: the default stands */ }
+      document.documentElement.setAttribute('data-pricing-period', p);
     })();
   </script>
 </head>
@@ -115,40 +130,30 @@
   <main class="site-main" id="main" tabindex="-1">
 
     <!-- == THE ARGUMENT OF THIS PAGE ========================================
-         This page publishes a price for something nobody can buy, which is the
+         This page publishes prices for something nobody can buy, which is the
          one shape the evidence rule (spec 1.2a) is hardest on. It is allowed to
          exist on exactly one condition: it never describes itself as a store,
          and the absence is stated before the first figure rather than after the
-         last one. The h1's second line is the whole compliance argument, and it
-         is repeated in the lead, in the dateline, inside two tables and in a
-         closing section of its own.
+         last one. The h1's second line is the whole compliance argument.
 
-         THREE COMPONENT RULES, each one load-bearing, each one the reason a
-         price is NOT typeset the way the home page typesets a statistic:
+         THREE COMPONENT RULES, each one load-bearing:
 
-           1. PRICES ARE ROLE 3, NOT ROLE 1. Every figure here lives inside
-              .limits-text, in a sentence. .stat-value is reserved (input.css
-              1759-1766) for the six #numbers figures, each verified against
-              shipped source. 9,900 verifies against an owner decision dated
-              2026-09-06 and nothing else, so it must not print at --fs-stat and
-              must not enter the verified stat pool (spec 1.2d). Set as prose it
-              is not a headline statistic and the pool does not bind.
+           1. PRICES ARE NOT VERIFIED STATISTICS. .stat-value is reserved
+              (input.css 1759-1766) for figures verified against shipped source.
+              A price verifies against an owner decision dated 2026-09-06 and
+              nothing else, so the card price is its own class, .tier-price, at
+              its own size, and no price ever enters .stat-value or .stat-row.
 
-           2. KRW IS A WORD, NOT A .stat-unit. That class is inventoried
-              (input.css 1999-2006) as measurement units only. A currency code is
-              not a measurement. The GB / GiB / MB spans on this page are real
-              units and keep theirs.
+           2. USD IS A WORD, NOT A .stat-unit. That class is inventoried
+              (input.css 1999-2006) as measurement units only. The GB / GiB / MB
+              spans on this page are real units and keep theirs.
 
-           3. NO DARK BAND. The on-mass override set (input.css 497-525) has no
-              rule for .limits or .speclist, so a .section--mass here would print
-              near-black keys on navy.
-
-         AND ONE COPY RULE: no capability is claimed for delivery mode that the
-         deployed build cannot do today. The Tech Rider PDF is claimed because it
-         ships. Screen capture is NOT claimed as a feature anywhere on this page
-         (it is also banned vocabulary, spec 1.2c); the one row that mentions a
-         screen says only that nothing is added to prevent it, which is a
-         statement about an absence, not about a button. -->
+           3. NINE PRICE BLOCKS ARE AUTHORED, THREE PER CARD. The CSS hides six,
+              and only when :root carries data-pricing-period, which only script
+              sets. Scripting off means no attribute, which means all nine print
+              and no switch is drawn. Every figure behind the switch is also
+              written out as a sentence in #arithmetic, so nothing here depends
+              on a control working. -->
 
     <!-- == PR1, #pricing, the page head ==================================== -->
     <section class="section" id="pricing" aria-labelledby="pricing-title">
@@ -166,12 +171,12 @@
 
           <p class="copy section-lead u-text-measure reveal">This page publishes what FieldLux will cost and how it will work. It is not a store. There is no purchase screen in the app, no payment code in the build and no plan enforcement anywhere in it, so nothing here can be bought today and no button on this page charges anything. Every FieldLux account right now is open beta and free.</p>
 
-          <p class="copy u-text-measure reveal">It is published this early for one reason. Somebody deciding whether to build a way of working on a tool needs the number before the workflow is built, not after it. Every figure here is stated with what it counts, the arithmetic that put it where it is gets printed rather than left for you to do, and where something is a decision rather than a shipped behaviour the row says which of the two it is.</p>
+          <p class="copy u-text-measure reveal">It is published this early for one reason. Somebody deciding whether to build a way of working on a tool needs the number before the workflow is built, not after it. Every figure here is stated with what it counts, and the arithmetic that put it where it is gets printed rather than left for you to do.</p>
 
-          <p class="stat-note u-tabular reveal">Published: September 6, 2026. The prices below are proposed. No account has been charged.</p>
+          <p class="stat-note u-tabular reveal">Published: September 6, 2026. Prices in USD, before tax. No account has been charged.</p>
 
           <div class="hero-actions">
-            <a class="btn btn--text" href="#expiry">WHAT AN EXPIRED PASS KEEPS</a>
+            <a class="btn btn--text" href="#lapse">WHAT AN EXPIRED PLAN KEEPS</a>
           </div>
         </div>
 
@@ -192,16 +197,16 @@
             <span class="section-title-line reveal-line"><span class="reveal-line-inner">AND NOT AS A TRIAL.</span></span>
           </h2>
 
-          <p class="copy section-lead u-text-measure reveal">Every account on FieldLux is an open beta account. There is no card on file, no clock counting down to a paywall and no tier to choose at signup. The three rows below are the only limits on this page that anything currently enforces, and they are running in the deployed app as you read this.</p>
+          <p class="copy section-lead u-text-measure reveal">Every account on FieldLux is an open beta account with every lane open, fixtures and fog included. There is no card on file, no clock counting down to a paywall and no tier to choose at signup. The three rows below are the only quotas anything currently enforces, and they are running in the deployed app as you read this.</p>
 
           <div class="limits reveal">
             <div class="limits-row">
               <p class="limits-key">IMPORTED MODEL STORAGE</p>
-              <p class="limits-text">2 <span class="stat-unit">GB</span> per account, across every project you own, with a 200 <span class="stat-unit">MB</span> ceiling on any single model file. Both are open beta quotas and both are enforced in the app today.</p>
+              <p class="limits-text">2 <span class="stat-unit">GB</span> per account, across every project you own, with a 200 <span class="stat-unit">MB</span> ceiling on any single model file.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">MEDIA LIBRARY</p>
-              <p class="limits-text">1 <span class="stat-unit">GiB</span> per account. That is an open beta quota and the app holds you to it today; a single media file is bounded by the account quota and nothing tighter.</p>
+              <p class="limits-text">1 <span class="stat-unit">GiB</span> per account. A single media file is bounded by the account quota and nothing tighter.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">NOTHING IS BEHIND A PAYMENT</p>
@@ -213,38 +218,175 @@
       </div>
     </section>
 
-    <!-- == PR3, #passes, the three products ================================ -->
-    <section class="section section--pad-md" id="passes" aria-labelledby="passes-title">
+    <!-- == PR3, #tiers, the three tiers and the period switch ===============
+         The reference layout draws three bordered cards with one filled to
+         recommend it. Two translations were made on the way in, and both are
+         this site's language rather than the reference's: the cards are opened
+         by a hairline and hang off it like every other group on all five pages,
+         and none of the three is emphasised, because the page's own argument is
+         that the arithmetic decides and not the layout. -->
+    <section class="section section--pad-md" id="tiers" aria-labelledby="tiers-title">
       <div class="site-shell--narrow">
 
         <div class="section-head">
           <p class="micro-label">
-            <span class="micro-label-name">THE THREE PASSES</span>
+            <span class="micro-label-name">THE THREE TIERS</span>
           </p>
 
-          <h2 class="section-title reveal-lines" id="passes-title">
-            <span class="section-title-line reveal-line"><span class="reveal-line-inner">ONE WEEK, ONE MONTH,</span></span>
-            <span class="section-title-line reveal-line"><span class="reveal-line-inner">OR ONE YEAR.</span></span>
+          <h2 class="section-title reveal-lines" id="tiers-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">THREE TIERS.</span></span>
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">THREE BILLING PERIODS.</span></span>
           </h2>
 
-          <p class="copy section-lead u-text-measure reveal">Three lengths, each bought once, each in Korean won and each including VAT. There is no feature ladder between them: the only difference between the three rows below is how many days. Which one is cheaper for the way you actually work is arithmetic rather than opinion, so it is worked out in the next section instead of argued for here.</p>
+          <p class="copy section-lead u-text-measure reveal">Prices in USD, before tax. There is a feature ladder and it has exactly one step in it: the stage and architectural fixture lane and the fog machine are in Pro and not in Projection. Everything else in the app is in every tier. Which period is cheaper for the way you actually work is arithmetic rather than opinion, so it is worked out two sections down instead of argued for here.</p>
+
+          <p class="copy u-text-measure reveal">The switch below chooses which period each card prints. With scripting turned off the switch is not drawn and every card prints all three periods at once, which is the same information in more space.</p>
+
+          <div class="period-switch" role="group" aria-label="Billing period">
+            <button class="filter-chip" type="button" data-period-btn="weekly" aria-pressed="false">WEEKLY</button>
+            <button class="filter-chip" type="button" data-period-btn="monthly" aria-pressed="true">MONTHLY</button>
+            <button class="filter-chip" type="button" data-period-btn="yearly" aria-pressed="false">YEARLY</button>
+          </div>
+          <p class="u-visually-hidden" role="status" data-period-status></p>
+
+          <div class="tier-grid reveal">
+
+            <!-- ---- Projection ------------------------------------------- -->
+            <article class="feature-card tier-card">
+              <h3 class="chapter-point-label">PROJECTION</h3>
+              <p class="tier-who">For the person who quotes and rigs projection and does not hang stage light.</p>
+
+              <div class="tier-period" data-period="weekly">
+                <p class="stat-label">WEEKLY</p>
+                <p class="tier-price">USD 9<span class="tier-price-per">/user/week</span></p>
+                <p class="stat-note">One payment for seven days, and it does not renew. Fifty-two of them come to USD 468, which is what twelve monthly payments come to.</p>
+              </div>
+              <div class="tier-period" data-period="monthly">
+                <p class="stat-label">MONTHLY</p>
+                <p class="tier-price">USD 39<span class="tier-price-per">/user/month</span></p>
+                <p class="stat-note">Renews until you cancel. Twelve of them come to USD 468, the same as fifty-two weeks. What the month adds at the same money is that it does not stop unless you stop it.</p>
+              </div>
+              <div class="tier-period" data-period="yearly">
+                <p class="stat-label">YEARLY</p>
+                <p class="tier-price">USD 32<span class="tier-price-per">/user/month</span></p>
+                <p class="stat-note">Billed yearly (USD 384), against USD 468 in twelve monthly payments.</p>
+              </div>
+
+              <div>
+                <h4 class="feature-card-title">WHAT IS INCLUDED</h4>
+                <ul class="tier-includes">
+                  <li>The venue as an imported model in 6 formats (FBX, GLB/GLTF, OBJ, DAE, STL and PLY), as an imported floor plan traced at its real size, or as walls drawn from lines and raised.</li>
+                  <li>87 projectors, 113 lenses and 4 brands off published spec sheets, catalogue rebuilt 2026-05-12, plus custom heads you enter yourself.</li>
+                  <li>Throw, lens shift and the optics per head, cross-checked against 642 combinations pulled from the makers' own calculators on 2026-06-11, which cover 47 of the 87 heads.</li>
+                  <li>Placement in arrays, circles and mirrors, up to 200 projectors in a scene, which is a hard shader cap the runtime detector can set lower on your machine.</li>
+                  <li>Auto edge blending, blend ramps and the blend sheet; corner pin, feathered masks, and a mesh warp or mask on 32 of those heads.</li>
+                  <li>4 distinct content sources, canvas sets, and Quick Wrap for one video across several planes.</li>
+                  <li>Lux heatmaps, the hover probe, 13 probe points (9 ANSI plus 4 quarter) with 16 outer-edge probes, and 16 x 16 = 256 sample points.</li>
+                  <li>21 measured material presets, ambient presets from 100,000 lx direct sunlight down to 5 lx theatre plus full blackout, and ambient contrast.</li>
+                  <li>LED walls with brightness in nits, projection spill in lux and a washout risk rating.</li>
+                  <li>The PDF Tech Rider, a vendor-neutral handoff JSON, the project file, and a read-only share link you can revoke.</li>
+                  <li>Cloud save with autosave, version history and Revert to Saved; 2 <span class="stat-unit">GB</span> of imported-model storage with a 200 <span class="stat-unit">MB</span> per-file ceiling, and a 1 <span class="stat-unit">GiB</span> media library.</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 class="feature-card-title">WHAT IS NOT IN IT</h4>
+                <ul class="tier-includes">
+                  <li>Stage and architectural fixtures, the isolux working plane, IES, EULUMDAT and GDTF import, the fixture schedule, and the fog machine. Those are Pro, and they are one door rather than six.</li>
+                </ul>
+              </div>
+
+              <p class="chapter-more"><a class="btn btn--text" href="#not-built">NOT FOR SALE YET</a></p>
+            </article>
+
+            <!-- ---- Pro --------------------------------------------------- -->
+            <article class="feature-card tier-card">
+              <h3 class="chapter-point-label">PRO</h3>
+              <p class="tier-who">For the person who also hangs fixtures and reads a beam through fog.</p>
+
+              <div class="tier-period" data-period="weekly">
+                <p class="stat-label">WEEKLY</p>
+                <p class="tier-price">USD 12<span class="tier-price-per">/user/week</span></p>
+                <p class="stat-note">One payment for seven days, and it does not renew. Fifty-two of them come to USD 624, which is USD 36 more than twelve monthly payments.</p>
+              </div>
+              <div class="tier-period" data-period="monthly">
+                <p class="stat-label">MONTHLY</p>
+                <p class="tier-price">USD 49<span class="tier-price-per">/user/month</span></p>
+                <p class="stat-note">Renews until you cancel. Twelve of them come to USD 588.</p>
+              </div>
+              <div class="tier-period" data-period="yearly">
+                <p class="stat-label">YEARLY</p>
+                <p class="tier-price">USD 40<span class="tier-price-per">/user/month</span></p>
+                <p class="stat-note">Billed yearly (USD 480), against USD 588 in twelve monthly payments.</p>
+              </div>
+
+              <div>
+                <h4 class="feature-card-title">WHAT IS INCLUDED</h4>
+                <ul class="tier-includes">
+                  <li>Everything in Projection, at the same quotas.</li>
+                  <li>29 built-in fixtures on top of 8 archetypes, 16 of them named market units transcribed from published photometric data, plus fixtures you build and save yourself, which are kept in the browser you saved them in and nowhere else.</li>
+                  <li>IES (LM-63), EULUMDAT and GDTF import, so a maker's own curve drives the beam you see and the number you read from the same file. GDTF and MVR are code-complete but not yet checked against real vendor files, and the app says so.</li>
+                  <li>The isolux working plane, with Eavg, Emin, Emax and uniformity read off it against 38 target profiles across 5 regional standard sets.</li>
+                  <li>Aim by dragging the pool, and a fixture bake that walls actually block.</li>
+                  <li>The fixture schedule with per-unit specs and connected load, copied to the clipboard as CSV to paste into a sheet.</li>
+                  <li>The fog machine, its fluid, plume and ventilation figures, and beams that render through the air. The atmosphere is a display lane: it adds no lux to a surface and changes no measured figure.</li>
+                  <li>Fixture light stays a separate estimate lane: direct light only, stamped an estimate on screen, and it never enters a projector lux figure.</li>
+                </ul>
+              </div>
+
+              <p class="chapter-more"><a class="btn btn--text" href="#not-built">NOT FOR SALE YET</a></p>
+            </article>
+
+            <!-- ---- Enterprise --------------------------------------------
+                 The owner set this tier and its price. What is written here is
+                 only what can actually be delivered today: an invoice, a
+                 purchase order and a person who answers mail. No agreement and
+                 no data processing terms are named, because neither has been
+                 drafted, and naming a legal document that does not exist is a
+                 claim this site cannot make. The card states plainly that it
+                 opens no software feature Pro does not have. -->
+            <article class="feature-card tier-card">
+              <h3 class="chapter-point-label">ENTERPRISE</h3>
+              <p class="tier-who">For a company whose finance department cannot pay by card.</p>
+
+              <div class="tier-period" data-period="weekly">
+                <p class="stat-label">WEEKLY</p>
+                <p class="tier-who">Not sold by the week. A purchase order takes longer to approve than a seven-day pass lasts, so this tier is the month or the year.</p>
+              </div>
+              <div class="tier-period" data-period="monthly">
+                <p class="stat-label">MONTHLY</p>
+                <p class="tier-price">USD 99<span class="tier-price-per">/user/month</span></p>
+                <p class="stat-note">Renews until you cancel. Twelve of them come to USD 1,188.</p>
+              </div>
+              <div class="tier-period" data-period="yearly">
+                <p class="stat-label">YEARLY</p>
+                <p class="tier-price">USD 82<span class="tier-price-per">/user/month</span></p>
+                <p class="stat-note">Billed yearly (USD 984), against USD 1,188 in twelve monthly payments.</p>
+              </div>
+
+              <div>
+                <h4 class="feature-card-title">WHAT IS INCLUDED</h4>
+                <ul class="tier-includes">
+                  <li>Everything in Pro, and the app behaves identically on both.</li>
+                  <li>An invoice and a purchase order instead of a card.</li>
+                  <li>Mail answered by the person who wrote the app.</li>
+                  <li>Those are terms of business, not code. No part of Enterprise opens a feature that Pro does not have, and this list is the whole of it. If what you need is several people inside one project, that does not exist at any price: read the row below.</li>
+                </ul>
+              </div>
+
+              <p class="chapter-more"><a class="btn btn--text" href="#not-built">NOT FOR SALE YET</a></p>
+            </article>
+
+          </div>
 
           <div class="limits reveal">
             <div class="limits-row">
-              <p class="limits-key">WEEK PASS, 7 DAYS</p>
-              <p class="limits-text">KRW 9,900 including VAT, paid once. Sized to one job rather than one month: buy it in the week you are quoting or rigging, and buy nothing in the weeks you are not.</p>
+              <p class="limits-key">WHAT PER USER MEANS</p>
+              <p class="limits-text">A FieldLux account holds exactly one person. There is no team, no shared workspace and no seat management anywhere in the build, so per user is per account and each account is billed on its own. A project has one owner; other people get read-only access by email or by a share link. Four people on Enterprise is four accounts at USD 396 a month, and they still cannot be inside one project together. Anything that would make per user mean something else has to be built first.</p>
             </div>
             <div class="limits-row">
-              <p class="limits-key">MONTH PASS, 30 DAYS</p>
-              <p class="limits-text">KRW 17,900 including VAT, paid once. For a month with more than one job in it.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">YEAR PASS, 365 DAYS</p>
-              <p class="limits-text">KRW 149,000 including VAT, paid once. That is about KRW 12,400 for each month of it, and it is the row for a designer who has FieldLux open most weeks of the year rather than a few.</p>
-            </div>
-            <div class="limits-row">
-              <p class="limits-key">WHAT A PASS BUYS</p>
-              <p class="limits-text">The whole app, in one state. No head-count tier, no export held back for the longer pass and no published limit that moves for money. A pass buys days, and that is the only thing it buys.</p>
+              <p class="limits-key">WHAT A TIER DECIDES</p>
+              <p class="limits-text">A tier decides which lanes are open. It never decides how big a scene can get, and it never changes how a number is calculated. Every ceiling in this app is the same on every tier, and the one that matters most, 200 projectors, is a hard shader cap that no payment raises.</p>
             </div>
           </div>
         </div>
@@ -252,11 +394,48 @@
       </div>
     </section>
 
-    <!-- == PR4, #arithmetic, every crossover ===============================
-         Three of these five rows say buy the smaller thing. That is the point of
-         printing them: a ladder that only ever argued upward would not need a
-         table, it would need a sales page. -->
-    <section class="section section--pad-sm section--pad-start-md" id="arithmetic" aria-labelledby="arithmetic-title">
+    <!-- == PR4, #lanes, the one step =======================================
+         The two lanes are two bullets on the cards and ONE door in the code:
+         the fog machine's creation menu rides the same flag as the fixtures, so
+         an account without fixtures can never reach the atmosphere pass either.
+         Printing that as one line rather than two is the difference between
+         describing a product and describing a price list. -->
+    <section class="section section--pad-sm section--pad-start-md" id="lanes" aria-labelledby="lanes-title">
+      <div class="site-shell--narrow">
+
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-name">THE ONE STEP</span>
+          </p>
+
+          <h2 class="section-title reveal-lines" id="lanes-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">ONE DOOR SEPARATES</span></span>
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">PROJECTION FROM PRO.</span></span>
+          </h2>
+
+          <p class="copy section-lead u-text-measure reveal">Pro opens the light that is not coming out of a projector, and the air it travels through. If your job is projectors on a building, Projection is the whole product and Pro adds nothing you will open. If you also hang fixtures, or you need to see a beam in haze, that is the step.</p>
+
+          <div class="limits reveal">
+            <div class="limits-row">
+              <p class="limits-key">WHAT PRO OPENS</p>
+              <p class="limits-text">Stage and architectural fixtures with their own photometry, the isolux working plane and its target profiles, IES, EULUMDAT and GDTF import, the fixture schedule, and the fog machine with beams rendered through the air. In the code these are one door, not six: the fog machine's creation menu rides the same switch as the fixture lane, so an account without fixtures never reaches the atmosphere at all.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">WHAT STAYS IN PROJECTION</p>
+              <p class="limits-text">LED walls stay, with their brightness in nits, their projection spill in lux and their washout rating, because an LED wall is a projection-lane object that happens to emit light. So does everything a projector job needs: the optics, the coverage, the blending, the warp and masks, the content, the measurement lane, the drawing lane and every deliverable.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">A SCENE MADE IN PRO</p>
+              <p class="limits-text">Fixtures and fog machines are ordinary saved objects, so a scene that has them keeps them. On Projection that scene still opens, still saves and still measures its projectors, and the fixtures sit in it unrendered until the lane is open again. Dropping a tier is not a deletion event, and moving back up does not ask you to rebuild anything.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- == PR5, #arithmetic ================================================ -->
+    <section class="section section--pad-sm" id="arithmetic" aria-labelledby="arithmetic-title">
       <div class="site-shell--narrow">
 
         <div class="section-head">
@@ -269,28 +448,40 @@
             <span class="section-title-line reveal-line"><span class="reveal-line-inner">WORKED OUT.</span></span>
           </h2>
 
-          <p class="copy section-lead u-text-measure reveal">Five comparisons, and three of them say buy the smaller thing. The ladder was set so that you cannot overpay by buying in the small pieces that suit the way you work, and the only way to show that is to print the sums.</p>
+          <p class="copy section-lead u-text-measure reveal">Eight comparisons on Projection and Pro, and three of them say buy the smaller thing. The sums are printed because a ladder that only ever argued upward would not need a table.</p>
 
           <div class="limits reveal">
             <div class="limits-row">
-              <p class="limits-key">ONE JOB IN A MONTH</p>
-              <p class="limits-text">9,900 as a week pass against 17,900 as a month pass. The week pass is 8,000 cheaper. If you open FieldLux once in a month, that is the row.</p>
+              <p class="limits-key">ONE WEEK OF WORK</p>
+              <p class="limits-text">9 as a week against 39 as the month. If a job takes a week and the next one is a month away, the week is 30 cheaper and nothing renews behind you.</p>
             </div>
             <div class="limits-row">
-              <p class="limits-key">TWO JOBS IN THE SAME MONTH</p>
-              <p class="limits-text">19,800 as two week passes against 17,900 as one month pass. The month pass is 1,900 cheaper. This is the crossover the ladder was set around, and it sits at the second purchase rather than the fourth, which was the one deliberate correction made to these numbers.</p>
+              <p class="limits-key">FOUR WEEKS</p>
+              <p class="limits-text">36 as four weeks against 39 for the month. Four weeks is 28 days, so that is 28 days at 36 against a whole month at 39. Buying by the week is cheaper right up to the point where you need the other two or three days.</p>
             </div>
             <div class="limits-row">
-              <p class="limits-key">TWO JOBS, TWO DIFFERENT MONTHS</p>
-              <p class="limits-text">19,800 as two week passes against 35,800 as two month passes. The week passes are 16,000 cheaper. Two jobs in a year is not two jobs in a month, and the crossover above does not carry across a gap.</p>
+              <p class="limits-key">A WHOLE MONTH</p>
+              <p class="limits-text">Any month needs five weekly passes to be covered end to end, 31 days or 30: 45 against 39. From the fifth week the month is cheaper, and that is where the crossover sits.</p>
             </div>
             <div class="limits-row">
-              <p class="limits-key">FIFTEEN WEEKS OF USE</p>
-              <p class="limits-text">148,500 as fifteen week passes against 149,000 as a year pass. 500 apart. Below fifteen weeks the week passes cost less, above it the year does, and at fifteen the two are the same money.</p>
+              <p class="limits-key">A WHOLE YEAR, WEEK BY WEEK</p>
+              <p class="limits-text">52 weeks at 9 is 468. Twelve months at 39 is also 468. Buying every week for a year costs exactly what paying monthly for a year costs, which is deliberate: working in short bookings should not carry a surcharge. What the month buys at the same money is that it does not stop unless you stop it.</p>
             </div>
             <div class="limits-row">
-              <p class="limits-key">A FULL YEAR</p>
-              <p class="limits-text">149,000 as a year pass, 214,800 as twelve month passes, 514,800 as fifty-two week passes. Against month passes the year pays for itself in the ninth month: eight of them come to 143,200 and nine come to 161,100.</p>
+              <p class="limits-key">THE YEAR AGAINST THE MONTH</p>
+              <p class="limits-text">384 for a year of Projection against 468 in twelve monthly payments, so the year saves 84 and pays for itself in the tenth month: nine months come to 351 and ten come to 390. On Pro it is 480 against 588, and on Enterprise 984 against 1,188.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">WHERE THE YEARLY PRICES COME FROM</p>
+              <p class="limits-text">Ten months' price for twelve, then the monthly figure on the card rounded down to a whole dollar so the card and the annual total agree exactly: 32 x 12 = 384, 40 x 12 = 480, 82 x 12 = 984. That works out at 17.9, 18.4 and 17.2 percent off.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">PRO AGAINST PROJECTION</p>
+              <p class="limits-text">10 a month, 3 a week, or 96 a year. That is the whole price of the fixture lane and the fog machine. If you open them twice a year it is worth reading the week rate rather than the month.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">ENTERPRISE AGAINST PRO</p>
+              <p class="limits-text">50 a month, or 504 a year, per person. It adds no feature to the app. If an invoice and a purchase order are not worth that to your company, Pro is the same software.</p>
             </div>
           </div>
         </div>
@@ -298,25 +489,21 @@
       </div>
     </section>
 
-    <!-- == PR5, #expiry, when a pass ends ==================================
-         The three sub-groups use the ordinal spine the same way the home page does on
-         the home page: (01) what is kept, (02) what stops, (03) the statement
-         that none of it runs. Group (03) is not a footnote. A reader who scans
-         only tables has to hit the absence somewhere, and this is where. -->
-    <section class="section section--pad-sm" id="expiry" aria-labelledby="expiry-title">
+    <!-- == PR6, #lapse, when a plan ends ================================== -->
+    <section class="section section--pad-sm" id="lapse" aria-labelledby="lapse-title">
       <div class="site-shell--narrow">
 
         <div class="section-head">
           <p class="micro-label">
-            <span class="micro-label-name">WHEN A PASS ENDS</span>
+            <span class="micro-label-name">WHEN A PLAN ENDS</span>
           </p>
 
-          <h2 class="section-title reveal-lines" id="expiry-title">
+          <h2 class="section-title reveal-lines" id="lapse-title">
             <span class="section-title-line reveal-line"><span class="reveal-line-inner">NOTHING IS DELETED.</span></span>
             <span class="section-title-line reveal-line"><span class="reveal-line-inner">NOTHING IS LOCKED AWAY.</span></span>
           </h2>
 
-          <p class="copy section-lead u-text-measure reveal">This is the part worth reading before the prices, because it is what makes a seven-day pass a sane thing to buy. When a pass runs out the account changes what it will let you do next. It does not change what it will let you reach. The working name for that state is delivery mode.</p>
+          <p class="copy section-lead u-text-measure reveal">This is the part worth reading before the prices, because it is what makes a seven-day pass a sane thing to buy. When a plan runs out the account changes what it will let you do next. It does not change what it will let you reach. The working name for that state is delivery mode.</p>
 
           <p class="micro-label">
             <span class="micro-label-ord">(01)</span>
@@ -330,19 +517,23 @@
             </div>
             <div class="limits-row">
               <p class="limits-key">A SHARE LINK YOU ALREADY MADE</p>
-              <p class="limits-text">A read-only share link you have not revoked, expired or password-protected keeps resolving. A pass ending does not close a link a client is already using. What a share does and does not protect does not change either way.</p>
+              <p class="limits-text">A read-only share link you have not revoked, expired or password-protected keeps resolving. A plan ending does not close a link a client is already using.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">THE PDF TECH RIDER</p>
-              <p class="limits-text">The PDF Tech Rider export keeps working. A document you owe somebody can still leave the app after the pass that produced it has ended.</p>
+              <p class="limits-text">The PDF Tech Rider export keeps working. A document you owe somebody can still leave the app after the plan that produced it has ended.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">SHOWING IT ON A SCREEN</p>
-              <p class="limits-text">Delivery mode adds nothing to stop you. The viewport is not blanked, watermarked or covered over when a pass ends, and no measurement label is hidden that was visible the day before.</p>
+              <p class="limits-text">Delivery mode adds nothing to stop you. The viewport is not blanked, watermarked or covered over when a plan ends, and no measurement label is hidden that was visible the day before.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">YOUR FILES</p>
-              <p class="limits-text">Imported models and media stay on the account under the same quotas as before. Expiry is not a deletion event. What happens to an account that has been dormant for a very long time is not decided, and it is left off this page rather than guessed at.</p>
+              <p class="limits-text">Imported models and media stay on the account under the same quotas as before. Expiry is not a deletion event.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">THE TIER YOU LAST PAID FOR</p>
+              <p class="limits-text">A lapsed Pro account is a lapsed Pro account. Its fixtures and its fog still render when it opens a scene; what stops is writing, not the lane. Lapsing and dropping to a cheaper tier are two different things and only one of them closes a door.</p>
             </div>
           </div>
 
@@ -354,11 +545,11 @@
           <div class="limits reveal">
             <div class="limits-row">
               <p class="limits-key">NEW PROJECTS</p>
-              <p class="limits-text">Creating a new project needs a live pass.</p>
+              <p class="limits-text">Creating a new project needs a live plan.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">EDITING AND SAVING</p>
-              <p class="limits-text">Changing anything inside a project, and saving that change, needs a live pass. What is already saved stays exactly as saved, and buying another pass returns the account to editing with the same projects in it.</p>
+              <p class="limits-text">Changing anything inside a project, and saving that change, needs a live plan. What is already saved stays exactly as saved, and paying again returns the account to editing with the same projects in it.</p>
             </div>
           </div>
 
@@ -370,7 +561,7 @@
           <div class="limits reveal">
             <div class="limits-row">
               <p class="limits-key">NOTHING CAN EXPIRE YET</p>
-              <p class="limits-text">No pass exists, so no pass can run out. Delivery mode is specified and has never run: no account has been in it and none can be put in it. Every account today is in full edit with no pass at all.</p>
+              <p class="limits-text">No plan exists, so no plan can run out. Delivery mode is specified and has never run: no account has been in it and none can be put in it. Every account today is in full edit on every lane, with no plan at all.</p>
             </div>
           </div>
         </div>
@@ -378,7 +569,7 @@
       </div>
     </section>
 
-    <!-- == PR6, #terms, the fine print ===================================== -->
+    <!-- == PR7, #terms, the fine print ===================================== -->
     <section class="section section--pad-sm section--pad-end-md" id="terms" aria-labelledby="terms-title">
       <div class="site-shell--narrow">
 
@@ -396,51 +587,51 @@
           <div class="limits reveal">
             <div class="limits-row">
               <p class="limits-key">NOT BUILT</p>
-              <p class="limits-text">No checkout, no payment code, no plan enforcement. The app today has one state, open beta, and it is free for everyone in it. Nothing on this page can be bought and nobody has been charged.</p>
+              <p class="limits-text">No checkout, no payment code, no plan enforcement. The app today has one state, open beta, and it is free for everyone in it with every lane open.</p>
             </div>
             <div class="limits-row">
-              <p class="limits-key">SINGLE PAYMENTS ONLY</p>
-              <p class="limits-text">Each pass is one payment for one period. No card is stored, nothing renews on its own, and there is no subscription to remember to cancel because there is no subscription. A pass ends by ending, and buying another one is something you do on purpose.</p>
+              <p class="limits-key">THE WEEK IS ONE PAYMENT</p>
+              <p class="limits-text">A week is bought once for seven days and does not renew. No card is stored for it and there is no subscription to remember to cancel. Buying another one is something you do on purpose.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">THE MONTH AND THE YEAR RENEW</p>
+              <p class="limits-text">Both renew until you cancel, and cancelling takes effect at the end of the period you already paid for rather than immediately.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">CHOOSING THE START DATE</p>
-              <p class="limits-text">A pass can be dated forward at purchase, up to 14 days out. Buy on the Monday for a pass that opens on the Thursday, so a week pass bought for a show does not expire the night of the show. Designed, not built.</p>
+              <p class="limits-text">A week can be dated forward at purchase, up to 14 days out. Buy on the Monday for a week that opens on the Thursday, so a pass bought for a show does not expire the night of the show.</p>
             </div>
             <div class="limits-row">
-              <p class="limits-key">CURRENCY</p>
-              <p class="limits-text">Charged in Korean won through a Korean payment provider. TossPayments is the plan, not an integration. This page prints no second currency and no approximate conversion: a rate written here today is wrong by the time it is read, and your card issuer converts at a rate we do not set and cannot quote.</p>
+              <p class="limits-key">CURRENCY AND TAX</p>
+              <p class="limits-text">Prices are in USD and stated before tax. What is added at checkout depends on where you are, and the payment provider calculates it. This page prints no second currency and no approximate conversion, because your card issuer converts at a rate we do not set and cannot quote.</p>
             </div>
             <div class="limits-row">
-              <p class="limits-key">TAX</p>
-              <p class="limits-text">The three figures include VAT. The price you read is the price that would be charged, and there is no amount added at the end.</p>
+              <p class="limits-key">REFUND, NOT STARTED</p>
+              <p class="limits-text">A week bought and not yet started refunds in full.</p>
             </div>
             <div class="limits-row">
-              <p class="limits-key">REFUND, PASS NOT STARTED</p>
-              <p class="limits-text">A pass bought and not yet started refunds in full.</p>
+              <p class="limits-key">REFUND, RUNNING</p>
+              <p class="limits-text">A period that has started refunds pro rata on the days remaining. A month cancelled on day 10 refunds the other 20 days.</p>
             </div>
             <div class="limits-row">
-              <p class="limits-key">REFUND, PASS RUNNING</p>
-              <p class="limits-text">A pass that has started refunds pro rata on the days remaining. A month pass cancelled on day 10 refunds the other 20 days.</p>
+              <p class="limits-key">CHANGING TIER</p>
+              <p class="limits-text">Moving up takes effect immediately and is charged pro rata for the days left in the period. Moving down takes effect at the end of the period you already paid for, so a lane you paid for does not close early.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">FOUNDING MEMBERS</p>
-              <p class="limits-text">Early testers who verify their invite code keep founding-member standing, which carries 12 months of access once paid plans begin. That is the same promise the home page already makes, and nothing on this page shortens it.</p>
+              <p class="limits-text">Early testers who verify their invite code keep founding-member standing, which carries 12 months of access once paid plans begin. That access is Pro, because Pro is what the open beta has been all along, and nothing on this page shortens it.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">NO RETROACTIVE CHARGE</p>
               <p class="limits-text">No account is billed for time already spent in the open beta. Whatever the first charge turns out to be, it starts on the day plans begin and not on the day you signed up.</p>
             </div>
             <div class="limits-row">
-              <p class="limits-key">WHAT A PASS WOULD NOT CHANGE</p>
-              <p class="limits-text">No published limit moves for money. The ceiling of 200 projectors in a scene is a hard shader cap and the runtime detector can set it lower on your machine; no pass raises it. The 2 <span class="stat-unit">GB</span> model store, the 1 <span class="stat-unit">GiB</span> media library and the 200 <span class="stat-unit">MB</span> per-model-file ceiling are the same on every pass, and no pass changes how a number is calculated.</p>
-            </div>
-            <div class="limits-row">
               <p class="limits-key">WHAT A FREE ACCOUNT IS AFTER THAT</p>
-              <p class="limits-text">Not decided. Whether an account with no pass can still be created once paid plans begin has not been settled, and it is left off this page rather than guessed at. It lands here in writing before it lands in the app.</p>
+              <p class="limits-text">Not decided. Whether an account with no plan can still be created once paid plans begin has not been settled, and it lands here in writing before it lands in the app.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">IF THESE NUMBERS MOVE</p>
-              <p class="limits-text">This page carries the date it was published, and the date moves when the text does. There is no mailing list to announce a change on, and there is no form on this page to leave an address in, which is exactly why the date sits under the title where you can see it.</p>
+              <p class="limits-text">This page carries the date it was published, and the date moves when the text does. There is no mailing list to announce a change on and no form on this page to leave an address in, which is why the date sits under the title where you can see it.</p>
             </div>
           </div>
         </div>
@@ -448,10 +639,7 @@
       </div>
     </section>
 
-    <!-- == PR7, #not-built, the absences ===================================
-         The evidence rule is quoted here as the reason the list exists. A page
-         that publishes a price for an unbuilt product either enumerates what is
-         missing or it is a claim about a product. This is the enumeration. -->
+    <!-- == PR8, #not-built, the absences =================================== -->
     <section class="section section--pad-md section--pad-end-lg" id="not-built" aria-labelledby="not-built-title">
       <div class="site-shell--narrow">
 
@@ -464,7 +652,7 @@
             <span class="section-title-line reveal-line"><span class="reveal-line-inner">NOTHING HERE CAN BE BOUGHT.</span></span>
           </h2>
 
-          <p class="copy section-lead u-text-measure reveal">This site ships a rule: a claim only stands if a visitor could reach the thing it describes in the deployed build today. A price for something nobody can buy fails that rule, so the failure is enumerated here rather than left for you to find. This is exactly what does not exist.</p>
+          <p class="copy section-lead u-text-measure reveal">A price for something nobody can buy is a claim this site would refuse from anyone else, so the failure is enumerated here rather than left for you to find. This is exactly what does not exist.</p>
 
           <ol class="speclist reveal">
 
@@ -472,36 +660,44 @@
               <span class="speclist-index u-tabular">(01)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">NO CHECKOUT</h3>
-                <p class="u-text-measure">There is no purchase screen anywhere in FieldLux. No payment provider is connected, no payment code is in the build, and no card has ever been charged by this product. TossPayments is named above as an intention, not as an integration.</p>
+                <p class="u-text-measure">There is no purchase screen anywhere in FieldLux. No payment provider is connected, no payment code is in the build, and no card has ever been charged by this product.</p>
               </div>
             </li>
 
             <li class="speclist-item">
               <span class="speclist-index u-tabular">(02)</span>
               <div class="speclist-body">
-                <h3 class="chapter-point-label">NO PLAN STATE</h3>
-                <p class="u-text-measure">No account carries a pass, a start date or an expiry date. Nothing in the app can tell a paid account from an unpaid one, which is another way of saying every account is the same account.</p>
+                <h3 class="chapter-point-label">NO TIERS IN THE APP</h3>
+                <p class="u-text-measure">No account carries a tier, a period or an expiry date. Nothing in the app can tell a Projection account from a Pro one, which is another way of saying every account is a Pro account today.</p>
               </div>
             </li>
 
             <li class="speclist-item">
               <span class="speclist-index u-tabular">(03)</span>
               <div class="speclist-body">
-                <h3 class="chapter-point-label">NO ENFORCEMENT</h3>
-                <p class="u-text-measure">Delivery mode has never run. The behaviour in the two tables above is specified and unwritten, so no account has been in it and none can be put in it.</p>
+                <h3 class="chapter-point-label">NO LANE GATE</h3>
+                <p class="u-text-measure">The fixture lane and the fog lane are open to everyone. The switches that would close them exist and are used for beta kill switches, but nothing connects them to a payment.</p>
               </div>
             </li>
 
             <li class="speclist-item">
               <span class="speclist-index u-tabular">(04)</span>
               <div class="speclist-body">
-                <h3 class="chapter-point-label">NO START-DATE PICKER</h3>
-                <p class="u-text-measure">Choosing a start date up to 14 days ahead is a decision, not a feature. It has no screen and no code behind it.</p>
+                <h3 class="chapter-point-label">NO DELIVERY MODE</h3>
+                <p class="u-text-measure">The behaviour in the two tables above is specified and unwritten. No account has been in it and none can be put in it.</p>
               </div>
             </li>
 
             <li class="speclist-item">
               <span class="speclist-index u-tabular">(05)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">NO SEATS, AND NO TEAM TO PUT THEM IN</h3>
+                <p class="u-text-measure">Per user is per account because an account is one person. There is no team object, no shared workspace and no seat management, so nothing exists for Enterprise to administer.</p>
+              </div>
+            </li>
+
+            <li class="speclist-item">
+              <span class="speclist-index u-tabular">(06)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">NO REFUND ROUTE</h3>
                 <p class="u-text-measure">The refund terms above say what would be honoured. There is nothing to refund yet and no mechanism to refund it with.</p>
@@ -510,7 +706,7 @@
 
           </ol>
 
-          <p class="copy u-text-measure reveal">If the week is the wrong length, if the ladder is priced at the wrong step, or if there is something an expired pass has to keep that is not in the table above, that is worth saying while it is still only a page. Post it in the Discord, or write to <a class="link" href="mailto:jay@field-lux.com">jay@field-lux.com</a>.</p>
+          <p class="copy u-text-measure reveal">If the step is in the wrong place, if the week is the wrong length, or if there is something an expired plan has to keep that is not in the table above, that is worth saying while it is still only a page. Post it in the Discord, or write to <a class="link" href="mailto:jay@field-lux.com">jay@field-lux.com</a>.</p>
 
           <div class="hero-actions">
             <a class="btn btn--solid" href="https://app.field-lux.com" data-app-link>START FREE</a>
@@ -816,6 +1012,58 @@
         });
       }
 
+    })();
+  </script>
+
+  <!-- == The period switch, /pricing only ==================================
+       A second block on purpose. The one above is the shared page script that
+       privacy.html and 404.html carry byte-identically, and this page must not
+       be the reason that stops being true. -->
+  <script>
+    (() => {
+      'use strict';
+      const root = document.documentElement;
+      const wrap = document.querySelector('.period-switch');
+      if (!wrap) return;
+
+      const btns = [...wrap.querySelectorAll('[data-period-btn]')];
+      if (!btns.length) return;
+      const status = document.querySelector('[data-period-status]');
+      const LABEL = { weekly: 'Weekly', monthly: 'Monthly', yearly: 'Yearly' };
+
+      /* Drawing the control is the LAST thing, so it exists only once it works. */
+      root.setAttribute('data-pricing-switch', 'on');
+
+      const settle = (period, announce) => {
+        root.setAttribute('data-pricing-period', period);
+        btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.periodBtn === period)));
+        try { window.localStorage.setItem('fieldlux_pricing_period', period); } catch (_) {}
+        /* Announced on a user action only: a status region that speaks on load
+           reads the page its own default back. */
+        if (announce && status) status.textContent = LABEL[period] + ' prices shown.';
+      };
+
+      /* aria-pressed is settled from the attribute rather than from the markup,
+         so the latch above and the buttons can never disagree. */
+      settle(root.getAttribute('data-pricing-period') || 'monthly', false);
+
+      wrap.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-period-btn]');
+        if (btn) settle(btn.dataset.periodBtn, true);
+      });
+
+      /* Arrow keys move focus across the group; activation stays on Enter and
+         Space, which is what a real <button> already does. */
+      wrap.addEventListener('keydown', (e) => {
+        const i = btns.indexOf(document.activeElement);
+        if (i < 0) return;
+        let next = -1;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % btns.length;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (i - 1 + btns.length) % btns.length;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = btns.length - 1;
+        if (next >= 0) { e.preventDefault(); btns[next].focus(); }
+      });
     })();
   </script>
 </body>
