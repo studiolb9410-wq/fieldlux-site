@@ -145,62 +145,64 @@
     <section class="section section--pad-sm" id="this-site" aria-labelledby="this-site-title">
       <div class="site-shell--narrow">
 
-        <p class="micro-label">
-          <span class="micro-label-ord">(00)</span>
-          <span class="micro-label-name">THIS SITE</span>
-        </p>
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(00)</span>
+            <span class="micro-label-name">THIS SITE</span>
+          </p>
 
-        <h2 class="section-title reveal-lines" id="this-site-title">
-          <span class="section-title-line reveal-line"><span class="reveal-line-inner">THE PAGES YOU ARE</span></span>
-          <span class="section-title-line reveal-line"><span class="reveal-line-inner">READING RIGHT NOW.</span></span>
-        </h2>
+          <h2 class="section-title reveal-lines" id="this-site-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">THE PAGES YOU ARE</span></span>
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">READING RIGHT NOW.</span></span>
+          </h2>
 
-        <p class="copy section-lead u-text-measure reveal">Static HTML, one stylesheet, some images and self-hosted fonts, all served from this domain. There is no form on any page of this site, so there is nothing here for you to submit and nothing for us to receive.</p>
+          <p class="copy section-lead u-text-measure reveal">Static HTML, one stylesheet, some images and self-hosted fonts, all served from this domain. There is no form on any page of this site, so there is nothing here for you to submit and nothing for us to receive.</p>
 
-        <ol class="speclist reveal">
+          <ol class="speclist reveal">
 
-          <li class="speclist-item" id="no-cookies">
-            <span class="speclist-index u-tabular">(01)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">NO COOKIES, NO ANALYTICS</h3>
-              <p class="u-text-measure">These pages set no cookies and load no analytics, tag manager or tracking script. The stylesheet, the fonts and every image come from field-lux.com itself, so reading this site sends no request to a third party. There is no visitor counter, no session recorder and no record of where you clicked.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="no-cookies">
+              <span class="speclist-index u-tabular">(01)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">NO COOKIES, NO ANALYTICS</h3>
+                <p class="u-text-measure">These pages set no cookies and load no analytics, tag manager or tracking script. The stylesheet, the fonts and every image come from field-lux.com itself, so reading this site sends no request to a third party. There is no visitor counter, no session recorder and no record of where you clicked.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="browser-storage">
-            <span class="speclist-index u-tabular">(02)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">WHAT YOUR BROWSER KEEPS</h3>
-              <p class="u-text-measure">One preference is stored on your device by these pages: <code>fieldlux_motion</code>, written when you press Reduce motion in the footer. Three further keys exist only so a review build can be pointed somewhere else, and are written only if you open the site with the matching query parameter: <code>fieldlux_flow_app_url</code>, <code>fieldlux_discord_url</code> and <code>fieldlux_embed_src</code>. Those four are everything the pages themselves write. The 3D demo on the home page is the FieldLux app served from this same domain, so the view settings it remembers, all of them named with a <code>fieldlux_</code> prefix, are written into this site's local storage rather than a separate one. None of these keys is sent anywhere, none is readable by another site, and clearing site data removes all of them.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="browser-storage">
+              <span class="speclist-index u-tabular">(02)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">WHAT YOUR BROWSER KEEPS</h3>
+                <p class="u-text-measure">One preference is stored on your device by these pages: <code>fieldlux_motion</code>, written when you press Reduce motion in the footer. Three further keys exist only so a review build can be pointed somewhere else, and are written only if you open the site with the matching query parameter: <code>fieldlux_flow_app_url</code>, <code>fieldlux_discord_url</code> and <code>fieldlux_embed_src</code>. Those four are everything the pages themselves write. The 3D demo on the home page is the FieldLux app served from this same domain, so the view settings it remembers, all of them named with a <code>fieldlux_</code> prefix, are written into this site's local storage rather than a separate one. None of these keys is sent anywhere, none is readable by another site, and clearing site data removes all of them.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="demo-frame">
-            <span class="speclist-index u-tabular">(03)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">THE DEMO FRAME ON THE HOME PAGE</h3>
-              <p class="u-text-measure">The home page carries a live 3D demo of the app, and it is served from this domain. The build sits at field-lux.com/embed, it is compiled from our own repository and committed to this site, and it loads automatically when the page opens rather than waiting for a click. Because it is the same origin as this page, the frame is not a security boundary and is not offered as one: the demo can read this document and this site's local storage exactly as though the app were written into the page, which is acceptable only because it is our code on our deployment. What it cannot do is leave: the frame is sandboxed without top-level navigation and without forms, so it cannot take you anywhere and there is nothing in it to submit. It contacts no other origin. A review build can point the frame somewhere else with <code>?embedSrc=</code>, and that address is accepted only when it resolves to this exact origin; anything else is refused and the stored value cleared.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="demo-frame">
+              <span class="speclist-index u-tabular">(03)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">THE DEMO FRAME ON THE HOME PAGE</h3>
+                <p class="u-text-measure">The home page carries a live 3D demo of the app, and it is served from this domain. The build sits at field-lux.com/embed, it is compiled from our own repository and committed to this site, and it loads automatically when the page opens rather than waiting for a click. Because it is the same origin as this page, the frame is not a security boundary and is not offered as one: the demo can read this document and this site's local storage exactly as though the app were written into the page, which is acceptable only because it is our code on our deployment. What it cannot do is leave: the frame is sandboxed without top-level navigation and without forms, so it cannot take you anywhere and there is nothing in it to submit. It contacts no other origin. A review build can point the frame somewhere else with <code>?embedSrc=</code>, and that address is accepted only when it resolves to this exact origin; anything else is refused and the stored value cleared.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="outbound-links">
-            <span class="speclist-index u-tabular">(04)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">LINKS THAT LEAVE THIS SITE</h3>
-              <p class="u-text-measure">Sign in and Start free go to app.field-lux.com. They carry one parameter, <code>siteReturnUrl</code>, holding the address of the page you left so the app can send you back to it. The Discord link opens discord.gg in a new tab. What either service records once you are there is governed by that service, not by this page.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="outbound-links">
+              <span class="speclist-index u-tabular">(04)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">LINKS THAT LEAVE THIS SITE</h3>
+                <p class="u-text-measure">Sign in and Start free go to app.field-lux.com. They carry one parameter, <code>siteReturnUrl</code>, holding the address of the page you left so the app can send you back to it. The Discord link opens discord.gg in a new tab. What either service records once you are there is governed by that service, not by this page.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="hosting">
-            <span class="speclist-index u-tabular">(05)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">HOSTING</h3>
-              <p class="u-text-measure">Vercel serves these files. Like any web host it records the requests it serves. We add nothing to that record and we keep no second log of our own.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="hosting">
+              <span class="speclist-index u-tabular">(05)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">HOSTING</h3>
+                <p class="u-text-measure">Vercel serves these files. Like any web host it records the requests it serves. We add nothing to that record and we keep no second log of our own.</p>
+              </div>
+            </li>
 
-        </ol>
+          </ol>
 
+        </div>
       </div>
     </section>
 
@@ -208,93 +210,95 @@
     <section class="section section--pad-md" id="the-app" aria-labelledby="the-app-title">
       <div class="site-shell--narrow">
 
-        <p class="micro-label">
-          <span class="micro-label-ord">(00)</span>
-          <span class="micro-label-name">THE APP</span>
-        </p>
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(00)</span>
+            <span class="micro-label-name">THE APP</span>
+          </p>
 
-        <h2 class="section-title reveal-lines" id="the-app-title">
-          <span class="section-title-line reveal-line"><span class="reveal-line-inner">WHAT AN ACCOUNT STORES.</span></span>
-        </h2>
+          <h2 class="section-title reveal-lines" id="the-app-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">WHAT AN ACCOUNT STORES.</span></span>
+          </h2>
 
-        <p class="copy section-lead u-text-measure reveal">Everything below happens at app.field-lux.com, after you create an account, and signing up writes an explicit consent record alongside it. FieldLux is in open beta and signup is public. The closed-beta waitlist it replaced still leaves records behind, which is why one of these clauses is about it.</p>
+          <p class="copy section-lead u-text-measure reveal">Everything below happens at app.field-lux.com, after you create an account, and signing up writes an explicit consent record alongside it. FieldLux is in open beta and signup is public. The closed-beta waitlist it replaced still leaves records behind, which is why one of these clauses is about it.</p>
 
-        <ol class="speclist reveal">
+          <ol class="speclist reveal">
 
-          <li class="speclist-item" id="account-data">
-            <span class="speclist-index u-tabular">(01)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">ACCOUNT DATA</h3>
-              <p class="u-text-measure">Account login runs on Supabase Auth. Your email address is your FieldLux ID, and it is the only value that tells one account from another. You can sign in with an email code, with Google, or with a password if you choose to set one. Passwords are held on the Supabase Auth side and never reach FieldLux in a form we can read.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="account-data">
+              <span class="speclist-index u-tabular">(01)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">ACCOUNT DATA</h3>
+                <p class="u-text-measure">Account login runs on Supabase Auth. Your email address is your FieldLux ID, and it is the only value that tells one account from another. You can sign in with an email code, with Google, or with a password if you choose to set one. Passwords are held on the Supabase Auth side and never reach FieldLux in a form we can read.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="project-data">
-            <span class="speclist-index u-tabular">(02)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">PROJECT DATA</h3>
-              <p class="u-text-measure">Saving a project stores its name, scene snapshots, project versions, model file references, sharing settings and the metadata needed to reopen and share the work. Ownership is tied to your Supabase user id: a saved projection study belongs to the account that created it, row-level security scopes it to that owner, uploaded files sit under a storage path of their own, and signing in with that same account is what brings the work back.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="project-data">
+              <span class="speclist-index u-tabular">(02)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">PROJECT DATA</h3>
+                <p class="u-text-measure">Saving a project stores its name, scene snapshots, project versions, model file references, sharing settings and the metadata needed to reopen and share the work. Ownership is tied to your Supabase user id: a saved projection study belongs to the account that created it, row-level security scopes it to that owner, uploaded files sit under a storage path of their own, and signing in with that same account is what brings the work back.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="share-links">
-            <span class="speclist-index u-tabular">(03)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">SHARE LINKS</h3>
-              <p class="u-text-measure">A share link is resolved on the server rather than handed out as the project itself. If you put a password on a link, it is stored hashed with bcrypt. Each attempt to resolve a link writes one row holding the link's id, the outcome, and a hash of the requesting network address rather than the address, which is what the rate limiting counts against. Anyone holding a live link can open what you shared, which is the whole point of a link, so the link is the credential: send it the way you would send a door code.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="share-links">
+              <span class="speclist-index u-tabular">(03)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">SHARE LINKS</h3>
+                <p class="u-text-measure">A share link is resolved on the server rather than handed out as the project itself. If you put a password on a link, it is stored hashed with bcrypt. Each attempt to resolve a link writes one row holding the link's id, the outcome, and a hash of the requesting network address rather than the address, which is what the rate limiting counts against. Anyone holding a live link can open what you shared, which is the whole point of a link, so the link is the credential: send it the way you would send a door code.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="founding-member-records">
-            <span class="speclist-index u-tabular">(04)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">FOUNDING MEMBER RECORDS</h3>
-              <p class="u-text-measure">Existing approved beta testers are preserved as Founding Members. We store the approved email and, after sign-in, may link it to the matching auth user id. That link is what applies launch and billing benefits to the right account later.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="founding-member-records">
+              <span class="speclist-index u-tabular">(04)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">FOUNDING MEMBER RECORDS</h3>
+                <p class="u-text-measure">Existing approved beta testers are preserved as Founding Members. We store the approved email and, after sign-in, may link it to the matching auth user id. That link is what applies launch and billing benefits to the right account later.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="waitlist-history">
-            <span class="speclist-index u-tabular">(05)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">WAITLIST HISTORY</h3>
-              <p class="u-text-measure">Older beta request records may remain, limited to what operational history, abuse prevention and support context need them for. Public signup no longer requires waitlist approval.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="waitlist-history">
+              <span class="speclist-index u-tabular">(05)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">WAITLIST HISTORY</h3>
+                <p class="u-text-measure">Older beta request records may remain, limited to what operational history, abuse prevention and support context need them for. Public signup no longer requires waitlist approval.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="service-providers">
-            <span class="speclist-index u-tabular">(06)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">SERVICE PROVIDERS</h3>
-              <p class="u-text-measure">Supabase for authentication, database and file storage. Vercel for hosting. Resend carries the mail: the sign-in codes, the invite mail and any reply we send you all pass through it. Traffic between you and those services is carried over TLS. We do not sell personal information, and we do not build a marketing mailing list out of FieldLux account data.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="service-providers">
+              <span class="speclist-index u-tabular">(06)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">SERVICE PROVIDERS</h3>
+                <p class="u-text-measure">Supabase for authentication, database and file storage. Vercel for hosting. Resend carries the mail: the sign-in codes, the invite mail and any reply we send you all pass through it. Traffic between you and those services is carried over TLS. We do not sell personal information, and we do not build a marketing mailing list out of FieldLux account data.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="mail-you-send-us">
-            <span class="speclist-index u-tabular">(07)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">MAIL YOU SEND US</h3>
-              <p class="u-text-measure">Mail to jay@field-lux.com is stored. The sender address and name, the subject, the body, any attachment and the delivery record are kept in the same database as the rest of the account data, so that a support thread can be read back later, and any reply we send is archived beside it. Only an administrator can read that mailbox. This includes the mail you would send to ask for deletion, correction or export, which is the one place on this page where writing to us and having it recorded are the same act.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="mail-you-send-us">
+              <span class="speclist-index u-tabular">(07)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">MAIL YOU SEND US</h3>
+                <p class="u-text-measure">Mail to jay@field-lux.com is stored. The sender address and name, the subject, the body, any attachment and the delivery record are kept in the same database as the rest of the account data, so that a support thread can be read back later, and any reply we send is archived beside it. Only an administrator can read that mailbox. This includes the mail you would send to ask for deletion, correction or export, which is the one place on this page where writing to us and having it recorded are the same act.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="address-verification">
-            <span class="speclist-index u-tabular">(08)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">PROVING THE ADDRESS IS YOURS</h3>
-              <p class="u-text-measure">Signing up and claiming founding-member standing both send a one-time code to the address you typed. The code itself is never stored in a readable form, only as a hash we can check your answer against, and it expires. Each attempt is logged with the address, the browser, and a hash of the requesting network address rather than the address itself. Those logs are pruned daily. That log is what stops one script from mailing codes at a thousand strangers.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="address-verification">
+              <span class="speclist-index u-tabular">(08)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">PROVING THE ADDRESS IS YOURS</h3>
+                <p class="u-text-measure">Signing up and claiming founding-member standing both send a one-time code to the address you typed. The code itself is never stored in a readable form, only as a hash we can check your answer against, and it expires. Each attempt is logged with the address, the browser, and a hash of the requesting network address rather than the address itself. Those logs are pruned daily. That log is what stops one script from mailing codes at a thousand strangers.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="no-payment-data">
-            <span class="speclist-index u-tabular">(09)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">NO PAYMENT DATA</h3>
-              <p class="u-text-measure">There is no checkout in FieldLux and no payment code in the build, so no card, no billing address and no payment processor record exists for any account. The <a class="link" href="/pricing">pricing page</a> publishes what plans would cost; nothing on it has ever charged anyone.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="no-payment-data">
+              <span class="speclist-index u-tabular">(09)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">NO PAYMENT DATA</h3>
+                <p class="u-text-measure">There is no checkout in FieldLux and no payment code in the build, so no card, no billing address and no payment processor record exists for any account. The <a class="link" href="/pricing">pricing page</a> publishes what plans would cost; nothing on it has ever charged anyone.</p>
+              </div>
+            </li>
 
-        </ol>
+          </ol>
 
+        </div>
       </div>
     </section>
 
@@ -302,47 +306,49 @@
     <section class="section section--pad-sm" id="your-choices" aria-labelledby="your-choices-title">
       <div class="site-shell--narrow">
 
-        <p class="micro-label">
-          <span class="micro-label-ord">(00)</span>
-          <span class="micro-label-name">YOUR CHOICES</span>
-        </p>
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(00)</span>
+            <span class="micro-label-name">YOUR CHOICES</span>
+          </p>
 
-        <h2 class="section-title reveal-lines" id="your-choices-title">
-          <span class="section-title-line reveal-line"><span class="reveal-line-inner">ASK FROM THE ADDRESS</span></span>
-          <span class="section-title-line reveal-line"><span class="reveal-line-inner">ON THE ACCOUNT.</span></span>
-        </h2>
+          <h2 class="section-title reveal-lines" id="your-choices-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">ASK FROM THE ADDRESS</span></span>
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">ON THE ACCOUNT.</span></span>
+          </h2>
 
-        <p class="copy section-lead u-text-measure reveal">One route and one address. The account email is what proves the request is yours, so it is the only thing we ask you for.</p>
+          <p class="copy section-lead u-text-measure reveal">One route and one address. The account email is what proves the request is yours, so it is the only thing we ask you for.</p>
 
-        <ol class="speclist reveal">
+          <ol class="speclist reveal">
 
-          <li class="speclist-item" id="deletion-correction-export">
-            <span class="speclist-index u-tabular">(01)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">DELETION, CORRECTION, EXPORT</h3>
-              <p class="u-text-measure">Email <a class="link" href="mailto:jay@field-lux.com">jay@field-lux.com</a> from the address associated with your account and say which of the three you want. That address is how the request is confirmed as yours.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="deletion-correction-export">
+              <span class="speclist-index u-tabular">(01)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">DELETION, CORRECTION, EXPORT</h3>
+                <p class="u-text-measure">Email <a class="link" href="mailto:jay@field-lux.com">jay@field-lux.com</a> from the address associated with your account and say which of the three you want. That address is how the request is confirmed as yours.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="account-deletion">
-            <span class="speclist-index u-tabular">(02)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">DELETING THE ACCOUNT</h3>
-              <p class="u-text-measure">Account deletion carries a 7-day grace period before the records go.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="account-deletion">
+              <span class="speclist-index u-tabular">(02)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">DELETING THE ACCOUNT</h3>
+                <p class="u-text-measure">Account deletion carries a 7-day grace period before the records go.</p>
+              </div>
+            </li>
 
-          <li class="speclist-item" id="changes">
-            <span class="speclist-index u-tabular">(03)</span>
-            <div class="speclist-body">
-              <h3 class="chapter-point-label">WHEN THIS PAGE CHANGES</h3>
-              <p class="u-text-measure">The date under the title moves when the text does. There is no mailing list to announce a change on, which is exactly why the date sits where you can see it.</p>
-            </div>
-          </li>
+            <li class="speclist-item" id="changes">
+              <span class="speclist-index u-tabular">(03)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">WHEN THIS PAGE CHANGES</h3>
+                <p class="u-text-measure">The date under the title moves when the text does. There is no mailing list to announce a change on, which is exactly why the date sits where you can see it.</p>
+              </div>
+            </li>
 
-        </ol>
+          </ol>
 
 
+        </div>
       </div>
     </section>
 

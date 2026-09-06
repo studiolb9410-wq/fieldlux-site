@@ -726,9 +726,18 @@ a{ color:inherit; }
   transition:transform var(--t-base) var(--ease-out),
              opacity var(--t-fast) var(--ease-out);
 }
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1){ transform:translateY(6.5px) rotate(45deg); }
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2){ opacity:0; }
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3){ transform:translateY(-6.5px) rotate(-45deg); }
+/* TWO BARS, NOT THREE. All five pages author two .nav-toggle-bar spans plus a
+   .u-visually-hidden label, so the :nth-child(3) rule that used to sit here
+   matched nothing and the open state painted ONE 45-degree stroke: bar 1
+   translated 6.5px onto bar 2's line, and bar 2 hidden by the rule between them.
+   Below 1181 this button is the entire navigation of the site (see the 1180
+   block), so the one state that says "this is now a close control" not drawing
+   was the worst place on the site for a rule to match nothing.
+   3.25px is half the 6.50px pitch between the two bar centres (a 1.5px bar plus
+   the 5px gap), so each bar meets the other on the button's centre line and the
+   open state is a real cross. The closed mark is unchanged. */
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1){ transform:translateY( 3.25px) rotate( 45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2){ transform:translateY(-3.25px) rotate(-45deg); }
 
 /* The overlay is `hidden` at rest; JS sets data-open to run the reveal (section 5.8). */
 .nav-overlay{
@@ -2347,10 +2356,29 @@ body.overlay-open{ overflow:hidden; }
   margin-block-start:var(--rhythm-group);
 }
 
+/* ONE MAX, FOUR. auto-fit already collapses the tracks a short list does not
+   use, so a 3- or 4-card chapter is byte-identical to what it was at every
+   width; what this stops is a fifth track opening at 1305px of shell and
+   leaving ch-01's last two cards in a row that is 38.8% full. Before the cap,
+   one component printed at three widths on one page (240.5 / 307.1 / 418)
+   decided by how many cards a chapter happens to have, and ch-08's last card
+   hung off a 240.5px rule with 1,065px of white beside it, under a rule that
+   ran the full 1305px one row above. The max() sits inside the existing
+   min(...,100%) guard, which still owns the sub-240px case. */
 .feature-cards{
   list-style:none; margin:0; padding:0;
   display:grid; gap:var(--gap);
-  grid-template-columns:repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  grid-template-columns:repeat(auto-fit,
+    minmax(min(100%, max(240px, (100% - var(--gap) * 3) / 4)), 1fr));
+}
+/* Ch 08 is the one six-card chapter, and six wants three: at the four-track cap
+   its second row is two cards under four, 49% of the shell, which is the same
+   ragged case the cap was added to remove. 3+3 fills both rows exactly, and
+   418px is the track #who's three-card strip already runs at, so the densest
+   chapter and the first one on the page measure the same. */
+.feature-cards--three{
+  grid-template-columns:repeat(auto-fit,
+    minmax(min(100%, max(240px, (100% - var(--gap) * 2) / 3)), 1fr));
 }
 .feature-card{
   min-inline-size:0;
