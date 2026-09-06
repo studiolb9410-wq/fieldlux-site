@@ -12,9 +12,10 @@ README and the spec disagree, the spec wins.
 |---|---|---|
 | `/` | `index.html` | The product, ten chapters, the numbers, the limits |
 | `/videos` | `videos.html` | Feature videos - 41 slots across the same ten chapters |
+| `/pricing` | `pricing.html` | The published price plan. Nothing purchasable yet |
 | `/privacy` | `privacy.html` | Privacy policy |
 | - | `404.html` | Not-found page |
-| - | `sitemap.xml`, `robots.txt` | `sitemap.xml` lists `/`, `/videos`, `/privacy` |
+| - | `sitemap.xml`, `robots.txt` | `sitemap.xml` lists `/`, `/videos`, `/pricing`, `/privacy` |
 
 `vercel.json` sets `cleanUrls: true` and `trailingSlash: false`, so internal links are
 written `/privacy` and `/videos` - **never** with a `.html` suffix.
@@ -220,7 +221,7 @@ caught and ignored.
 
 ## Source files
 
-- `index.html`, `videos.html`, `privacy.html`, `404.html` - the pages
+- `index.html`, `videos.html`, `pricing.html`, `privacy.html`, `404.html` - the pages
 - `src/input.css` - the design tokens and every site component class
 - `tailwind.config.js` - the colour scale and the content glob
 - `vercel.json` - clean URLs and the security headers, including the CSP

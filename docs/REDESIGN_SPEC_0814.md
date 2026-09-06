@@ -38,11 +38,13 @@ What **is** mounted and therefore claimable in the measurement lane: the Lux Hea
 
 **(b) There is no measured validation, and the site says so.** Nothing in the repo compares FieldLux output to lux-meter field data. The site therefore publishes the **frozen assumption error budgets** from `src/core/analysis/assumptions.js` (§6.13) and states plainly that no field validation exists. Publishing the worst number (±50% on room bounce) first is what buys credibility for the rest. See open question Q1.
 
-**(c) Banned vocabulary.** These strings must not appear anywhere in `index.html`, `videos.html`, `privacy.html` or `src/input.css`:
+**(c) Banned vocabulary.** These strings must not appear anywhere in `index.html`, `videos.html`, `pricing.html`, `privacy.html` or `src/input.css`:
 
 `enterprise-ready` · `SOC 2` · `GDPR compliant` · `encrypted at rest` · `penetration tested` · `load tested` · `99.x% uptime` · `measurement-grade` · `lab-verified` · `validated against real installations` · `±X% accurate` · `real-time collaboration` · `collaboration platform` · `desktop app` · `works offline` · `exports to MadMapper` · `MPCDI` · `anamorphic` · `automatic keystone correction` · `AI depth generation` · `Google 3D Tiles` · `address search` · `CAD import` · `DWG` · `DXF` · `floor-plan tracing` · `sketch-to-3D` · `guided onboarding` · `guided tour` · `get started in 5 minutes` · `screenshot export` · `image export` · `analysis CSV export` · `Spout` · `Syphon` · `NDI` · `radiosity` · `global illumination` · `ray tracing` · `Analysis panel` · `Analyze workspace` · `roadmap` · `resilience score` · `verdict` · `stress test` · `tolerance profile` · `site calibration`
 
-Ship gate: `grep -inE 'SOC 2|GDPR|enterprise-ready|load tested|MadMapper|MPCDI|anamorphic|radiosity|ray tracing|roadmap|resilience score|Spout|Syphon|NDI|DWG|DXF' index.html videos.html privacy.html src/input.css` must return nothing.
+Ship gate: `grep -inE 'SOC 2|GDPR|enterprise-ready|load tested|MadMapper|MPCDI|anamorphic|radiosity|ray tracing|roadmap|resilience score|Spout|Syphon|NDI|DWG|DXF' index.html videos.html pricing.html privacy.html src/input.css` must return nothing.
+
+> **This gate is a manual read, not a green check.** It matches `NDI` inside ordinary words ("pending", "founding", "binding") and it matches the deliberate negations the limits section is built on. Read every hit; do not "fix" a hit that is the site refusing a claim.
 
 **(d) The permitted stat pool.** No number may appear on the site as a headline figure unless it is in this list. Every one is verified against the shipped source.
 
@@ -68,6 +70,22 @@ Ship gate: `grep -inE 'SOC 2|GDPR|enterprise-ready|load tested|MadMapper|MPCDI|a
 | Ambient presets | `100,000 lx direct sunlight down to 5 lx theatre, plus full blackout` | `src/components/TopBar.jsx:194-215` (`AMBIENT_PRESETS`: Direct Sunlight 100000, Theater / Concert Hall 5, Full Blackout 0, Custom null) |
 
 Anything outside this table is not a stat, it is a guess, and it does not ship.
+
+**(e) Prices are not stats, and are deliberately kept out of the pool.** Added 2026-09-06 with
+`/pricing`. The three figures on that page (`KRW 9,900` / `17,900` / `149,000`) verify against an
+owner decision and nothing else: no shipped source, no log, no dated pull. Widening the pool to
+admit them would trade the pool's one entry condition for the convenience of one page.
+
+The resolution is typographic rather than editorial. Every price on `/pricing` is set as **ROLE 3,
+a figure inside prose**, in `.limits-text`, in a sentence. `.stat-value` and `.hero-readout-value`
+stay what §2 says they are: the only two classes allowed to print at `--fs-stat`, reserved for
+figures verified against shipped source. A price never enters those, never gets a `.stat-row`, and
+never takes a `.stat-unit` span (`KRW` is a currency code, not a measurement unit; the class is
+inventoried as units only). Set that way the pool does not bind, and the site keeps one rule about
+headline numbers rather than two.
+
+The same clause governs any future figure whose only source is a decision: publish it as prose,
+dated, with what it is a decision *about* stated in the same sentence.
 
 ### 1.3 The lux-labelling rule
 
@@ -466,7 +484,9 @@ Under `@media (forced-colors: active)` only, hide the image and render live text
 | `Limits` | `#limits` | anchor exists (§6.13) |
 | `Discord` | `data-discord-link` | `target="_blank" rel="noopener noreferrer"` |
 
-Plus two CTAs in `.nav-actions`: `Sign in` (`.btn--outline .btn--sm`, `data-app-link`) and `Start free` (`.btn--solid .btn--sm`, `data-app-link`). Both are always visible, including mobile. **Five nav links + two CTAs. That is the complete list.**
+Plus two CTAs in `.nav-actions`: `Sign in` (`.btn--outline .btn--sm`, `data-app-link`) and `Start free` (`.btn--solid .btn--sm`, `data-app-link`). Both are always visible, including mobile. **Six nav links + two CTAs. That is the complete list.**
+
+> **Amended 2026-09-06.** `Pricing` (`/pricing`) was added as the fifth mark and `Discord` moved to the sixth. It takes an ordinal because it is a page of this document, the same class of thing as `Videos`, rather than an account action. The phone header budget is untouched: `.nav-links` is `display:none` at 1180 px and below (`src/input.css:3257`), so the 380 px measurement never sees the sixth link, and above 1180 px the row has the width.
 
 Nav links must exist below 1180 px — `.nav-toggle` opens `.nav-overlay`. The current site has no mobile nav at all; that is a defect being fixed, not a style choice.
 
@@ -2414,9 +2434,9 @@ The privacy page is currently monolingual, has no canonical, no OG tags, and one
 
 | File | Contents |
 |---|---|
-| `sitemap.xml` | `/`, `/videos`, `/privacy` — with `<lastmod>`. None exists today. |
+| `sitemap.xml` | `/`, `/videos`, `/pricing`, `/privacy` — with `<lastmod>`. |
 | `robots.txt` | `User-agent: *` / `Allow: /` / `Sitemap: https://field-lux.com/sitemap.xml` |
-| `404.html` | Minimal: header, `PAGE NOT FOUND / 페이지를 찾을 수 없습니다`, links to `/`, `/videos`, `/privacy`. None exists today. |
+| `404.html` | Minimal: header, `PAGE NOT FOUND`, links to `/`, `/videos`, `/pricing`, `/privacy`. |
 
 Favicon set in `<head>` on all three pages:
 

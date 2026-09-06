@@ -1767,7 +1767,8 @@ body.overlay-open{ overflow:hidden; }
 
    ROLE 2 - ORDINAL AND INDEX COUNTER.  The number identifies a thing or its
    position in a set. Never a quantity, never a measurement.
-     .micro-label-ord     index x13  videos x63  privacy x4  404 x1   = 81
+     .micro-label-ord     index x13  videos x63  privacy x4  404 x1
+                          pricing x3                                    = 84
                           the document spine, plus the /videos filter chips and
                           the (NN) on every video card tag
                           index dropped 18 -> 13: eight of the eighteen printed
@@ -1780,26 +1781,31 @@ body.overlay-open{ overflow:hidden; }
      .index-counter-*     index x11  videos x21                       = 32 pairs
                           current / tick / total, in chapter feet, in the ch-06
                           pin counter, and in every /videos chapter count
-     .speclist-index      index x16  privacy x14  404 x3              = 33
-     .nav-overlay-index   x5 on each of the four pages                = 20
-                          still exactly five per page: index's overlay gained a
+     .speclist-index      index x16  privacy x14  404 x4  pricing x5   = 39
+     .nav-overlay-index   x6 on each of the five pages                = 30
+                          still exactly six per page: index's overlay gained a
                           "Sign in" action (.nav-overlay-actions) when the
                           header bar dropped that button at phone width, and it
                           is deliberately NOT in the numbered list, because the
                           list is the spine and an account action has no spine
-                          ordinal to take.
+                          ordinal to take. The spine went five -> six on
+                          2026-09-06 when /pricing landed: a page of this
+                          document, so it takes an ordinal, and Discord moved to
+                          (06). Zero header cost, .nav-links is display:none at
+                          1180 and below.
      .pin-counter         index ch-06 x1
-     ~172 sites across all four pages. By a wide margin the most repeated
+     ~186 sites across all five pages. By a wide margin the most repeated
      number on the site, and the reason this whole pass exists: it was being
      set two different ways depending on which component it landed in.
 
    ROLE 3 - FIGURE INSIDE PROSE.  The number is one word of a sentence.
      .chapter-point-text  index x58    .limits-text      index x16
      .copy (all variants) x34          .speclist-body    x33
-     .video-card-desc     videos x42   .stat-note        index x6, privacy x1
+     .video-card-desc     videos x42   .stat-note        index x6, privacy x1,
+                                                        pricing x1
      .media-caption x11, .hero-caption x1, .hero-readout-qual x3,
-     .footer-legal x4 (one per page), .pub-progress-text videos x1
-     ~210 elements over four pages, of which roughly 80 actually contain a
+     .footer-legal x5 (one per page), .pub-progress-text videos x1
+     ~245 elements over five pages, of which roughly 95 actually contain a
      digit today. Also covered: figures carried inside .chapter-point-label
      ("21 MEASURED MATERIALS", "642 COMBINATIONS CHECKED AGAINST THE MAKER'S
      OWN CALCULATOR: 47 OF 87 HEADS", "13 POINTS, DRAWN ON THE SURFACE"), and

@@ -65,6 +65,7 @@
         <a class="nav-link" href="#measure">Measurement</a>
         <a class="nav-link" href="/videos" aria-label="Feature videos">Videos</a>
         <a class="nav-link" href="#limits">Limits</a>
+        <a class="nav-link" href="/pricing">Pricing</a>
         <a class="nav-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link data-tooltip="Official FieldLux community: beta access, catalogue submissions and bug reports." target="_blank" rel="noopener noreferrer">Discord</a>
       </nav>
 
@@ -109,19 +110,32 @@
           </a>
         </li>
         <li>
-          <a class="nav-overlay-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">
+          <a class="nav-overlay-link" href="/pricing">
             <span class="nav-overlay-index" aria-hidden="true">(05)</span>
+            <span>Pricing</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">
+            <span class="nav-overlay-index" aria-hidden="true">(06)</span>
             <span>Discord</span>
           </a>
         </li>
       </ul>
 
       <!-- Sign in leaves the header bar at 560 and below (see the 560 block in
-           src/input.css: the row does not fit on a phone). It is NOT a sixth
+           src/input.css: the row does not fit on a phone). It is NOT a seventh
            entry in the list above: that list is the document spine, and its
-           (01) to (05) are the same five marks on all four pages. An account
+           (01) to (06) are the same six marks on all five pages. An account
            action is a different class of thing, so it sits below the spine as
-           an action rather than taking an ordinal it does not own. -->
+           an action rather than taking an ordinal it does not own.
+
+           The spine went from five marks to six on 2026-09-06, when /pricing
+           landed. It earned an ordinal because it is a page of this document,
+           the same class of thing as Videos, and not an action. The header cost
+           of the sixth mark is zero: .nav-links is display:none at 1180 and
+           below (src/input.css:3257), so the phone header budget measured in the
+           380 block never sees it, and above 1180 the row has the width. -->
       <div class="nav-overlay-actions">
         <a class="btn btn--outline" href="https://app.field-lux.com" data-app-link>Sign in</a>
       </div>
@@ -1363,7 +1377,7 @@
 
           <h2 class="feature-title reveal" id="beta-title">OPEN BETA. FREE. HONESTLY LIMITED.</h2>
 
-          <p class="feature-sub reveal">2 <span class="stat-unit">GB</span> of imported-model storage, a 1 <span class="stat-unit">GiB</span> media library, and a 200 <span class="stat-unit">MB</span> ceiling per file. There is no pricing page because there are no paid plans yet. Early testers who verify their invite code keep founding-member standing, which carries 12 months of access once those plans begin.</p>
+          <p class="feature-sub reveal">2 <span class="stat-unit">GB</span> of imported-model storage, a 1 <span class="stat-unit">GiB</span> media library, and a 200 <span class="stat-unit">MB</span> ceiling per file. There are no paid plans yet and nothing to buy; what they would cost is published on the <a class="link" href="/pricing">pricing page</a> so it can be argued with before it exists. Early testers who verify their invite code keep founding-member standing, which carries 12 months of access once those plans begin.</p>
 
         </div>
       </div>
@@ -1436,6 +1450,7 @@
         <div class="footer-col">
           <p class="footer-col-title">links</p>
           <ul class="footer-links">
+            <li><a class="footer-link" href="/pricing">Pricing</a></li>
             <li><a class="footer-link" href="/privacy">Privacy</a></li>
             <li><a class="footer-link" href="/videos">Feature videos</a></li>
             <li><a class="footer-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">Discord</a></li>

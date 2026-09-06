@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Pricing | FieldLux</title>
+  <meta name="description" content="FieldLux is in open beta and free. This is the published plan for what it will cost: a 9,900 KRW week pass, 17,900 a month, 149,000 a year, single payments with no auto-renewal, and an expired pass that still opens every project. There is no checkout yet and nothing on this page can be bought.">
+  <link rel="canonical" href="https://field-lux.com/pricing">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FieldLux">
+  <meta property="og:title" content="Pricing | FieldLux">
+  <meta property="og:description" content="The published plan for what FieldLux will cost, and the plain statement that none of it is built. There is no checkout, no payment code and no plan enforcement in the app: every account today is open beta and free.">
+  <meta property="og:url" content="https://field-lux.com/pricing">
+  <!-- og-pricing.png does not exist. videos.html carries the same note: a social
+       card that 404s renders blank, so a page without its own card falls back to
+       the shipped one rather than pointing at a file nobody has made. -->
+  <meta property="og:image" content="https://field-lux.com/assets/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pricing | FieldLux">
+  <meta name="twitter:description" content="The published plan for what FieldLux will cost, and the plain statement that none of it is built. There is no checkout, no payment code and no plan enforcement in the app: every account today is open beta and free.">
+  <meta name="twitter:image" content="https://field-lux.com/assets/og-card.png">
+
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="/assets/favicon-16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/assets/logo-mark-180.png">
+
+  <link rel="preload" href="/assets/fonts/geologica-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/pretendard/PretendardVariable.subset.91.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="/assets/tailwind.css">
+
+  <script>
+    /* Motion preference, read before first paint (spec 5.9). Tri-state: on / off / follow OS. */
+    (function () {
+      try {
+        var m = window.localStorage.getItem('fieldlux_motion');
+        if (m === 'on' || m === 'off') { document.documentElement.setAttribute('data-motion', m); }
+      } catch (e) { /* storage blocked: follow the OS */ }
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="site-shell nav-shell">
+      <a class="brand-lockup" href="/" aria-label="FieldLux home">
+        <img class="brand-lockup-img" src="/assets/logo-ink.png" width="154" height="45" alt="FieldLux">
+        <span class="brand-beta">BETA</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a class="nav-link" href="/#product">Product</a>
+        <a class="nav-link" href="/#measure">Measurement</a>
+        <a class="nav-link" href="/videos" aria-label="Feature videos">Videos</a>
+        <a class="nav-link" href="/#limits">Limits</a>
+        <a class="nav-link" href="/pricing" aria-current="page">Pricing</a>
+        <a class="nav-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link data-tooltip="Official FieldLux community: beta access, catalogue submissions and bug reports." target="_blank" rel="noopener noreferrer">Discord</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn btn--outline btn--sm" href="https://app.field-lux.com" data-app-link>Sign in</a>
+        <a class="btn btn--solid btn--sm" href="https://app.field-lux.com" data-app-link>Start free</a>
+      </div>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-overlay">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="u-visually-hidden">Menu</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="nav-overlay" id="nav-overlay" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <div class="nav-overlay-inner">
+      <ul class="nav-overlay-list">
+        <li>
+          <a class="nav-overlay-link" href="/#product">
+            <span class="nav-overlay-index" aria-hidden="true">(01)</span>
+            <span>Product</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="/#measure">
+            <span class="nav-overlay-index" aria-hidden="true">(02)</span>
+            <span>Measurement</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="/videos">
+            <span class="nav-overlay-index" aria-hidden="true">(03)</span>
+            <span>Videos</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="/#limits">
+            <span class="nav-overlay-index" aria-hidden="true">(04)</span>
+            <span>Limits</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="/pricing" aria-current="page">
+            <span class="nav-overlay-index" aria-hidden="true">(05)</span>
+            <span>Pricing</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-overlay-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">
+            <span class="nav-overlay-index" aria-hidden="true">(06)</span>
+            <span>Discord</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <main class="site-main" id="main" tabindex="-1">
+
+    <!-- == THE ARGUMENT OF THIS PAGE ========================================
+         This page publishes a price for something nobody can buy, which is the
+         one shape the evidence rule (spec 1.2a) is hardest on. It is allowed to
+         exist on exactly one condition: it never describes itself as a store,
+         and the absence is stated before the first figure rather than after the
+         last one. The h1's second line is the whole compliance argument, and it
+         is repeated in the lead, in the dateline, inside two tables and in a
+         closing section of its own.
+
+         THREE COMPONENT RULES, each one load-bearing, each one the reason a
+         price is NOT typeset the way the home page typesets a statistic:
+
+           1. PRICES ARE ROLE 3, NOT ROLE 1. Every figure here lives inside
+              .limits-text, in a sentence. .stat-value is reserved (input.css
+              1759-1766) for the six #numbers figures, each verified against
+              shipped source. 9,900 verifies against an owner decision dated
+              2026-09-06 and nothing else, so it must not print at --fs-stat and
+              must not enter the verified stat pool (spec 1.2d). Set as prose it
+              is not a headline statistic and the pool does not bind.
+
+           2. KRW IS A WORD, NOT A .stat-unit. That class is inventoried
+              (input.css 1999-2006) as measurement units only. A currency code is
+              not a measurement. The GB / GiB / MB spans on this page are real
+              units and keep theirs.
+
+           3. NO DARK BAND. The on-mass override set (input.css 497-525) has no
+              rule for .limits or .speclist, so a .section--mass here would print
+              near-black keys on navy.
+
+         AND ONE COPY RULE: no capability is claimed for delivery mode that the
+         deployed build cannot do today. The Tech Rider PDF is claimed because it
+         ships. Screen capture is NOT claimed as a feature anywhere on this page
+         (it is also banned vocabulary, spec 1.2c); the one row that mentions a
+         screen says only that nothing is added to prevent it, which is a
+         statement about an absence, not about a button. -->
+
+    <!-- == PR1, #pricing, the page head ==================================== -->
+    <section class="section" id="pricing" aria-labelledby="pricing-title">
+      <div class="site-shell--narrow">
+
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-name">PRICING</span>
+          </p>
+
+          <h1 class="section-title reveal-lines" id="pricing-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">THE PRICES ARE SET.</span></span>
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">THE CHECKOUT IS NOT BUILT.</span></span>
+          </h1>
+
+          <p class="copy section-lead u-text-measure reveal">This page publishes what FieldLux will cost and how it will work. It is not a store. There is no purchase screen in the app, no payment code in the build and no plan enforcement anywhere in it, so nothing here can be bought today and no button on this page charges anything. Every FieldLux account right now is open beta and free.</p>
+
+          <p class="copy u-text-measure reveal">It is published this early for one reason. Somebody deciding whether to build a way of working on a tool needs the number before the workflow is built, not after it. Read it the way you would read the limits page: every figure is stated with what it counts, the arithmetic that put it where it is gets printed rather than left for you to do, and where something is a decision rather than a shipped behaviour the row says which of the two it is.</p>
+
+          <p class="stat-note u-tabular reveal">Published: September 6, 2026. The prices below are proposed. No account has been charged.</p>
+
+          <div class="hero-actions">
+            <a class="btn btn--text" href="#expiry">WHAT AN EXPIRED PASS KEEPS</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- == PR2, #today, what is free right now ============================= -->
+    <section class="section section--pad-md" id="today" aria-labelledby="today-title">
+      <div class="site-shell--narrow">
+
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-name">TODAY</span>
+          </p>
+
+          <h2 class="section-title reveal-lines" id="today-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">TODAY IT IS FREE,</span></span>
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">AND NOT AS A TRIAL.</span></span>
+          </h2>
+
+          <p class="copy section-lead u-text-measure reveal">Every account on FieldLux is an open beta account. There is no card on file, no clock counting down to a paywall and no tier to choose at signup. The three rows below are the only limits on this page that anything currently enforces, and they are running in the deployed app as you read this.</p>
+
+          <div class="limits reveal">
+            <div class="limits-row">
+              <p class="limits-key">IMPORTED MODEL STORAGE</p>
+              <p class="limits-text">2 <span class="stat-unit">GB</span> per account, across every project you own. This is the open beta quota and the app holds you to it today.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">MEDIA LIBRARY</p>
+              <p class="limits-text">1 <span class="stat-unit">GiB</span> per account, with a 200 <span class="stat-unit">MB</span> ceiling on any single file. Both are open beta quotas and both are enforced in the app today.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">NOTHING IS BEHIND A PAYMENT</p>
+              <p class="limits-text">No part of the product sits behind a payment gate, because there is no payment gate to sit behind. Where something is switched off it is switched off by a beta flag, and the limits page names those by hand.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- == PR3, #passes, the three products ================================ -->
+    <section class="section section--pad-md" id="passes" aria-labelledby="passes-title">
+      <div class="site-shell--narrow">
+
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-name">THE THREE PASSES</span>
+          </p>
+
+          <h2 class="section-title reveal-lines" id="passes-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">ONE WEEK, ONE MONTH,</span></span>
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">OR ONE YEAR.</span></span>
+          </h2>
+
+          <p class="copy section-lead u-text-measure reveal">Three lengths, each bought once, each in Korean won and each including VAT. There is no feature ladder between them: the only difference between the three rows below is how many days. Which one is cheaper for the way you actually work is arithmetic rather than opinion, so it is worked out in the next section instead of argued for here.</p>
+
+          <div class="limits reveal">
+            <div class="limits-row">
+              <p class="limits-key">WEEK PASS, 7 DAYS</p>
+              <p class="limits-text">KRW 9,900 including VAT, paid once. Sized to one job rather than one month: buy it in the week you are quoting or rigging, and buy nothing in the weeks you are not.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">MONTH PASS, 30 DAYS</p>
+              <p class="limits-text">KRW 17,900 including VAT, paid once. For a month with more than one job in it.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">YEAR PASS, 365 DAYS</p>
+              <p class="limits-text">KRW 149,000 including VAT, paid once. That is about KRW 12,400 for each month of it, and it is the row for a designer who has FieldLux open most weeks of the year rather than a few.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">WHAT A PASS BUYS</p>
+              <p class="limits-text">The whole app, in one state. No head-count tier, no export held back for the longer pass and no published limit that moves for money. A pass buys days, and that is the only thing it buys.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- == PR4, #arithmetic, every crossover ===============================
+         Three of these five rows say buy the smaller thing. That is the point of
+         printing them: a ladder that only ever argued upward would not need a
+         table, it would need a sales page. -->
+    <section class="section section--pad-sm section--pad-start-md" id="arithmetic" aria-labelledby="arithmetic-title">
+      <div class="site-shell--narrow">
+
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-name">THE ARITHMETIC</span>
+          </p>
+
+          <h2 class="section-title reveal-lines" id="arithmetic-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">EVERY CROSSOVER,</span></span>
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">WORKED OUT.</span></span>
+          </h2>
+
+          <p class="copy section-lead u-text-measure reveal">Five comparisons, and three of them say buy the smaller thing. The ladder was set so that you cannot overpay by buying in the small pieces that suit the way you work, and the only way to show that is to print the sums.</p>
+
+          <div class="limits reveal">
+            <div class="limits-row">
+              <p class="limits-key">ONE JOB IN A MONTH</p>
+              <p class="limits-text">9,900 as a week pass against 17,900 as a month pass. The week pass is 8,000 cheaper. If you open FieldLux once in a month, that is the row.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">TWO JOBS IN THE SAME MONTH</p>
+              <p class="limits-text">19,800 as two week passes against 17,900 as one month pass. The month pass is 1,900 cheaper. This is the crossover the ladder was set around, and it sits at the second purchase rather than the fourth, which was the one deliberate correction made to these numbers.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">TWO JOBS, TWO DIFFERENT MONTHS</p>
+              <p class="limits-text">19,800 as two week passes against 35,800 as two month passes. The week passes are 16,000 cheaper. Two jobs in a year is not two jobs in a month, and the crossover above does not carry across a gap.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">FIFTEEN WEEKS OF USE</p>
+              <p class="limits-text">148,500 as fifteen week passes against 149,000 as a year pass. 500 apart. Below fifteen weeks the week passes cost less, above it the year does, and at fifteen the two are the same money.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">A FULL YEAR</p>
+              <p class="limits-text">149,000 as a year pass, 214,800 as twelve month passes, 514,800 as fifty-two week passes. Against month passes the year pays for itself in the ninth month: eight of them come to 143,200 and nine come to 161,100.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- == PR5, #expiry, when a pass ends ==================================
+         The three sub-groups use the ordinal spine the same way #limits does on
+         the home page: (01) what is kept, (02) what stops, (03) the statement
+         that none of it runs. Group (03) is not a footnote. A reader who scans
+         only tables has to hit the absence somewhere, and this is where. -->
+    <section class="section section--pad-sm" id="expiry" aria-labelledby="expiry-title">
+      <div class="site-shell--narrow">
+
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-name">WHEN A PASS ENDS</span>
+          </p>
+
+          <h2 class="section-title reveal-lines" id="expiry-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">NOTHING IS DELETED.</span></span>
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">NOTHING IS LOCKED AWAY.</span></span>
+          </h2>
+
+          <p class="copy section-lead u-text-measure reveal">This is the part worth reading before the prices, because it is what makes a seven-day pass a sane thing to buy. When a pass runs out the account changes what it will let you do next. It does not change what it will let you reach. The working name for that state is delivery mode.</p>
+
+          <p class="micro-label">
+            <span class="micro-label-ord">(01)</span>
+            <span class="micro-label-name">WHAT AN EXPIRED ACCOUNT KEEPS</span>
+          </p>
+
+          <div class="limits reveal">
+            <div class="limits-row">
+              <p class="limits-key">OPENING AND VIEWING</p>
+              <p class="limits-text">Every project on the account still opens and still loads in 3D. Projectors, lenses, masks, materials and saved measurement results are all still there to look at, on a screen, in front of a client.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">A SHARE LINK YOU ALREADY MADE</p>
+              <p class="limits-text">A read-only share link you have not revoked, expired or password-protected keeps resolving. A pass ending does not close a link a client is already using. What a share does and does not protect, including the public storage bucket, is set out on the limits page, and none of that changes either way.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">THE PDF TECH RIDER</p>
+              <p class="limits-text">The PDF Tech Rider export keeps working. A document you owe somebody can still leave the app after the pass that produced it has ended.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">SHOWING IT ON A SCREEN</p>
+              <p class="limits-text">Delivery mode adds nothing to stop you. The viewport is not blanked, watermarked or covered over when a pass ends, and no measurement label is hidden that was visible the day before.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">YOUR FILES</p>
+              <p class="limits-text">Imported models and media stay on the account under the same quotas as before. Expiry is not a deletion event. What happens to an account that has been dormant for a very long time is not decided, and it is left off this page rather than guessed at.</p>
+            </div>
+          </div>
+
+          <p class="micro-label">
+            <span class="micro-label-ord">(02)</span>
+            <span class="micro-label-name">WHAT AN EXPIRED ACCOUNT STOPS</span>
+          </p>
+
+          <div class="limits reveal">
+            <div class="limits-row">
+              <p class="limits-key">NEW PROJECTS</p>
+              <p class="limits-text">Creating a new project needs a live pass.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">EDITING AND SAVING</p>
+              <p class="limits-text">Changing anything inside a project, and saving that change, needs a live pass. What is already saved stays exactly as saved, and buying another pass returns the account to editing with the same projects in it.</p>
+            </div>
+          </div>
+
+          <p class="micro-label">
+            <span class="micro-label-ord">(03)</span>
+            <span class="micro-label-name">AND NONE OF IT IS RUNNING</span>
+          </p>
+
+          <div class="limits reveal">
+            <div class="limits-row">
+              <p class="limits-key">NOTHING CAN EXPIRE YET</p>
+              <p class="limits-text">No pass exists, so no pass can run out. Delivery mode is specified and has never run: no account has been in it and none can be put in it. Every account today is in full edit with no pass at all.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- == PR6, #terms, the fine print ===================================== -->
+    <section class="section section--pad-sm section--pad-end-md" id="terms" aria-labelledby="terms-title">
+      <div class="site-shell--narrow">
+
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-name">THE FINE PRINT</span>
+          </p>
+
+          <h2 class="section-title reveal-lines" id="terms-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">HOW THE MONEY WOULD WORK.</span></span>
+          </h2>
+
+          <p class="copy section-lead u-text-measure reveal">Written in the conditional throughout, because none of it is live. These are the terms a first charge would be made under, published now so that they cannot be quietly written differently once there is something to charge for.</p>
+
+          <div class="limits reveal">
+            <div class="limits-row">
+              <p class="limits-key">NOT BUILT</p>
+              <p class="limits-text">No checkout, no payment code, no plan enforcement. The app today has one state, open beta, and it is free for everyone in it. Nothing on this page can be bought and nobody has been charged.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">SINGLE PAYMENTS ONLY</p>
+              <p class="limits-text">Each pass is one payment for one period. No card is stored, nothing renews on its own, and there is no subscription to remember to cancel because there is no subscription. A pass ends by ending, and buying another one is something you do on purpose.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">CHOOSING THE START DATE</p>
+              <p class="limits-text">A pass can be dated forward at purchase, up to 14 days out. Buy on the Monday for a pass that opens on the Thursday, so a week pass bought for a show does not expire the night of the show. Designed, not built.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">CURRENCY</p>
+              <p class="limits-text">Charged in Korean won through a Korean payment provider. TossPayments is the plan, not an integration. This page prints no second currency and no approximate conversion: a rate written here today is wrong by the time it is read, and your card issuer converts at a rate we do not set and cannot quote.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">TAX</p>
+              <p class="limits-text">The three figures include VAT. The price you read is the price that would be charged, and there is no amount added at the end.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">REFUND, PASS NOT STARTED</p>
+              <p class="limits-text">A pass bought and not yet started refunds in full.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">REFUND, PASS RUNNING</p>
+              <p class="limits-text">A pass that has started refunds pro rata on the days remaining. A month pass cancelled on day 10 refunds the other 20 days.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">FOUNDING MEMBERS</p>
+              <p class="limits-text">Early testers who verify their invite code keep founding-member standing, which carries 12 months of access once paid plans begin. That is the same promise the home page already makes, and nothing on this page shortens it.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">NO RETROACTIVE CHARGE</p>
+              <p class="limits-text">No account is billed for time already spent in the open beta. Whatever the first charge turns out to be, it starts on the day plans begin and not on the day you signed up.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">WHAT A PASS WOULD NOT CHANGE</p>
+              <p class="limits-text">No published limit moves for money. The ceiling of 64 projectors in a scene is a hard GPU cap and the runtime detector can set it lower on your machine; no pass raises it. The 2 <span class="stat-unit">GB</span> model store, the 1 <span class="stat-unit">GiB</span> media library and the 200 <span class="stat-unit">MB</span> per-file ceiling are the same on every pass, and no pass tightens an error budget on the limits page.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">WHAT A FREE ACCOUNT IS AFTER THAT</p>
+              <p class="limits-text">Not decided. Whether an account with no pass can still be created once paid plans begin has not been settled, and it is left off this page rather than guessed at. It lands here in writing before it lands in the app.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">IF THESE NUMBERS MOVE</p>
+              <p class="limits-text">This page carries the date it was published, and the date moves when the text does. There is no mailing list to announce a change on, and there is no form on this page to leave an address in, which is exactly why the date sits under the title where you can see it.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- == PR7, #not-built, the absences ===================================
+         The evidence rule is quoted here as the reason the list exists. A page
+         that publishes a price for an unbuilt product either enumerates what is
+         missing or it is a claim about a product. This is the enumeration. -->
+    <section class="section section--pad-md section--pad-end-lg" id="not-built" aria-labelledby="not-built-title">
+      <div class="site-shell--narrow">
+
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-name">NOT BUILT</span>
+          </p>
+
+          <h2 class="section-title reveal-lines" id="not-built-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">NOTHING HERE CAN BE BOUGHT.</span></span>
+          </h2>
+
+          <p class="copy section-lead u-text-measure reveal">This site ships a rule: a claim only stands if a visitor could reach the thing it describes in the deployed build today. A price for something nobody can buy fails that rule, so the failure is enumerated here rather than left for you to find. This is exactly what does not exist.</p>
+
+          <ol class="speclist reveal">
+
+            <li class="speclist-item">
+              <span class="speclist-index u-tabular">(01)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">NO CHECKOUT</h3>
+                <p class="u-text-measure">There is no purchase screen anywhere in FieldLux. No payment provider is connected, no payment code is in the build, and no card has ever been charged by this product. TossPayments is named above as an intention, not as an integration.</p>
+              </div>
+            </li>
+
+            <li class="speclist-item">
+              <span class="speclist-index u-tabular">(02)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">NO PLAN STATE</h3>
+                <p class="u-text-measure">No account carries a pass, a start date or an expiry date. Nothing in the app can tell a paid account from an unpaid one, which is another way of saying every account is the same account.</p>
+              </div>
+            </li>
+
+            <li class="speclist-item">
+              <span class="speclist-index u-tabular">(03)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">NO ENFORCEMENT</h3>
+                <p class="u-text-measure">Delivery mode has never run. The behaviour in the two tables above is specified and unwritten, so no account has been in it and none can be put in it.</p>
+              </div>
+            </li>
+
+            <li class="speclist-item">
+              <span class="speclist-index u-tabular">(04)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">NO START-DATE PICKER</h3>
+                <p class="u-text-measure">Choosing a start date up to 14 days ahead is a decision, not a feature. It has no screen and no code behind it.</p>
+              </div>
+            </li>
+
+            <li class="speclist-item">
+              <span class="speclist-index u-tabular">(05)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">NO REFUND ROUTE</h3>
+                <p class="u-text-measure">The refund terms above say what would be honoured. There is nothing to refund yet and no mechanism to refund it with.</p>
+              </div>
+            </li>
+
+          </ol>
+
+          <p class="copy u-text-measure reveal">If the week is the wrong length, if the ladder is priced at the wrong step, or if there is something an expired pass has to keep that is not in the table above, that is worth saying while it is still only a page. Post it in the Discord, or write to <a class="link" href="mailto:jay@field-lux.com">jay@field-lux.com</a>.</p>
+
+          <div class="hero-actions">
+            <a class="btn btn--solid" href="https://app.field-lux.com" data-app-link>START FREE</a>
+            <a class="btn btn--outline" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">JOIN DISCORD</a>
+            <a class="btn btn--text" href="/#limits">READ THE LIMITS</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- == S13, Footer ======================================================= -->
+  <footer class="site-footer">
+    <div class="site-shell footer-inner">
+
+      <a class="brand-lockup" href="/" aria-label="FieldLux home">
+        <img class="brand-lockup-img" src="/assets/logo-ink.png" width="154" height="45" alt="FieldLux">
+      </a>
+
+      <p class="footer-lead">WE'RE BUILDING THIS WITH THE PEOPLE WHO RIG IT.</p>
+
+      <div class="footer-contact">
+        <p class="footer-contact-item">
+          <span class="footer-col-title">hello</span>
+          <a class="footer-link" href="mailto:jay@field-lux.com">jay@field-lux.com</a>
+        </p>
+      </div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <p class="footer-col-title">links</p>
+          <ul class="footer-links">
+            <li><a class="footer-link" href="/pricing">Pricing</a></li>
+            <li><a class="footer-link" href="/privacy">Privacy</a></li>
+            <li><a class="footer-link" href="/videos">Feature videos</a></li>
+            <li><a class="footer-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">Discord</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-meta">
+        <p class="footer-legal">Copyright 2026 FieldLux. Open beta</p>
+        <button class="motion-toggle" type="button" aria-pressed="false">Reduce motion</button>
+      </div>
+
+    </div>
+  </footer>
+  <script>
+    /* One inline IIFE, the same three JS contracts index.html runs (spec 10.4),
+       plus the shared motion, overlay and reveal blocks. Byte-identical to the
+       block privacy.html and 404.html carry; keep it that way.
+
+       What is deliberately NOT here, because this page has none of the elements
+       those blocks drive and a guarded block that can never fire is dead code:
+       the hero typewriter, the hero frame facade embed, the .pin-panel progress
+       observer, the chapter <video> visibility observer, and the leanData probe
+       that only the video blocks consumed. The scroll listener keeps the header
+       state only, exactly as index.html does now that the perspective monitor is
+       retired: there is no --mon-tilt to lerp on any page. */
+    (() => {
+      'use strict';
+
+      const doc  = document;
+      const root = doc.documentElement;
+
+      /* -- storage, guarded ------------------------------------------------ */
+      const store = (() => {
+        try {
+          const s = window.localStorage;
+          const probe = '__fieldlux_probe__';
+          s.setItem(probe, '1'); s.removeItem(probe);
+          return s;
+        } catch (_) { return null; }
+      })();
+      const read  = (k) => { try { return store && store.getItem(k); }  catch (_) { return null; } };
+      const write = (k, v) => { try { store && store.setItem(k, v); }   catch (_) {} };
+      const drop  = (k) => { try { store && store.removeItem(k); }      catch (_) {} };
+
+      const params = new URLSearchParams(window.location.search);
+
+      /* == 10.4 (b), flowAppUrl review override: host allowlist ============ */
+      const DEFAULT_APP_URL = 'https://app.field-lux.com';
+      const APP_KEY = 'fieldlux_flow_app_url';
+
+      function isAllowedAppHost(u) {
+        try {
+          const p = new URL(u);
+          const h = p.hostname;
+          if (p.protocol === 'http:' && (h === 'localhost' || h === '127.0.0.1')) return true;
+          if (p.protocol !== 'https:') return false;
+          return h === 'field-lux.com' || h.endsWith('.field-lux.com')
+              || h.endsWith('.vercel.app')
+              || h === 'localhost' || h === '127.0.0.1';
+        } catch { return false; }
+      }
+
+      let appUrl = DEFAULT_APP_URL;
+      const suppliedApp = params.get('flowAppUrl') || read(APP_KEY);
+      if (suppliedApp) {
+        if (isAllowedAppHost(suppliedApp)) {
+          appUrl = new URL(suppliedApp).href;
+          write(APP_KEY, appUrl);
+        } else {
+          /* a bad value must not persist for this visitor */
+          appUrl = DEFAULT_APP_URL;
+          drop(APP_KEY);
+        }
+      }
+
+      /* == 10.4 (a), data-app-link rewriting, with siteReturnUrl ============ */
+      const getAppLinkUrl = () => {
+        try {
+          const url = new URL(appUrl, window.location.href);
+          url.searchParams.set('siteReturnUrl', window.location.href);
+          return url.href;
+        } catch (_) { return appUrl; }
+      };
+
+      doc.querySelectorAll('[data-app-link]').forEach((link) => {
+        const appLinkUrl = getAppLinkUrl();
+        link.href = appLinkUrl;
+        link.addEventListener('click', (event) => {
+          /* modifier-key / middle-click passthrough: let the browser do its thing */
+          if (event.defaultPrevented || event.button !== 0
+              || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          window.location.assign(appLinkUrl);
+        });
+      });
+
+      /* == 10.4 (c), discordUrl allowlist ================================== */
+      const DEFAULT_DISCORD_URL = 'https://discord.gg/JpeQ7Hgsnd';
+      const DISCORD_KEY = 'fieldlux_discord_url';
+
+      let discordUrl = DEFAULT_DISCORD_URL;
+      const suppliedDiscord = params.get('discordUrl') || read(DISCORD_KEY);
+      if (suppliedDiscord) {
+        try {
+          const parsed = new URL(suppliedDiscord, window.location.href);
+          const h = parsed.hostname;
+          const isDiscordHost = h === 'discord.gg' || h === 'discord.com' || h.endsWith('.discord.com');
+          if (parsed.protocol === 'https:' && isDiscordHost) {
+            discordUrl = parsed.href;
+            write(DISCORD_KEY, discordUrl);
+          }
+        } catch (_) { discordUrl = DEFAULT_DISCORD_URL; }
+      }
+
+      doc.querySelectorAll('[data-discord-link]').forEach((link) => {
+        link.href = discordUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.setAttribute('aria-disabled', 'false');
+        link.removeAttribute('title');   /* the CSS ::after tooltip is the only tooltip */
+      });
+
+      /* == 5.9, Motion: tri-state (on / off / follow the OS) =============== */
+      const MOTION_KEY = 'fieldlux_motion';
+      const osReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const motionAllowed = () => {
+        const m = root.dataset.motion;
+        if (m === 'on')  return true;
+        if (m === 'off') return false;
+        return !osReduce.matches;
+      };
+      const MOTION_EVENT = 'fieldlux:motionchange';
+      const announceMotion = () => doc.dispatchEvent(new CustomEvent(MOTION_EVENT));
+
+      const motionToggles = [...doc.querySelectorAll('.motion-toggle')];
+      const syncMotionToggles = () => {
+        const reduced = !motionAllowed();
+        motionToggles.forEach((b) => b.setAttribute('aria-pressed', reduced ? 'true' : 'false'));
+      };
+      motionToggles.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          root.dataset.motion = motionAllowed() ? 'off' : 'on';
+          write(MOTION_KEY, root.dataset.motion);
+          syncMotionToggles();
+          announceMotion();
+        });
+      });
+      if (osReduce.addEventListener) {
+        osReduce.addEventListener('change', () => { syncMotionToggles(); announceMotion(); });
+      }
+      syncMotionToggles();
+
+      /* == 5.8, One overlay system, one Escape handler ====================== */
+      const overlays = [];
+      function openOverlay(rec) { overlays.push(rec); doc.body.classList.add('overlay-open'); }
+      function closeTop() {
+        const r = overlays.pop();
+        if (r && r.close) r.close();
+        if (!overlays.length) doc.body.classList.remove('overlay-open');
+      }
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlays.length) closeTop();
+      });
+
+      /* == 5.6, Nav overlay: focus trap, inert, focus return =============== */
+      const navToggle  = doc.querySelector('.nav-toggle');
+      const navOverlay = doc.getElementById('nav-overlay');
+      const siteMain   = doc.getElementById('main');
+      const siteFooter = doc.querySelector('.site-footer');
+      const FOCUSABLE  = 'a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])';
+
+      if (navToggle && navOverlay) {
+        let navReturnFocus = null;
+        let navHideTimer = null;
+
+        const trapStops = () => [navToggle].concat([...navOverlay.querySelectorAll(FOCUSABLE)]);
+
+        const onTrapKeydown = (e) => {
+          if (e.key !== 'Tab') return;
+          const stops = trapStops();
+          if (!stops.length) return;
+          const first = stops[0];
+          const last  = stops[stops.length - 1];
+          if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
+        };
+
+        const closeNav = () => {
+          navOverlay.removeAttribute('data-open');
+          /* the 420 ms exit is still painted and still hit-testable: take it out of
+             the tab order for the whole close, not only once `hidden` lands (spec 5.6) */
+          navOverlay.setAttribute('inert', '');
+          navToggle.setAttribute('aria-expanded', 'false');
+          if (siteMain)   siteMain.removeAttribute('inert');
+          if (siteFooter) siteFooter.removeAttribute('inert');
+          doc.removeEventListener('keydown', onTrapKeydown, true);
+          window.clearTimeout(navHideTimer);
+          navHideTimer = window.setTimeout(() => {
+            navOverlay.hidden = true;
+            navOverlay.removeAttribute('inert');
+          }, motionAllowed() ? 440 : 0);
+          if (navReturnFocus && navReturnFocus.focus) navReturnFocus.focus();
+          navReturnFocus = null;
+        };
+
+        const openNav = () => {
+          navReturnFocus = doc.activeElement;
+          window.clearTimeout(navHideTimer);   /* a reopen mid-exit skips the timer... */
+          navOverlay.removeAttribute('inert'); /* ...so clear the closing inert here   */
+          navOverlay.hidden = false;
+          navToggle.setAttribute('aria-expanded', 'true');
+          if (siteMain)   siteMain.setAttribute('inert', '');
+          if (siteFooter) siteFooter.setAttribute('inert', '');
+          requestAnimationFrame(() => navOverlay.setAttribute('data-open', ''));
+          doc.addEventListener('keydown', onTrapKeydown, true);
+          const first = navOverlay.querySelector(FOCUSABLE);
+          if (first) first.focus();
+          openOverlay({ el: navOverlay, close: closeNav });
+        };
+
+        navToggle.addEventListener('click', () => {
+          if (navToggle.getAttribute('aria-expanded') === 'true') closeTop();
+          else openNav();
+        });
+
+        navOverlay.querySelectorAll('.nav-overlay-link').forEach((link) => {
+          link.addEventListener('click', () => {
+            if (navToggle.getAttribute('aria-expanded') === 'true') closeTop();
+          });
+        });
+      }
+
+      /* == 5.1, Scroll: one passive listener ===============================
+         Header state only. The monitor settle is gone with the monitor (OVERRIDE
+         2): a fixed frame has no tilt to lerp, so there is no rAF loop left. */
+      const header = doc.querySelector('.site-header');
+
+      let isScrolled = false;
+
+      const syncHeader = () => {
+        const y = window.scrollY;
+        if (!isScrolled && y > 24)      { isScrolled = true;  header && header.classList.add('is-scrolled'); }
+        else if (isScrolled && y < 12)  { isScrolled = false; header && header.classList.remove('is-scrolled'); }
+      };
+
+      window.addEventListener('scroll', syncHeader, { passive: true });
+      syncHeader();
+
+      /* == 5.3, Scroll reveal: one-shot, per-section stagger =============== */
+      const revealTargets = [...doc.querySelectorAll('.reveal, .reveal-lines')];
+      if (!motionAllowed() || !('IntersectionObserver' in window)) {
+        revealTargets.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+          }
+        }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
+        revealTargets.forEach((el) => {
+          const group = el.closest('.section') || doc;
+          const sibs = [...group.querySelectorAll('.reveal, .reveal-lines')];
+          el.style.setProperty('--i', String(sibs.indexOf(el) % 6));   // per-section, not global
+          io.observe(el);
+        });
+        /* turning motion off mid-page must not strand un-revealed copy */
+        doc.addEventListener(MOTION_EVENT, () => {
+          if (!motionAllowed()) revealTargets.forEach((el) => el.classList.add('is-in'));
+        });
+      }
+
+    })();
+  </script>
+</body>
+</html>
