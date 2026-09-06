@@ -42,11 +42,25 @@ What **is** mounted and therefore claimable in the measurement lane: the Lux Hea
 
 `enterprise-ready` · `SOC 2` · `GDPR compliant` · `encrypted at rest` · `penetration tested` · `load tested` · `99.x% uptime` · `measurement-grade` · `lab-verified` · `validated against real installations` · `±X% accurate` · `real-time collaboration` · `collaboration platform` · `desktop app` · `works offline` · `exports to MadMapper` · `MPCDI` · `anamorphic` · `automatic keystone correction` · `AI depth generation` · `Google 3D Tiles` · `address search` · `CAD import` · `DWG` · `DXF` · `floor-plan tracing` · `sketch-to-3D` · `guided onboarding` · `guided tour` · `get started in 5 minutes` · `screenshot export` · `image export` · `analysis CSV export` · `Spout` · `Syphon` · `NDI` · `radiosity` · `global illumination` · `ray tracing` · `Analysis panel` · `Analyze workspace` · `roadmap` · `resilience score` · `verdict` · `stress test` · `tolerance profile` · `site calibration`
 
-Ship gate: `grep -inE 'SOC 2|GDPR|enterprise-ready|load tested|MadMapper|MPCDI|anamorphic|radiosity|ray tracing|roadmap|resilience score|Spout|Syphon|NDI|DWG|DXF' index.html videos.html pricing.html privacy.html src/input.css` must return nothing.
+Ship gate: `grep -inE 'SOC 2|GDPR|enterprise-ready|load tested|MadMapper|MPCDI|anamorphic|radiosity|ray tracing|roadmap|resilience score|Spout|Syphon|NDI|DXF|sketch-to-3D' index.html videos.html pricing.html privacy.html src/input.css` must return nothing.
+
+Ship gate G1b, added 2026-09-06, a manual read and never a green check: `grep -inE 'DWG' index.html videos.html pricing.html privacy.html src/input.css`. Every hit must sit in a sentence that also carries a cap, a version qualifier, or the fact that conversion is local. A DWG hit with no qualifier in its own sentence fails this gate. A `.limits-key` heading has no sentence, so it passes only when the heading itself names the cost, as `WHAT A DWG COSTS` does; a key reading `DWG IMPORT` would fail. `DWG` left the hard gate because the ban on it was lifted with a condition, and a condition cannot be tested by grepping for a word.
 
 > **Amended 2026-09-06, `load tested`.** The ban was written when "never load tested" was the entire truth and any use of the phrase would have been a claim. A staging load test was run on 2026-08-29 (`docs/CAPACITY_SIMULATION_0829.md`), so the phrase is now permitted in exactly one shape: a sentence that says production has never been load tested, followed by a dated staging figure that names staging as a smaller instance and reads as a floor. Any other use is still banned, and a bare "load tested" with no instance and no date is still the thing the ban exists to stop.
 
-> **Still banned, and now for a different reason: the drawing lane.** `CAD import`, `DWG`, `DXF`, `floor-plan tracing` and `sketch-to-3D` were banned on 2026-08-14 because the lane was disabled in production. That premise expired on 2026-08-19, when the lane shipped prod-ON. The strings stay banned pending an owner decision, so the site currently underclaims a live capability on purpose. Deleting the false sentence that said the lane was disabled is not blocked by this and was done on 2026-09-06; describing the lane still is.
+> **Amended 2026-09-06, the drawing and modelling lane: THE BAN IS LIFTED, in the shapes named here and no others.** `CAD import`, `DWG`, `DXF`, `floor-plan tracing` and `sketch-to-3D` were banned on 2026-08-14 on one premise: the lane was disabled in production. That premise expired on 2026-08-19, and it is now further gone than that. `resolveDrawingModellingLane()` (`src/config/betaFeatures.js:24-35`) is a kill switch, not a gate: it returns `true` unless a visitor has set `localStorage 'fieldlux_beta_modelling'` to `'0'`, and it returns `true` when localStorage throws. The lane is on for every visitor of the deployed web build, both store doors (`useAppStore.ts:1112`, `:1153`) let every visitor through, and no part of it carries a desktop gate. The site underclaimed a live capability for 18 days; the owner lifted the ban on 2026-09-06 and this is the record of exactly how far.
+>
+> **`CAD import` and `floor-plan tracing` are unbanned outright.** The app's own menu rows read `Import Floor Plan...` and `Import CAD Drawing...` (`TopBar.jsx:1068-1073`, `:1215-1220`), and tracing is what the lane asks the user to do, on screen, in those words.
+>
+> **`DWG` is unbanned WITH A COST IN THE SAME SENTENCE.** Permitted only where the sentence also carries a cap, a version qualifier, or the fact that conversion is local, and only alongside a `#limits` row publishing the 8 MB input cap, the 40 MB converted cap, the 90-second watchdog, and the four measured version families against the four merely declared. A bare "imports DWG" is still the thing this ban exists to stop. The converter is a committed same-origin asset (`src/assets/dwg/dwg2dxf.wasm`, 1,108,669 bytes), so reachability is not the risk; coverage is, and a qualifier is what coverage is for. Never claimable: a consent step, an upload, a queue or a server round trip for DWG. Conversion is local wasm in the visitor's own browser, and `DWG_CONSENT` and `DWG_RETENTION` (`dwgMessages.js:172-209`) have zero production importers.
+>
+> **`DXF` stays banned, and the reason has inverted.** It was banned because the lane was off. It stays banned because the lane is on and the app deliberately hides this one format inside it. Commit `e274fcb5` (2026-08-17, an ancestor of deployed master `912b1980`) removed `.dxf` from the picker accept list, from both menu hints, from the drop-zone label, from the unsupported-file message and from the window drop guard, while leaving the ingest branch working. A directly dropped `.dxf` still imports. The site must not advertise what the product's own file picker refuses to offer: this string ships only after the app un-hides it, not before.
+>
+> **`sketch-to-3D` stays banned, and this one is permanent until the product changes.** There is no automatic conversion to promise. Room detection was built and then retired on 2026-08-03 (`PlanTraceMode.jsx:4-19`), there is no automatic wall extraction anywhere in the lane, and the app tells the user in its own caption that a picture cannot become editable lines by itself. The phrase compresses a manual drafting workflow into an automatic one.
+>
+> **Never claimable in this lane, for the record:** ceilings, curved walls, solid volumes, and doors or windows as objects. The first three are absent by decision; the fourth is absent because the lane has no face entity at all, and an opening is made by cutting the footprint lines.
+>
+> **The bullet list at the top of 1.2c is left untouched on purpose.** It is the historical record of what was banned on 2026-08-14, the same convention the `load tested` amendment used. Read the list with its amendments, never alone.
 
 > **This gate is a manual read, not a green check.** It matches `NDI` inside ordinary words ("pending", "founding", "binding") and it matches the deliberate negations the limits section is built on. Read every hit; do not "fix" a hit that is the site refusing a claim.
 
@@ -72,6 +86,9 @@ Ship gate: `grep -inE 'SOC 2|GDPR|enterprise-ready|load tested|MadMapper|MPCDI|a
 | Hierarchy reference file | `a reference FBX with 2,020 meshes and 571 groups` | `src/components/scene-outliner/ModelHierarchyTree.jsx:38-45` (the component's own performance note; the same file is the 47 MB gallery FBX logged at `PATCH_2_TEST_MANUAL.md:37`) |
 | Fixtures | `29 built-in fixtures across 8 archetypes · IES (LM-63), EULUMDAT and GDTF import` | `src/core/catalog/customFixtureFactory.js` `FIXTURE_TYPE_PRESETS` and `FIXTURE_CATALOG`, `src/utils/iesLoader.js`, `src/components/tabs/LightingTab.jsx` accept lists |
 | Ambient presets | `100,000 lx direct sunlight down to 5 lx theatre, plus full blackout` | `src/components/TopBar.jsx:194-215` (`AMBIENT_PRESETS`: Direct Sunlight 100000, Theater / Concert Hall 5, Full Blackout 0, Custom null) |
+
+| Wall build ceiling | `695 projection receivers per scene, a measured ceiling, refused above it` | `src/utils/linework/planWallExtrude.js` `WALL_COUNT_HARD_MAX`, forwarding to `src/utils/gpuCapabilities.js` `RECEIVER_SOFT_MAX` = `floor(16.7 / 0.024)`; refusal enforced scene-wide at `src/components/engine/useLineworkOperators.js:1404-1417` |
+| Plan import caps | `DWG 8 MB in, 40 MB converted out, 90 s watchdog; placed underlay 2,048 px long edge, 1.5 M characters, inside a 5 MiB local save ceiling` | `src/utils/dwg/dwgTransport.js` `DWG_MAX_BYTES` / `DWG_MAX_DXF_BYTES` / `DWG_TIMEOUT_MS`; `src/utils/plan/planImageEncode.js` `PLAN_IMAGE_MAX_EDGE_PX` / `PLAN_IMAGE_MAX_CHARS`; `src/utils/safeStorage.js` `STORAGE_HARD_CEILING_BYTES` |
 
 Anything outside this table is not a stat, it is a guess, and it does not ship.
 
@@ -1220,7 +1237,7 @@ WHO HAS TO QUOTE THE JOB.
 
 | # | id | EN name | KO name | Shipped area it explains |
 |---|---|---|---|---|
-| 01 | `ch-scene` | THE SCENE | 씬 | Import, unit/axis detection, layer hierarchy, rooms, curves and domes, materials, walk mode, outliner, undo, units |
+| 01 | `ch-scene` | THE SCENE | 씬 | Import, unit/axis detection, layer hierarchy, rooms, curves and domes, floor plan import at real size, linework drawing, walls and floors from lines, materials, walk mode, outliner, undo, units |
 | 02 | `ch-optics` | THE OPTICS | 광학 | Catalogue, official cross-check, custom heads, throw ratio and lens shift, out-of-spec refusal, UST, arrays, axis locks |
 | 03 | `ch-blend` | THE COVERAGE | 커버리지 | Auto edge blend, light-conserving ramps, dome/mesh blend, Canvas Sets, Quick Wrap, plane picker |
 | 04 | `ch-warp` | THE CORRECTION | 보정 | Corner-pin, mesh warp, feathered masks, per-edge soft edge, calibration patterns |
@@ -1820,11 +1837,11 @@ The header on `videos.html` is a byte-identical copy of the redesigned `index.ht
 - KO sub: 기능마다 짧은 영상 하나씩, 실제 앱 화면 그대로.
 - Body EN: Every part of the product gets a short screen recording of the shipped app. Chapters fill in as the footage is recorded — the empty slots are honest, not decorative.
 - Body KO: 제품의 각 파트마다 실제 앱 화면을 짧게 녹화해 올립니다. 촬영이 끝나는 순서대로 채워지고, 비어 있는 칸은 장식이 아니라 아직 안 찍었다는 뜻입니다.
-- `.pub-progress`: `2 of 41 published` / `41개 중 2개 공개`, with `.pub-progress-bar` filled to the ratio in `--brand-500`.
+- `.pub-progress`: `2 of 43 published` / `43개 중 2개 공개`, with `.pub-progress-bar` filled to the ratio in `--brand-500`.
 
 **Progress counters are computed from the DOM at boot, not discovered by lazy image loads.** An earlier draft derived liveness from poster `load` events; below-the-fold posters have not loaded yet, so the counts would be wrong until the reader scrolled the whole page and wrong forever with JS off. Liveness is **authored in markup** via `.has-media` (§7.5); the script counts `.video-card:not(.video-card--pending)` at boot and writes the totals.
 
-**V2 — the filter rail.** Ten chapter chips plus `All 41` plus an `Available now` toggle. All are `<button type="button" aria-pressed>` — **not** `role="tab"`. Clicking a chapter chip sets `data-active-chapter` on the grid container (CSS attribute selectors hide non-matching `.video-chapter`s) and writes `?c=ch-blend` with `history.replaceState` so a chapter is linkable. On load `?c=` is read and applied. `Available now` is independent and combinable; it is `disabled` when zero cards are live. A visually-hidden `.filter-result-sr` with `aria-live="polite"` announces the result count.
+**V2 — the filter rail.** Ten chapter chips plus `All 43` plus an `Available now` toggle. All are `<button type="button" aria-pressed>` — **not** `role="tab"`. Clicking a chapter chip sets `data-active-chapter` on the grid container (CSS attribute selectors hide non-matching `.video-chapter`s) and writes `?c=ch-blend` with `history.replaceState` so a chapter is linkable. On load `?c=` is read and applied. `Available now` is independent and combinable; it is `disabled` when zero cards are live. A visually-hidden `.filter-result-sr` with `aria-live="polite"` announces the result count.
 
 The rail scrolls horizontally on mobile with `scroll-snap-type: x proximity` and no visible scrollbar.
 
@@ -1855,7 +1872,7 @@ An earlier draft used `minmax(340px, 1fr)` with `gap: 40px 24px` and claimed 3-u
 
 `.video-card-media` uses `--media-ratio: 1918 / 942` by default (the app-window capture ratio), overridden per card where the source differs. It is **not** 16:9 — forcing the 2.036:1 captures into a 16:9 frame letterboxes or crops the UI.
 
-### 7.3 The video slot table — 41 slots, 2 published at launch
+### 7.3 The video slot table — 43 slots, 2 published at launch
 
 **Naming rule — the whole upload workflow depends on it:** the file basename **is** the slug, exactly. Lowercase ASCII, hyphens only. No spaces, no underscores, no Korean, no `v2` / `final` / `_new`. Files live flat in `assets/media/features/`. Every row means **two** files: `<slug>.mp4` and `<slug>.jpg`.
 
@@ -1952,11 +1969,11 @@ An earlier draft used `minmax(340px, 1fr)` with `gap: 40px 24px` and claimed 3-u
 | P3 | ▣ | `version-restore` | Non-destructive roll-forward restore / 비파괴 롤포워드 복원 | Restoring an old version checkpoints your current edits first, then saves the old state as a new latest version. Nothing is deleted. | 예전 버전을 복원하면 현재 편집분을 먼저 별도 버전으로 남기고, 예전 상태를 새 최신 버전으로 저장합니다. 지워지는 건 없습니다. | 40s |
 | P3 | ▣ | `crash-recovery` | Crash draft and same-tab resume / 크래시 드래프트와 동일 탭 복귀 | Every edit debounces a local draft, flushed on tab close. Refresh the tab you were working in and you land back in the project. | 편집할 때마다 로컬 드래프트가 쌓이고 탭을 닫을 때 확정됩니다. 작업하던 탭을 새로고침하면 그 프로젝트로 돌아옵니다. | 35s |
 
-**Total: 41 slots — 4 + 4 + 5 + 4 + 3 + 5 + 3 + 3 + 7 + 3. `viewport-walkthrough` and `hover-probe` are live at launch; 39 are pending.**
+**Total: 43 slots — 6 + 4 + 5 + 4 + 3 + 5 + 3 + 3 + 7 + 3. `viewport-walkthrough` and `hover-probe` are live at launch; 39 are pending.**
 
 #### Deliberately excluded — do not create slots for these
 
-Not shootable as shipped-product footage: **the verdict / stress / prescription / per-wall / seam-risk / audience-coverage / manual-calibration lane** (§1.2a — no mount point), **Report Builder** (beta-gated off in production), **drawing import, sketch and linework** (LIVE in production since 2026-08-19; unshootable only while the 1.2c ban stands, not because the lane is off), **realtime output to other applications** (desktop-only, entry points removed from the web build), **automatic keystone correction** (readout only, no shader consumer), **transmission and shadow heatmap modes** (hidden from both selectors), **fog** (NO LONGER a placeholder: volumetric beams are prod-ON since 2026-09-05 and a Fog Machine is creatable from the app menu, so this IS shootable. The Haze Machine row was removed on 2026-09-05; write "Fog Machine" only). **GDTF/MVR** is mentioned in Ch 08 copy as beta but gets no video slot until it is validated. If the owner records any of these, the card must not ship.
+Not shootable as shipped-product footage: **the verdict / stress / prescription / per-wall / seam-risk / audience-coverage / manual-calibration lane** (§1.2a — no mount point), **Report Builder** (beta-gated off in production), **DXF as a named format** (the app hides it from every advertised surface, so a clip that names it would advertise what the picker refuses to offer), **realtime output to other applications** (desktop-only, entry points removed from the web build), **automatic keystone correction** (readout only, no shader consumer), **transmission and shadow heatmap modes** (hidden from both selectors), **fog** (NO LONGER a placeholder: volumetric beams are prod-ON since 2026-09-05 and a Fog Machine is creatable from the app menu, so this IS shootable. The Haze Machine row was removed on 2026-09-05; write "Fog Machine" only). **GDTF/MVR** is mentioned in Ch 08 copy as beta but gets no video slot until it is validated. If the owner records any of these, the card must not ship.
 
 ### 7.4 The empty state
 
@@ -1978,8 +1995,8 @@ Rules that exist to stop the card promising something it cannot do:
 
 | Condition | Behaviour |
 |---|---|
-| 0 videos published | The page renders as a complete bilingual feature index. The masthead reads `41 features documented · footage in production` instead of a ratio. `Available now` is `disabled`. |
-| Some published | `2 of 41 published / 41개 중 2개 공개` plus a thin `--brand-500` rule filled to the ratio. Absence becomes visible progress. |
+| 0 videos published | The page renders as a complete bilingual feature index. The masthead reads `43 features documented · footage in production` instead of a ratio. `Available now` is `disabled`. |
+| Some published | `2 of 43 published / 43개 중 2개 공개` plus a thin `--brand-500` rule filled to the ratio. Absence becomes visible progress. |
 | Within a chapter | Live cards sort ahead of pending cards **inside their chapter only**. Chapter order never changes, so the top-to-bottom product explanation stays intact. |
 | Chapter with 0 live | Renders in full, header shows `0 / 5 published`. Never hidden. |
 | `Available now` ON | Chapters with no live cards collapse out, giving a fully-populated page in one click. |
@@ -2469,7 +2486,7 @@ Favicon set in `<head>` on all three pages:
 | G13 | `og:image` renders | Paste both URLs into a card validator; the card must not be blank |
 | G14 | `flowAppUrl` allowlist | `?flowAppUrl=https://evil.example` falls back to `app.field-lux.com` and clears the stored key |
 | G15 | `README.md` clean | No internal preview URL at `https://field-lux.com/README.md` |
-| G16 | Publication counters | `/videos` shows `2 of 41 published` with JS disabled |
+| G16 | Publication counters | `/videos` shows `2 of 43 published` with JS disabled |
 | G17 | Every lux number is labelled | Manual read: no bare "lux" figure without its qualifier in the same sentence |
 
 ---

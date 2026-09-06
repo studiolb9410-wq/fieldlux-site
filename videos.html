@@ -160,7 +160,7 @@
         <p class="copy u-text-measure reveal">Every part of the product gets a short screen recording, filed under the same ten chapters the home page uses. Chapters fill in as each clip is shot.</p>
 
         <!-- Section 7.4: the empty state is a designed state, and it says so in
-             words before the reader meets 41 dashed cards. It is set as ordinary
+             words before the reader meets 43 dashed cards. It is set as ordinary
              body copy rather than in a note of its own: the point is that a
              pending card is a finished index entry, and giving the explanation a
              special typographic box would argue the opposite. -->
@@ -171,11 +171,11 @@
              the same numbers from the DOM and overwrites them, rebuilding the same
              contract classes rather than flattening them to a string. Section 7.4:
              at zero published the masthead states the plan instead of a ratio,
-             because a bare `0 of 41` reads as a failure rather than as a schedule.
+             because a bare `0 of 43` reads as a failure rather than as a schedule.
              The write-ups are all live and only the footage is outstanding, so the
              bar sits at --p: 0. -->
         <div class="pub-progress">
-          <p class="pub-progress-text" data-pub-en>All <span class="index-counter-current">41</span> features are written up. The footage is still in production.</p>
+          <p class="pub-progress-text" data-pub-en>All <span class="index-counter-current">43</span> features are written up. The footage is still in production.</p>
           <span class="pub-progress-bar" data-pub-bar style="--p: 0" aria-hidden="true"></span>
         </div>
       </div>
@@ -185,8 +185,8 @@
          Chapter chips carry the same (NN) NAME pairing as the section spine, so
          the rail reads as the page's own table of contents. -->
     <div class="site-shell filter-rail" role="group" aria-label="Filter feature videos">
-      <button class="filter-chip is-active" type="button" aria-pressed="true" data-filter-chapter="all"><span>All</span><span class="u-tabular">41</span></button>
-      <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-scene"><span class="micro-label-ord u-tabular">(01)</span><span>THE SCENE</span><span class="u-tabular">4</span></button>
+      <button class="filter-chip is-active" type="button" aria-pressed="true" data-filter-chapter="all"><span>All</span><span class="u-tabular">43</span></button>
+      <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-scene"><span class="micro-label-ord u-tabular">(01)</span><span>THE SCENE</span><span class="u-tabular">6</span></button>
       <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-optics"><span class="micro-label-ord u-tabular">(02)</span><span>THE OPTICS</span><span class="u-tabular">4</span></button>
       <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-blend"><span class="micro-label-ord u-tabular">(03)</span><span>THE COVERAGE</span><span class="u-tabular">5</span></button>
       <button class="filter-chip" type="button" aria-pressed="false" data-filter-chapter="ch-warp"><span class="micro-label-ord u-tabular">(04)</span><span>THE CORRECTION</span><span class="u-tabular">4</span></button>
@@ -204,7 +204,7 @@
       <p class="filter-result-sr" aria-live="polite"></p>
     </div>
 
-    <!-- == V3: Ten chapters, 41 slots ========================================
+    <!-- == V3: Ten chapters, 43 slots ========================================
          PUBLISHING A SLOT. The whole workflow is two class edits (spec 7.5):
            1. Encode <slug>.mp4 and <slug>.jpg (spec 7.5 commands). The file
               basename IS the data-slug below, exactly. Lowercase ASCII, hyphens,
@@ -222,7 +222,7 @@
               `data-live` and the `.index-counter-current` inside its
               `.video-chapter-count`, and the masthead `.pub-progress` text and
               `--p`. On the first publish the masthead swaps from the section 7.4
-              zero state to the ratio form, `1 / 41 published`, and the
+              zero state to the ratio form, `1 / 43 published`, and the
               `Available now` toggle loses its `disabled`. The script recomputes
               all of it at boot, but it must be right with JS off (gate G16).
            4. Add the VideoObject entry to the JSON-LD block in <head>, and a
@@ -242,7 +242,7 @@
           <p class="video-chapter-count index-counter u-tabular" data-chapter-count>
             <span class="index-counter-current">0</span>
             <span class="index-counter-tick">/</span>
-            <span class="index-counter-total">4</span>
+            <span class="index-counter-total">6</span>
             <span class="stat-unit">published</span>
           </p>
         </header>
@@ -305,6 +305,36 @@
                 <span class="micro-label-name">THE SCENE</span>
               </p>
               <p class="video-card-desc">The DCC-authored hierarchy arrives intact: per-node hide, lock, material override, sub-layer isolate on a 2,020-mesh model.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="plan-import-real-size" data-chapter="ch-scene" data-len="55">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="A FLOOR PLAN AT ITS REAL SIZE" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">0:55 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">A floor plan at its real size</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(01)</span>
+                <span class="micro-label-name">THE SCENE</span>
+              </p>
+              <p class="video-card-desc">A PDF page lands in the wizard. One typed dimension, two clicked points on a wall of known length, or a 1:100 plot scale sets metres, and the header badge names which one did it. A drawing whose own unit flag disagrees is shown the flag, not obeyed.</p>
+            </div>
+          </article>
+          <article class="video-card video-card--pending" data-slug="walls-from-drawn-lines" data-chapter="ch-scene" data-len="60">
+            <span class="video-card-link" aria-disabled="true">
+              <span class="video-card-media media-slot" data-label="WALLS FROM DRAWN LINES" data-caption="RECORDING: TO COME">
+                <span class="video-card-duration video-card-duration--planned u-tabular">1:00 <span class="stat-unit">planned</span></span>
+              </span>
+              <span class="video-card-title">Walls from drawn lines</span>
+            </span>
+            <div class="video-card-body">
+              <p class="video-card-tag">
+                <span class="micro-label-ord u-tabular">(01)</span>
+                <span class="micro-label-name">THE SCENE</span>
+              </p>
+              <p class="video-card-desc">The pen traces the outline over the underlay with typed lengths and bearings, and the selected lines are raised into walls at a typed height. The imported drawing stays a reference throughout: the trace lands on your own sheet and the original is never edited.</p>
             </div>
           </article>
         </div>
@@ -1504,7 +1534,7 @@
         if (live === 0) {
           /* Section 7.4. At zero published the masthead states the plan, not a ratio:
              every feature is written up, only the footage is outstanding. A
-             `0 of 41` would read as a failure; this reads as the state it is. */
+             `0 of 43` would read as a failure; this reads as the state it is. */
           if (pubEn) {
             pubEn.textContent = 'All ';
             pubEn.appendChild(numSpan('index-counter-current', String(total)));

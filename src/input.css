@@ -1836,7 +1836,7 @@ body.overlay-open{ overflow:hidden; }
    ROLE 5 - DURATION AND COUNT (/videos only).
      .video-card-duration + --planned   x41   "0:51 planned"
      .video-chapter-count               x10   "0 / 4 published"
-     the bare .u-tabular count inside .filter-chip  x11   (41, 4, 4, 5, ...)
+     the bare .u-tabular count inside .filter-chip  x11   (43, 6, 4, 5, ...)
      .pub-progress-text                 x1, and it is a SENTENCE - it moves to
                                         ROLE 3, see its rule for why.
 
@@ -1856,7 +1856,7 @@ body.overlay-open{ overflow:hidden; }
        roles differ on at least two of the three.
    (c) TABULAR FIGURES ONLY WHERE A COLUMN IS SCANNED VERTICALLY (brief rule 3,
        "nowhere else"). Roles 1, 2 and 5 are tabular: they stack into columns
-       (6 stats in a 3-up grid, 10 ordinals down the spine, 41 durations pinned
+       (6 stats in a 3-up grid, 10 ordinals down the spine, 43 durations pinned
        to the same corner of a card grid). Role 3 is explicitly
        PROPORTIONAL - a sentence is read along, not down, and tabular figures
        in running text open gaps around every 1. Brief rule 2 lists "tabular
@@ -2506,8 +2506,8 @@ body.overlay-open{ overflow:hidden; }
    background the moment .has-media arrives.
 
    NOT THE /videos CARDS. Every rule here is scoped :not(.video-card-media).
-   videos.html builds all 41 of its card posters from .video-card-media
-   .media-slot and 41 are pending; there the slot IS the card's picture area and
+   videos.html builds all 43 of its card posters from .video-card-media
+   .media-slot and 43 are pending; there the slot IS the card's picture area and
    carries a positioned duration chip inside it, so it keeps the centred
    treatment declared at the top of this section. The two are different objects
    that happen to share a class: one is a figure in a document, one is a card's
@@ -2879,8 +2879,8 @@ body.overlay-open{ overflow:hidden; }
   transition:transform 420ms var(--ease-out);
 }
 /* This one is NOT role 5, and the inventory says so. Its content is a sentence
-   - "All 41 features are written up, with footage still in production", and the
-   script swaps it for "2 of 41 published" once anything is live - and it was
+   - "All 43 features are written up, with footage still in production", and the
+   script swaps it for "2 of 43 published" once anything is live - and it was
    being set in the number face at +.06em, which is tracking meant for a bare
    ordinal and which spaces out running text. It is prose carrying one figure,
    so it takes role 3: body face, caption size, no tracking, proportional
@@ -2889,7 +2889,7 @@ body.overlay-open{ overflow:hidden; }
 .pub-progress-text{
   font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-400);
 }
-/* The "41" in that sentence is wrapped in .index-counter-current so the script
+/* The "43" in that sentence is wrapped in .index-counter-current so the script
    can rewrite it without rebuilding the node. That is a JS hook, not a claim
    about the number's role: ROLE 2 would set it in the number face at
    --fs-counter and +.06em INSIDE a running sentence, which is a figure lifted
@@ -3044,7 +3044,7 @@ body.overlay-open{ overflow:hidden; }
    --ink-500 is DARKER than the --ink-400 figure it qualifies, so the
    subordinate word out-weighs the number; and on a published card the chip
    ground is rgba(4,37,45,.72) over the poster, where --ink-500 lands near
-   1.5:1. Every one of the 41 cards is pending today so nothing shows it yet,
+   1.5:1. Every one of the 43 cards is pending today so nothing shows it yet,
    which is exactly the kind of bug that ships. --mass-ink-soft is the token for
    soft text on that ground (9.74:1) and --ink-400 is the step back from an
    --ink-400 figure elsewhere. */
@@ -3127,7 +3127,7 @@ body.overlay-open{ overflow:hidden; }
 
    opacity:.6 is REMOVED, and this is a contrast fix, not a taste one: --ink-400
    is 5.25:1 on --surface-100 and the slot is --surface-100, so six tenths of it
-   composites to roughly 2.7:1 - below the 4.5:1 floor, on 41 of the 41 cards
+   composites to roughly 2.7:1 - below the 4.5:1 floor, on 43 of the 43 cards
    currently on the page, i.e. on every duration a visitor can read today. The
    "planned, not measured" signal does not need to be carried by contrast: the
    word "approx." is already printed in front of the figure, the chip has no

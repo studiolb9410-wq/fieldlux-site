@@ -11,7 +11,7 @@ README and the spec disagree, the spec wins.
 | Route | File | Notes |
 |---|---|---|
 | `/` | `index.html` | The product, ten chapters, the numbers, the limits |
-| `/videos` | `videos.html` | Feature videos - 41 slots across the same ten chapters |
+| `/videos` | `videos.html` | Feature videos - 43 slots across the same ten chapters |
 | `/pricing` | `pricing.html` | The published price plan. Nothing purchasable yet |
 | `/privacy` | `privacy.html` | Privacy policy |
 | - | `404.html` | Not-found page |
@@ -148,7 +148,7 @@ All three keys are documented for visitors in `privacy.html`.
 
 ## Publishing a feature video
 
-`/videos` carries 41 slots across the ten chapters. A slot's published state is **authored
+`/videos` carries 43 slots across the ten chapters. A slot's published state is **authored
 in the markup**, not probed at runtime - that is what keeps the publication counters
 correct with JavaScript disabled and before any image has loaded.
 
