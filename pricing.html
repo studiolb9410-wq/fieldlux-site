@@ -243,6 +243,7 @@
           <p class="copy u-text-measure reveal">The switch below chooses which period each card prints. With scripting turned off the switch is not drawn and every card prints all three periods at once, which is the same information in more space.</p>
 
           <div class="period-switch" role="group" aria-label="Billing period">
+            <p class="stat-label">PERIOD</p>
             <button class="filter-chip" type="button" data-period-btn="weekly" aria-pressed="false">WEEKLY</button>
             <button class="filter-chip" type="button" data-period-btn="monthly" aria-pressed="true">MONTHLY</button>
             <button class="filter-chip" type="button" data-period-btn="yearly" aria-pressed="false">YEARLY</button>
@@ -251,130 +252,143 @@
 
           <div class="tier-grid reveal">
 
-            <!-- ---- Projection ------------------------------------------- -->
             <article class="feature-card tier-card">
               <h3 class="chapter-point-label">PROJECTION</h3>
               <p class="tier-who">For the person who quotes and rigs projection and does not hang stage light.</p>
 
+              <div class="tier-rail">
               <div class="tier-period" data-period="weekly">
                 <p class="stat-label">WEEKLY</p>
-                <p class="tier-price">USD 9<span class="tier-price-per">/user/week</span></p>
+<p class="tier-price"><span class="tier-price-cur">USD</span>9<span class="tier-price-per">/user/week</span></p>
                 <p class="stat-note">One payment for seven days, and it does not renew. Fifty-two of them come to USD 468, which is what twelve monthly payments come to.</p>
               </div>
               <div class="tier-period" data-period="monthly">
                 <p class="stat-label">MONTHLY</p>
-                <p class="tier-price">USD 39<span class="tier-price-per">/user/month</span></p>
+<p class="tier-price"><span class="tier-price-cur">USD</span>39<span class="tier-price-per">/user/month</span></p>
                 <p class="stat-note">Renews until you cancel. Twelve of them come to USD 468, the same as fifty-two weeks. What the month adds at the same money is that it does not stop unless you stop it.</p>
               </div>
               <div class="tier-period" data-period="yearly">
                 <p class="stat-label">YEARLY</p>
-                <p class="tier-price">USD 32<span class="tier-price-per">/user/month</span></p>
+<p class="tier-price"><span class="tier-price-cur">USD</span>32<span class="tier-price-per">/user/month</span></p>
                 <p class="stat-note">Billed yearly (USD 384), against USD 468 in twelve monthly payments.</p>
               </div>
+              </div>
 
-              <div>
+              <div class="tier-ladder">
+                <p class="stat-label">LANES OPEN</p>
+                <p class="tier-ladder-value">Projection only. No fixture or fog lane.</p>
+              </div>
+
+              <div class="tier-includes-block">
                 <h4 class="feature-card-title">WHAT IS INCLUDED</h4>
                 <ul class="tier-includes">
-                  <li>The venue as an imported model in 6 formats (FBX, GLB/GLTF, OBJ, DAE, STL and PLY), as an imported floor plan traced at its real size, or as walls drawn from lines and raised.</li>
-                  <li>87 projectors, 113 lenses and 4 brands off published spec sheets, catalogue rebuilt 2026-05-12, plus custom heads you enter yourself.</li>
-                  <li>Throw, lens shift and the optics per head, cross-checked against 642 combinations pulled from the makers' own calculators on 2026-06-11, which cover 47 of the 87 heads.</li>
-                  <li>Placement in arrays, circles and mirrors, up to 200 projectors in a scene, which is a hard shader cap the runtime detector can set lower on your machine.</li>
-                  <li>Auto edge blending, blend ramps and the blend sheet; corner pin, feathered masks, and a mesh warp or mask on 32 of those heads.</li>
-                  <li>4 distinct content sources, canvas sets, and Quick Wrap for one video across several planes.</li>
-                  <li>Lux heatmaps, the hover probe, 13 probe points (9 ANSI plus 4 quarter) with 16 outer-edge probes, and 16 x 16 = 256 sample points.</li>
-                  <li>21 measured material presets, ambient presets from 100,000 lx direct sunlight down to 5 lx theatre plus full blackout, and ambient contrast.</li>
-                  <li>LED walls with brightness in nits, projection spill in lux and a washout risk rating.</li>
-                  <li>The PDF Tech Rider, a vendor-neutral handoff JSON, the project file, and a read-only share link you can revoke.</li>
-                  <li>Cloud save with autosave, version history and Revert to Saved; 2 <span class="stat-unit">GB</span> of imported-model storage with a 200 <span class="stat-unit">MB</span> per-file ceiling, and a 1 <span class="stat-unit">GiB</span> media library.</li>
+                  <li>Venue: 6 model formats, plan or walls</li>
+                  <li>87 projectors, 113 lenses, 4 brands</li>
+                  <li>Throw, shift and optics per head</li>
+                  <li>Arrays, circles, mirrors, 200 heads</li>
+                  <li>Edge blending, warp and masks</li>
+                  <li>4 content sources and Quick Wrap</li>
+                  <li>Lux heatmaps and 13 probe points</li>
+                  <li>21 materials, 5 to 100,000 lx ambient</li>
+                  <li>LED walls, nits, spill and washout</li>
+                  <li>PDF rider, JSON, file and share link</li>
+                  <li>Cloud save, versions, 2 GB and 1 GiB</li>
                 </ul>
               </div>
 
-              <div>
-                <h4 class="feature-card-title">WHAT IS NOT IN IT</h4>
-                <ul class="tier-includes">
-                  <li>Stage and architectural fixtures, the isolux working plane, IES, EULUMDAT and GDTF import, the fixture schedule, and the fog machine. Those are Pro, and they are one door rather than six.</li>
-                </ul>
+              <div class="tier-foot">
+                <p class="tier-status">NOT FOR SALE YET</p>
+                <p class="tier-act"><a class="btn btn--outline" href="#not-built">WHAT IS NOT BUILT</a></p>
               </div>
-
-              <p class="chapter-more"><a class="btn btn--text" href="#not-built">NOT FOR SALE YET</a></p>
             </article>
 
-            <!-- ---- Pro --------------------------------------------------- -->
             <article class="feature-card tier-card">
               <h3 class="chapter-point-label">PRO</h3>
               <p class="tier-who">For the person who also hangs fixtures and reads a beam through fog.</p>
 
+              <div class="tier-rail">
               <div class="tier-period" data-period="weekly">
                 <p class="stat-label">WEEKLY</p>
-                <p class="tier-price">USD 12<span class="tier-price-per">/user/week</span></p>
+<p class="tier-price"><span class="tier-price-cur">USD</span>12<span class="tier-price-per">/user/week</span></p>
                 <p class="stat-note">One payment for seven days, and it does not renew. Fifty-two of them come to USD 624, which is USD 36 more than twelve monthly payments.</p>
               </div>
               <div class="tier-period" data-period="monthly">
                 <p class="stat-label">MONTHLY</p>
-                <p class="tier-price">USD 49<span class="tier-price-per">/user/month</span></p>
+<p class="tier-price"><span class="tier-price-cur">USD</span>49<span class="tier-price-per">/user/month</span></p>
                 <p class="stat-note">Renews until you cancel. Twelve of them come to USD 588.</p>
               </div>
               <div class="tier-period" data-period="yearly">
                 <p class="stat-label">YEARLY</p>
-                <p class="tier-price">USD 40<span class="tier-price-per">/user/month</span></p>
+<p class="tier-price"><span class="tier-price-cur">USD</span>40<span class="tier-price-per">/user/month</span></p>
                 <p class="stat-note">Billed yearly (USD 480), against USD 588 in twelve monthly payments.</p>
               </div>
+              </div>
 
-              <div>
+              <div class="tier-ladder">
+                <p class="stat-label">LANES OPEN</p>
+                <p class="tier-ladder-value">Projection, plus fixtures and fog.</p>
+              </div>
+
+              <div class="tier-includes-block">
                 <h4 class="feature-card-title">WHAT IS INCLUDED</h4>
                 <ul class="tier-includes">
-                  <li>Everything in Projection, at the same quotas.</li>
-                  <li>29 built-in fixtures on top of 8 archetypes, 16 of them named market units transcribed from published photometric data, plus fixtures you build and save yourself, which are kept in the browser you saved them in and nowhere else.</li>
-                  <li>IES (LM-63), EULUMDAT and GDTF import, so a maker's own curve drives the beam you see and the number you read from the same file. GDTF and MVR are code-complete but not yet checked against real vendor files, and the app says so.</li>
-                  <li>The isolux working plane, with Eavg, Emin, Emax and uniformity read off it against 38 target profiles across 5 regional standard sets.</li>
-                  <li>Aim by dragging the pool, and a fixture bake that walls actually block.</li>
-                  <li>The fixture schedule with per-unit specs and connected load, copied to the clipboard as CSV to paste into a sheet.</li>
-                  <li>The fog machine, its fluid, plume and ventilation figures, and beams that render through the air. The atmosphere is a display lane: it adds no lux to a surface and changes no measured figure.</li>
-                  <li>Fixture light stays a separate estimate lane: direct light only, stamped an estimate on screen, and it never enters a projector lux figure.</li>
+                  <li>29 fixtures, 8 archetypes, 16 named</li>
+                  <li>IES, EULUMDAT and GDTF import</li>
+                  <li>Isolux plane, 38 targets, 5 sets</li>
+                  <li>Aim by dragging, bake that walls block</li>
+                  <li>Fixture schedule and load, as CSV</li>
+                  <li>Fog machine, beams through air</li>
+                  <li>Fixture light: a separate estimate lane</li>
                 </ul>
               </div>
 
-              <p class="chapter-more"><a class="btn btn--text" href="#not-built">NOT FOR SALE YET</a></p>
+              <div class="tier-foot">
+                <p class="tier-status">NOT FOR SALE YET</p>
+                <p class="tier-act"><a class="btn btn--outline" href="#not-built">WHAT IS NOT BUILT</a></p>
+              </div>
             </article>
 
-            <!-- ---- Enterprise --------------------------------------------
-                 The owner set this tier and its price. What is written here is
-                 only what can actually be delivered today: an invoice, a
-                 purchase order and a person who answers mail. No agreement and
-                 no data processing terms are named, because neither has been
-                 drafted, and naming a legal document that does not exist is a
-                 claim this site cannot make. The card states plainly that it
-                 opens no software feature Pro does not have. -->
             <article class="feature-card tier-card">
               <h3 class="chapter-point-label">ENTERPRISE</h3>
               <p class="tier-who">For a company whose finance department cannot pay by card.</p>
 
+              <div class="tier-rail">
               <div class="tier-period" data-period="weekly">
                 <p class="stat-label">WEEKLY</p>
-                <p class="tier-who">Not sold by the week. A purchase order takes longer to approve than a seven-day pass lasts, so this tier is the month or the year.</p>
+                <p class="tier-price-none">Not sold by the week. A purchase order takes longer to approve than a seven-day pass lasts, so this tier is the month or the year.</p>
               </div>
               <div class="tier-period" data-period="monthly">
                 <p class="stat-label">MONTHLY</p>
-                <p class="tier-price">USD 99<span class="tier-price-per">/user/month</span></p>
+<p class="tier-price"><span class="tier-price-cur">USD</span>99<span class="tier-price-per">/user/month</span></p>
                 <p class="stat-note">Renews until you cancel. Twelve of them come to USD 1,188.</p>
               </div>
               <div class="tier-period" data-period="yearly">
                 <p class="stat-label">YEARLY</p>
-                <p class="tier-price">USD 82<span class="tier-price-per">/user/month</span></p>
+<p class="tier-price"><span class="tier-price-cur">USD</span>82<span class="tier-price-per">/user/month</span></p>
                 <p class="stat-note">Billed yearly (USD 984), against USD 1,188 in twelve monthly payments.</p>
               </div>
+              </div>
 
-              <div>
+              <div class="tier-ladder">
+                <p class="stat-label">LANES OPEN</p>
+                <p class="tier-ladder-value">The same two lanes as Pro.</p>
+              </div>
+
+              <div class="tier-includes-block">
                 <h4 class="feature-card-title">WHAT IS INCLUDED</h4>
                 <ul class="tier-includes">
-                  <li>Everything in Pro, and the app behaves identically on both.</li>
-                  <li>An invoice and a purchase order instead of a card.</li>
-                  <li>Mail answered by the person who wrote the app.</li>
-                  <li>Those are terms of business, not code. No part of Enterprise opens a feature that Pro does not have, and this list is the whole of it. If what you need is several people inside one project, that does not exist at any price: read the row below.</li>
+                  <li>An invoice and a purchase order</li>
+                  <li>Mail answered by the app's author</li>
+                  <li>Terms of business, not code</li>
+                  <li>No feature that Pro does not have</li>
+                  <li>Still one person per account</li>
                 </ul>
               </div>
 
-              <p class="chapter-more"><a class="btn btn--text" href="#not-built">NOT FOR SALE YET</a></p>
+              <div class="tier-foot">
+                <p class="tier-status">NOT FOR SALE YET</p>
+                <p class="tier-act"><a class="btn btn--outline" href="#not-built">WHAT IS NOT BUILT</a></p>
+              </div>
             </article>
 
           </div>
@@ -391,6 +405,160 @@
           </div>
         </div>
 
+      </div>
+    </section>
+
+
+    <!-- == PR3b, #included, the card lines written out ======================
+         Every entry on a card above is a key here, spelled identically, and
+         the text beside it is the sentence that entry stands for. The cards
+         got shorter; this is where the words went. Nothing was softened and
+         no figure was dropped - the caveats that used to ride in subordinate
+         clauses are rows of their own now. -->
+    <section class="section section--pad-sm section--pad-start-md" id="included" aria-labelledby="included-title">
+      <div class="site-shell--narrow">
+        <div class="section-head">
+
+          <p class="micro-label">
+            <span class="micro-label-name">WHAT EACH LINE MEANS</span>
+          </p>
+
+          <h2 class="section-title reveal-lines" id="included-title">
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">THE SHORT LINES,</span></span>
+            <span class="section-title-line reveal-line"><span class="reveal-line-inner">WRITTEN OUT IN FULL.</span></span>
+          </h2>
+
+          <p class="copy section-lead u-text-measure reveal">Every line on a card above is a key in one of the three tables below, and the text beside it is the sentence that line stands for. The cards were shortened so that three of them could be compared at a glance. Nothing was shortened away: this section is longer than what left the cards, because the dates, the ceilings and the caveats that used to sit at the end of a forty-word bullet are rows of their own down here.</p>
+
+          <p class="micro-label">
+            <span class="micro-label-ord">(01)</span>
+            <span class="micro-label-name">IN EVERY TIER</span>
+          </p>
+
+          <div class="limits reveal">
+            <div class="limits-row">
+              <p class="limits-key">VENUE: 6 MODEL FORMATS, PLAN OR WALLS</p>
+              <p class="limits-text">The venue as an imported model in 6 formats (FBX, GLB/GLTF, OBJ, DAE, STL and PLY), as an imported floor plan traced at its real size, or as walls drawn from lines and raised.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">87 PROJECTORS, 113 LENSES, 4 BRANDS</p>
+              <p class="limits-text">87 projectors, 113 lenses and 4 brands off published spec sheets, catalogue rebuilt 2026-05-12, plus custom heads you enter yourself.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">THROW, SHIFT AND OPTICS PER HEAD</p>
+              <p class="limits-text">Throw, lens shift and the optics per head, cross-checked against 642 combinations pulled from the makers' own calculators on 2026-06-11, which cover 47 of the 87 heads.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">ARRAYS, CIRCLES, MIRRORS, 200 HEADS</p>
+              <p class="limits-text">Placement in arrays, circles and mirrors, up to 200 projectors in a scene, which is a hard shader cap the runtime detector can set lower on your machine.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">EDGE BLENDING, WARP AND MASKS</p>
+              <p class="limits-text">Auto edge blending, blend ramps and the blend sheet; corner pin, feathered masks, and a mesh warp or mask on 32 of those heads.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">4 CONTENT SOURCES AND QUICK WRAP</p>
+              <p class="limits-text">4 distinct content sources, canvas sets, and Quick Wrap for one video across several planes.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">LUX HEATMAPS AND 13 PROBE POINTS</p>
+              <p class="limits-text">Lux heatmaps, the hover probe, 13 probe points (9 ANSI plus 4 quarter) with 16 outer-edge probes, and 16 x 16 = 256 sample points.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">21 MATERIALS, 5 TO 100,000 LX AMBIENT</p>
+              <p class="limits-text">21 measured material presets, ambient presets from 100,000 lx direct sunlight down to 5 lx theatre plus full blackout, and ambient contrast.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">LED WALLS, NITS, SPILL AND WASHOUT</p>
+              <p class="limits-text">LED walls with brightness in nits, projection spill in lux and a washout risk rating.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">PDF RIDER, JSON, FILE AND SHARE LINK</p>
+              <p class="limits-text">The PDF Tech Rider, a vendor-neutral handoff JSON, the project file, and a read-only share link you can revoke.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">CLOUD SAVE, VERSIONS, 2 GB AND 1 GIB</p>
+              <p class="limits-text">Cloud save with autosave, version history and Revert to Saved; 2 <span class="stat-unit">GB</span> of imported-model storage with a 200 <span class="stat-unit">MB</span> per-file ceiling, and a 1 <span class="stat-unit">GiB</span> media library.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">PROJECTION ONLY. NO FIXTURE OR FOG LANE.</p>
+              <p class="limits-text">Stage and architectural fixtures, the isolux working plane, IES, EULUMDAT and GDTF import, the fixture schedule, and the fog machine. Those are Pro, and they are one door rather than six.</p>
+            </div>
+          </div>
+
+          <p class="micro-label">
+            <span class="micro-label-ord">(02)</span>
+            <span class="micro-label-name">PRO ADDS</span>
+          </p>
+
+          <div class="limits reveal">
+            <div class="limits-row">
+              <p class="limits-key">PROJECTION, PLUS FIXTURES AND FOG.</p>
+              <p class="limits-text">Everything in Projection, at the same quotas.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">29 FIXTURES, 8 ARCHETYPES, 16 NAMED</p>
+              <p class="limits-text">29 built-in fixtures on top of 8 archetypes, 16 of them named market units transcribed from published photometric data, plus fixtures you build and save yourself, which are kept in the browser you saved them in and nowhere else.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">IES, EULUMDAT AND GDTF IMPORT</p>
+              <p class="limits-text">IES (LM-63), EULUMDAT and GDTF import, so a maker's own curve drives the beam you see and the number you read from the same file. GDTF and MVR are code-complete but not yet checked against real vendor files, and the app says so.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">ISOLUX PLANE, 38 TARGETS, 5 SETS</p>
+              <p class="limits-text">The isolux working plane, with Eavg, Emin, Emax and uniformity read off it against 38 target profiles across 5 regional standard sets.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">AIM BY DRAGGING, BAKE THAT WALLS BLOCK</p>
+              <p class="limits-text">Aim by dragging the pool, and a fixture bake that walls actually block.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">FIXTURE SCHEDULE AND LOAD, AS CSV</p>
+              <p class="limits-text">The fixture schedule with per-unit specs and connected load, copied to the clipboard as CSV to paste into a sheet.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">FOG MACHINE, BEAMS THROUGH AIR</p>
+              <p class="limits-text">The fog machine, its fluid, plume and ventilation figures, and beams that render through the air. The atmosphere is a display lane: it adds no lux to a surface and changes no measured figure.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">FIXTURE LIGHT: A SEPARATE ESTIMATE LANE</p>
+              <p class="limits-text">Fixture light stays a separate estimate lane: direct light only, stamped an estimate on screen, and it never enters a projector lux figure.</p>
+            </div>
+          </div>
+
+          <p class="micro-label">
+            <span class="micro-label-ord">(03)</span>
+            <span class="micro-label-name">ENTERPRISE ADDS</span>
+          </p>
+
+          <div class="limits reveal">
+            <div class="limits-row">
+              <p class="limits-key">THE SAME TWO LANES AS PRO.</p>
+              <p class="limits-text">Everything in Pro, and the app behaves identically on both.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">AN INVOICE AND A PURCHASE ORDER</p>
+              <p class="limits-text">An invoice and a purchase order instead of a card.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">MAIL ANSWERED BY THE APP'S AUTHOR</p>
+              <p class="limits-text">Mail answered by the person who wrote the app.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">TERMS OF BUSINESS, NOT CODE</p>
+              <p class="limits-text">Those are terms of business, not code.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">NO FEATURE THAT PRO DOES NOT HAVE</p>
+              <p class="limits-text">No part of Enterprise opens a feature that Pro does not have, and this list is the whole of it.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">STILL ONE PERSON PER ACCOUNT</p>
+              <p class="limits-text">If what you need is several people inside one project, that does not exist at any price: read WHAT PER USER MEANS under the cards.</p>
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
 

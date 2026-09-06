@@ -2754,105 +2754,388 @@ body.overlay-open{ overflow:hidden; }
 
 /* ############################################################################
    Section 4.11b, THE TIER CARDS AND THE PERIOD SWITCH   (/pricing only)
+   REVISED 2026-09-06b. The three cards read as one table now. Everything below
+   this banner replaces the previous 4.11b block in full.
 
-   Added 2026-09-06 with the three-tier plan. Almost everything a tier card
-   needs already exists here: the shell is .feature-card, the name is
-   .chapter-point-label, the list headings are .feature-card-title, the sub-line
-   under a price is .stat-note, the period label is .stat-label, the three
-   buttons are .filter-chip and the CTA is .btn--text. Two things are genuinely
-   new: a figure the site has never printed, and a control that chooses which of
-   three authored blocks is showing.
+   WHAT WAS WRONG, MEASURED IN THE BROWSER RATHER THAN GUESSED. Three unboxed
+   text columns side by side do not read as three comparable products; they read
+   as three paragraphs of an article, because the only thing the three shared
+   was a top rule and a left edge. Everything below that rule was free to land
+   wherever its own column's content pushed it, so the price on card 2 sat at a
+   different y from the price on card 1 and there was nothing to read ACROSS.
+   The old note was right that this site has no box. It was wrong to conclude
+   the cards therefore need no containment: what they needed was the OTHER kind,
+   which is alignment.
 
-   .filter-rail is deliberately NOT reused for the switch. It is sticky under
-   the header and scrolls horizontally, and a three-item control sitting under a
-   section lead must do neither.
+   WHY THEY ARE STILL NOT BOXES, AND THIS IS NOT A HEDGE. Nothing below adds a
+   border-box, a fill, a radius or a shadow. Each card is still opened by a 1px
+   rule and still hangs off it. What changes is that the rule is repeated at
+   four fixed stations down every card and the three cards SHARE their row
+   tracks, so the four rules land on the same four lines in all three columns
+   and break only at the column gaps. Four horizontal hairlines with no vertical
+   between them is not a box; it is what .limits already draws, turned ninety
+   degrees. The tier grid is a two-dimensional .limits and it uses .limits' own
+   vocabulary: a rule, the space under it, and nothing else.
 
-   WHY THE CARDS ARE NOT BOXES. The reference layout draws three bordered,
-   filled cards and fills one harder to recommend it. This site has no box:
-   every group on all five pages opens with a 1px rule and hangs off it (.stat,
-   .feature-card, .limits-row, .speclist-item). The tiers take the same rule one
-   step up in weight, and all three take it identically. Nothing is emphasised,
-   because emphasis on a priced card is a recommendation to buy and nothing on
-   this page can be bought.
+   ALL THREE CARDS TAKE EVERY BAND IDENTICALLY. The old block's closing sentence
+   survives untouched and is why none of this is emphasis: nothing is filled,
+   nothing is enlarged, no card is recommended, because a recommendation on a
+   priced card is a recommendation to buy and nothing on this page can be
+   bought. The three cards differ in what their fields SAY, never in how their
+   fields are drawn.
 
-   THE SWITCH IS A CSS SWITCH. All nine price blocks are in the markup.
-   :root[data-pricing-period] is set by a head latch, the same before-first-paint
-   device data-motion uses, and only script ever sets it: no attribute means all
-   nine print. The switch itself is drawn on a SECOND attribute that only the
-   tail block sets, so a page whose script fails shows one period and no control
-   rather than a control that does nothing. Neither degraded state hides a
-   figure: every price on every card is also written as a sentence in
-   #arithmetic or #terms.
+   THE SKELETON IS SIX CHILDREN, IN THIS ORDER, IN EVERY CARD:
+
+     1  .chapter-point-label   the tier name
+     2  .tier-who              who it is for
+     3  .tier-rail             BAND, ruled: the period blocks and the price
+     4  .tier-ladder           BAND, ruled: which lanes this tier opens
+     5  .tier-includes-block   BAND, ruled: the heading and the short entries
+     6  .tier-foot             BAND, ruled: the state and the control
+
+   The uniformity is the mechanism, not housekeeping: subgrid can only align
+   rows that exist in every card. Projection's second "WHAT IS NOT IN IT" block
+   is what used to break it, and it is gone from the card - its one sentence is
+   the value of band 2 now, and its full text is a row in #included.
+
+   WHY THE PRICE IS IN BAND 1 AND NOT IN THE FOOT. The reference layout puts the
+   figure at the bottom, beside its button, and that is the one borrowing this
+   component refuses. The control that changes the figure is the period switch
+   and it sits ABOVE the grid; on a card carrying eleven entries, a figure in
+   the foot is several hundred pixels below the switch and a reader who clicks
+   WEEKLY at 1440 sees nothing move. Band 1 puts the price two short lines under
+   the card's own rule, and because band 1 is a shared track the three figures
+   still land on one line - the alignment the reference buys with a footer band,
+   bought here without one.
+
+   THE SWITCH IS STILL A CSS SWITCH, unchanged in every particular. All nine
+   price blocks are in the markup; :root[data-pricing-period] hides six and only
+   script sets it; the control is drawn on a SECOND attribute that only the tail
+   block sets. What the table adds is that the degraded state degrades BETTER:
+   with scripting off all three period blocks print inside band 1, which makes
+   band 1 taller in all three columns AT THE SAME TIME, so bands 2, 3 and 4 stay
+   aligned and the table is still a table. That is a property of putting the
+   rail in one row instead of three, and it is the reason for the wrapper div.
    ######################################################################### */
 .period-switch{ display:none; }              /* drawn only once JS confirms */
 :root[data-pricing-switch="on"] .period-switch{
   display:flex; flex-wrap:wrap; gap:8px; align-items:center;
   margin-block-start:var(--rhythm-block);
 }
+/* The switch gains a .stat-label ("PERIOD") in the markup and needs no rule for
+   it: .stat-label already carries order:-1, so it sits first in this flex row,
+   and its line-height:1 centres against a 40px chip for free. A control that
+   chooses which column of a table is showing should say which column it is
+   choosing; unlabelled, three chips are three buttons.
+   .filter-rail is still deliberately NOT reused. It is sticky under the header
+   and scrolls horizontally, and a three-item control under a section lead must
+   do neither. */
 
 /* Three columns, never two. .stat-row degrades 3 -> 2 -> 1 because six figures
    in two rows is still a grid; three tiers in two columns is a comparison with
-   an orphan, so this one goes straight to one column at 860. */
+   an orphan, so this one goes straight to one column at 860.
+
+   TWO GAPS, NOT ONE, and this is section 4.4's rule ("a uniform gap CANNOT
+   express a hierarchy, it can only express a list") applied to a grid rather
+   than to a head. The ROW gap is the distance between two bands of one card and
+   takes --rhythm-block, the scale's own element-to-element step inside a block.
+   The COLUMN gap is the distance between two CELLS of the table and takes
+   --rhythm-figure, one step up, because two columns that a rule crosses need
+   more air between them than two bands the rule separates - otherwise the
+   broken rule reads as a dashed line rather than as a table ruled in three
+   places. At 1440 that is 40 down, 60 across, and a 333.33px card in the 1120px
+   narrow shell.
+
+   THE ROW GAP IS DECLARED HERE AND AGAIN ON .tier-card, AT THE SAME VALUE, ON
+   PURPOSE. Engines disagree about whether a subgrid's own gap or its parent's
+   governs the subgridded axis. Setting both to --rhythm-block removes the
+   question rather than betting on the answer; it is one duplicated token and it
+   is what keeps four rules on four lines in three engines.
+
+   margin-block-start:var(--rhythm-figure) is REMOVED from this rule, not
+   changed. It was authored at 0-1-0 against the head rule's 0-2-0 and has
+   therefore never applied at any width - .tier-grid is a direct child of
+   .section-head, so the distance above the grid has always been --rhythm-block.
+   A declaration describing a layout the browser has never painted is worse than
+   a wrong number, because it looks deliberate. The distance is set on purpose
+   one rule down instead. */
 .tier-grid{
   display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:var(--rhythm-block);
-  margin-block-start:var(--rhythm-figure);
+  gap:var(--rhythm-block) var(--rhythm-figure);
 }
-/* .feature-card's geometry with two changes, both applied to all three cards.
-   A card carrying ten sentences and a price steps between its blocks at
-   --rhythm-block, not at the --rhythm-tight a three-line jump-table cell uses;
-   and the opening rule is the stronger hairline, because that rule is the
-   entire boundary of a priced object. */
+/* Bound to the switch, at 0-5-0, so it beats the head's 0-2-0. Once the control
+   is drawn it is the table's column head and belongs to the table rather than
+   to the paragraph above it: --rhythm-rule is the scale's "a hairline -> the
+   text under it" step, which is the relationship between a control and the
+   thing it controls. With scripting off the attribute is absent, the switch is
+   not drawn, and the grid falls back to the head's --rhythm-block from the
+   paragraph above - correct in both states without either state knowing about
+   the other.
+
+   Written on .tier-grid rather than as .period-switch + .tier-grid because the
+   markup puts a visually-hidden role="status" paragraph between the two. It is
+   position:absolute and takes no row, but it is still a DOM sibling, and a
+   sibling combinator a live region can break is a rule waiting to fail silently
+   the next time the status line moves. */
+:root[data-pricing-switch="on"]
+  :is(.section-head, .chapter-head:not(.video-chapter-head)) > .tier-grid{
+  margin-block-start:var(--rhythm-rule);
+}
+
+/* THE SHARED ROW TRACKS. This is the whole design in three declarations.
+
+   Each card spans every row of the grid and subgrids its rows, so the six
+   children of card 1, card 2 and card 3 sit in the SAME six tracks. Band 3 is
+   the only elastic one: it sizes to the longest of the three lists, the two
+   shorter cards carry white space under theirs, and all three feet still land
+   on one line. That white space is not a bug to be designed away - it is the
+   visible cost of the alignment, and a short cell in a ledger is short.
+
+   @supports IS REQUIRED HERE and is not defensive habit. Without subgrid,
+   grid-template-rows:subgrid is dropped, which would be a harmless fallback on
+   its own - but grid-row:1/-1 would NOT be dropped, and a card spanning six
+   tracks would have its height distributed across six of them and five 40px
+   gaps, adding ~200px of dead air inside every card. All three declarations
+   therefore live or die together. Where subgrid is missing the cards fall back
+   to exactly what shipped before this pass plus the ruled bands: three
+   independent grids, legible, just not a table. */
+@supports (grid-template-rows: subgrid){
+  .tier-grid{ grid-template-rows:repeat(6, auto); }
+  .tier-card{ grid-row:1 / -1; grid-template-rows:subgrid; }
+}
+
+/* .feature-card's geometry with two changes, both applied to all three cards. A
+   card carrying six bands steps between them at --rhythm-block, not at the
+   --rhythm-tight a three-line jump-table cell uses; and the opening rule is the
+   stronger hairline, because that rule is the top edge of a priced object and
+   is the only place --line-strong is used as a content rule anywhere in this
+   file. The interior bands take plain --line, one weight down, which is what
+   makes the card's own boundary and the table's internal rules two different
+   marks rather than five identical ones.
+
+   gap is still declared with the row axis subgridded: it is the value the
+   parent must agree with (see .tier-grid above), it is what the card falls back
+   to at 860 when the subgrid is released, and it is what it falls back to where
+   subgrid is unsupported. */
 .tier-card{
   gap:var(--rhythm-block);
   border-block-start-color:var(--line-strong);
 }
-/* The who-it-is-for line under the tier name. Body copy, one step quiet, and
-   its own class rather than .limits-text so a change to the fine print cannot
-   move it. */
-.tier-who{
-  font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-500); margin:0;
+/* .chapter-point-label carries margin-block-end:.45em so it works outside a
+   head - 10.8px at 24px type. Inside a card that margin is a seventh distance
+   nobody chose, sitting in the second-most-visible gap on the object, and under
+   a stretched subgrid item it also leaves 10.8px of dead space at the foot of
+   track 1 in every column. It stands down here, which is the same device
+   .section-head > .micro-label already uses. The card's spacing grammar is now
+   genuinely two numbers: --rhythm-block between bands, --rhythm-tight inside
+   one. */
+.tier-card > .chapter-point-label{ margin-block-end:0; }
+
+/* THE FOUR BANDS. One declaration, four names, and it is .stat's own idiom
+   (border-block-start + padding-block-start) repeated down a card instead of
+   across a row. Naming the four rather than reaching for :nth-child(n+3) is
+   deliberate: a positional selector would silently move the first rule the day
+   somebody adds a line under the tier name. */
+.tier-rail,
+.tier-ladder,
+.tier-includes-block,
+.tier-foot{
+  border-block-start:1px solid var(--line);
+  padding-block-start:var(--rhythm-rule);
 }
-.tier-includes{
-  list-style:none; margin:0; padding:0;
-  display:grid; gap:var(--rhythm-rule);
-  font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-700);
-}
-/* No bullet and no leading glyph. Section 4.6 authors line breaks rather than
-   drawing marks, and the page is plain ASCII by rule. */
-.tier-period{ display:grid; gap:var(--rhythm-tight); }
+
+/* align-content:start ON EVERY ONE OF THEM, AND IT IS LOad-BEARING, NOT TIDY.
+   Under subgrid each band is a grid item whose align-self resolves to stretch,
+   so its box becomes the SHARED track height - the tallest of the three cards.
+   Inside the band, align-content:normal also behaves as stretch and grows the
+   auto rows, so a band with surplus would spread its own label, figure and note
+   apart by a different amount in each column and the three prices would land at
+   three different y values. That is the exact opposite of what this component
+   is for, and it is a defect this pass would INTRODUCE: .feature-card carries
+   align-content:start today (section 4.7b), which packs the card's tracks and
+   is why no band has ever had surplus to spread. The keyword follows the
+   surplus down one level.
+
+   INSIDE A BAND THE DISTANCE IS ALWAYS --rhythm-tight, and it is the same
+   distance for the same reason in all four: the scale defines that step as
+   "within one cell: label -> figure -> note in a .stat", and every band here is
+   a cell whose first line names it and whose remaining lines answer it. A band
+   is separated from the next by a rule; the things inside one band are not
+   separated at all.
+
+   .tier-rail is the exception and takes --rhythm-block, because with scripting
+   off it holds THREE cells rather than the parts of one. */
+.tier-rail           { display:grid; gap:var(--rhythm-block); align-content:start; }
+.tier-period         { display:grid; gap:var(--rhythm-tight); align-content:start; }
+.tier-ladder         { display:grid; gap:var(--rhythm-tight); align-content:start; }
+.tier-includes-block { display:grid; gap:var(--rhythm-tight); align-content:start; }
+.tier-foot           { display:grid; gap:var(--rhythm-tight); align-content:start; }
+
 /* Three selectors rather than one, because the match is a pair: an attribute on
    the root and an attribute on the block. A lone :not() cannot see the root. */
 :root[data-pricing-period="weekly"]  .tier-period:not([data-period="weekly"]),
 :root[data-pricing-period="monthly"] .tier-period:not([data-period="monthly"]),
 :root[data-pricing-period="yearly"]  .tier-period:not([data-period="yearly"]){ display:none; }
 
-/* ---- THE PRICE: a sixth numeric role, and a subordinate one ----------------
+/* The who-it-is-for line under the tier name. Body copy, one step quiet, and
+   its own class rather than .limits-text so a change to the fine print cannot
+   move it. */
+.tier-who{
+  font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-500); margin:0;
+}
+
+/* ---- BAND 2: THE ONE-STEP LADDER ------------------------------------------
+   The field that makes the three cards differ BEFORE they are read. The label
+   is a .stat-label and is the IDENTICAL STRING in all three columns, which is
+   what turns three assertions into three values of one field; the value is one
+   short line, and because band 2 is a shared row track the three values sit on
+   one baseline and the reader can see where the ladder steps without parsing a
+   word of it. It also absorbs Projection's orphan "WHAT IS NOT IN IT" block,
+   which is what makes all three cards six children long - so this row is both
+   the differentiation and the precondition for the alignment.
+
+   NO DRAWN INDICATOR. A rule whose LENGTH is the lane count was designed and
+   cut: it reads instantly and there is a distant precedent in .pub-progress-bar,
+   but section 4.6 and the .media-slot note are explicit that the hairline is the
+   only drawing vocabulary this site has, and a bar sized by a custom property is
+   a chart. Same call the file already made about the play triangle.
+
+   NO EMPHASIS ON THE MIDDLE CARD. Making Pro taller, darker or filled would
+   read instantly and is the one sentence this component exists not to say. The
+   layout stays neutral and the words do the ranking, which is also this
+   section's own printed argument: the arithmetic decides and not the layout.
+
+   600 in full ink is section 4.3's prose-emphasis convention used as a value
+   face. No new size, no new colour, no new role. */
+.tier-ladder-value{
+  font-size:var(--fs-body-sm); line-height:1.45; font-weight:600;
+  letter-spacing:-.004em; color:var(--ink-950); margin:0;
+}
+
+/* ---- BAND 3: THE ENTRIES --------------------------------------------------
+   These were eight to eleven full sentences of 15 to 40 words each. They are
+   three-to-seven-word entries now, and every sentence that was cut is printed
+   VERBATIM in #included, keyed by the exact string the card still shows - so
+   the card is an index into a schedule and the schedule is the honest long
+   form. Nothing is softened and no figure is dropped; the page gets LONGER, not
+   shorter, because the caveats that used to ride in subordinate clauses are
+   rows of their own down there.
+
+   Two numbers change and both follow from entries replacing paragraphs: the gap
+   goes --rhythm-rule -> --rhythm-tight and line-height 1.6 -> 1.40. A stack of
+   paragraphs needs air between the blocks and leading inside them; a stack of
+   one-line entries needs neither, and giving it both is what made the old list a
+   wall. At 1440 the pitch is a 20.9px line box on a 12px gap.
+
+   NO BULLET AND NO LEADING GLYPH, unchanged and for the unchanged reason:
+   section 4.6 authors line breaks rather than drawing marks, and the page is
+   plain ASCII by rule.
+
+   AND NO HAIRLINE BETWEEN ITEMS EITHER, which is the harder refusal because
+   .limits and .speclist both draw one and it would do exactly what the
+   reference's checkmark does. It is cut for a reason specific to three columns:
+   the only hairline available on white is --line, which is already spent on the
+   four BAND rules, so an item rule would be the identical mark at the identical
+   weight and band 3's own boundary would become indistinguishable from its
+   contents. Twenty of them across three 333px columns is also the densest thing
+   on any of the five pages. What replaces the mark is that every entry is a
+   single line, so the left edge is a hard column, and that the band's rule runs
+   across all three cards, so three lists read as one row.
+
+   NO figure rail and NO font-variant-numeric here. Pulling each entry's leading
+   count into an aligned left column would read beautifully and would be a
+   SEVENTH numeric role scanned vertically, which is precisely what spec 1.2(f)
+   bought the sixth role in order to avoid. The figures stay inside their phrases
+   as ROLE 3, proportional, covered by the :where() block in section 4.4. The
+   pool is not widened by one. */
+.tier-includes{
+  list-style:none; margin:0; padding:0;
+  display:grid; gap:var(--rhythm-tight);
+  font-size:var(--fs-body-sm); line-height:1.40; color:var(--ink-700);
+}
+
+/* ---- THE PRICE: still the sixth numeric role, on one steeper ramp ----------
    ROLE 1 is closed (spec 1.2e): .stat-value and .hero-readout-value are the
    only classes allowed at --fs-stat, reserved for figures verified against
-   shipped source. A price verifies against a decision, so it gets its own step,
-   and the step is sized to sit BELOW --fs-stat at every width: 24 to 32 against
-   28 to 56. It is deliberately LARGER than .chapter-point-label, the tier name
-   above it (--fs-h4, 19 to 24), because on a priced card the figure is what the
-   reader came for; that is the one place this page follows the reference layout
-   rather than the site's own hierarchy.
-   TABULAR, unlike a ROLE 3 figure in a sentence, and for ROLE 1's reason: three
-   prices sit in one row across three cards and have to line up. Declared here
-   rather than as a --fs-* token because it has exactly one consumer, which is
-   how .hero-title's own ramp is declared. */
+   shipped source. A price verifies against a decision, so it keeps its own
+   step, and the step still sits BELOW --fs-stat at every width. What changes is
+   the slope, and spec 1.2(f)'s printed range moves with it: 24 to 32 becomes
+   24 to 44, against 28 to 56. That sentence has to be corrected in
+   docs/REDESIGN_SPEC_0814.md in the same commit.
+
+   THE FLOOR DOES NOT MOVE, and that is the whole reason one ramp is enough.
+   390 is the binding width, not 1440: --fs-stat is a FLAT 28px from 320 up to
+   viewport 777.8, so on a phone a price has 4px of headroom and one step. The
+   1.5rem floor is therefore byte-identical to what ships, the tightest gap on
+   the site is untouched, and every pixel this pass buys is bought in the
+   800-to-1467 band where headroom actually exists.
+
+   THE CONTRACT IS A RATIO NOW, NOT AN INEQUALITY, and it is stricter than spec
+   1.2(f) asks. 3.0 / 3.6 = 0.8333, so wherever both clamps are on their vw term
+   the price is 83.3% of ROLE 1 BY CONSTRUCTION rather than by a table somebody
+   has to re-check. Traced whole: a constant 85.7% below 777.8 where both sit on
+   their floors; falling to 83.3% between 777.8 and 800 as --fs-stat leaves its
+   floor first; a constant 83.3% from 800 to 1466.7 while both ramp; falling to
+   78.6% above 1555.6 as the price caps and --fs-stat does not. The peak is
+   85.7% and it is the SHIPPED clamp's own peak at the same widths, so the
+   figure never gets proportionally closer to ROLE 1 than the signed-off version
+   already is on a phone.
+
+     width   --fs-stat   was      is       is / stat
+      390      28.00     24.00    24.00      85.7%
+      560      28.00     24.00    24.00      85.7%
+      860      30.96     24.00    25.80      83.3%
+     1180      42.48     25.96    35.40      83.3%
+     1440      51.84     31.68    43.20      83.3%
+     1920      56.00     32.00    44.00      78.6%
+
+   PROVED, not sampled. clamp(a,f,b) is the median of its three arguments and
+   the median is monotone in each. 1.5rem < 1.75rem, 3vw < 3.6vw at every width,
+   2.75rem < 3.5rem: all three arguments strictly smaller, so the result is
+   strictly smaller at every viewport. There is no crossover to hunt for.
+
+   line-height goes 1.1 -> 1, matching ROLE 1, because a ledger figure sits on
+   its own baseline. TABULAR is unchanged and for ROLE 1's reason: three prices
+   sit in one shared row track across three cards and have to line up - which is
+   now literally true rather than approximately true. Declared here rather than
+   as a --fs-* token because it has exactly one consumer, which is how
+   .hero-title's own ramp is declared. */
 .tier-price{
   font-family:var(--font-num);
-  font-size:clamp(1.5rem, 2.2vw, 2rem);      /* 24 to 32 */
+  font-size:clamp(1.5rem, 3vw, 2.75rem);       /* 24 to 44; floor unchanged */
   font-weight:500;
-  line-height:1.1;
+  line-height:1;
   letter-spacing:-.02em;
   font-variant-numeric:lining-nums tabular-nums;
   color:var(--ink-950);
+  margin:0;
+}
+/* THE CURRENCY IS A LABEL ON THE FIGURE, NOT PART OF IT. "USD 39" set four
+   characters of word at the same size as two characters of figure, which is the
+   other half of why the numeral did not land - size alone was never going to
+   fix it. Stepping the word down leaves the digits alone in their size class,
+   and it is the only lever that works at the 24px floor, where the ramp cannot
+   help at all.
+
+   This is NOT .stat-unit and the ROLE 4 inventory is untouched: the page's own
+   authoring note is explicit that USD is a word and not a measurement unit, and
+   that stands. The reason it steps down is the table's reason rather than the
+   unit rule - a column of figures declares its currency at label size, once per
+   cell, never at figure size. It takes the .stat-label face exactly, so the
+   currency and the period name above it read as one object at 5.25:1. */
+.tier-price-cur{
+  font-family:var(--font-display);
+  font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1;
+  color:var(--ink-400);
+  margin-inline-end:.34em;
 }
 /* NOT .stat-unit, and the distinction is the spec's: that class is inventoried
    as measurement units only, and /user/month is a billing unit. Same weight as
    a unit so the two read as one system, one ink back, and it never wraps away
-   from its price. */
+   from its price. 14.90 against 43.20 at 1440 is a 2.90x separation - brief
+   rule 4, a unit is never the size of its figure, with more room than the
+   2.13x it had. */
 .tier-price-per{
   font-family:var(--font-body);
   font-size:var(--fs-body-sm);
@@ -2862,6 +3145,52 @@ body.overlay-open{ overflow:hidden; }
   margin-inline-start:.34em;
   white-space:nowrap;
 }
+/* Enterprise is not sold by the week, and the table prints that as an empty
+   cell rather than as a missing element: the band still exists, still carries
+   its period label, and answers with a sentence where the other two answer with
+   a figure. Its own class because it was borrowing .tier-who, the
+   who-it-is-for line in row 2 - two unrelated strings on one selector, so an
+   edit to the fine print moved a price cell. --ink-400 is one step back from
+   the notes around it, so the absence of a figure is legible AS an absence at a
+   glance down the row. */
+.tier-price-none{
+  font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-400); margin:0;
+}
+
+/* ---- BAND 4: THE FOOT, WHERE THE PAGE ANSWERS ITS OWN PRICE ---------------
+   Two lines, and the order matters. The STATE is printed first, at the
+   strongest small-text contrast on the card (20.84:1, stronger than the
+   includes heading and stronger than the tier name), because it is the answer
+   to the only question a price provokes. The CONTROL comes second and goes
+   somewhere.
+
+   WHY AN OUTLINE AND NOT A FILL. .btn--solid or .btn--brand would say "buy",
+   and filling one card harder than the others would say "buy THIS one", which
+   is the sentence this component exists not to say. All three feet are
+   identical and none is filled. SANCTIONED CYAN USE 5 of 5 (section 2.3) is
+   free and is deliberately NOT spent here: spending the last cyan on a page
+   where nothing can be bought would be that recommendation in another medium.
+
+   WHY NOT .btn.is-disabled, which looks like the obvious answer and is not. It
+   carries pointer-events:none, and this control has a destination that matters
+   - a reader who has just been told a price cannot be bought needs somewhere to
+   go and read why. It also paints --ink-300 at 3.06:1, which that token's own
+   comment in section 2.1 restricts to a drawn object or a control WCAG counts
+   as inactive. This control is active. Greying it out to look unbuyable would
+   be dishonest and inaccessible in one move.
+
+   FULL .btn, NOT .btn--sm: 48px, because this is the terminal control of the
+   object and the only interactive thing inside a card. Full width is the one
+   shape borrowed from the reference layout, and it introduces no new precedent
+   - every four-sided border on white paper in this file already belongs to a
+   control, and this is one. */
+.tier-status{
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; line-height:1.3;
+  color:var(--ink-950); margin:0;
+}
+.tier-act{ margin:0; display:grid; }
+.tier-act .btn{ inline-size:100%; }
 
 /* .heatmap-mode-grid / .heatmap-mode / .heatmap-mode-title / .heatmap-mode-body
    are DELETED, along with their two breakpoint entries. Section 4.11 specified
@@ -3408,6 +3737,15 @@ body.overlay-open{ overflow:hidden; }
 /* 1180px and below: nav links become .nav-toggle; all two-column splits stack;
    pin block unpins. The frame has no tilt to soften (OVERRIDE 2). */
 @media (max-width:1180px){
+  /* The column gap steps back down one notch. --rhythm-figure is the right
+     distance between two columns of a table when the columns are 333px wide; at
+     861 the same rule would leave 234px columns and a 38-character entry that
+     fits on one line at 1440 would start wrapping. --rhythm-block returns the
+     cards to 333.3px at 1180 and to the 241.8px they have today at the bottom
+     of this band, while the rows stay shared. The ROW gap is untouched: the
+     distance between two bands of one card has nothing to do with viewport
+     width. */
+  .tier-grid{ column-gap:var(--rhythm-block); }
   .nav-links{ display:none; }
   /* ---- The header is a BUDGET below 1180, not a row of fixed objects -------
      It shipped as a flex row of three `flex:0 0 auto` children inside a shell
@@ -3459,6 +3797,29 @@ body.overlay-open{ overflow:hidden; }
    and to 0 for a .site-main child, so there is nothing left for a breakpoint to
    restate. */
 @media (max-width:860px){
+  /* Stacked, the cards step at --rhythm-figure rather than --rhythm-block: a
+     column gap and a row gap between the same two objects are different
+     distances on the scale, which is the rule .stat-row already follows.
+
+     THE SUBGRID IS RELEASED HERE, EXPLICITLY, rather than left to sort itself
+     out. In one column, three cards each spanning grid-row:1/-1 would stack ON
+     TOP of each other in the same six tracks. Both halves of the @supports
+     block are undone: grid-row goes back to auto so each card takes its own
+     row, grid-template-rows goes back to none on both the grid and the card,
+     and the card's own gap becomes the row distance again. This block is
+     further down the file than the @supports block and both sides are 0-1-0,
+     so source order decides and it decides correctly.
+
+     NOTHING IS LOST BY RELEASING IT. Stacked, there is no ACROSS to read: the
+     three cards are one after another and a shared row track has nobody to
+     share with. What the four bands do here is what a ruled list has always
+     done, which is what #lapse and #terms do further down this same page. */
+  .tier-grid{
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:none;
+    gap:var(--rhythm-figure);
+  }
+  .tier-card{ grid-row:auto; grid-template-rows:none; }
   /* The .col-* line that sat here went with the 12-column primitives. */
   .hero-readout{ grid-template-columns:minmax(0,1fr); gap:clamp(18px,3vw,28px); }
 
