@@ -1249,6 +1249,12 @@ WHO HAS TO QUOTE THE JOB.
 
 ### S5 — `#product` · The chapter index
 
+> **Amended 2026-09-06, the home page carries three PARTS over the same ten chapters.** Owner instruction: group the material as the simulation and the lighting, then the projector placement and arrays, then the Play Dock, and cut the length. `index.html` now runs `#ch-01` THE SIMULATION, `#ch-02` THE ARRAY, `#ch-03` THE PLAY DOCK (PRO) and a close, `#handoff` WHAT LEAVES. The old ten sections are gone from that page and `#ch-04` to `#ch-10`, plus `#measure`, survive inside the three as hidden anchor spans so that every link ever published still lands.
+>
+> **The taxonomy itself is NOT repealed and `/videos` is untouched.** All ten chapter identities, its 43 slots, its ten filter chips and its per-chapter counters stand exactly as §7.3 specifies. What changed is the home page's presentation of them, not the set. Anything below that counts ten home-page chapters is describing the page before this date; the mapping is 01, 06, 07, 08 into THE SIMULATION; 02, 03 into THE ARRAY; 04, 05 into THE PLAY DOCK; 09, 10 into the close.
+>
+> **The Play Dock is priced into Pro and has no gate.** Unlike the fixture lane and the fog machine, which resolve through switches in `src/config/betaFeatures.js`, the dock is mounted unconditionally at `src/ProjectorSimulator.jsx:748` and contains no flag anywhere. Closing it is unwritten work: the mount, `useAppStore.ts:1804`, the direct poke at `Engine3D.jsx:4686`, and `usePlayDockReservedPx` at `dockShared.js:60`, which would otherwise reserve empty pixels for a dock that is not there. **The tier line is drawn at the CONSOLE, not the whole dock** (owner decision, 2026-09-06): the sets and groups rail, the transport, playlists and the show-running surface are Pro; corner pin, mesh warp, feathered masks and putting content on a surface stay in the entry tier. That split is a product decision the build does not yet implement, and `/pricing` says so in as many words.
+
 **One taxonomy, ten chapters.** Earlier drafts carried four incompatible chapter sets (5 / 9 / 11 / a six-item marquee). This is the only one. It is used identically by the home chapters, the marquee, the `/videos` chapters, and every index counter on the site.
 
 | # | id | EN name | KO name | Shipped area it explains |
