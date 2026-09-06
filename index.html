@@ -278,7 +278,7 @@
                as a claim. It is a claim.
 
                NO BARE FIGURES, deliberately. The page carries 87 projectors, 113
-               lenses, 16 heads, 13 points and a 0-500 lux ramp, and every one of
+               lenses, 32 heads, 13 points and a 0-500 lux ramp, and every one of
                them is qualified in the sentence that prints it. A scrolling band
                has no sentence, so a figure here could not carry its qualifier -
                which is why this is a vocabulary band and not a stats band, and
@@ -573,6 +573,15 @@
             <span class="micro-label-name">THE PRODUCT, PART BY PART</span>
           </p>
 
+          <!-- "ALL LIVE" is a claim with an owner, and the owner is
+               src/config/betaFeatures.js in the app repo. Two resolvers decide
+               whether this sentence is true on any given day: resolveLightingLane
+               and resolveVolumetricBeams, both of which govern Ch 08. Both are
+               prod-ON as of 2026-09-05 and pinned by prod-door-gates.test.js, so
+               the sentence holds. It did NOT hold between 2026-08-29 and
+               2026-09-05: the lighting lane shipped to master prod-disabled while
+               Ch 08 was already live on this page, and nobody here knew. Re-check
+               those two resolvers before trusting this heading again. -->
           <h2 class="feature-title reveal" id="product-title">TEN PARTS. ALL LIVE IN THE APP TODAY.</h2>
 
           <p class="feature-sub reveal">Where a part is gated, still in beta, or desktop-only, this page says so in the same sentence that claims it.</p>
@@ -822,7 +831,7 @@
 
           <h2 class="feature-title reveal" id="ch-04-title">CORRECTION YOU CAN WATCH IN THE BEAM.</h2>
 
-          <p class="feature-sub reveal">Corner-pin, mesh warp and feathered masks render in the actual 3D beam while you drag, so the seam softens in the viewport in front of you. Up to 16 heads can carry a mesh warp or mask, and your on-site correction still happens on the processor.</p>
+          <p class="feature-sub reveal">Corner-pin, mesh warp and feathered masks render in the actual 3D beam while you drag, so the seam softens in the viewport in front of you. Up to 32 heads can carry a mesh warp or mask, and your on-site correction still happens on the processor.</p>
 
           <figure class="chapter-media reveal">
             <div class="media-slot media-slot--wide" data-slot="video"
@@ -1036,7 +1045,7 @@
 
           <h2 class="feature-title reveal" id="ch-08-title">PROJECTION NEVER SHIPS ALONE.</h2>
 
-          <p class="feature-sub reveal">Stage and architectural fixtures and LED walls sit in the same scene as the projectors, eight archetypes deep, with IES (LM-63) import and a washout rating for the wall. All of it lives in a strictly separate estimate lane: direct light only, stamped estimate on screen, and blocked from ever reaching a projector lux figure.</p>
+          <p class="feature-sub reveal">Stage and architectural fixtures and LED walls sit in the same scene as the projectors, eight archetypes deep, with IES (LM-63), EULUMDAT and GDTF import and a washout rating for the wall. All of it lives in a strictly separate estimate lane: direct light only, stamped estimate on screen, and blocked from ever reaching a projector lux figure.</p>
 
           <figure class="chapter-media reveal">
             <div class="media-slot media-slot--wide" data-slot="video"
@@ -1052,11 +1061,19 @@
             </li>
             <li class="feature-card">
               <h3 class="feature-card-title">IES IMPORT</h3>
-              <p class="feature-card-body">A manufacturer .ies file drives the beam shape, the fixture's lux estimate and the working plane. Asymmetric files are averaged, and the app says so on screen.</p>
+              <p class="feature-card-body">A manufacturer .ies, .ldt or .gdtf file drives the beam shape, the fixture's lux estimate and the working plane. Asymmetric files are averaged, and the app says so on screen.</p>
             </li>
             <li class="feature-card">
               <h3 class="feature-card-title">AIM BY CLICK</h3>
               <p class="feature-card-body">Click a point on the target and pan and tilt solve themselves, inside the fixture's real travel.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">A CATALOGUE, NOT JUST A SHAPE</h3>
+              <p class="feature-card-body">29 built-in fixtures, 16 of them named market units transcribed from published photometric data, on top of the eight archetypes. For the exact curve, drop the maker's own file on top.</p>
+            </li>
+            <li class="feature-card">
+              <h3 class="feature-card-title">FOG YOU CAN SEE THE BEAM IN</h3>
+              <p class="feature-card-body">A fog machine puts a simulated field in the air that wind and ventilation move and walls contain, and the beams scatter in it. It is a display lane only: it adds no lux to a surface and changes no measured figure.</p>
             </li>
             <li class="feature-card">
               <h3 class="feature-card-title">THE SCHEDULE LEAVES WITH YOU</h3>
@@ -1082,7 +1099,7 @@
 
           <h2 class="feature-title reveal" id="ch-09-title">PROOF THAT LEAVES THE APP.</h2>
 
-          <p class="feature-sub reveal">Three things leave: a PDF Tech Rider, a vendor-neutral handoff JSON, and a read-only link. Each one states its own assumptions on the page. None of it is written in a media server's blend or warp format, and none of it is pushed to a device.</p>
+          <p class="feature-sub reveal">What leaves is a PDF Tech Rider, a vendor-neutral handoff JSON, and a read-only link. Each one states its own assumptions on the page. None of it is written in a media server's blend or warp format, and none of it is pushed to a device.</p>
 
           <figure class="chapter-media reveal">
             <div class="media-slot bleed-full" data-slot="video"
@@ -1193,8 +1210,8 @@
             </div>
             <div class="stat reveal">
               <p class="stat-label">HEADS PER SCENE, MAX</p>
-              <p class="stat-value u-tabular">64</p>
-              <p class="stat-note">A hard GPU cap, not a plan tier. The runtime detector can set it lower on your machine, and 16 of those heads can carry a mesh warp or a mask.</p>
+              <p class="stat-value u-tabular">200</p>
+              <p class="stat-note">A hard shader cap, not a plan tier. Raised from 64 to 96 on 2026-08-17 and to 200 on 2026-08-26, each step measured before it shipped. The runtime detector can set it lower on your machine, and 32 of those heads can carry a mesh warp or a mask.</p>
             </div>
             <div class="stat reveal">
               <p class="stat-label">PROBE GRID POINTS</p>
@@ -1279,7 +1296,7 @@
           <div class="limits reveal">
             <div class="limits-row">
               <p class="limits-key">NOT MODELLED</p>
-              <p class="limits-text">Atmospheric haze, lens distortion, chromatic aberration, lamp aging, specular BRDF, ambient interaction with the surface, content-dependent brightness. Surfaces are Lambertian only. There is no radiosity, no global illumination and no ray tracing anywhere in this product. These do not tighten with a longer run; they are absent from the calculation.</p>
+              <p class="limits-text">Lens distortion, chromatic aberration, specular BRDF, ambient interaction with the surface and content-dependent brightness are not modelled at all. Surfaces are Lambertian only. There is no radiosity, no global illumination and no ray tracing anywhere in this product. Two items that used to sit on this list now carry a narrower absence instead: atmospheric haze renders as a display-only single-scattering pass and reads out as a labelled visibility estimate, and lamp aging enters the fixture estimate through a maintenance factor slider that is not saved with the scene. Neither writes back into measured projector lux, which stays clear-air and un-aged. The rest do not tighten with a longer run; they are absent from the calculation.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">FIXTURE LIGHT IS A SEPARATE LANE</p>
@@ -1292,6 +1309,14 @@
             <div class="limits-row">
               <p class="limits-key">IES CAVEAT</p>
               <p class="limits-text">Asymmetric IES files are averaged into an axially symmetric approximation, and the app says so on screen. A fixture whose real distribution is not symmetric about its axis is estimated as though it were.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">GRAZING FOLDS READ NARROW</p>
+              <p class="limits-text">Where two faces of a fold meet at a grazing angle, under about 35 degrees, the blend band is still computed as if the surface were flat. Pixel measurement puts the real spill 1.5 to 2.7 times wider than the model there. The app warns on the seam when it happens, and the number it shows you is the narrow one.</p>
+            </div>
+            <div class="limits-row">
+              <p class="limits-key">STANDARD TARGETS ARE REFERENCE VALUES</p>
+              <p class="limits-text">The working-plane numbers can be judged against target profiles for five regions, and every figure in those packs is a reference value transcribed from public secondary sources, not a licensed normative table. The app prints that qualifier beside the judgment, and this page repeats it: a pass against one of these profiles is a pass against our transcription of it.</p>
             </div>
           </div>
 
@@ -1307,7 +1332,7 @@
             </div>
             <div class="limits-row">
               <p class="limits-key">WHICH LUX, ALWAYS LABELLED</p>
-              <p class="limits-text">Four lux figures with different meanings exist in the engine. <strong>Reliable Surface Lux is a full-target 20th percentile</strong>. Not a peak, not an average. Every lux number on this site says which one it is in the same sentence, and quoting one without its label is how the same scene ends up with two brightness stories.</p>
+              <p class="limits-text">At least four lux figures with different meanings exist in the engine, and the file that owns them warns at the top that every past bug in this area came from mixing them. <strong>Reliable Surface Lux is a full-target 20th percentile</strong>. Not a peak, not an average. Every lux number on this site says which one it is in the same sentence, and quoting one without its label is how the same scene ends up with two brightness stories.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">BLEND VALUES ARE LIGHT-LINEAR</p>
@@ -1315,7 +1340,7 @@
             </div>
             <div class="limits-row">
               <p class="limits-key">NEVER UNDER LOAD</p>
-              <p class="limits-text">This platform has never been load tested. The highest traffic we have observed is 30 requests per second. We publish the measured per-session request cost and nothing else: no uptime figure, no concurrency guarantee.</p>
+              <p class="limits-text">Production has never been load tested. A staging load test on 2026-08-29 did run concurrent snapshot saves, and the compressed save format that production has used since 2026-09-05 finished 64 out of 64 concurrent saves at a 238 <span class="stat-unit">ms</span> 95th percentile with no failure inside that range, while the plain format it replaced failed 6 of 8 at eight concurrent saves. Staging is a smaller free-tier instance, so read both figures as a floor and not as a production number. The highest live traffic we have observed in production is 30 requests per second, measured across one day of edge logs on 2026-08-14 and not re-measured since. We publish the measured per-session request cost and those two floors and nothing else: no uptime figure, no concurrency guarantee.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">THE PUBLIC-BUCKET CAVEAT</p>
@@ -1327,11 +1352,11 @@
             </div>
             <div class="limits-row">
               <p class="limits-key">WHAT ISN'T HERE</p>
-              <p class="limits-text">Drawing import and sketch-to-model are disabled in production. Realtime video output to other applications is desktop-only and its entry points are removed from the web build entirely. There is no export to a media-server-specific file format. There is no live multi-user editing, no comments and no presence. Sharing is owner-authored links plus read-only account access.</p>
+              <p class="limits-text">Realtime video output to other applications is desktop-only and its entry points are removed from the web build entirely. There is no export to a media-server-specific file format. There is no live multi-user editing, no comments and no presence. Sharing is owner-authored links plus read-only account access.</p>
             </div>
             <div class="limits-row">
               <p class="limits-key">SECURITY, STATED NARROWLY</p>
-              <p class="limits-text">What exists: row-level security scoped to the project owner, share payloads readable only through a server-side resolver, bcrypt-hashed share passwords, IP-hashed rate limiting on share resolution, per-user storage path isolation, admin-gated operations, a 7-day grace period on account deletion, and an explicit consent record at signup. That list is the whole claim.</p>
+              <p class="limits-text">What exists: row-level security scoped to the project owner, share payloads readable only through a server-side resolver, bcrypt-hashed share passwords, IP-hashed rate limiting on share resolution and on both signup and founding-member verification, one-time signup codes stored only as a salted hash, per-user storage path isolation, admin-gated operations, a 7-day grace period on account deletion, and an explicit consent record at signup. That list is the whole claim.</p>
             </div>
           </div>
 
@@ -1377,7 +1402,7 @@
 
           <h2 class="feature-title reveal" id="beta-title">OPEN BETA. FREE. HONESTLY LIMITED.</h2>
 
-          <p class="feature-sub reveal">2 <span class="stat-unit">GB</span> of imported-model storage, a 1 <span class="stat-unit">GiB</span> media library, and a 200 <span class="stat-unit">MB</span> ceiling per file. There are no paid plans yet and nothing to buy; what they would cost is published on the <a class="link" href="/pricing">pricing page</a> so it can be argued with before it exists. Early testers who verify their invite code keep founding-member standing, which carries 12 months of access once those plans begin.</p>
+          <p class="feature-sub reveal">2 <span class="stat-unit">GB</span> of imported-model storage with a 200 <span class="stat-unit">MB</span> ceiling on any single model file, and a 1 <span class="stat-unit">GiB</span> media library. There are no paid plans yet and nothing to buy; what they would cost is published on the <a class="link" href="/pricing">pricing page</a> so it can be argued with before it exists. Early testers who verify their invite code keep founding-member standing, which carries 12 months of access once those plans begin.</p>
 
         </div>
       </div>
@@ -1909,7 +1934,17 @@
                                   repository and served from our deployment. It
                                   stops being acceptable the moment this frame
                                   points at anything we do not build, which is
-                                  why ?embedSrc= keeps its host allowlist.
+                                  why ?embedSrc= resolves same-origin ONLY.
+                                  Corrected 2026-09-06: this line used to say
+                                  "keeps its host allowlist", which was stale
+                                  against resolveSameOrigin on this same page
+                                  and had already been copied into privacy.html
+                                  as a false clause about a frame that was said
+                                  to load a cross-origin demo on a click. A
+                                  host allowlist would admit *.vercel.app, and
+                                  a same-origin sandbox token on a cross-origin
+                                  demo would be a boundary this frame does not
+                                  have. It is one origin, ours, or nothing.
                allow-pointer-lock: Walk inside locks the cursor so the view
                                   turns with the mouse instead of the pointer
                                   running out of the frame. MEASURED, both ways:

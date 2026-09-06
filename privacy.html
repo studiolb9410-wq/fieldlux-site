@@ -142,7 +142,7 @@
 
           <p class="copy u-text-measure reveal">Everything claimed below about this site can be checked from the outside: open the page source, or watch your browser's network panel while you read. If a clause is unclear or wrong, say so at <a class="link" href="mailto:jay@field-lux.com">jay@field-lux.com</a> and it gets rewritten.</p>
 
-          <p class="stat-note u-tabular reveal">Last updated: August 15, 2026</p>
+          <p class="stat-note u-tabular reveal">Last updated: September 6, 2026</p>
         </div>
 
       </div>
@@ -178,7 +178,7 @@
             <span class="speclist-index u-tabular">(02)</span>
             <div class="speclist-body">
               <h3 class="chapter-point-label">WHAT YOUR BROWSER KEEPS</h3>
-              <p class="u-text-measure">One preference is stored on your device: <code>fieldlux_motion</code>, written when you press Reduce motion in the footer. Three further keys exist only so a review build can be pointed somewhere else, and are written only if you open the site with the matching query parameter: <code>fieldlux_flow_app_url</code>, <code>fieldlux_discord_url</code> and <code>fieldlux_embed_src</code>. All four sit in your browser's local storage. None of them is sent anywhere, none is readable by another site, and clearing site data removes them.</p>
+              <p class="u-text-measure">One preference is stored on your device by these pages: <code>fieldlux_motion</code>, written when you press Reduce motion in the footer. Three further keys exist only so a review build can be pointed somewhere else, and are written only if you open the site with the matching query parameter: <code>fieldlux_flow_app_url</code>, <code>fieldlux_discord_url</code> and <code>fieldlux_embed_src</code>. Those four are everything the pages themselves write. The 3D demo on the home page is the FieldLux app served from this same domain, so the view settings it remembers, all of them named with a <code>fieldlux_</code> prefix, are written into this site's local storage rather than a separate one. None of these keys is sent anywhere, none is readable by another site, and clearing site data removes all of them.</p>
             </div>
           </li>
 
@@ -186,7 +186,7 @@
             <span class="speclist-index u-tabular">(03)</span>
             <div class="speclist-body">
               <h3 class="chapter-point-label">THE DEMO FRAME ON THE HOME PAGE</h3>
-              <p class="u-text-measure">The home page reserves a frame for a live demo of the app. It ships with no address configured, so today nothing loads into it: the frame is a still image with a caption, and no other origin is contacted. When a demo address is configured, the frame stays that still until you press the button inside it. The embedded page is created by your click and never on page load, so the choice to load someone else's page inside this one is always yours to make first. The address is checked against a list held in the page's own script, field-lux.com and its subdomains or a Vercel preview host, and anything else is refused and cleared rather than loaded. The frame is sandboxed and the demo keeps its own address, so it cannot read this page, its local storage or its cookies, and it cannot navigate you away from here.</p>
+              <p class="u-text-measure">The home page carries a live 3D demo of the app, and it is served from this domain. The build sits at field-lux.com/embed, it is compiled from our own repository and committed to this site, and it loads automatically when the page opens rather than waiting for a click. Because it is the same origin as this page, the frame is not a security boundary and is not offered as one: the demo can read this document and this site's local storage exactly as though the app were written into the page, which is acceptable only because it is our code on our deployment. What it cannot do is leave: the frame is sandboxed without top-level navigation and without forms, so it cannot take you anywhere and there is nothing in it to submit. It contacts no other origin. A review build can point the frame somewhere else with <code>?embedSrc=</code>, and that address is accepted only when it resolves to this exact origin; anything else is refused and the stored value cleared.</p>
             </div>
           </li>
 
@@ -248,7 +248,7 @@
             <span class="speclist-index u-tabular">(03)</span>
             <div class="speclist-body">
               <h3 class="chapter-point-label">SHARE LINKS</h3>
-              <p class="u-text-measure">A share link is resolved on the server rather than handed out as the project itself. If you put a password on a link, it is stored hashed with bcrypt. The resolver rate-limits by a hash of the requesting address rather than keeping the address. Anyone holding a live link can open what you shared, which is the whole point of a link, so the link is the credential: send it the way you would send a door code.</p>
+              <p class="u-text-measure">A share link is resolved on the server rather than handed out as the project itself. If you put a password on a link, it is stored hashed with bcrypt. Each attempt to resolve a link writes one row holding the link's id, the outcome, and a hash of the requesting network address rather than the address, which is what the rate limiting counts against. Anyone holding a live link can open what you shared, which is the whole point of a link, so the link is the credential: send it the way you would send a door code.</p>
             </div>
           </li>
 
@@ -272,7 +272,31 @@
             <span class="speclist-index u-tabular">(06)</span>
             <div class="speclist-body">
               <h3 class="chapter-point-label">SERVICE PROVIDERS</h3>
-              <p class="u-text-measure">Supabase for authentication, database and file storage. Vercel for hosting. Traffic between you and those services is carried over TLS. We do not sell personal information, and we do not build a marketing mailing list out of FieldLux account data.</p>
+              <p class="u-text-measure">Supabase for authentication, database and file storage. Vercel for hosting. Resend carries the mail: the sign-in codes, the invite mail and any reply we send you all pass through it. Traffic between you and those services is carried over TLS. We do not sell personal information, and we do not build a marketing mailing list out of FieldLux account data.</p>
+            </div>
+          </li>
+
+          <li class="speclist-item" id="mail-you-send-us">
+            <span class="speclist-index u-tabular">(07)</span>
+            <div class="speclist-body">
+              <h3 class="chapter-point-label">MAIL YOU SEND US</h3>
+              <p class="u-text-measure">Mail to jay@field-lux.com is stored. The sender address and name, the subject, the body, any attachment and the delivery record are kept in the same database as the rest of the account data, so that a support thread can be read back later, and any reply we send is archived beside it. Only an administrator can read that mailbox. This includes the mail you would send to ask for deletion, correction or export, which is the one place on this page where writing to us and having it recorded are the same act.</p>
+            </div>
+          </li>
+
+          <li class="speclist-item" id="address-verification">
+            <span class="speclist-index u-tabular">(08)</span>
+            <div class="speclist-body">
+              <h3 class="chapter-point-label">PROVING THE ADDRESS IS YOURS</h3>
+              <p class="u-text-measure">Signing up and claiming founding-member standing both send a one-time code to the address you typed. The code itself is never stored in a readable form, only as a hash we can check your answer against, and it expires. Each attempt is logged with the address, the browser, and a hash of the requesting network address rather than the address itself. Those logs are pruned daily. That log is what stops one script from mailing codes at a thousand strangers.</p>
+            </div>
+          </li>
+
+          <li class="speclist-item" id="no-payment-data">
+            <span class="speclist-index u-tabular">(09)</span>
+            <div class="speclist-body">
+              <h3 class="chapter-point-label">NO PAYMENT DATA</h3>
+              <p class="u-text-measure">There is no checkout in FieldLux and no payment code in the build, so no card, no billing address and no payment processor record exists for any account. The <a class="link" href="/pricing">pricing page</a> publishes what plans would cost; nothing on it has ever charged anyone.</p>
             </div>
           </li>
 

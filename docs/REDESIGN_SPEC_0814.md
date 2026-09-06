@@ -44,6 +44,10 @@ What **is** mounted and therefore claimable in the measurement lane: the Lux Hea
 
 Ship gate: `grep -inE 'SOC 2|GDPR|enterprise-ready|load tested|MadMapper|MPCDI|anamorphic|radiosity|ray tracing|roadmap|resilience score|Spout|Syphon|NDI|DWG|DXF' index.html videos.html pricing.html privacy.html src/input.css` must return nothing.
 
+> **Amended 2026-09-06, `load tested`.** The ban was written when "never load tested" was the entire truth and any use of the phrase would have been a claim. A staging load test was run on 2026-08-29 (`docs/CAPACITY_SIMULATION_0829.md`), so the phrase is now permitted in exactly one shape: a sentence that says production has never been load tested, followed by a dated staging figure that names staging as a smaller instance and reads as a floor. Any other use is still banned, and a bare "load tested" with no instance and no date is still the thing the ban exists to stop.
+
+> **Still banned, and now for a different reason: the drawing lane.** `CAD import`, `DWG`, `DXF`, `floor-plan tracing` and `sketch-to-3D` were banned on 2026-08-14 because the lane was disabled in production. That premise expired on 2026-08-19, when the lane shipped prod-ON. The strings stay banned pending an owner decision, so the site currently underclaims a live capability on purpose. Deleting the false sentence that said the lane was disabled is not blocked by this and was done on 2026-09-06; describing the lane still is.
+
 > **This gate is a manual read, not a green check.** It matches `NDI` inside ordinary words ("pending", "founding", "binding") and it matches the deliberate negations the limits section is built on. Read every hit; do not "fix" a hit that is the site refusing a claim.
 
 **(d) The permitted stat pool.** No number may appear on the site as a headline figure unless it is in this list. Every one is verified against the shipped source.
@@ -55,18 +59,18 @@ Ship gate: `grep -inE 'SOC 2|GDPR|enterprise-ready|load tested|MadMapper|MPCDI|a
 | Official cross-check | `642 combinations · 47 of 87 heads · Panasonic TDC + Epson PTDS only` (the uncovered 40 = Christie 19 + Barco 19 + 2 Panasonic models absent from the calculator) | `src/data/officialCalculatorSpecs.json` (`combos` = 642; meta lists Panasonic 20 + Epson 27) |
 | Cross-check freshness | `pulled 2026-06-11` | `generatedAt` |
 | Materials | `21 measured material presets` | `src/utils/materialPresets.js` |
-| Projector cap | `up to 64 projectors — hard GPU cap, the runtime detector can set it lower` | `src/utils/gpuCapabilities.js` |
-| Warp cap | `16 heads can carry a mesh warp or mask` | `src/utils/warpMapManager.js` |
+| Projector cap | `up to 200 projectors — hard shader cap, the runtime detector can set it lower` (64 -> 96 on 2026-08-17, 96 -> 200 on 2026-08-26; the site carried 64 until 2026-09-06) | `src/utils/gpuCapabilities.js` `HARD_MAX_PROJECTORS` |
+| Warp cap | `32 heads can carry a mesh warp or mask` (16 -> 32 on 2026-08-17) | `src/utils/warpMap.js` `WARP_MAP_MAX`, re-exported by `src/utils/warpMapManager.js` |
 | Content slots | `4 distinct content sources` | `src/utils/contentSlots.js` |
 | Probe grid | `13 probe points (9 ANSI + 4 quarter) · 16 outer-edge probes` | `src/core/analysis/fieldLuxDistribution.js` |
 | Sampling | `16 × 16 = 256 sample points` | `assumptions.js` `sampling.flatGridRes` |
-| Beta storage | `2 GB models · 1 GiB media · 200 MB per file` | storage migrations |
+| Beta storage | `2 GB models (200 MB per model file) · 1 GiB media` — the per-file ceiling is on the MODEL path only; the media bucket has no per-file limit tighter than the account quota | storage migrations; `src/features/cloud/storageService.ts` `MAX_MODEL_FILE_SIZE_MB` |
 | Editing cost | `0 server requests while you move, rotate and edit values` | `docs/CAPACITY_ANALYSIS_0814.md:24` (marked [M] measured: Supabase requests during normal editing = 0; no polling, no realtime subscription, local draft in localStorage only) |
 | Session cost | `≈ 55 server requests in a measured one-hour session` | `docs/CAPACITY_ANALYSIS_0814.md` |
-| Observed peak load | `30 requests per second, the highest traffic yet observed` | `docs/CAPACITY_ANALYSIS_0814.md:59` (marked [M] measured: one day of edge logs, 5,676 requests, peak 30 rps; restated at `:41` and `:179`) |
+| Observed peak load | `30 requests per second, the highest traffic yet observed, measured 2026-08-14 and not re-measured since` | `docs/CAPACITY_ANALYSIS_0814.md:59` (marked [M] measured: one day of edge logs, 5,676 requests, peak 30 rps; restated at `:41` and `:179`) |
 | Model import | `6 formats — FBX, GLB/GLTF, OBJ, DAE, STL, PLY` | `src/utils/loadModelFromUrl.js` |
 | Hierarchy reference file | `a reference FBX with 2,020 meshes and 571 groups` | `src/components/scene-outliner/ModelHierarchyTree.jsx:38-45` (the component's own performance note; the same file is the 47 MB gallery FBX logged at `PATCH_2_TEST_MANUAL.md:37`) |
-| Fixtures | `8 fixture archetypes · IES (LM-63) import` | `src/core/catalog/customFixtureFactory.js`, `src/utils/iesLoader.js` |
+| Fixtures | `29 built-in fixtures across 8 archetypes · IES (LM-63), EULUMDAT and GDTF import` | `src/core/catalog/customFixtureFactory.js` `FIXTURE_TYPE_PRESETS` and `FIXTURE_CATALOG`, `src/utils/iesLoader.js`, `src/components/tabs/LightingTab.jsx` accept lists |
 | Ambient presets | `100,000 lx direct sunlight down to 5 lx theatre, plus full blackout` | `src/components/TopBar.jsx:194-215` (`AMBIENT_PRESETS`: Direct Sunlight 100000, Theater / Concert Hall 5, Full Blackout 0, Custom null) |
 
 Anything outside this table is not a stat, it is a guess, and it does not ship.
@@ -1952,7 +1956,7 @@ An earlier draft used `minmax(340px, 1fr)` with `gap: 40px 24px` and claimed 3-u
 
 #### Deliberately excluded — do not create slots for these
 
-Not shootable as shipped-product footage: **the verdict / stress / prescription / per-wall / seam-risk / audience-coverage / manual-calibration lane** (§1.2a — no mount point), **Report Builder** (beta-gated off in production), **drawing import, sketch and linework** (gated off), **realtime output to other applications** (desktop-only, entry points removed from the web build), **automatic keystone correction** (readout only, no shader consumer), **transmission and shadow heatmap modes** (hidden from both selectors), **fog / haze** (a placeholder object). **GDTF/MVR** is mentioned in Ch 08 copy as beta but gets no video slot until it is validated. If the owner records any of these, the card must not ship.
+Not shootable as shipped-product footage: **the verdict / stress / prescription / per-wall / seam-risk / audience-coverage / manual-calibration lane** (§1.2a — no mount point), **Report Builder** (beta-gated off in production), **drawing import, sketch and linework** (LIVE in production since 2026-08-19; unshootable only while the 1.2c ban stands, not because the lane is off), **realtime output to other applications** (desktop-only, entry points removed from the web build), **automatic keystone correction** (readout only, no shader consumer), **transmission and shadow heatmap modes** (hidden from both selectors), **fog** (NO LONGER a placeholder: volumetric beams are prod-ON since 2026-09-05 and a Fog Machine is creatable from the app menu, so this IS shootable. The Haze Machine row was removed on 2026-09-05; write "Fog Machine" only). **GDTF/MVR** is mentioned in Ch 08 copy as beta but gets no video slot until it is validated. If the owner records any of these, the card must not ship.
 
 ### 7.4 The empty state
 

@@ -1809,8 +1809,11 @@ body.overlay-open{ overflow:hidden; }
      digit today. Also covered: figures carried inside .chapter-point-label
      ("21 MEASURED MATERIALS", "642 COMBINATIONS CHECKED AGAINST THE MAKER'S
      OWN CALCULATOR: 47 OF 87 HEADS", "13 POINTS, DRAWN ON THE SURFACE"), and
-     the one inside a section title (#beta, "FREE, 2 GB, AND NEVER LOAD
-     TESTED"), which is exempt from ROLE 4 - see there.
+     the one that used to sit inside a section title (#beta, "FREE, 2 GB, AND
+     NEVER LOAD TESTED"), which was exempt from ROLE 4 - see there. That title
+     is now "OPEN BETA. FREE. HONESTLY LIMITED." and carries no figure at all,
+     so the exemption currently has nothing to exempt. It is kept because the
+     rule it states is about the class of thing, not about that one heading.
 
    ROLE 4 - UNIT AND QUALIFIER.  The word that says what the figure counts.
      .stat-unit   index x32   (% x18, lx x8, pt, mm, m, GB, GiB, MB) - every
@@ -2012,8 +2015,12 @@ body.overlay-open{ overflow:hidden; }
    is lx, pt, mm, m, %, GB, GiB and MB - measurement units, every one.
 
    EXEMPT, deliberately: units inside a display heading (--fs-display-1/2/3).
-   #beta reads "FREE, 2 GB, AND NEVER LOAD TESTED" and shrinking GB inside an
-   84px headline is an affectation, not a hierarchy. A headline is set as one
+   #beta used to read "FREE, 2 GB, AND NEVER LOAD TESTED" and shrinking GB
+   inside an 84px headline is an affectation, not a hierarchy. (That heading was
+   rewritten before 0818 and the load-test claim itself was corrected 2026-09-06:
+   a staging load test exists, so the site now says production has never been
+   load tested and prints the dated staging figures. No headline carries a unit
+   today; the rule stands for the next one that does.) A headline is set as one
    optical line; the brief's rule is about figures and their units, and it says
    "including inside prose", not "including inside headlines". */
 .stat-unit{
