@@ -3,1688 +3,236 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>FieldLux: projector coverage, surface lux, and the numbers before you quote</title>
-  <meta name="description" content="A projection planning workspace for the person who has to quote the job: 87 projectors and 113 lenses, edge blend derived from measured footprints, lux heatmaps drawn on the 3D scene, and a PDF Tech Rider you can hand to a client. Open beta, free.">
+  <title>FieldLux — Plan projection before load-in</title>
+  <meta name="description" content="Plan projector coverage, optics, surface lux and content mapping in one browser-based 3D workspace.">
   <link rel="canonical" href="https://field-lux.com/">
-  <meta name="robots" content="index, follow, max-image-preview:large">
-
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="FieldLux">
-  <meta property="og:title" content="FieldLux: the numbers before you quote">
-  <meta property="og:description" content="Four heads, the real building, the overlaps counted. FieldLux answers it before you quote, and publishes how far off it could be.">
+  <meta property="og:title" content="FieldLux — Plan projection before load-in">
+  <meta property="og:description" content="Turn venue geometry, projector optics and overlap into an inspectable 3D plan.">
   <meta property="og:url" content="https://field-lux.com/">
   <meta property="og:image" content="https://field-lux.com/assets/og-card.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="FieldLux: the numbers before you quote">
-  <meta name="twitter:description" content="Four heads, the real building, the overlaps counted. FieldLux answers it before you quote, and publishes how far off it could be.">
-  <meta name="twitter:image" content="https://field-lux.com/assets/og-card.png">
-
-  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
-  <link rel="icon" href="/assets/favicon-16.png" sizes="16x16">
-  <link rel="apple-touch-icon" href="/assets/logo-mark-180.png">
-
-  <link rel="preload" href="/assets/fonts/geologica-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/pretendard/PretendardVariable.subset.91.woff2" as="font" type="font/woff2" crossorigin>
-  <!-- OWNER OVERRIDE 4, 0818: THE HERO STILL IS RETIRED, PRELOAD AND ALL.
-       It used to be preloaded here at fetchpriority=high as the permanent poster
-       under the embed. It is gone because it was a picture of a DIFFERENT scene —
-       a stone facade under a heatmap — sitting behind a frame that now paints the
-       Play Dock Demo, so the first thing a visitor saw was a building the live
-       scene never shows. See the .hero-frame note below for what replaced it and
-       what that costs. Nothing else preloads in its place: with the still gone the
-       largest contentful paint is the headline, which is text this page already
-       has, so the hero paints sooner rather than later. -->
-
+  <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="/assets/tailwind.css">
-
-  <script>
-    /* Motion preference, read before first paint (spec 5.9). Tri-state: on / off / follow OS. */
-    (function () {
-      try {
-        var m = window.localStorage.getItem('fieldlux_motion');
-        if (m === 'on' || m === 'off') { document.documentElement.setAttribute('data-motion', m); }
-      } catch (e) { /* storage blocked: follow the OS */ }
-    })();
-  </script>
+  <script defer src="/scripts/site-experience.js"></script>
+  <script defer src="/scripts/light-field.js"></script>
 </head>
-<body>
-  <a class="skip-link" href="#main">Skip to main content</a>
+<body class="v3-page v3-home">
+  <a class="v3-skip" href="#main">Skip to content</a>
 
-  <header class="site-header">
-    <div class="site-shell nav-shell">
-      <a class="brand-lockup" href="/" aria-label="FieldLux home">
-        <img class="brand-lockup-img" src="/assets/logo-ink.png" width="154" height="45" alt="FieldLux">
-        <span class="brand-beta">BETA</span>
+  <header class="v3-header">
+    <div class="v3-header-inner">
+      <a class="v3-brand" href="/" aria-label="FieldLux home">
+        <img src="/assets/logo-ink.png" width="176" height="41" alt="FieldLux">
       </a>
-
-      <nav class="nav-links" aria-label="Primary">
-        <a class="nav-link" href="#product">Product</a>
-        <a class="nav-link" href="#measure">Measurement</a>
-        <a class="nav-link" href="/videos" aria-label="Feature videos">Videos</a>
-        <a class="nav-link" href="/pricing">Pricing</a>
-        <a class="nav-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link data-tooltip="Official FieldLux community: beta access, catalogue submissions and bug reports." target="_blank" rel="noopener noreferrer">Discord</a>
+      <nav class="v3-nav" aria-label="Primary navigation">
+        <a href="/product">Product</a>
+        <a href="/measurement">Measurement</a>
+        <a href="/videos">Videos</a>
+        <a href="/pricing">Pricing</a>
       </nav>
-
-      <div class="nav-actions">
-        <a class="btn btn--outline btn--sm" href="https://app.field-lux.com" data-app-link>Sign in</a>
-        <a class="btn btn--solid btn--sm" href="https://app.field-lux.com" data-app-link>Start free</a>
+      <div class="v3-header-actions">
+        <a class="v3-signin" href="https://app.field-lux.com/" data-app-link>Sign in</a>
+        <a class="v3-button v3-button--small v3-button--light" href="https://app.field-lux.com/" data-app-link>Start free</a>
       </div>
-
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-overlay">
-        <span class="nav-toggle-bar" aria-hidden="true"></span>
-        <span class="nav-toggle-bar" aria-hidden="true"></span>
-        <span class="u-visually-hidden">Menu</span>
+      <button class="v3-menu-toggle" type="button" aria-label="Open navigation" aria-controls="mobile-navigation" aria-expanded="false" data-menu-toggle>
+        <span></span><span></span>
       </button>
     </div>
+    <nav class="v3-mobile-nav" id="mobile-navigation" aria-label="Mobile navigation" data-menu-panel hidden>
+      <a href="/product">Product</a>
+      <a href="/measurement">Measurement</a>
+      <a href="/videos">Videos</a>
+      <a href="/pricing">Pricing</a>
+      <a href="https://app.field-lux.com/" data-app-link>Sign in</a>
+      <a class="v3-button v3-button--light" href="https://app.field-lux.com/" data-app-link>Start free</a>
+    </nav>
   </header>
 
-  <div class="nav-overlay" id="nav-overlay" role="dialog" aria-modal="true" aria-label="Menu" hidden>
-    <div class="nav-overlay-inner">
-      <ul class="nav-overlay-list">
-        <li>
-          <a class="nav-overlay-link" href="#product">
-            <span class="nav-overlay-index" aria-hidden="true">(01)</span>
-            <span>Product</span>
-          </a>
-        </li>
-        <li>
-          <a class="nav-overlay-link" href="#measure">
-            <span class="nav-overlay-index" aria-hidden="true">(02)</span>
-            <span>Measurement</span>
-          </a>
-        </li>
-        <li>
-          <a class="nav-overlay-link" href="/videos">
-            <span class="nav-overlay-index" aria-hidden="true">(03)</span>
-            <span>Videos</span>
-          </a>
-        </li>
-        <li>
-          <a class="nav-overlay-link" href="/pricing">
-            <span class="nav-overlay-index" aria-hidden="true">(04)</span>
-            <span>Pricing</span>
-          </a>
-        </li>
-        <li>
-          <a class="nav-overlay-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">
-            <span class="nav-overlay-index" aria-hidden="true">(05)</span>
-            <span>Discord</span>
-          </a>
-        </li>
-      </ul>
-
-      <!-- Sign in leaves the header bar at 560 and below (see the 560 block in
-           src/input.css: the row does not fit on a phone). It is NOT a seventh
-           entry in the list above: that list is the document spine, and its
-           (01) to (06) are the same six marks on all five pages. An account
-           action is a different class of thing, so it sits below the spine as
-           an action rather than taking an ordinal it does not own.
-
-           The spine went from five marks to six on 2026-09-06, when /pricing
-           landed. It earned an ordinal because it is a page of this document,
-           the same class of thing as Videos, and not an action. The header cost
-           of the sixth mark is zero: .nav-links is display:none at 1180 and
-           below (src/input.css:3257), so the phone header budget measured in the
-           380 block never sees it, and above 1180 the row has the width. -->
-      <div class="nav-overlay-actions">
-        <a class="btn btn--outline" href="https://app.field-lux.com" data-app-link>Sign in</a>
-      </div>
-    </div>
-  </div>
-
-  <main class="site-main" id="main" tabindex="-1">
-
-    <!-- == S2, Hero ======================================================== -->
-    <section class="hero" id="top" aria-labelledby="hero-title">
+  <main class="v3-main" id="main" tabindex="-1">
+    <section class="hero v3-legacy-hero" id="top" aria-labelledby="hero-title">
       <div class="site-shell hero-inner">
-
-        <!-- -- OWNER OVERRIDE 2, the perspective monitor is retired ------------
-             .hero-frame is a fixed rounded rectangle that hosts the real app. No
-             perspective, no rotateX/Y, no bezel, no neck, no base and no
-             glare. The retired geometry is deleted from src/input.css, not
-             left dead.
-
-             -- OWNER OVERRIDE 3, the facade is retired too ---------------------
-             "3d screen must be 3d from the start". The <iframe> is now created on
-             page load, not on a click, so the default state of this frame is the
-             running app. What used to be the facade's guarantee ("nothing loads
-             until a click") is replaced by four narrower ones:
-
-             1. THE STILL IS PERMANENT, not a placeholder. It stays in the DOM
-                underneath the iframe for the life of the page and is never
-                hidden. The embed document paints nothing of its own until the
-                scene mounts - it sets `html, body { background: transparent
-                !important }` and its React root is `background:'transparent'`,
-                verified in the app's EmbedViewer.jsx on branch 0814-embed - so
-                while the app boots, and any time it resolves to no scene or
-                crashes its canvas, this still is what shows through. There is no
-                blank-frame state to design for because there is no state in
-                which the frame paints nothing.
-
-             2. REDUCED MOTION AND SAVE-DATA STILL GET THE STILL. Neither auto-
-                mounts. Both get .hero-frame-launch as an explicit opt-in, and
-                flipping the footer motion toggle back on mounts the scene the
-                same way it restarts the chapter clips.
-
-             3. THE EMBED CANNOT TAKE THE PAGE'S SCROLL. Site side: the frame is
-                not sticky and does not bleed, and the sandbox omits
-                allow-top-navigation and allow-forms. App side, verified rather
-                than assumed - EmbedViewer.jsx registers its wheel listener as
-                `{ capture: true, passive: true }`, so it is structurally
-                incapable of calling preventDefault; un-engaged it only calls
-                stopPropagation, which declines to zoom and leaves the wheel with
-                this page. Its document is `overflow: hidden` (nothing of its own
-                to scroll) and its canvas holds `touch-action: pan-y !important`
-                until the visitor engages, so a thumb swipe scrolls field-lux.com.
-
-             4. data-embed-src STILL SHIPS EMPTY. The demo deployment does not
-                exist yet. With it empty nothing is mounted, the button stays
-                `hidden` (it ships hidden, so the no-JS state is identical), the
-                caption stays in its still state and nothing is fetched: no dead
-                button, no empty iframe, no console error. ?embedSrc= is what
-                makes it live today, and that is a review build, not a visitor.
-
-             When the demo lands, paste the URL in exactly this shape:
-                 https://<demo-host>/embed#share=<payload>
-             It is a SEPARATE demo deployment, isolated from app.field-lux.com,
-             and this must never point at the signed-in app. The host is validated
-             against the same allowlist the app-link CTA uses (field-lux.com and
-             its subdomains, *.vercel.app, localhost); anything else is rejected
-             and any stored review override is cleared.
-
-             CSP, NOT OURS TO FIX: vercel.json declares `default-src 'self'` with
-             no frame-src and no child-src, so frame-src inherits 'self' and a
-             cross-origin demo host is refused by the browser. Empty
-             data-embed-src is why that is invisible today. Adding the demo origin
-             to frame-src is a vercel.json change and has to land in the same
-             commit as the URL, or the hero is a still with a CSP error. -->
-        <!-- -- OWNER OVERRIDE 4, 0818, THE STILL IS RETIRED ------------------
-             The <img class="hero-frame-still"> that used to sit here is deleted.
-             It was assets/media/hero-stitch-01.png, a capture of a stone facade
-             under a lux heatmap, and it was the poster the embed was layered
-             over. The frame now loads the Play Dock Demo, which is a different
-             building in a different scene, so the poster showed a visitor one
-             product shot and then replaced it with another. The owner's call is
-             that the hero is the 3D, and only the 3D.
-
-             WHAT THAT COSTS, STATED RATHER THAN HIDDEN. The still was the answer
-             to four states: booting, no scene resolved, canvas crashed, and
-             JavaScript off. All four now land on .hero-frame's own near-black
-             (src/input.css), which is the same near-black the app paints inside
-             its error boundary, so a failed frame reads as an unlit stage rather
-             than as a hole in the page. That is a weaker fallback than a picture
-             and it is accepted deliberately.
-
-             WHAT IT DOES NOT COST: the figures below. They were read off the old
-             still, which is why the note above them used to carry a deadline.
-             They are now read off demo-scenes/hero.json, the scene file this
-             frame actually loads, so they describe what is on screen whether or
-             not it has painted yet. That is strictly better evidence than a
-             screenshot, and it is what makes the readout honest with no poster.
-
-             The image file stays in assets: chapter 07 still uses it, with a
-             caption that describes it correctly as a capture of the shipped app. -->
-        <div class="hero-frame" tabindex="-1"
-             data-embed-src="/embed?scene=hero"
-             data-embed-title="FieldLux interactive 3D scene, drag to look around">
-
-          <!-- -- OWNER CHANGE 6, THE FEATURE TICKER ---------------------------
-               A single band of the product's own vocabulary scrolling LEFT along
-               the top of the scene, continuously. Geometry, contrast and motion
-               live in src/input.css at .hero-ticker; what has to be argued HERE
-               is the copy, because the copy is the part a future edit can break
-               silently.
-
-               EVERY WORD IN THIS LIST IS ALREADY CLAIMED ON THIS PAGE, and that
-               is the rule, not a courtesy. The list is the ten chapter names
-               exactly as .micro-label-name prints them, interleaved with the
-               capabilities those chapters already commit to in their own ledes,
-               media labels and captions. Traceable, item by item:
-
-                 THE SCENE .. THE PROJECT   the ten (01)-(10) spine labels
-                 SIX MODEL FORMATS          ch01 lede, "one of six model formats"
-                 FLOOR PLAN UNDERLAY        ch01 card title, verbatim
-                 WALLS FROM LINES           ch01 card title, verbatim
-                 THROW RATIO / LENS SHIFT   ch02 lede + its "THROW & LENS SHIFT" slot
-                 AUTO EDGE BLEND            ch03 lede and its media label
-                 CORNER-PIN / MESH WARP /
-                 FEATHERED MASKS            ch04 lede, named in that order
-                 MAPPING STAGE              ch05 media label, "2D Mapping Stage"
-                 LUX HEATMAP                the panel the hero caption names, and
-                                            the one button the embed exposes
-                 SURFACE LUX / PIXEL
-                 DENSITY / LUMINANCE        ch06 figcaption, the three data modes
-                 PROBE SET                  the hero readout label; ch06 lede's
-                                            "13 points drawn on the target"
-                 ISOLUX WORKING PLANE (PRO) ch07 media label; the tier rides
-                                            the phrase because a scrolling band
-                                            has no sentence to carry it in
-                 IES IMPORT (PRO)           ch08 lede, "IES (LM-63) import"
-                 PDF TECH RIDER / HANDOFF
-                 JSON / READ-ONLY LINK      ch09 lede, the three things that leave
-                 CLOUD AUTOSAVE /
-                 VERSION CHAIN              ch10 lede, "a cloud autosave on an
-                                            append-only version chain"
-
-               DO NOT ADD A WORD HERE THAT IS NOT ALREADY EARNED BELOW. A band of
-               product nouns is the easiest place on the site to ship a capability
-               the app does not have, because it reads as decoration rather than
-               as a claim. It is a claim.
-
-               NO BARE FIGURES, deliberately. The page carries 87 projectors, 113
-               lenses, 32 heads, 13 points and a 0-500 lux ramp, and every one of
-               them is qualified in the sentence that prints it. A scrolling band
-               has no sentence, so a figure here could not carry its qualifier -
-               which is why this is a vocabulary band and not a stats band, and
-               why "PROBE SET" appears without its 13 and "SURFACE LUX" without a
-               number. Section 1.3 is not suspended because the type is small.
-
-               aria-hidden, and the reason is the same one .type-slot uses: this
-               is a second, moving printing of words that already exist in the
-               document in reading order - the ten spine labels and the chapter
-               ledes are all below, in the accessibility tree, in context and with
-               their qualifiers attached. A screen reader gets the argument; it
-               does not also get thirty decontextualised nouns sliding past.
-
-               TWO IDENTICAL GROUPS. The track animates to translate3d(-50%,0,0),
-               which is exactly one group's width, so the loop is seamless. If a
-               word is added, added to BOTH groups or the seam becomes a jump. -->
+        <div class="hero-frame" tabindex="-1" data-embed-state="mounted">
+          <iframe class="hero-frame-embed" src="/embed?scene=hero" title="FieldLux interactive 3D scene, drag to look around" loading="eager" sandbox="allow-scripts allow-same-origin allow-downloads" referrerpolicy="same-origin"></iframe>
           <div class="hero-ticker" aria-hidden="true">
             <div class="hero-ticker-track">
               <ul class="hero-ticker-group">
-                <li class="hero-ticker-item">THE SIMULATION</li>
-                <li class="hero-ticker-item">SIX MODEL FORMATS</li>
-                <li class="hero-ticker-item">FLOOR PLAN UNDERLAY</li>
-                <li class="hero-ticker-item">WALLS FROM LINES</li>
-                <li class="hero-ticker-item">LUX HEATMAP</li>
-                <li class="hero-ticker-item">SURFACE LUX</li>
-                <li class="hero-ticker-item">PIXEL DENSITY</li>
-                <li class="hero-ticker-item">LUMINANCE</li>
-                <li class="hero-ticker-item">PROBE SET</li>
-                <li class="hero-ticker-item">ISOLUX WORKING PLANE (PRO)</li>
-                <li class="hero-ticker-item">IES IMPORT (PRO)</li>
-                <li class="hero-ticker-item">THE ARRAY</li>
-                <li class="hero-ticker-item">THROW RATIO</li>
-                <li class="hero-ticker-item">LENS SHIFT</li>
-                <li class="hero-ticker-item">LINEAR AND CIRCULAR ARRAYS</li>
-                <li class="hero-ticker-item">AUTO EDGE BLEND</li>
-                <li class="hero-ticker-item">THE PLAY DOCK (PRO)</li>
-                <li class="hero-ticker-item">MAPPING STAGE (PRO)</li>
-                <li class="hero-ticker-item">CORNER-PIN (PRO)</li>
-                <li class="hero-ticker-item">MESH WARP (PRO)</li>
-                <li class="hero-ticker-item">FEATHERED MASKS (PRO)</li>
-                <li class="hero-ticker-item">PDF TECH RIDER</li>
-                <li class="hero-ticker-item">HANDOFF JSON</li>
-                <li class="hero-ticker-item">READ-ONLY LINK</li>
-                <li class="hero-ticker-item">CLOUD AUTOSAVE</li>
-                <li class="hero-ticker-item">VERSION CHAIN</li>
+                <li class="hero-ticker-item">PLAN THE VENUE</li>
+                <li class="hero-ticker-item">CHOOSE THE OPTICS</li>
+                <li class="hero-ticker-item">READ THE SURFACE</li>
+                <li class="hero-ticker-item">HAND OFF THE PLAN</li>
               </ul>
               <ul class="hero-ticker-group">
-                <li class="hero-ticker-item">THE SIMULATION</li>
-                <li class="hero-ticker-item">SIX MODEL FORMATS</li>
-                <li class="hero-ticker-item">FLOOR PLAN UNDERLAY</li>
-                <li class="hero-ticker-item">WALLS FROM LINES</li>
-                <li class="hero-ticker-item">LUX HEATMAP</li>
-                <li class="hero-ticker-item">SURFACE LUX</li>
-                <li class="hero-ticker-item">PIXEL DENSITY</li>
-                <li class="hero-ticker-item">LUMINANCE</li>
-                <li class="hero-ticker-item">PROBE SET</li>
-                <li class="hero-ticker-item">ISOLUX WORKING PLANE (PRO)</li>
-                <li class="hero-ticker-item">IES IMPORT (PRO)</li>
-                <li class="hero-ticker-item">THE ARRAY</li>
-                <li class="hero-ticker-item">THROW RATIO</li>
-                <li class="hero-ticker-item">LENS SHIFT</li>
-                <li class="hero-ticker-item">LINEAR AND CIRCULAR ARRAYS</li>
-                <li class="hero-ticker-item">AUTO EDGE BLEND</li>
-                <li class="hero-ticker-item">THE PLAY DOCK (PRO)</li>
-                <li class="hero-ticker-item">MAPPING STAGE (PRO)</li>
-                <li class="hero-ticker-item">CORNER-PIN (PRO)</li>
-                <li class="hero-ticker-item">MESH WARP (PRO)</li>
-                <li class="hero-ticker-item">FEATHERED MASKS (PRO)</li>
-                <li class="hero-ticker-item">PDF TECH RIDER</li>
-                <li class="hero-ticker-item">HANDOFF JSON</li>
-                <li class="hero-ticker-item">READ-ONLY LINK</li>
-                <li class="hero-ticker-item">CLOUD AUTOSAVE</li>
-                <li class="hero-ticker-item">VERSION CHAIN</li>
+                <li class="hero-ticker-item">PLAN THE VENUE</li>
+                <li class="hero-ticker-item">CHOOSE THE OPTICS</li>
+                <li class="hero-ticker-item">READ THE SURFACE</li>
+                <li class="hero-ticker-item">HAND OFF THE PLAN</li>
               </ul>
             </div>
           </div>
-
-          <!-- No longer the facade's front door. This is now the opt-in shown to
-               exactly two visitors: reduced motion, and data saver. It sits
-               bottom-RIGHT because .hero-block owns the lower-left, and a button
-               under an opaque block is a button that does not exist. Bottom-right
-               is also the one corner the embed leaves free: its axis gizmo and
-               its LUX HEATMAP button are both top-right. -->
-          <button class="hero-frame-launch" type="button" hidden>
-            <span class="hero-frame-launch-label">LOAD THE LIVE 3D SCENE</span>
-            <span class="hero-frame-launch-hint">Held back for reduced motion or reduced data. Drag to look around once it loads.</span>
-          </button>
         </div>
 
-        <!-- ONE BLOCK, not a card plus loose text (owner change 1). The headline,
-             the lead and the CTAs are one continuous paper surface that starts on
-             the frame's lower left and hangs past its bottom edge. They were three
-             bands - .hero-card held the H1 alone while .hero-copy sat under the
-             frame - and the join is what read as leftovers.
-
-             The readout and the caption stay OUTSIDE it, deliberately. Reasons in
-             src/input.css at .hero-block; the short form is that they are a
-             different object (the evidence for the picture, not the promise), the
-             readout is the same component as a #numbers .stat and carries the
-             document's own hairline spine, and folding either one in would take
-             the block from ~2.2:1 to taller than the frame it overlaps, which is
-             the full-width slab the brief rules out.
-
-             DOM ORDER IS UNCHANGED and must stay that way: frame, block, readout,
-             caption. The overlap is a negative margin, never `order` and never a
-             reordered source, so focus order still equals reading order and the
-             block paints over the frame without a z-index fight. -->
         <div class="hero-block">
           <h1 class="hero-title" id="hero-title">
             <span class="hero-title-line">HOW MANY LUX</span>
-            <!-- .type-word SHIPS FACADE, and must keep shipping a real word: it
-                 used to ship empty, so the largest promise on the site painted as
-                 "HOW MANY LUX ON THAT |" until the typewriter's first frame ran.
-                 The word here must stay identical to WORDS[0] in the section 5.5
-                 IIFE below, which now starts its cycle from this finished state
-                 (holds, then deletes) instead of from an empty span. -->
-            <span class="hero-title-line">ON THAT <span class="type-slot" aria-hidden="true"><span class="type-word">FACADE</span><span class="type-caret"></span></span><span class="type-sr">facade, dome, stage or tunnel?</span></span>
+            <span class="hero-title-line">ON THAT <span class="type-slot" aria-hidden="true"><span class="type-word">FACADE</span><span class="type-caret"></span></span><span class="type-sr">facade?</span></span>
           </h1>
         </div>
 
-        <!-- OWNER CHANGE 3. The lead and the CTAs leave the overlapping block and
-             sit here, in normal flow on the page's own paper. The block above now
-             carries the headline ALONE and has no border and no fill of its own,
-             so what overlaps the frame reads as the page cutting into the scene
-             rather than as a card placed on top of it. Nothing separates this
-             from the section below it: same ground, same left edge, no rule. -->
         <div class="hero-copy">
-          <!-- "Eight heads", not "four": the lead names the scene in the frame
-               beside it, and OVERRIDE 4 made that scene the Play Dock Demo,
-               whose file holds eight projectors. Same rule as the readout. -->
-          <p class="hero-lead">Eight heads, the real building, the overlaps counted. FieldLux answers it before you quote, and publishes how far off it could be.</p>
+          <p class="hero-lead">Eight projectors, one building, every overlap in view. FieldLux gives you an <strong>optics-based planning estimate</strong> before you quote.</p>
           <div class="hero-actions">
-            <a class="btn btn--brand" href="https://app.field-lux.com" data-app-link>START FREE</a>
-            <a class="btn btn--text" href="#product">SEE THE PRODUCT</a>
+            <a class="btn btn--brand" href="https://app.field-lux.com/" data-app-link>START FREE</a>
+            <a class="btn btn--text" href="/product">SEE THE PRODUCT</a>
           </div>
         </div>
 
-        <!-- BINDING, REWRITTEN FOR OVERRIDE 4. The deadline the old note carried
-             is now discharged: these figures were read off a still of another
-             scene, and that still is gone, so all three are re-read off the scene
-             the frame actually loads.
-
-             THE SOURCE IS demo-scenes/hero.json, THE FILE ITSELF, not a
-             screenshot of it. Verified there on 2026-08-18: `objects` holds
-             8 entries of type "projector" (F1 to F4, L1, L2, R2 and one copy),
-             every one of them carrying "throwRatio": 1.15, and `settings` reads
-             {"ambientLux":0,"heatmapMode":"absolute","heatmapMaxLux":875,
-             "heatmapReferenceLux":875}. `meta.name` is "Play Dock Demo".
-
-             READING THE SCENE FILE IS BETTER EVIDENCE THAN READING A PICTURE, and
-             that is the whole reason the still could go. A screenshot is true of
-             one frozen frame; the scene file is true of what the visitor is
-             steering, at every camera angle, whether or not it has painted yet.
-             Re-read all three if demo-scenes/hero.json changes. The site never
-             prints a number the frame contradicts.
-
-             THE THIRD FIGURE STATES ITS OWN CONDITION. The heatmap ships OFF: the
-             one control the embed exposes is LUX HEATMAP at the top right, and it
-             opens off. So the scale is written with the instruction attached
-             rather than as though colour were already on the building. The
-             retired PROBE SET row went with the still that showed it - a 13pt
-             overlay the live frame does not draw is not a hero figure, and the
-             13 points keep their place under (06) and in #numbers, where the
-             sentence around them carries the qualifier.
-
-             Section 1.3, the lux-labelling rule, is carried HERE and in
-             .hero-caption. The H1 prints no lux figure at all, so every lux
-             number in the hero is one of these, and each states which of the
-             engine's four lux meanings it is in the same breath. -->
         <ul class="hero-readout">
           <li class="hero-readout-item">
-            <span class="hero-readout-label">HEADS IN SCENE</span>
+            <span class="hero-readout-label">PROJECTORS IN SCENE</span>
             <span class="hero-readout-value u-tabular">8</span>
-            <span class="hero-readout-qual">placed and powered in the scene you are steering</span>
+            <span class="hero-readout-qual">placed and powered in this live plan</span>
           </li>
           <li class="hero-readout-item">
             <span class="hero-readout-label">THROW RATIO</span>
             <span class="hero-readout-value u-tabular">1.15 : 1</span>
-            <span class="hero-readout-qual">the same lens on every head, inside its catalogue range</span>
+            <span class="hero-readout-qual">the same lens setting on every projector</span>
           </li>
           <li class="hero-readout-item">
             <span class="hero-readout-label">HEATMAP SCALE</span>
-            <span class="hero-readout-value u-tabular">0-875 <span class="stat-unit">lx</span></span>
-            <span class="hero-readout-qual">absolute-mode surface lux, once you open LUX HEATMAP at the top right</span>
+            <span class="hero-readout-value u-tabular">0–875 <span class="stat-unit">lx</span></span>
+            <span class="hero-readout-qual">absolute Surface Lux when Lux Heatmap is enabled</span>
           </li>
         </ul>
 
-        <!-- TWO AUTHORED STATES, SWAPPED IN CSS, NEVER WRITTEN BY JS, and both
-             rewritten for OVERRIDE 4. The poster is gone, so neither sentence
-             may describe one: the "still" state is now the state where the frame
-             has not started at all, which is what a visitor gets with JavaScript
-             off or with data-embed-src empty, and it says so plainly instead of
-             narrating a picture that is no longer there.
-
-             THE SWITCH IS "AN IFRAME IS MOUNTED", NOT "THE SCENE HAS PAINTED".
-             This page cannot observe whether the app resolved its scene, so the
-             live sentence commits to what the frame IS and to what the figures
-             are read off, never to what has finished drawing. Do not "improve"
-             this by swapping on the iframe's load event: load fires for a
-             blocked or empty frame too, and the caption would then describe a
-             scene the visitor is not looking at. -->
-        <p class="hero-caption" id="hero-frame-caption"><span class="hero-caption-state" data-when="still">The frame above has not started: it needs JavaScript to load the shipped app and the Play Dock Demo scene, and blocked it stays the unlit near-black the app itself paints. The three figures beside it are read off that scene's file, not a screenshot, so they hold either way.</span><span class="hero-caption-state" data-when="live">The frame above is the shipped app running in this page, read-only: drag to look around. It is sandboxed without top-level navigation or forms, and the one button it exposes is LUX HEATMAP, which opens off. The scene is the Play Dock Demo: eight heads on one building, a test pattern through a blend group. The three figures above are read off that scene's file, not a capture.</span></p>
-
+        <p class="hero-caption"><span class="hero-caption-state" data-when="live">Live FieldLux scene: drag to inspect the plan, then open Lux Heatmap to read the facade. Values are planning estimates, not field measurements.</span></p>
       </div>
     </section>
 
-    <!-- == THE BELOW-HERO GRAMMAR (0818 renewal) ============================
-         A light-ground section is four objects in reading order: a short
-         UPPERCASE display claim (.feature-title, the h2 for aria-labelledby),
-         a plain-language subhead that carries the numbers and their inline
-         qualifiers (.feature-sub), the media, then a hairline row of fact
-         cards (.feature-cards). Two rules carried over unchanged and binding:
-
-           THE EVIDENCE RULE (spec 1.2): a claim ships only if a visitor could
-           reach it in the deployed web build today. Every figure in a card
-           below was re-verified against the app repo on 2026-08-18. The
-           banned-vocabulary grep gate and the stat pool still apply.
-
-           THE LUX-LABELLING RULE (spec 1.3): every lux figure names which of
-           the engine's four lux meanings it is, inline, in the same sentence.
-
-         The ticker in the hero may only carry words that are claimed below;
-         each chapter keeps the exact phrases the ticker prints (SIX MODEL
-         FORMATS, FLOOR PLAN UNDERLAY, WALLS FROM LINES, AUTO EDGE BLEND,
-         FEATHERED MASKS, MAPPING STAGE, PROBE SET, ISOLUX WORKING PLANE
-         (PRO), IES IMPORT (PRO), PDF TECH RIDER, HANDOFF JSON, READ-ONLY LINK, CLOUD
-         AUTOSAVE, VERSION CHAIN and the ten spine names). Delete a phrase
-         here and the ticker ships an unearned claim.
-
-         The .lede device survives on the two dark bands (#numbers, #start),
-         where the one-sentence form still carries the drama. -->
-
-    <!-- == S4, #who ======================================================== -->
-    <section class="section section--pad-sm" id="who" aria-labelledby="who-title">
-      <div class="site-shell">
-        <div class="section-head">
-
-          <p class="micro-label">
-            <span class="micro-label-name">WHO THIS IS FOR</span>
-          </p>
-
-          <h2 class="feature-title reveal" id="who-title">BUILT FOR THE PERSON WHO QUOTES THE JOB.</h2>
-
-          <p class="feature-sub reveal">FieldLux answers how many projectors, which lens, from where and how bright, in the browser, before anyone signs.</p>
-
-          <ul class="feature-cards reveal">
-            <li class="feature-card">
-              <span class="feature-card-step" aria-hidden="true">(1)</span>
-              <h3 class="feature-card-title">BRING THE VENUE IN</h3>
-              <p class="feature-card-body">Import a model, trace a floor plan, or build the room here, then place projectors from a spec-sheet catalogue.</p>
-            </li>
-            <li class="feature-card">
-              <span class="feature-card-step" aria-hidden="true">(2)</span>
-              <h3 class="feature-card-title">MEASURE THE LIGHT</h3>
-              <p class="feature-card-body">Lux heatmaps on the surface, a probe under the cursor, and a 13-point probe set drawn on the target.</p>
-            </li>
-            <li class="feature-card">
-              <span class="feature-card-step" aria-hidden="true">(3)</span>
-              <h3 class="feature-card-title">HAND OFF THE PROOF</h3>
-              <p class="feature-card-body">A PDF Tech Rider, a neutral handoff JSON and a read-only link. Each one states its own assumptions.</p>
-            </li>
-          </ul>
-
-          <figure class="chapter-media reveal">
-            <div class="media-slot media-slot--wide" data-slot="image"
-                 style="--media-ratio: 1918 / 942"
-                 data-label="THE EDITOR" data-caption="IMAGE: TO COME"></div>
-            <figcaption class="media-caption">Image slot: the shipped editor with a venue loaded. Not captured yet.</figcaption>
-          </figure>
-
+    <section class="v3-light-stage v3-light-stage--bridge" data-light-stage aria-labelledby="light-field-title">
+      <div class="v3-light-sticky">
+        <canvas class="v3-light-canvas" data-light-field aria-hidden="true"></canvas>
+        <div class="v3-light-vignette" aria-hidden="true"></div>
+        <div class="v3-light-bridge-copy">
+          <p class="v3-kicker">Geometry · Optics · Surface</p>
+          <h2 id="light-field-title">Plan the system.</h2>
         </div>
-      </div>
-    </section>
-
-    <!-- == S5, #product ====================================================
-         Kept because the primary nav and the overlay both point at #product.
-         It is now a jump table and nothing else: ordinal, name, link. The
-         comma-strings of features that used to sit under each name are gone -
-         they restated the ten chapters directly below them. -->
-    <section class="section section--pad-sm section--pad-end-md" id="product" aria-labelledby="product-title">
-      <div class="site-shell">
-        <div class="section-head">
-
-          <p class="micro-label">
-            <span class="micro-label-name">THE PRODUCT, PART BY PART</span>
-          </p>
-
-          <!-- "ALL LIVE" is a claim with an owner, and the owner is
-               src/config/betaFeatures.js in the app repo. Two resolvers decide
-               whether this sentence is true on any given day: resolveLightingLane
-               and resolveVolumetricBeams, both of which govern Ch 08. Both are
-               prod-ON as of 2026-09-05 and pinned by prod-door-gates.test.js, so
-               the sentence holds. It did NOT hold between 2026-08-29 and
-               2026-09-05: the lighting lane shipped to master prod-disabled while
-               Ch 08 was already live on this page, and nobody here knew. Re-check
-               those two resolvers before trusting this heading again. -->
-          <h2 class="feature-title reveal" id="product-title">THREE PARTS. ALL LIVE IN THE APP TODAY.</h2>
-
-          <p class="feature-sub reveal">Where a part is gated, still in beta, or desktop-only, this page says so in the same sentence that claims it. Part three is priced into Pro; no account carries a tier yet, so it opens for everyone today.</p>
-
-          <ol class="speclist reveal">
-            <li>
-              <a class="speclist-item" href="#ch-01">
-                <span class="speclist-index u-tabular">(01)</span>
-                <span class="speclist-body"><span>THE SIMULATION</span></span>
-              </a>
-            </li>
-            <li>
-              <a class="speclist-item" href="#ch-02">
-                <span class="speclist-index u-tabular">(02)</span>
-                <span class="speclist-body"><span>THE ARRAY</span></span>
-              </a>
-            </li>
-            <li>
-              <a class="speclist-item" href="#ch-03">
-                <span class="speclist-index u-tabular">(03)</span>
-                <span class="speclist-body"><span>THE PLAY DOCK (PRO)</span></span>
-              </a>
-            </li>
-          </ol>
-
+        <div class="v3-light-transition" aria-hidden="true">
+          <p class="v3-kicker">Plan · Measure · Deliver</p>
+          <p>Read what<br>lands.</p>
         </div>
+        <p class="v3-scroll-cue" aria-hidden="true"><span></span> Scroll to disperse the light</p>
+        <button class="v3-replay" type="button" data-light-replay aria-label="Replay the projection light animation">Replay light</button>
       </div>
     </section>
 
-    <!-- == S6, THE TEN CHAPTERS ============================================
-         Each one is exactly three things now: its ordinal, one sentence, and
-         its media slot. The .chapter-points bullet lists are deleted; the facts
-         they carried either moved into the sentence, into a #numbers stat tile
-         or into a fact card, and the ones deliberately dropped are named in
-         the hand-off note. The two-column split and the (nn)/(10) foot counter
-         are gone too: the ordinal is already stated once at the top, and a
-         one-sentence chapter has no second column to fill. -->
+    <section class="v3-section v3-section--dark v3-intro">
+      <div class="v3-container">
+        <div class="v3-section-head v3-section-head--center v3-reveal">
+          <p class="v3-kicker">One continuous plan</p>
+          <h2 class="v3-display">From venue to an<br>inspectable answer.</h2>
+          <p class="v3-lead">Keep the geometry, optics and measurements together. <strong>Change the plan and see the consequence.</strong></p>
+        </div>
+        <ol class="v3-grid v3-grid--steps">
+          <li class="v3-card v3-step v3-reveal">
+            <span class="v3-step-number">01</span>
+            <h3>Build the venue</h3>
+            <p>Import a 3D model or floor plan, then work at real scale.</p>
+          </li>
+          <li class="v3-card v3-step v3-reveal">
+            <span class="v3-step-number">02</span>
+            <h3>Place the system</h3>
+            <p>Choose projector optics, then build linear, circular or mirrored placements.</p>
+          </li>
+          <li class="v3-card v3-step v3-reveal">
+            <span class="v3-step-number">03</span>
+            <h3>Read the surface</h3>
+            <p>Compare coverage, Surface Lux, Pixel Density and Luminance in context.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
 
-    <!-- == Ch 01, #ch-01, THE SCENE ======================================== -->
-    <section class="section section--pad-sm section--pad-start-md chapter" id="ch-01" aria-labelledby="ch-01-title">
-      <span id="measure" class="u-visually-hidden" aria-hidden="true"></span>
-      <span id="ch-06" class="u-visually-hidden" aria-hidden="true"></span>
-      <span id="ch-07" class="u-visually-hidden" aria-hidden="true"></span>
-      <span id="ch-08" class="u-visually-hidden" aria-hidden="true"></span>
-      <div class="site-shell">
-        <div class="chapter-head">
-
-          <p class="micro-label">
-            <span class="micro-label-ord">(01)</span>
-            <span class="micro-label-name">THE SIMULATION</span>
-          </p>
-
-          <h2 class="feature-title reveal" id="ch-01-title">BUILD THE VENUE. THE SURFACE READS THE LIGHT BACK.</h2>
-
-          <p class="feature-sub reveal">The venue arrives as a model in 6 formats, as a floor plan traced at its real size, or as walls you draw and raise. Then the surface reports what lands on it: Surface Lux in lx, Pixel Density in mm/px and Luminance in cd/m&sup2; painted in false colour, a probe under the cursor, and a 13-point probe set drawn on the target. Every figure comes from the projector specs and the scene geometry, never from a field measurement.</p>
-
-          <figure class="chapter-media reveal">
-            <div class="media-slot media-slot--wide has-media" data-slot="image"
-                 style="--media-ratio: 1917 / 852; --media-crop-y: 43.5%">
-              <img class="media-img media-img--crop" src="/assets/media/analysis-13pt-diagnostics.png"
-                   alt="The FieldLux app window: Blend Group 1 holds four projectors covering a facade, the 13 probe points are drawn and labelled on the target with their per-point readings in absolute mode, the Lux Heatmap panel reads Physics Model, and the projector panel shows a Panasonic PT-RZ34K2 on a standard zoom lens at a 1.300 : 1 throw ratio."
-                   width="1917" height="944" loading="lazy" decoding="async">
-            </div>
-            <figcaption class="media-caption">Full app window from the shipped build: a blend group of four projectors with the 13 probe points, 9 ANSI plus 4 quarter-points, drawn and labelled on the target.</figcaption>
-          </figure>
-
-          <!-- The three panel captures and the 13-point window move here from the
-               retired Ch 06. They are the only real product media on the page, so
-               the part that absorbed the measurement chapter is the part that
-               carries them. Captions trimmed, every figure and its qualifier kept:
-               500 lx, 250 lx and the +/- 20 % scale all still name their own
-               reference in their own sentence (spec 1.3). -->
-          <div class="split-3 reveal">
-            <figure class="chapter-media">
-              <div class="media-slot has-media" data-slot="image" style="--media-ratio: 442 / 673">
-                <img class="media-img" src="/assets/media/analysis-heatmap-absolute.png"
-                     alt="The app's Lux Heatmap panel in Absolute mode: a blue-to-red ramp labelled low lux to high lux running 0 to 500, a Max lux field set to 500 lx, a Physics Model chip, a Physics Estimate chip, a four-projector scene and the 13pt Diagnostic probe set."
-                     width="442" height="673" loading="lazy" decoding="async">
-              </div>
-              <figcaption class="media-caption">ABSOLUTE. Captured from the shipped build: the ramp runs 0 to 500 with Max lux set to 500 <span class="stat-unit">lx</span>, and the basis chip reads Physics Model.</figcaption>
-            </figure>
-            <figure class="chapter-media">
-              <div class="media-slot has-media" data-slot="image" style="--media-ratio: 442 / 673">
-                <img class="media-img" src="/assets/media/analysis-heatmap-norm.png"
-                     alt="The same panel in Norm mode: the ramp runs 0.0x to 2.0x and is labelled below ref, on ref, above ref, with a Ref lux field set to 250 lx."
-                     width="442" height="673" loading="lazy" decoding="async">
-              </div>
-              <figcaption class="media-caption">NORMALIZED. The same panel against a Ref lux of 250 <span class="stat-unit">lx</span>, 0.0x to 2.0x. It answers whether coverage is even, not how many lux.</figcaption>
-            </figure>
-            <figure class="chapter-media">
-              <div class="media-slot has-media" data-slot="image" style="--media-ratio: 442 / 673">
-                <img class="media-img" src="/assets/media/analysis-heatmap-deviation.png"
-                     alt="The same panel in Deviation mode: a blue-white-red diverging ramp from -20 % to +20 % labelled below ref, on target, above ref, with a Ref lux field set to 250 lx and the +/- 20 % scale selected out of +/- 10 %, +/- 20 % and +/- 30 %."
-                     width="442" height="673" loading="lazy" decoding="async">
-              </div>
-              <figcaption class="media-caption">DEVIATION. A diverging ramp at +/- 20 <span class="stat-unit">%</span>, the middle of +/- 10, +/- 20 and +/- 30, against the same 250 <span class="stat-unit">lx</span> reference.</figcaption>
-            </figure>
+    <section class="v3-section v3-section--paper">
+      <div class="v3-container">
+        <article class="v3-editorial v3-reveal">
+          <div class="v3-editorial-copy">
+            <p class="v3-kicker">Optics-based planning</p>
+            <h2 class="v3-display">The surface becomes the meter.</h2>
+            <p>Switch between <strong>Surface Lux, Pixel Density and Luminance</strong>. Use Absolute, Normalized or Deviation heatmaps to find weak coverage and uneven overlap.</p>
+            <p class="v3-note">FieldLux is a planning estimate, not a calibrated field measurement. Its assumptions stay visible beside the result.</p>
+            <a class="v3-text-link" href="/measurement">Explore measurement <span aria-hidden="true">↗</span></a>
           </div>
-
-          <!-- The 13-point still is 1917 x 944 and carries two things this site
-               cannot show: the app's title band (rows 0-39, with its BETA V.2
-               chip) and the bottom status bar (rows 894-943, reading ANALYSIS
-               [Coming Soon]). Cropped out deterministically in CSS, exactly like
-               the hero aperture: the slot is 1917 / 852, taking 40 px off the top
-               and 52 px off the bottom, and --media-crop-y puts 40 of the 92
-               hidden pixels (43.5 %) at the top. -->
-          <figure class="chapter-media reveal">
-            <div class="media-slot media-slot--wide has-media" data-slot="image"
-                 style="--media-ratio: 1917 / 852; --media-crop-y: 43.5%">
-              <img class="media-img media-img--crop" src="/assets/media/analysis-13pt-diagnostics.png"
-                   alt="The FieldLux app window: Blend Group 1 holds four projectors covering a facade, the 13 probe points are drawn and labelled on the target with their per-point readings in absolute mode, the Lux Heatmap panel reads Physics Model, and the projector panel shows a Panasonic PT-RZ34K2 on a standard zoom lens at a 1.300 : 1 throw ratio."
-                   width="1917" height="944" loading="lazy" decoding="async">
-            </div>
-            <figcaption class="media-caption">Full app window from the shipped build: a blend group of four projectors with the 13 probe points, 9 ANSI plus 4 quarter-points, drawn and labelled on the target.</figcaption>
+          <figure class="v3-media v3-media--facade">
+            <img src="/assets/media/hero-stitch-01.png" width="1363" height="806" loading="lazy" alt="FieldLux 3D facade with projector coverage and a surface lux heatmap">
           </figure>
+        </article>
+      </div>
+    </section>
 
-          <ul class="feature-cards reveal">
-            <li class="feature-card">
-              <h3 class="feature-card-title">SIX MODEL FORMATS</h3>
-              <p class="feature-card-body">FBX, GLB/GLTF, OBJ, DAE, STL and PLY, up to 200 <span class="stat-unit">MB</span> per model file. Units and up-axis are read on import: a millimetre export lands at real size. Or build the room here: rooms, curved walls, cylinders and domes are one click each, and you can drop to eye level and walk it with the beams running.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">FLOOR PLAN UNDERLAY, WALLS FROM LINES</h3>
-              <p class="feature-card-body">Drop a PNG, JPG or PDF page and set its real size by typing a dimension, clicking two points a known distance apart, or picking 1:50, 1:100 or 1:200 on a PDF plotted to scale. Trace the lines you want and they rise as walls at a height you type. A closed outline becomes a floor, and those walls are projection receivers like any other surface.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">LIGHT BEHAVES LIKE LIGHT</h3>
-              <p class="feature-card-body">Projector light adds to the surface's own shading, so black in the content means no light and the wall stays as it was. Beams stop at the first surface they hit, so occlusion and shadows are part of the picture. Ambient runs from 100,000 <span class="stat-unit">lx</span> direct sunlight down to 5 <span class="stat-unit">lx</span> theatre plus full blackout, and beyond direct light the app labels its single-bounce room figure an estimate on screen. An LED wall in the scene carries brightness in nits, spill on it in lux and a washout risk rating for the wall, in every tier.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">IES IMPORT (PRO)</h3>
-              <p class="feature-card-body">Stage and architectural fixtures sit in the same scene: 29 built-in units on 8 archetypes, 16 of them named market units transcribed from published photometric data. A manufacturer IES (LM-63), EULUMDAT or GDTF file drives the beam shape and the number. GDTF and MVR are code-complete but not yet checked against real vendor files, asymmetric files are averaged, and the app says both on screen. Aim by clicking the target, and copy a schedule with the total power draw.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">THE ISOLUX WORKING PLANE (PRO)</h3>
-              <p class="feature-card-body">Eavg, Emin, Emax and uniformity on a plane at any height, against 38 target profiles across 5 regional standard sets, and walls actually block it. Add a fog machine and the beams scatter in air that ventilation moves and walls contain. Fixture light and fog are a strictly separate estimate lane: direct light only, stamped estimate on screen, and blocked from ever reaching a projector lux figure.</p>
-            </li>
-          </ul>
-
-          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-scene">ALL 17 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
-
+    <section class="v3-section v3-section--dark">
+      <div class="v3-container">
+        <div class="v3-section-head v3-reveal">
+          <p class="v3-kicker">Make the plan portable</p>
+          <h2 class="v3-display">One plan. Clear handoffs.</h2>
+          <p class="v3-lead">Keep the working file editable, then give collaborators <strong>the level of detail they actually need.</strong></p>
+        </div>
+        <div class="v3-grid v3-grid--handoff">
+          <article class="v3-card v3-reveal">
+            <span class="v3-card-index">PDF</span>
+            <h3>PDF Tech Rider</h3>
+            <p>Turn the current setup into a readable technical handoff.</p>
+          </article>
+          <article class="v3-card v3-reveal">
+            <span class="v3-card-index">FLX</span>
+            <h3>Project file</h3>
+            <p>Move an editable FieldLux plan between accounts or machines.</p>
+          </article>
+          <article class="v3-card v3-reveal">
+            <span class="v3-card-index">URL</span>
+            <h3>Read-only share</h3>
+            <p>Create a review link, then revoke it when the review is over.</p>
+          </article>
+        </div>
+        <div class="v3-inline-link v3-reveal">
+          <a class="v3-text-link v3-text-link--light" href="/product">See the full product workflow <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </section>
 
-    <!-- == Ch 02, #ch-02, THE OPTICS ======================================= -->
-    <section class="section section--pad-sm chapter" id="ch-02" aria-labelledby="ch-02-title">
-      <div class="site-shell">
-        <div class="chapter-head">
-
-          <p class="micro-label">
-            <span class="micro-label-ord">(02)</span>
-            <span class="micro-label-name">THE ARRAY</span>
-          </p>
-
-          <h2 class="feature-title reveal" id="ch-02-title">PLACE THE HEADS. THE OVERLAPS COUNT THEMSELVES.</h2>
-
-          <p class="feature-sub reveal">87 projectors and 113 lenses, typed in from the manufacturers' own PDFs, every field keeping the URL of the sheet it was read from. Place them one at a time or as a linear array, a circular array or a mirrored rig. Auto edge blend then measures where each beam actually lands and writes the per-edge overlap widths and the blend curve, and one undo reverses all of it.</p>
-
-          <figure class="chapter-media reveal">
-            <div class="media-slot media-slot--wide" data-slot="video"
-                 style="--media-ratio: 1918 / 942"
-                 data-label="AUTO EDGE BLEND" data-caption="VIDEO: TO COME"></div>
-            <figcaption class="media-caption">Video slot: auto edge blend on a facade and on a dome. Not recorded yet.</figcaption>
-          </figure>
-
-          <ul class="feature-cards reveal">
-            <li class="feature-card">
-              <h3 class="feature-card-title">THROW RATIO, LIVE</h3>
-              <p class="feature-card-body">Drag the throw ratio and the beam size, axial distance and Center Surface Lux move together, inside the lens's real range.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">LENS SHIFT THAT PUSHES BACK</h3>
-              <p class="feature-card-body">Shift is clamped to each lens's published travel, and past a quarter of that travel edge falloff is modelled instead of ignored. Place a head where its lens cannot reach and the beam and lux cards strike through rather than print a figure it cannot hit.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">ARRAYS THAT STAY LIVE</h3>
-              <p class="feature-card-body">Linear, circular and symmetry rigs stay live: edit the source head and every generated head follows it. Bake the rig when you need to edit the heads separately, and reassemble it later. A bake is refused above 200 projectors in a scene, which is a hard shader cap the runtime detector can set lower on your machine.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">AUTO EDGE BLEND, MEASURED</h3>
-              <p class="feature-card-body">Overlaps come from each head's real optical frame, lens shift included, not from an idealised rectangle. Overlaps outside the industry 10 to 30 percent band get a named warning, not silence. Move a head a centimetre, or half a degree, and its blend is marked stale until you recalculate. The values are light-linear planning values, never settings pushed to a processor.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">CROSS-CHECKED, 642 TIMES</h3>
-              <p class="feature-card-body">642 projector-and-lens combinations verified against Panasonic's and Epson's own calculators, the only two that can be queried, covering 47 of the 87 heads. Pulled 2026-06-11.</p>
-            </li>
-          </ul>
-
-          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-optics">ALL 9 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
-
+    <section class="v3-section v3-section--signal">
+      <div class="v3-container v3-cta v3-reveal">
+        <p class="v3-kicker">Open beta</p>
+        <h2 class="v3-display">Every feature is open today.</h2>
+        <p>FieldLux is free during open beta. <strong>No card required.</strong> Paid plans are published for transparency, but checkout is not available yet.</p>
+        <div class="v3-actions">
+          <a class="v3-button v3-button--dark" href="https://app.field-lux.com/" data-app-link>Start planning</a>
+          <a class="v3-button v3-button--signal" href="/pricing">View planned pricing</a>
         </div>
       </div>
     </section>
-
-    <!-- == Part 3, #ch-03, THE PLAY DOCK (PRO) =============================
-         The (PRO) rides the .micro-label-name, which extends the card-heading
-         convention (the old Ch 08 cards, and the ticker items) to a whole part.
-         A suffix cannot carry a qualifier, so the lede states the tier in a
-         sentence as well, and states what is different about this one: the
-         fixture lane and the fog machine resolve through switches in the app's
-         src/config/betaFeatures.js, and the dock has none. Verified 2026-09-06:
-         grep for isBetaFeatureEnabled and BETA_FEATURES across
-         src/components/PlayDock/ returns zero hits, and the mount at
-         src/ProjectorSimulator.jsx:748 is unconditional inside a <Suspense>.
-         DO NOT let a later edit turn "priced into Pro" into "gated": the page
-         would then claim a switch the build does not contain. -->
-    <section class="section section--pad-sm chapter" id="ch-03" aria-labelledby="ch-03-title">
-      <span id="ch-04" class="u-visually-hidden" aria-hidden="true"></span>
-      <span id="ch-05" class="u-visually-hidden" aria-hidden="true"></span>
-      <div class="site-shell">
-        <div class="chapter-head">
-
-          <p class="micro-label">
-            <span class="micro-label-ord">(03)</span>
-            <span class="micro-label-name">THE PLAY DOCK (PRO)</span>
-          </p>
-
-          <h2 class="feature-title reveal" id="ch-03-title">DRAG IN 2D. THE BEAMS FOLLOW IN 3D.</h2>
-
-          <p class="feature-sub reveal">The Play Dock is the show console: a bottom overlay in two states, never hidden, holding a Sets and Groups rail, a surface filmstrip, inspector cards and a transport with a ticking timecode. It is priced into Pro alongside the fixture lane and the fog machine, and unlike those two it has no switch in the build yet, so it opens for every account today. Video and stills on a single head, and edge blending, stay in Projection; Pro buys the group lane above them.</p>
-
-          <figure class="chapter-media reveal">
-            <div class="media-slot media-slot--wide" data-slot="video"
-                 style="--media-ratio: 1918 / 942"
-                 data-label="MAPPING STAGE (PRO)" data-caption="VIDEO: TO COME"></div>
-            <figcaption class="media-caption">Video slot: the canvas quad dragged in the 2D Mapping Stage while the 3D beams follow. Not recorded yet.</figcaption>
-          </figure>
-
-          <ul class="feature-cards feature-cards--three reveal">
-            <li class="feature-card">
-              <h3 class="feature-card-title">THE MAPPING STAGE (PRO)</h3>
-              <p class="feature-card-body">A zoomable 2D view of the projection face. Move the canvas and the 3D beams track it live. Parts of a beam that miss the canvas draw as cut, with a one-click fix.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">CORNER-PIN, MESH WARP, FEATHERED MASKS (PRO)</h3>
-              <p class="feature-card-body">Four handles on true perspective math, a subdividable grid at 8 x 6 with a Spherize helper for domes, and click-drawn polygons with feather, invert and stacking cut into the beam itself. All three render in the actual 3D beam while you drag. Up to 32 heads can carry a mesh warp or a mask.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">ONE VIDEO, MANY SURFACES (PRO)</h3>
-              <p class="feature-card-body">Canvas sets span one video across several surfaces as proportional strips. Quick Wrap builds those regions from where the light already lands, and wraps a dome so every head samples the same picture, measured with 360 rays per head on the actual mesh rather than flattened into a plane first.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">PLAYLISTS AND CALIBRATION PATTERNS (PRO)</h3>
-              <p class="feature-card-body">Playlists with auto-advance and loop modes on a group, and a grid, crosshair, greyscale ramp or colorbars projected live per head, even while a video is playing.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">FOUR SOURCES, SAID OUT LOUD</h3>
-              <p class="feature-card-body">The budget is four distinct content sources at once, and it is the same budget on a single head, so it applies in every tier. The fifth drop is refused with a message before anything is written, not failed quietly on the GPU.</p>
-            </li>
-            <li class="feature-card">
-              <h3 class="feature-card-title">NOT A MEDIA SERVER</h3>
-              <p class="feature-card-body">Nothing authored in the dock is sent to a device. It previews content so the beams show the right picture, and your on-site correction still happens on the processor.</p>
-            </li>
-          </ul>
-
-          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-warp">ALL 7 CLIPS FOR THIS PART <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- == The close, #handoff =============================================
-         Not a fourth part. The owner's three groupings are three things the
-         product simulates; this is what happens after the simulating stops, so
-         it carries no ordinal and no .micro-label-ord, and the eye reads three
-         numbered parts and then a close. It absorbs the retired Ch 09 and the
-         two survivors of Ch 10.
-
-         WHY IT IS HERE AND NOT INSIDE PART ONE. The deliverable is what the
-         buyer takes away, and burying it as the sixth card of the longest part
-         would make the page's last product statement a Pro part the entry tier
-         cannot open. It also carries five ticker words on its own - PDF TECH
-         RIDER, HANDOFF JSON, READ-ONLY LINK, CLOUD AUTOSAVE, VERSION CHAIN -
-         so if this section is ever trimmed, check index.html's ticker first. -->
-    <section class="section section--pad-sm section--pad-end-lg" id="handoff" aria-labelledby="handoff-title">
-      <span id="ch-09" class="u-visually-hidden" aria-hidden="true"></span>
-      <span id="ch-10" class="u-visually-hidden" aria-hidden="true"></span>
-      <div class="site-shell">
-        <div class="section-head">
-
-          <p class="micro-label">
-            <span class="micro-label-name">WHAT LEAVES</span>
-          </p>
-
-          <h2 class="feature-title reveal" id="handoff-title">PROOF THAT LEAVES THE APP.</h2>
-
-          <p class="feature-sub reveal">Three things leave: a PDF Tech Rider, one page per projector with equipment, lens, position, optical distances, surface readings and per-edge blending under a printed &ldquo;simulation preview, not a field measurement&rdquo; band; a vendor-neutral handoff JSON carrying the blend-domain warning inside the file itself; and a read-only link that is a dated receipt rather than a live mirror, and can expire or be revoked. None is written in a media server's blend or warp format, and none is pushed to a device.</p>
-
-          <ul class="feature-cards reveal">
-            <li class="feature-card">
-              <h3 class="feature-card-title">CLOUD AUTOSAVE, APPEND-ONLY</h3>
-              <p class="feature-card-body">Every save is a new version on an append-only version chain. Restoring first saves what you have, then writes the restored state as a new version, so nothing is overwritten and nothing is deleted. Or export the whole project as one file and keep it yourself.</p>
-            </li>
-          </ul>
-
-          <p class="chapter-more reveal"><a class="btn btn--text" href="/videos#ch-deliver">ALL 10 CLIPS FOR THIS SECTION <span class="btn-arrow" aria-hidden="true">&#8599;</span></a></p>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- == S7, #numbers ====================================================
-         The one exception to the lede size: 48px, white on navy, per the
-         benchmark. Six figures, and the note under each one is data, not
-         prose - every word in it is carrying a source, a date or a bound. -->
-    <section class="section section--pad-lg section--mass" id="numbers" aria-labelledby="numbers-title">
-      <div class="site-shell">
-        <div class="section-head">
-
-          <p class="micro-label micro-label--on-mass">
-            <span class="micro-label-name">SCALE</span>
-          </p>
-
-          <h2 class="lede lede--on-mass reveal" id="numbers-title">
-            <span class="lede-ink">Six figures, each read off the shipped build or a measured session,</span>
-            <span class="lede-soft">each naming its source, and dated where the date is what makes it true.</span>
-          </h2>
-
-          <div class="stat-row">
-            <div class="stat reveal">
-              <p class="stat-label">PROJECTORS IN CATALOGUE</p>
-              <p class="stat-value u-tabular">87</p>
-              <p class="stat-note">113 lenses across Epson, Panasonic, Christie and Barco. Every field carries the manufacturer PDF's URL. Rebuilt 2026-05-12.</p>
-            </div>
-            <div class="stat reveal">
-              <p class="stat-label">COMBINATIONS CROSS-CHECKED</p>
-              <p class="stat-value u-tabular">642</p>
-              <p class="stat-note">Against Panasonic TDC and Epson PTDS, the only two manufacturer calculators we can query. 47 of the 87 heads. Pulled 2026-06-11.</p>
-            </div>
-            <div class="stat reveal">
-              <p class="stat-label">MATERIAL PRESETS</p>
-              <p class="stat-value u-tabular">21</p>
-              <p class="stat-note">Each sets reflectance, projection gain, gain half-angle, transmittance, scatter and shadow opacity. The count is the shipped preset table.</p>
-            </div>
-            <div class="stat reveal">
-              <p class="stat-label">HEADS PER SCENE, MAX</p>
-              <p class="stat-value u-tabular">200</p>
-              <p class="stat-note">A hard shader cap, not a plan tier, raised from 64 to 96 on 2026-08-17 and to 200 on 2026-08-26, each step measured before it shipped. The runtime detector can set it lower, and 32 of those heads can carry a mesh warp or a mask.</p>
-            </div>
-            <div class="stat reveal">
-              <p class="stat-label">PROBE GRID POINTS</p>
-              <p class="stat-value u-tabular">13</p>
-              <p class="stat-note">9 ANSI plus 4 quarter-points, drawn on the target. A separate ring of 16 outer-edge probes covers the perimeter, and surface sampling is a 16 x 16 grid.</p>
-            </div>
-            <div class="stat reveal">
-              <p class="stat-label">REQUESTS WHILE YOU WORK</p>
-              <p class="stat-value u-tabular">0</p>
-              <p class="stat-note">Moving, rotating and editing values issue no network request. The server is touched at cold load, sign-in, project listing and open/import/save: a measured one-hour session came to about 55 requests.</p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- == S9, #videos-cta =================================================
-         The three empty slots that used to sit here are deleted. They were
-         labelled THE SCENE, THE MEASUREMENT and THE COVERAGE - the same three
-         chapters whose own slots are twenty screens above, all of them still
-         empty. Three placeholders for footage that does not exist, standing in
-         for three other placeholders for the same footage, is the ceremony this
-         pass is removing. The id stays: it is in the required set. -->
-    <section class="section section--pad-sm section--pad-start-lg" id="videos-cta" aria-labelledby="videos-cta-title">
-      <div class="site-shell">
-        <div class="section-head">
-
-          <p class="micro-label">
-            <span class="micro-label-name">FEATURE VIDEOS</span>
-          </p>
-
-          <h2 class="feature-title reveal" id="videos-cta-title">SEE EVERY TOOL DO ITS ACTUAL JOB.</h2>
-
-          <p class="feature-sub reveal">One short screen recording per feature, 15 to 60 seconds, no narration and no speed-up. None are published yet; every clip is named on the public shot list before it is filmed.</p>
-
-          <div class="hero-actions">
-            <a class="btn btn--text" href="/videos">OPEN FEATURE VIDEOS</a>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- == S10, #beta ====================================================== -->
-    <section class="section section--pad-sm" id="beta" aria-labelledby="beta-title">
-      <div class="site-shell--narrow">
-        <div class="section-head">
-
-          <p class="micro-label">
-            <span class="micro-label-name">STATUS</span>
-          </p>
-
-          <h2 class="feature-title reveal" id="beta-title">OPEN BETA. FREE. HONESTLY LIMITED.</h2>
-
-          <p class="feature-sub reveal">2 <span class="stat-unit">GB</span> of imported-model storage, 200 <span class="stat-unit">MB</span> per model file, and a 1 <span class="stat-unit">GiB</span> media library. No paid plans yet: every lane is open to every account, fixtures, fog and the Play Dock included. The <a class="link" href="/pricing">pricing page</a> publishes what the three tiers would cost and which three lanes Pro opens. Early testers who verify their invite code keep founding-member standing, which carries 12 months of access once those plans begin.</p>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- == S11, #community ================================================= -->
-    <section class="section section--pad-sm section--pad-end-lg" id="community" aria-labelledby="community-title">
-      <div class="site-shell--narrow">
-        <div class="section-head">
-
-          <p class="micro-label">
-            <span class="micro-label-name">JOIN THE DISCORD COMMUNITY</span>
-          </p>
-
-          <h2 class="feature-title reveal" id="community-title">HELP US FINISH THE CATALOGUE.</h2>
-
-          <p class="feature-sub reveal">40 of the 87 heads in the catalogue have no manufacturer calculator to check against: all 19 Christie, all 19 Barco and two Panasonic models. Post a spec sheet in <code>#catalogue</code> and it ships in the next catalogue build, your name on the source field. Bug reports go the same way.</p>
-
-          <div class="hero-actions">
-            <a class="btn btn--outline" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">JOIN DISCORD</a>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- == S12, #start ===================================================== -->
-    <section class="section section--pad-lg section--mass" id="start" aria-labelledby="start-title">
-      <div class="site-shell--narrow">
-        <div class="section-head">
-
-          <p class="micro-label micro-label--on-mass">
-            <span class="micro-label-name">START</span>
-          </p>
-
-          <h2 class="lede reveal" id="start-title">
-            <span class="lede-ink">Open a scene and push it around.</span>
-            <span class="lede-soft">Sign in free, open your own copy of the FieldLux Test Scene or the Play Dock Demo, and move a projector 300 <span class="stat-unit">mm</span> to watch which numbers move with it.</span>
-          </h2>
-
-          <div class="hero-actions">
-            <a class="btn btn--solid" href="https://app.field-lux.com" data-app-link>START FREE</a>
-            <a class="btn btn--text" href="/videos">WATCH FEATURE VIDEOS</a>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
   </main>
 
-  <!-- == S13, Footer ======================================================= -->
-  <footer class="site-footer">
-    <div class="site-shell footer-inner">
-
-      <a class="brand-lockup" href="/" aria-label="FieldLux home">
-        <img class="brand-lockup-img" src="/assets/logo-ink.png" width="154" height="45" alt="FieldLux">
-      </a>
-
-      <p class="footer-lead">WE'RE BUILDING THIS WITH THE PEOPLE WHO RIG IT.</p>
-
-      <div class="footer-contact">
-        <p class="footer-contact-item">
-          <span class="footer-col-title">hello</span>
-          <a class="footer-link" href="mailto:jay@field-lux.com">jay@field-lux.com</a>
-        </p>
+  <footer class="v3-footer">
+    <div class="v3-container v3-footer-grid">
+      <div class="v3-footer-brand">
+        <img src="/assets/logo-ink.png" width="176" height="41" alt="FieldLux">
+        <p>Projection planning in the browser.</p>
       </div>
-
-      <div class="footer-cols">
-        <div class="footer-col">
-          <p class="footer-col-title">links</p>
-          <ul class="footer-links">
-            <li><a class="footer-link" href="/pricing">Pricing</a></li>
-            <li><a class="footer-link" href="/privacy">Privacy</a></li>
-            <li><a class="footer-link" href="/videos">Feature videos</a></li>
-            <li><a class="footer-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">Discord</a></li>
-          </ul>
-        </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="/product">Product</a>
+        <a href="/measurement">Measurement</a>
+        <a href="/videos">Videos</a>
+        <a href="/pricing">Pricing</a>
       </div>
-
-      <div class="footer-meta">
-        <p class="footer-legal">Copyright 2026 FieldLux. Open beta</p>
-        <button class="motion-toggle" type="button" aria-pressed="false">Reduce motion</button>
+      <div>
+        <h2>Connect</h2>
+        <a href="https://discord.gg/JpeQ7Hgsnd" target="_blank" rel="noopener noreferrer">Discord</a>
+        <a href="/privacy">Privacy</a>
+        <button type="button" data-motion-toggle>Reduce motion</button>
       </div>
-
+      <p class="v3-footer-meta">© 2026 FieldLux. Open beta.</p>
     </div>
   </footer>
-  <script>
-    (() => {
-      'use strict';
-
-      const doc  = document;
-      const root = doc.documentElement;
-
-      /* -- storage, guarded ------------------------------------------------ */
-      const store = (() => {
-        try {
-          const s = window.localStorage;
-          const probe = '__fieldlux_probe__';
-          s.setItem(probe, '1'); s.removeItem(probe);
-          return s;
-        } catch (_) { return null; }
-      })();
-      const read  = (k) => { try { return store && store.getItem(k); }  catch (_) { return null; } };
-      const write = (k, v) => { try { store && store.setItem(k, v); }   catch (_) {} };
-      const drop  = (k) => { try { store && store.removeItem(k); }      catch (_) {} };
-
-      const params = new URLSearchParams(window.location.search);
-
-      /* == 10.4 (b), flowAppUrl review override: host allowlist ============ */
-      const DEFAULT_APP_URL = 'https://app.field-lux.com';
-      const APP_KEY = 'fieldlux_flow_app_url';
-
-      function isAllowedAppHost(u) {
-        try {
-          const p = new URL(u);
-          const h = p.hostname;
-          if (p.protocol === 'http:' && (h === 'localhost' || h === '127.0.0.1')) return true;
-          if (p.protocol !== 'https:') return false;
-          return h === 'field-lux.com' || h.endsWith('.field-lux.com')
-              || h.endsWith('.vercel.app')
-              || h === 'localhost' || h === '127.0.0.1';
-        } catch { return false; }
-      }
-
-      let appUrl = DEFAULT_APP_URL;
-      const suppliedApp = params.get('flowAppUrl') || read(APP_KEY);
-      if (suppliedApp) {
-        if (isAllowedAppHost(suppliedApp)) {
-          appUrl = new URL(suppliedApp).href;
-          write(APP_KEY, appUrl);
-        } else {
-          /* a bad value must not persist for this visitor */
-          appUrl = DEFAULT_APP_URL;
-          drop(APP_KEY);
-        }
-      }
-
-      /* == 10.4 (a), data-app-link rewriting, with siteReturnUrl ============ */
-      const getAppLinkUrl = () => {
-        try {
-          const url = new URL(appUrl, window.location.href);
-          url.searchParams.set('siteReturnUrl', window.location.href);
-          return url.href;
-        } catch (_) { return appUrl; }
-      };
-
-      doc.querySelectorAll('[data-app-link]').forEach((link) => {
-        const appLinkUrl = getAppLinkUrl();
-        link.href = appLinkUrl;
-        link.addEventListener('click', (event) => {
-          /* modifier-key / middle-click passthrough: let the browser do its thing */
-          if (event.defaultPrevented || event.button !== 0
-              || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-          event.preventDefault();
-          window.location.assign(appLinkUrl);
-        });
-      });
-
-      /* == 10.4 (c), discordUrl allowlist ================================== */
-      const DEFAULT_DISCORD_URL = 'https://discord.gg/JpeQ7Hgsnd';
-      const DISCORD_KEY = 'fieldlux_discord_url';
-
-      let discordUrl = DEFAULT_DISCORD_URL;
-      const suppliedDiscord = params.get('discordUrl') || read(DISCORD_KEY);
-      if (suppliedDiscord) {
-        try {
-          const parsed = new URL(suppliedDiscord, window.location.href);
-          const h = parsed.hostname;
-          const isDiscordHost = h === 'discord.gg' || h === 'discord.com' || h.endsWith('.discord.com');
-          if (parsed.protocol === 'https:' && isDiscordHost) {
-            discordUrl = parsed.href;
-            write(DISCORD_KEY, discordUrl);
-          }
-        } catch (_) { discordUrl = DEFAULT_DISCORD_URL; }
-      }
-
-      doc.querySelectorAll('[data-discord-link]').forEach((link) => {
-        link.href = discordUrl;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.setAttribute('aria-disabled', 'false');
-        link.removeAttribute('title');   /* the CSS ::after tooltip is the only tooltip */
-      });
-
-      /* == 5.9, Motion: tri-state (on / off / follow the OS) =============== */
-      const MOTION_KEY = 'fieldlux_motion';
-      const osReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const motionAllowed = () => {
-        const m = root.dataset.motion;
-        if (m === 'on')  return true;
-        if (m === 'off') return false;
-        return !osReduce.matches;
-      };
-      const MOTION_EVENT = 'fieldlux:motionchange';
-      const announceMotion = () => doc.dispatchEvent(new CustomEvent(MOTION_EVENT));
-
-      const motionToggles = [...doc.querySelectorAll('.motion-toggle')];
-      const syncMotionToggles = () => {
-        const reduced = !motionAllowed();
-        motionToggles.forEach((b) => b.setAttribute('aria-pressed', reduced ? 'true' : 'false'));
-      };
-      motionToggles.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          root.dataset.motion = motionAllowed() ? 'off' : 'on';
-          write(MOTION_KEY, root.dataset.motion);
-          syncMotionToggles();
-          announceMotion();
-        });
-      });
-      if (osReduce.addEventListener) {
-        osReduce.addEventListener('change', () => { syncMotionToggles(); announceMotion(); });
-      }
-      syncMotionToggles();
-
-      /* data-saver / reduced-data: never fetch video bytes */
-      const conn = navigator.connection;
-      const leanData = (conn && conn.saveData === true)
-                    || window.matchMedia('(prefers-reduced-data: reduce)').matches;
-
-      /* == 5.8, One overlay system, one Escape handler ====================== */
-      const overlays = [];
-      function openOverlay(rec) { overlays.push(rec); doc.body.classList.add('overlay-open'); }
-      function closeTop() {
-        const r = overlays.pop();
-        if (r && r.close) r.close();
-        if (!overlays.length) doc.body.classList.remove('overlay-open');
-      }
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && overlays.length) closeTop();
-      });
-
-      /* == 5.6, Nav overlay: focus trap, inert, focus return =============== */
-      const navToggle  = doc.querySelector('.nav-toggle');
-      const navOverlay = doc.getElementById('nav-overlay');
-      const siteMain   = doc.getElementById('main');
-      const siteFooter = doc.querySelector('.site-footer');
-      const FOCUSABLE  = 'a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])';
-
-      if (navToggle && navOverlay) {
-        let navReturnFocus = null;
-        let navHideTimer = null;
-
-        const trapStops = () => [navToggle].concat([...navOverlay.querySelectorAll(FOCUSABLE)]);
-
-        const onTrapKeydown = (e) => {
-          if (e.key !== 'Tab') return;
-          const stops = trapStops();
-          if (!stops.length) return;
-          const first = stops[0];
-          const last  = stops[stops.length - 1];
-          if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
-          else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
-        };
-
-        const closeNav = () => {
-          navOverlay.removeAttribute('data-open');
-          /* the 420 ms exit is still painted and still hit-testable: take it out of
-             the tab order for the whole close, not only once `hidden` lands (spec 5.6) */
-          navOverlay.setAttribute('inert', '');
-          navToggle.setAttribute('aria-expanded', 'false');
-          if (siteMain)   siteMain.removeAttribute('inert');
-          if (siteFooter) siteFooter.removeAttribute('inert');
-          doc.removeEventListener('keydown', onTrapKeydown, true);
-          window.clearTimeout(navHideTimer);
-          navHideTimer = window.setTimeout(() => {
-            navOverlay.hidden = true;
-            navOverlay.removeAttribute('inert');
-          }, motionAllowed() ? 440 : 0);
-          if (navReturnFocus && navReturnFocus.focus) navReturnFocus.focus();
-          navReturnFocus = null;
-        };
-
-        const openNav = () => {
-          navReturnFocus = doc.activeElement;
-          window.clearTimeout(navHideTimer);   /* a reopen mid-exit skips the timer... */
-          navOverlay.removeAttribute('inert'); /* ...so clear the closing inert here   */
-          navOverlay.hidden = false;
-          navToggle.setAttribute('aria-expanded', 'true');
-          if (siteMain)   siteMain.setAttribute('inert', '');
-          if (siteFooter) siteFooter.setAttribute('inert', '');
-          requestAnimationFrame(() => navOverlay.setAttribute('data-open', ''));
-          doc.addEventListener('keydown', onTrapKeydown, true);
-          const first = navOverlay.querySelector(FOCUSABLE);
-          if (first) first.focus();
-          openOverlay({ el: navOverlay, close: closeNav });
-        };
-
-        navToggle.addEventListener('click', () => {
-          if (navToggle.getAttribute('aria-expanded') === 'true') closeTop();
-          else openNav();
-        });
-
-        navOverlay.querySelectorAll('.nav-overlay-link').forEach((link) => {
-          link.addEventListener('click', () => {
-            if (navToggle.getAttribute('aria-expanded') === 'true') closeTop();
-          });
-        });
-      }
-
-      /* == 5.1, Scroll: one passive listener ===============================
-         Header state only. The monitor settle is gone with the monitor (OVERRIDE
-         2): a fixed frame has no tilt to lerp, so there is no rAF loop left. */
-      const header = doc.querySelector('.site-header');
-
-      let isScrolled = false;
-
-      const syncHeader = () => {
-        const y = window.scrollY;
-        if (!isScrolled && y > 24)      { isScrolled = true;  header && header.classList.add('is-scrolled'); }
-        else if (isScrolled && y < 12)  { isScrolled = false; header && header.classList.remove('is-scrolled'); }
-      };
-
-      window.addEventListener('scroll', syncHeader, { passive: true });
-      syncHeader();
-
-      /* == 5.3, Scroll reveal: one-shot, per-section stagger =============== */
-      const revealTargets = [...doc.querySelectorAll('.reveal, .reveal-lines')];
-      if (!motionAllowed() || !('IntersectionObserver' in window)) {
-        revealTargets.forEach((el) => el.classList.add('is-in'));
-      } else {
-        const io = new IntersectionObserver((entries) => {
-          for (const e of entries) {
-            if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
-          }
-        }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
-        revealTargets.forEach((el) => {
-          const group = el.closest('.section') || doc;
-          const sibs = [...group.querySelectorAll('.reveal, .reveal-lines')];
-          el.style.setProperty('--i', String(sibs.indexOf(el) % 6));   // per-section, not global
-          io.observe(el);
-        });
-        /* turning motion off mid-page must not strand un-revealed copy */
-        doc.addEventListener(MOTION_EVENT, () => {
-          if (!motionAllowed()) revealTargets.forEach((el) => el.classList.add('is-in'));
-        });
-      }
-
-      /* == 5.4 was Pin progress. DELETED with the markup it drove: #ch-06 no
-         longer has a three-panel sticky scroller, so .pin-panel, .pin-counter
-         and .pin-progress-bar have no instances on any page. The observer was
-         already guarded by pinPanels.length, so this is dead weight, not a
-         behaviour change. src/input.css still carries the .pin* rules; they are
-         now unreferenced by index.html. ==================================== */
-
-      /* == 5.5, Typewriter ================================================= */
-      const typeWord = doc.querySelector('.type-word');
-      if (typeWord) {
-        const WORDS = ['FACADE', 'DOME', 'STAGE', 'TUNNEL'];
-        let wi = 0, ci = 0, deleting = false, timer = null;
-
-        const step = () => {
-          const word = WORDS[wi];
-          typeWord.textContent = word.slice(0, ci);
-          let delay;
-          if (!deleting) {
-            if (ci < word.length) { ci += 1; delay = 55; }
-            else { deleting = true; delay = 1900; }
-          } else {
-            if (ci > 0) { ci -= 1; delay = 32; }
-            else { deleting = false; wi = (wi + 1) % WORDS.length; delay = 220; }
-          }
-          timer = window.setTimeout(step, delay);
-        };
-
-        /* Both branches start from the finished word the markup already paints,
-           never from an empty span. The motion branch does NOT call step()
-           immediately: at ci=0 step() would blank the shipped word on its first
-           frame, which is the defect this fixes. It starts fully typed and
-           already deleting, so the first thing that happens is the same 1900ms
-           dwell every other word in the cycle gets. */
-        const restartTypewriter = () => {
-          window.clearTimeout(timer);
-          timer = null;
-          typeWord.textContent = WORDS[0];
-          if (motionAllowed()) {
-            wi = 0; ci = WORDS[0].length; deleting = true;
-            timer = window.setTimeout(step, 1900);
-          }
-        };
-
-        restartTypewriter();
-        doc.addEventListener(MOTION_EVENT, restartTypewriter);
-      }
-
-      /* == OVERRIDE 3, Hero frame: the live scene is the DEFAULT ============
-         The facade is retired. The iframe is created on load, so the hero is
-         3D from first paint rather than a picture of one. What the facade used
-         to guarantee for free now has to be guaranteed by name:
-
-           the still     never removed, never hidden. It is the poster the embed
-                         is layered over, so "app still booting", "app resolved
-                         no scene" and "app crashed its canvas" all land on the
-                         same picture instead of on a hole. The embed document
-                         is transparent by its own contract (verified in the
-                         app's EmbedViewer.jsx: `html, body { background:
-                         transparent !important }` plus a transparent React
-                         root), which is what lets a poster underneath work at
-                         all.
-           motion/data   neither auto-mounts. Both get the launch button as an
-                         explicit opt-in, and MOTION_EVENT mounts the scene if
-                         the visitor turns motion back on at the footer - the
-                         same symmetry the chapter clips have. leanData has no
-                         toggle, so for a data-saver visitor the button is the
-                         only door, which is the point of it.
-           the scroll    site side: not sticky, no bleed, no allow-top-navigation.
-                         App side is verified, not assumed - see the markup note
-                         on .hero-frame.
-           empty src     nothing is mounted, the button stays hidden, the caption
-                         stays in its still state. No dead button, no console
-                         error, and identical to the no-JS state.
-
-         The URL is configuration. It comes from data-embed-src on the frame,
-         with an optional ?embedSrc= review override validated by exactly the
-         allowlist the app-link CTA uses (isAllowedAppHost above: field-lux.com
-         and its subdomains, *.vercel.app, localhost). A rejected value is
-         dropped and the stored key cleared, same contract as flowAppUrl. */
-      const heroFrame = doc.querySelector('.hero-frame');
-      if (heroFrame) {
-        const EMBED_KEY   = 'fieldlux_embed_src';
-        const launchBtn   = heroFrame.querySelector('.hero-frame-launch');
-        const declaredSrc = (heroFrame.dataset.embedSrc || '').trim();
-
-        /* SAME-ORIGIN DECLARED SRC. The embed now ships inside this site at
-           /embed, so the declared value is a ROOT-RELATIVE path, and it has to
-           be: a hard-coded absolute URL would name exactly one origin and so
-           break on the other two this site is served from (localhost while
-           authoring, the vercel.app preview, field-lux.com in production).
-
-           isAllowedAppHost cannot judge it — it calls `new URL(u)` with no
-           base, which THROWS on a relative string and is caught into `false`,
-           so a relative value would be silently dropped and the hero would
-           stay a still with no error to explain it.
-
-           A leading single slash is this origin by construction. The `//` guard
-           is the whole reason this is written out rather than inlined:
-           `//evil.example` is also "leading slash" and is protocol-relative,
-           i.e. CROSS-origin. */
-        const isSameOriginPath = (v) => v.startsWith('/') && !v.startsWith('//');
-
-        /* EVERY FRAME TARGET IS SAME-ORIGIN, and this is a statement about what
-           the browser permits, not a policy we chose. This page's CSP is
-           `default-src 'self'` with no frame-src, so frame-src inherits 'self'
-           and the browser REFUSES to frame any other origin. A cross-origin
-           value therefore does not degrade gracefully — it mounts an empty
-           frame and logs a CSP violation, which reads exactly like the app
-           being broken.
-
-           That mattered because ?embedSrc= PERSISTS. A reviewer who once
-           pointed the hero at a colleague's laptop kept that value forever, and
-           once the host went away their hero was a still on every future visit,
-           with no failing request they would think to look for. There is no
-           reliable way to detect it either: an iframe fires no `error` event
-           for a refused connection or a blocked frame, so the fallback path
-           that was supposed to catch this could never run.
-
-           Rejecting the value up front removes the whole class, and clears any
-           debris a visitor is already carrying on their next load. */
-        const resolveSameOrigin = (v) => {
-          try {
-            const u = isSameOriginPath(v)
-              ? new URL(v, window.location.origin)
-              : new URL(v);
-            return u.origin === window.location.origin ? u.href : '';
-          } catch { return ''; }
-        };
-
-        let embedSrc = declaredSrc ? resolveSameOrigin(declaredSrc) : '';
-
-        const suppliedEmbed = params.get('embedSrc') || read(EMBED_KEY);
-        if (suppliedEmbed) {
-          const supplied = resolveSameOrigin(suppliedEmbed);
-          if (supplied) {
-            embedSrc = supplied;
-            write(EMBED_KEY, supplied);
-          } else {
-            /* a value that cannot be framed must not persist for this visitor */
-            drop(EMBED_KEY);
-          }
-        }
-
-        /* Auto-mount is the default and BOTH signals can veto it. Reduced motion
-           vetoes because a viewport that swings under the pointer is motion the
-           visitor did not ask for; data saver vetoes because a WebGL app is the
-           heaviest thing this page can fetch. An explicit click overrides both,
-           which is what makes it a preference rather than a lockout. */
-        const embedAllowed = () => motionAllowed() && !leanData;
-
-        /* `manual` marks the click path, and it is the only path that touches
-           focus: on the auto path nobody was focused on the button, so moving
-           focus into the frame would be a scroll jump nobody asked for. */
-        const mountEmbed = (manual) => {
-          if (!embedSrc || heroFrame.dataset.embedState) return;
-          /* Set BEFORE the frame is appended: this attribute is what swaps the
-             caption, and the still-state sentence stops being true the moment an
-             iframe exists, not when it finishes loading. */
-          heroFrame.dataset.embedState = 'mounted';
-          if (launchBtn) launchBtn.hidden = true;
-
-          const embed = doc.createElement('iframe');
-          embed.className = 'hero-frame-embed';
-          embed.src   = embedSrc;
-          embed.title = heroFrame.dataset.embedTitle || 'FieldLux interactive 3D scene';
-          /* eager, not lazy: the frame is the top of the page, and `lazy` on an
-             in-viewport element buys nothing while implying the opposite of what
-             OVERRIDE 3 asks for. The still keeps LCP - it is <link rel=preload>
-             with fetchpriority=high, so it wins the race against this fetch. */
-          embed.loading = 'eager';
-          embed.referrerPolicy = 'strict-origin-when-cross-origin';
-          /* Unchanged, and deliberately so. Pointer lock — which Walk inside
-             needs — is NOT a Permissions Policy feature: adding it here logs
-             "Unrecognized feature: 'pointer-lock'" and grants nothing. It is a
-             sandbox flag, and it is set as one below. */
-          embed.setAttribute('allow', 'fullscreen');
-          /* sandbox, token by token:
-               allow-scripts:     the demo is a WebGL app; with scripts blocked
-                                  the frame renders nothing at all.
-               allow-same-origin: the app needs a real origin to create a WebGL
-                                  context bound to its assets and to read its
-                                  own storage; in an opaque origin both fail.
-                                  READ THIS BEFORE RELYING ON THE SANDBOX: the
-                                  embed now ships INSIDE this site at /embed, so
-                                  that origin is OURS. This pair of tokens on a
-                                  same-origin frame is not a boundary — the
-                                  frame can reach this document, its storage and
-                                  its cookies, exactly as if the app were
-                                  scripted into the page. That is acceptable
-                                  only because it IS our code, built from our
-                                  repository and served from our deployment. It
-                                  stops being acceptable the moment this frame
-                                  points at anything we do not build, which is
-                                  why ?embedSrc= resolves same-origin ONLY.
-                                  Corrected 2026-09-06: this line used to say
-                                  "keeps its host allowlist", which was stale
-                                  against resolveSameOrigin on this same page
-                                  and had already been copied into privacy.html
-                                  as a false clause about a frame that was said
-                                  to load a cross-origin demo on a click. A
-                                  host allowlist would admit *.vercel.app, and
-                                  a same-origin sandbox token on a cross-origin
-                                  demo would be a boundary this frame does not
-                                  have. It is one origin, ours, or nothing.
-               allow-pointer-lock: Walk inside locks the cursor so the view
-                                  turns with the mouse instead of the pointer
-                                  running out of the frame. MEASURED, both ways:
-                                  without this flag the browser refuses with
-                                  "the element's frame is sandboxed and the
-                                  'allow-pointer-lock' permission is not set"
-                                  while the button still reports itself active,
-                                  and putting `pointer-lock` in the `allow`
-                                  attribute instead does nothing at all — it is
-                                  a sandbox flag, not a Permissions Policy
-                                  feature, and naming it there only logs
-                                  "Unrecognized feature".
-             Deliberately absent: allow-top-navigation (an embed must never be
-             able to navigate the site away) and allow-forms (nothing in a
-             read-only demo scene is submitted). Now that the frame mounts
-             without a click, these two absences are the whole of the site-side
-             scroll and navigation guarantee, so neither is negotiable. */
-          embed.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-pointer-lock');
-
-          /* No `load` handler. There is nothing left for one to do: the still is
-             never hidden, so there is no reveal to time, and load fires for a
-             blocked or empty frame too - reading it as "the scene is up" is how
-             the caption would end up describing a frame nobody is looking at. */
-          embed.addEventListener('error', () => {
-            /* the still was never removed, so falling back is just deleting the
-               flag: the caption returns to its still state and nothing is logged */
-            embed.remove();
-            delete heroFrame.dataset.embedState;
-
-            /* MEASURED, NOT ASSUMED: this handler is very nearly unreachable.
-               An iframe fires no `error` for a refused connection, a DNS
-               failure or a CSP-blocked frame — the cases anyone would write it
-               for. It is kept because it costs nothing and a future src could
-               fail in a way that does report, but nothing may DEPEND on it.
-               The unreachable-target problem it looks like it solves is handled
-               where the src is chosen, by refusing anything cross-origin. */
-            if (manual && launchBtn) {
-              /* the button removed itself a moment ago; it is this visitor's only
-                 door, so give it back and do not strand their focus */
-              launchBtn.hidden = false;
-              /* preventScroll, added 0818 with the middle-drag autoscroll fix:
-                 focus still lands exactly where this comment says it must, and
-                 only the browser's implicit scroll-into-view is dropped. The
-                 frame's bottom edge sits below the fold at several common
-                 viewport heights, and .site-main scrolls smoothly, so without
-                 this a focus park reads as the page sliding on its own. */
-              launchBtn.focus({ preventScroll: true });
-            }
-          });
-
-          heroFrame.appendChild(embed);
-          if (manual) {
-            /* the button just left the tab order: park focus on the frame so it is
-               never lost, and the next Tab steps into the embed (section 5.10).
-               preventScroll for the reason given at the launch button above: the
-               contract is WHERE focus goes, never the scroll the browser would
-               otherwise do to reveal it. */
-            heroFrame.focus({ preventScroll: true });
-          }
-        };
-
-        /* THE SCENE ALWAYS MOUNTS. Both vetoes are retired, for two different
-           reasons, and neither is "the owner asked" alone:
-
-           reduced motion   the veto was belt-and-braces. The app honours
-                            reduced motion INSIDE its own document — it parks
-                            the projected clip on a single frame — and the
-                            viewport does not move until a visitor drags it, so
-                            there was never autonomous motion here for the veto
-                            to spare anyone. It withheld the whole feature to
-                            prevent motion that does not occur.
-
-           data saver       this one WAS real: the frame is the heaviest thing
-                            the page fetches. It is now the smallest it can be
-                            without changing what is shown — the projected clip
-                            ships at 1080p instead of 4K and every byte is
-                            immutably cached — and the hero is the page's entire
-                            argument, so a visitor who never sees it has been
-                            served a worse page than a slow one.
-
-           embedAllowed() is kept for the chapter clips below, which DO
-           autoplay and where both preferences still decide correctly. */
-        if (embedSrc) mountEmbed(false);
-
-        /* Registered unconditionally, and harmless when it can never fire: with
-           no usable embedSrc the button is never revealed, and mountEmbed bails
-           on the empty string anyway. That is the "no dead button" contract held
-           from both ends. */
-        if (launchBtn) launchBtn.addEventListener('click', () => mountEmbed(true));
-
-        /* Turning motion back on mounts the scene, exactly as it restarts the
-           chapter clips. Turning motion OFF does NOT tear a mounted scene down:
-           it is not playing anything, the app honours reduced motion inside its
-           own document, and pulling a loaded 3D view out from under a visitor is
-           a worse answer than never having given it to them. Mounting is one-way
-           on purpose. */
-        doc.addEventListener(MOTION_EVENT, () => {
-          if (embedAllowed()) mountEmbed(false);
-        });
-      }
-
-      /* == 6.5, Chapter media: play only while visible, allowed and not paused
-         by hand. Each looping slot carries its own .monitor-pause stop control
-         (WCAG 2.2.2), the only surviving use of that class now the hero monitor
-         is retired. The motion listener is symmetric: turning motion off
-         pauses every clip, turning it back on restarts the ones on screen. ======== */
-      const chapterVideos = [...doc.querySelectorAll('[data-chapter-video]')];
-      if (chapterVideos.length) {
-        const vidState = new WeakMap();   /* video -> { visible, userPaused, btn, label } */
-
-        const syncChapterBtn = (v) => {
-          const s = vidState.get(v);
-          if (!s || !s.btn) return;
-          const playing = !v.paused;
-          s.btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
-          if (s.label) s.label.textContent = playing ? 'Pause this video' : 'Play this video';
-        };
-
-        const playIfAllowed = (v) => {
-          const s = vidState.get(v);
-          if (!s || !s.visible || s.userPaused) return;
-          if (!motionAllowed() || leanData) return;
-          const p = v.play();
-          if (p && p.then) p.then(() => syncChapterBtn(v)).catch(() => syncChapterBtn(v));
-          else syncChapterBtn(v);
-        };
-
-        chapterVideos.forEach((v) => {
-          const slot  = v.closest('.media-slot');
-          const btn   = slot ? slot.querySelector('.monitor-pause') : null;
-          const label = btn ? btn.querySelector('.u-visually-hidden') : null;
-          vidState.set(v, { visible: false, userPaused: false, btn: btn, label: label });
-
-          if (btn) {
-            btn.hidden = false;            /* the control only exists when JS does */
-            btn.addEventListener('click', () => {
-              const s = vidState.get(v);
-              if (v.paused) {
-                s.userPaused = false;
-                const p = v.play();
-                if (p && p.then) p.then(() => syncChapterBtn(v)).catch(() => syncChapterBtn(v));
-                else syncChapterBtn(v);
-              } else {
-                s.userPaused = true;       /* a hand-paused clip is not restarted by scroll */
-                v.pause();
-                syncChapterBtn(v);
-              }
-            });
-          }
-          v.addEventListener('play',  () => syncChapterBtn(v));
-          v.addEventListener('pause', () => syncChapterBtn(v));
-          syncChapterBtn(v);
-        });
-
-        if ('IntersectionObserver' in window) {
-          const mediaIo = new IntersectionObserver((entries) => {
-            for (const e of entries) {
-              const s = vidState.get(e.target);
-              if (!s) continue;
-              s.visible = e.isIntersecting;
-              if (e.isIntersecting) playIfAllowed(e.target);
-              else if (!e.target.paused) e.target.pause();
-            }
-          }, { threshold: 0.35 });
-          chapterVideos.forEach((v) => mediaIo.observe(v));
-        } else {
-          chapterVideos.forEach((v) => { vidState.get(v).visible = true; playIfAllowed(v); });
-        }
-
-        doc.addEventListener(MOTION_EVENT, () => {
-          if (!motionAllowed()) chapterVideos.forEach((v) => { v.pause(); syncChapterBtn(v); });
-          else chapterVideos.forEach(playIfAllowed);
-        });
-      }
-
-    })();
-  </script>
 </body>
 </html>
