@@ -14,9 +14,18 @@
   const PALETTES = [
     { rgb: '31, 54, 65', glow: '31, 89, 110', white: false },
     { rgb: '0, 166, 204', glow: '0, 190, 226', white: false },
-    { rgb: '0, 207, 230', glow: '0, 181, 218', white: false },
+    { rgb: '224, 39, 124', glow: '255, 73, 157', white: false },
     { rgb: '231, 123, 12', glow: '255, 151, 28', white: false },
     { rgb: '255, 255, 255', glow: '17, 125, 156', white: true },
+  ];
+
+  // Four overlapping image areas: each projector owns a quadrant and shares
+  // a generous feather band through the middle, like a 2 × 2 blend canvas.
+  const COVERAGE = [
+    { u0: 0, u1: 0.61, v0: 0, v1: 0.61 },
+    { u0: 0.39, u1: 1, v0: 0, v1: 0.61 },
+    { u0: 0, u1: 0.61, v0: 0.39, v1: 1 },
+    { u0: 0.39, u1: 1, v0: 0.39, v1: 1 },
   ];
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
@@ -110,6 +119,25 @@
     const left = lerp(geometry.topLeft, geometry.bottomLeft, v);
     const right = lerp(geometry.topRight, geometry.bottomRight, v);
     return { x: lerp(left, right, u), y: lerp(geometry.top, geometry.bottom, v) };
+  }
+
+  function coveragePoint(geometry, emitter, u, v) {
+    const coverage = COVERAGE[emitter];
+    return planePoint(
+      geometry,
+      lerp(coverage.u0, coverage.u1, u),
+      lerp(coverage.v0, coverage.v1, v),
+    );
+  }
+
+  function coverageCorners(geometry, emitter) {
+    const coverage = COVERAGE[emitter];
+    return [
+      planePoint(geometry, coverage.u0, coverage.v0),
+      planePoint(geometry, coverage.u1, coverage.v0),
+      planePoint(geometry, coverage.u1, coverage.v1),
+      planePoint(geometry, coverage.u0, coverage.v1),
+    ];
   }
 
   class LightField {
@@ -212,10 +240,16 @@
 
       for (let index = 0; index < count; index += 1) {
         const pick = random();
-        const kind = pick < 0.44 ? 'beam' : pick < 0.92 ? 'plane' : 'orbit';
+        const kind = pick < 0.56 ? 'beam' : pick < 0.94 ? 'plane' : 'orbit';
         const emitter = Math.floor(random() * 4);
+        const u = fract(0.5 + index * 0.754877666 + (random() - 0.5) * 0.012);
+        const v = fract(0.5 + index * 0.569840296 + (random() - 0.5) * 0.012);
         let paletteIndex = emitter;
-        if (kind === 'plane') paletteIndex = random() < 0.18 ? 4 : Math.floor(random() * 4);
+        if (kind === 'plane') {
+          paletteIndex = v < 0.5 ? (u < 0.5 ? 0 : 1) : (u < 0.5 ? 2 : 3);
+          const inBlend = Math.abs(u - 0.5) < 0.115 || Math.abs(v - 0.5) < 0.115;
+          if (inBlend && random() < 0.24) paletteIndex = 4;
+        }
         if (kind === 'orbit' && random() < 0.28) paletteIndex = 4;
 
         particles.push({
@@ -223,8 +257,8 @@
           emitter,
           palette: PALETTES[paletteIndex],
           t: Math.pow(random(), 0.88),
-          u: fract(0.5 + index * 0.754877666 + (random() - 0.5) * 0.012),
-          v: fract(0.5 + index * 0.569840296 + (random() - 0.5) * 0.012),
+          u,
+          v,
           jitter: (random() - 0.5) * 2,
           orbitAngle: random() * Math.PI * 2,
           orbitRadius: 8 + random() * 38,
@@ -236,8 +270,8 @@
           size: 0.8 + Math.pow(random(), 1.65) * 2.8,
           alpha: 0.5 + random() * 0.46,
           phase: random() * Math.PI * 2,
-          sparkle: random() < 0.085,
-          trail: random() < 0.16,
+          sparkle: random() < 0.1,
+          trail: random() < 0.21,
         });
       }
 
@@ -262,14 +296,17 @@
         };
       }
 
-      const destination = geometry.corners[particle.emitter];
+      // A beam particle chooses a point inside its projector's image area.
+      // Interpolating from one lens point to that target makes the cloud widen
+      // naturally instead of reading as a decorative line to one corner.
+      const destination = coveragePoint(geometry, particle.emitter, particle.u, particle.v);
       const dx = destination.x - node.x;
       const dy = destination.y - node.y;
       const length = Math.max(1, Math.hypot(dx, dy));
-      const spread = particle.jitter * (3 + Math.sin(particle.t * Math.PI) * 12);
+      const spread = particle.jitter * (1.5 + particle.t * 5.5);
       return {
-        x: lerp(node.x, destination.x, particle.t) + (-dy / length) * spread,
-        y: lerp(node.y, destination.y, particle.t) + (dx / length) * spread,
+        x: lerp(node.x, destination.x, particle.t) + (-dy / length) * spread * particle.t,
+        y: lerp(node.y, destination.y, particle.t) + (dx / length) * spread * particle.t,
       };
     }
 
@@ -298,6 +335,16 @@
       context.closePath();
     }
 
+    traceCoverage(geometry, emitter) {
+      const context = this.context;
+      const corners = coverageCorners(geometry, emitter);
+      context.beginPath();
+      context.moveTo(corners[0].x, corners[0].y);
+      corners.slice(1).forEach((corner) => context.lineTo(corner.x, corner.y));
+      context.closePath();
+      return corners;
+    }
+
     drawPlane(geometry, progress) {
       const context = this.context;
       const visibility = 1 - smoothstep(0.08, 0.66, progress);
@@ -311,6 +358,30 @@
       context.lineWidth = 1;
       context.stroke();
       context.clip();
+
+      geometry.nodes.forEach((_, emitter) => {
+        const palette = PALETTES[emitter];
+        const center = coveragePoint(geometry, emitter, 0.5, 0.5);
+        const wash = context.createRadialGradient(
+          center.x,
+          center.y,
+          0,
+          center.x,
+          center.y,
+          geometry.planeWidth * 0.34,
+        );
+        wash.addColorStop(0, `rgba(${palette.glow}, ${0.13 * visibility})`);
+        wash.addColorStop(0.58, `rgba(${palette.glow}, ${0.062 * visibility})`);
+        wash.addColorStop(1, `rgba(${palette.glow}, ${0.012 * visibility})`);
+        this.traceCoverage(geometry, emitter);
+        context.fillStyle = wash;
+        context.fill();
+        context.setLineDash([4, 7]);
+        context.strokeStyle = `rgba(${palette.glow}, ${0.2 * visibility})`;
+        context.lineWidth = 0.7;
+        context.stroke();
+      });
+      context.setLineDash([]);
 
       for (let row = 1; row < 8; row += 1) {
         const v = row / 8;
@@ -338,33 +409,58 @@
       context.restore();
     }
 
-    drawBeams(geometry, progress) {
+    drawProjectionFans(geometry, progress) {
       const context = this.context;
       const visibility = 1 - smoothstep(0.05, 0.58, progress);
       if (visibility <= 0.002) return;
 
       geometry.nodes.forEach((node, index) => {
-        const destination = geometry.corners[index];
         const palette = PALETTES[index];
-        const gradient = context.createLinearGradient(node.x, node.y, destination.x, destination.y);
-        gradient.addColorStop(0, `rgba(${palette.glow}, ${0.45 * visibility})`);
-        gradient.addColorStop(0.55, `rgba(${palette.glow}, ${0.12 * visibility})`);
-        gradient.addColorStop(1, `rgba(${palette.glow}, ${0.035 * visibility})`);
+        const corners = coverageCorners(geometry, index);
+        const center = coveragePoint(geometry, index, 0.5, 0.5);
+        const angled = corners
+          .map((corner) => ({ corner, angle: Math.atan2(corner.y - node.y, corner.x - node.x) }))
+          .sort((a, b) => a.angle - b.angle);
+        const edgeA = angled[0].corner;
+        const edgeB = angled[angled.length - 1].corner;
+        const gradient = context.createLinearGradient(node.x, node.y, center.x, center.y);
+        gradient.addColorStop(0, `rgba(${palette.glow}, ${0.2 * visibility})`);
+        gradient.addColorStop(0.2, `rgba(${palette.glow}, ${0.11 * visibility})`);
+        gradient.addColorStop(0.74, `rgba(${palette.glow}, ${0.043 * visibility})`);
+        gradient.addColorStop(1, `rgba(${palette.glow}, ${0.018 * visibility})`);
 
         context.save();
-        context.strokeStyle = gradient;
-        context.lineCap = 'round';
-        context.lineWidth = 15;
-        context.globalAlpha = 0.11;
         context.beginPath();
         context.moveTo(node.x, node.y);
-        context.lineTo(destination.x, destination.y);
-        context.stroke();
-        context.lineWidth = 2;
-        context.globalAlpha = 0.72;
-        context.stroke();
-        context.lineWidth = 0.7;
-        context.globalAlpha = 1;
+        context.lineTo(edgeA.x, edgeA.y);
+        context.lineTo(edgeB.x, edgeB.y);
+        context.closePath();
+        context.fillStyle = gradient;
+        context.fill();
+
+        context.strokeStyle = `rgba(${palette.glow}, ${0.36 * visibility})`;
+        context.lineWidth = 1;
+        context.lineCap = 'round';
+        [edgeA, edgeB].forEach((edge) => {
+          context.beginPath();
+          context.moveTo(node.x, node.y);
+          context.lineTo(edge.x, edge.y);
+          context.stroke();
+        });
+
+        context.strokeStyle = `rgba(${palette.glow}, ${0.115 * visibility})`;
+        context.lineWidth = 0.65;
+        corners.forEach((corner) => {
+          context.beginPath();
+          context.moveTo(node.x, node.y);
+          context.lineTo(corner.x, corner.y);
+          context.stroke();
+        });
+        context.strokeStyle = `rgba(${palette.glow}, ${0.24 * visibility})`;
+        context.lineWidth = 1.1;
+        context.beginPath();
+        context.moveTo(node.x, node.y);
+        context.lineTo(center.x, center.y);
         context.stroke();
         context.restore();
       });
@@ -471,7 +567,7 @@
       this.context.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
       this.context.clearRect(0, 0, this.width, this.height);
       const geometry = layout(this.width, this.height);
-      this.drawBeams(geometry, this.renderProgress);
+      this.drawProjectionFans(geometry, this.renderProgress);
       this.drawPlane(geometry, this.renderProgress);
       this.drawParticles(geometry, this.renderProgress, timestamp);
       this.drawNodes(geometry, this.renderProgress, timestamp);

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Measurement | FieldLux</title>
-  <meta name="description" content="Read estimated surface lux, pixel density, luminance, and 13-point distribution on the venue model, with the planning basis kept visible.">
+  <meta name="description" content="Check estimated surface lux, pixel density, luminance, and 13-point distribution on the venue model, with the assumptions behind each estimate shown.">
   <link rel="canonical" href="https://field-lux.com/measurement">
   <meta name="robots" content="index, follow, max-image-preview:large">
 
@@ -20,7 +20,7 @@
   <meta property="og:image:alt" content="FieldLux projection planning workspace">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="FieldLux measurement: read the light on the surface">
-  <meta name="twitter:description" content="Compare light and image scale on the venue model, with the estimate basis shown.">
+  <meta name="twitter:description" content="Compare light and image scale on the venue model, with the assumptions behind each estimate shown.">
   <meta name="twitter:image" content="https://field-lux.com/assets/og-card.png">
 
   <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
@@ -68,7 +68,7 @@
       <div class="v3-container">
         <div>
           <p class="v3-kicker">MEASUREMENT</p>
-          <h1 class="v3-display" id="measurement-title">READ THE LIGHT.<br>ON THE SURFACE.</h1>
+          <h1 class="v3-display" id="measurement-title">MEASURE THE LIGHT<br>ON THE SURFACE.</h1>
           <p class="v3-lead">FieldLux estimates <strong>surface lux, pixel density, and luminance</strong> from projector optics, scene geometry, overlap, materials, and ambient settings.</p>
           <div class="v3-actions">
             <a class="v3-button v3-button--primary" href="https://app.field-lux.com" data-app-link>Start free</a>
@@ -87,25 +87,25 @@
       <div class="v3-container">
         <p class="v3-kicker">WHAT YOU CAN READ</p>
         <h2 class="v3-display" id="measurement-values-title">THREE VALUES. THREE DIFFERENT QUESTIONS.</h2>
-        <p class="v3-lead">Choose the value that fits the decision. <strong>Lux, image scale, and surface brightness are not interchangeable.</strong></p>
+        <p class="v3-lead">Choose the value that answers your question. <strong>Lux, image scale, and surface brightness are not interchangeable.</strong></p>
 
         <div class="v3-grid">
           <article class="v3-card">
             <p class="v3-kicker">SURFACE LUX</p>
             <h3>How much light lands here?</h3>
-            <p>Read estimated illuminance in lx, with <strong>contributing projectors combined at the sampled point.</strong></p>
+            <p>Read estimated illuminance in lx, <strong>combining every projector that reaches the sampled point.</strong></p>
           </article>
 
           <article class="v3-card">
             <p class="v3-kicker">PIXEL DENSITY</p>
             <h3>How large is each pixel?</h3>
-            <p>Read image scale on the target in mm/px, so <strong>resolution is tied to the real surface.</strong></p>
+            <p>Read image scale on the target in mm/px, so <strong>resolution stays tied to the physical surface size.</strong></p>
           </article>
 
           <article class="v3-card">
             <p class="v3-kicker">LUMINANCE</p>
             <h3>How bright does the surface appear?</h3>
-            <p>Read estimated surface brightness in cd/m<sup>2</sup>, with <strong>the selected material kept in the calculation.</strong></p>
+            <p>Read estimated surface brightness in cd/m<sup>2</sup>, <strong>including the selected surface material.</strong></p>
           </article>
         </div>
       </div>
@@ -115,7 +115,7 @@
       <div class="v3-container">
         <p class="v3-kicker">LUX HEATMAP</p>
         <h2 class="v3-display" id="measurement-modes-title">THREE VIEWS OF THE SAME PLAN.</h2>
-        <p class="v3-lead">Switch between Absolute, Norm, and Deviation without changing the scene. <strong>Only the question changes.</strong></p>
+        <p class="v3-lead">Use the same scene to compare <strong>values, reference ratios, and percentage deviation.</strong></p>
 
         <div class="v3-grid">
           <figure class="v3-card v3-media">
@@ -149,8 +149,8 @@
       <div class="v3-container">
         <div>
           <p class="v3-kicker">13PT DIAGNOSTIC</p>
-          <h2 class="v3-display" id="diagnostic-title">READ THE DISTRIBUTION, NOT JUST THE CENTRE.</h2>
-          <p class="v3-lead">Nine ANSI points and four quarter-points are drawn on the target. <strong>Move a projector and the diagnostic updates with the plan.</strong></p>
+          <h2 class="v3-display" id="diagnostic-title">READ THE DISTRIBUTION, NOT JUST THE CENTER.</h2>
+          <p class="v3-lead">The diagnostic samples nine ANSI points and four quarter-points on the target. <strong>Move a projector and the diagnostic updates with the plan.</strong></p>
         </div>
 
         <dl class="v3-proof" aria-label="Diagnostic summary">
@@ -173,20 +173,20 @@
     <section class="v3-section v3-section--accent" aria-labelledby="assumptions-title">
       <div class="v3-container">
         <p class="v3-kicker">WHAT THE NUMBERS MEAN</p>
-        <h2 class="v3-display" id="assumptions-title">A PLANNING ESTIMATE, WITH ITS BASIS SHOWN.</h2>
+        <h2 class="v3-display" id="assumptions-title">SEE WHAT THE ESTIMATE USES.</h2>
         <p class="v3-lead">FieldLux calculates from published projector and lens data plus the geometry and settings in your scene. <strong>It is an optics-based planning estimate, not a lux-meter reading.</strong></p>
 
         <div class="v3-grid">
           <article class="v3-card">
             <p class="v3-kicker">INPUTS</p>
-            <h3>The scene drives the result</h3>
-            <p>Projector output, lens range, throw, surface, overlap, and scene settings are part of <strong>the answer you see.</strong></p>
+            <h3>Geometry and settings affect the result</h3>
+            <p>Projector output, lens range, throw, surface, overlap, and scene settings <strong>calculate the displayed result.</strong></p>
           </article>
 
           <article class="v3-card">
             <p class="v3-kicker">BASIS</p>
-            <h3>The interface names the model</h3>
-            <p>LUX HEATMAP keeps its Physics Model and estimate labels beside the result, so <strong>the basis stays visible.</strong></p>
+            <h3>The calculation model stays visible</h3>
+            <p>LUX HEATMAP shows the Physics Model and estimate labels <strong>beside every result.</strong></p>
           </article>
 
           <article class="v3-card">

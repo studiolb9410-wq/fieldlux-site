@@ -118,7 +118,7 @@
       button.tabIndex = active ? 0 : -1;
     });
     document.querySelectorAll('[data-plan]').forEach((card) => {
-      const value = card.dataset[`${period}Price`] || '—';
+      const value = card.dataset[`${period}Price`] || 'Not available';
       const unit = card.dataset[`${period}Unit`] || '';
       const billing = card.dataset[`${period}Billing`] || '';
       const price = card.querySelector('[data-plan-price]');
@@ -127,7 +127,7 @@
       if (price) price.textContent = value;
       if (priceUnit) priceUnit.textContent = unit;
       if (bill) bill.textContent = billing;
-      card.classList.toggle('is-unavailable', value === '—');
+      card.classList.toggle('is-unavailable', value === 'Monthly only' || value === 'Not available');
     });
     if (periodNote) periodNote.innerHTML = periodNotes[period];
   };
