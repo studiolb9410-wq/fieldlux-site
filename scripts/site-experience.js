@@ -127,7 +127,7 @@
       if (price) price.textContent = value;
       if (priceUnit) priceUnit.textContent = unit;
       if (bill) bill.textContent = billing;
-      card.classList.toggle('is-unavailable', value === 'Monthly only' || value === 'Not available');
+      card.classList.toggle('is-unavailable', value === 'Monthly only' || value === 'Not available' || value === 'No weekly pass');
     });
     if (periodNote) periodNote.innerHTML = periodNotes[period];
   };

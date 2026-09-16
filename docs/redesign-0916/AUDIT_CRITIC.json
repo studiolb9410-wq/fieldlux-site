@@ -1,0 +1,629 @@
+{
+ "missingFromSite": [
+  {
+   "feature": "Lighting lane: fixture library (Moving Head Spot ... Strobe), My Fixtures, Lighting Panel, GDTF/MVR import, IES/LDT photometric import, Looks (cues), Fixture schedule CSV",
+   "whyItMatters": "Prod ON since 2026-09-05 (Lighting menu, Light Settings panel). A buyer comparing FieldLux with Depence/Capture/Vectorworks Vision will not learn from product.html or index.html that FieldLux places lighting fixtures at all; the only trace is four feature bullets on the Pro pricing card. product.html H1 promises 'one workspace from venue to handoff' and never says the word lighting.",
+   "evidence": "grep -il lighting index.html product.html measurement.html videos.html 404.html = no hits; 'fixture' and 'isolux' appear only in pricing.html:106-116. App: TopBar.jsx:1310 Lighting menu, LightingTab.jsx (Quick Type / Catalog / Library / GDTF / MVR / Manual sources), inventory (3) 'Lighting menu' prodAvailable true."
+  },
+  {
+   "feature": "Fog Machine and Volumetric Beams (visible light shafts through haze, wind/gust/ventilation dials)",
+   "whyItMatters": "Volumetric beams are a headline visual for show-design buyers and are ON in prod (betaFeatures volumetricBeams, Appearance > Volumetric Beams). Product and home pages never mention fog, haze or beams through atmosphere; pricing.html:113 has a single bullet 'Fog and beam visualization'.",
+   "evidence": "grep -il 'fog\\|haze\\|volumetric' site pages: only pricing.html matches 'fog'. App inventory (3): 'Fog Machine and Volumetric Beams' prodAvailable true."
+  },
+  {
+   "feature": "CAD floor-plan import formats (DWG/DXF as linework, PDF/PNG/JPG placed at scale) plus New Sketch, Edit Linework, Raise walls (W), Make face, Flip Normals",
+   "whyItMatters": "The drawing-modelling lane is ON in prod and is the answer to 'I only have the venue drawing'. The site says 'Import a 3D model or floor plan' (index.html:139, product.html:111) with no format, no mention that a DWG becomes walls that block light, and no mention of sketching a room from scratch. Buyers with a CAD plan and no 3D model will assume they are out of scope.",
+   "evidence": "grep -il 'DWG\\|DXF\\|sketch\\|linework' index/product/measurement/pricing/videos = no hits. App: TopBar.jsx:1070 hint '.dwg .pdf .png .jpg', TopBar.jsx:1217 Import CAD Drawing '.dwg', TopBar.jsx:1242 New Sketch; inventory (3) items all prodAvailable true."
+  },
+  {
+   "feature": "Supported 3D model formats (OBJ, FBX, GLB, glTF, DAE, STL, PLY) with source-unit detection and Y-up/Z-up orientation fix",
+   "whyItMatters": "Every projection designer's first question is 'will my SketchUp/Rhino/Blender export load'. The site never lists a single format.",
+   "evidence": "grep -i 'OBJ\\|FBX\\|GLB\\|glTF\\|STL' site pages = none. Inventory (3) 'Import 3D Model (OBJ / FBX / GLB / glTF / DAE / STL / PLY)' prodAvailable true; TopBar hint '.fbx .glb .obj'."
+  },
+  {
+   "feature": "Official manufacturer calculator cross-check: Panasonic TDC and Epson PTDS combos (642 combos in officialCalculatorSpecs.json) surface as 'Center Illuminance' in the Inspector; Christie heads compute through FieldLux's own server calculator",
+   "whyItMatters": "This is the strongest credibility proof FieldLux has for AV engineers (the number matches the vendor calculator they already trust), and it also tells a buyer the Christie figures rest on a different basis. measurement.html:177 says only 'published projector and lens data'.",
+   "evidence": "grep -i 'official calculator\\|TDC\\|PTDS\\|Center Illuminance' site pages = none. App: inventory (3) 'Official calculator readouts' prodAvailable true; src/data/officialCalculatorSpecs.json; Christie via api/christie-projection."
+  },
+  {
+   "feature": "Warp & Blend Studio (corner-pin, mesh warp, masks, per-head soft edge, calibration patterns) and Output Setup (regions from beams, output assignment)",
+   "whyItMatters": "These are the features a projection-mapping buyer expects from 'Play Dock' and they are ON in prod with no flag. The site reduces Play Dock to 'place images or video on a surface and preview playback' (product.html:129) and pricing to 'correction and blend preview' (pricing.html:93). Nobody reading the site learns FieldLux can corner-pin, mesh-warp or mask a head.",
+   "evidence": "grep -i 'warp\\|corner-pin\\|mask\\|Output Setup\\|calibration' site pages = none. Inventory (3) 'Warp & Blend Studio' and 'Output Setup (Quick Wrap)' prodAvailable true."
+  },
+  {
+   "feature": "Edge blending controls in the Inspector (per-edge overlap %, curve, Auto-Blend detection) and blend groups",
+   "whyItMatters": "Multi-projector overlap is the hero's entire premise ('every overlap in view', index.html:82) yet the site never says the app has edge blend settings, auto-detected seams or blend groups. The only phrase is 'blend preview' inside a pricing bullet.",
+   "evidence": "grep -i 'edge blend\\|blend group' site pages = none. Inventory (3) 'Edge blending (Inspector)' and 'Blend groups' prodAvailable true."
+  },
+  {
+   "feature": "Media Library (upload images/video, 1 GB per account), built-in test loops, transport bar with playlists and loop modes",
+   "whyItMatters": "Content-preview buyers need to know they can upload their own video; the site says 'place images or video' but never says there is a library, a size limit, or playlist playback.",
+   "evidence": "grep -i 'media library\\|playlist\\|upload' site pages = none. Inventory (3) 'Media Library modal' (1 GB quota) and 'Transport bar and playlists' prodAvailable true."
+  },
+  {
+   "feature": "LED Wall object (cabinet-tiled, effective nits, weight and power readouts, risk badges)",
+   "whyItMatters": "Hybrid projection + LED shows are common; the app models LED walls with brightness, weight and power, and the site never mentions LED once.",
+   "evidence": "grep -i 'LED wall' site pages = none (the plain 'LED' hits are substrings of other words). Inventory (3) 'LED Wall (add and configure)' prodAvailable true."
+  },
+  {
+   "feature": "Quick Target primitives (Basic Room, Flat Surface, Curved Wall, Cylinder, Dome/Sphere) and Background Photo backplate",
+   "whyItMatters": "Buyers without a model can still plan on a dome or a cylinder or a site photo; the site only offers 'import a model or floor plan' and 'draw the room'. The Background Photo workflow (photo plus physical width plus Dimmer) is part of the product vision and is unmentioned.",
+   "evidence": "grep -i 'Curved\\|Cylinder\\|Dome\\|Flat Surface\\|Basic Room\\|background photo' site pages = none. Inventory (3) entries prodAvailable true."
+  },
+  {
+   "feature": "Custom Projector Builder with 11 lens profiles and a saved 'Saved Custom Projectors' list",
+   "whyItMatters": "product.html:117 says 'or add a custom head' but not that custom heads are saved and reusable, nor that lens profiles are selectable. For Barco/Sony/NEC users this is the workaround the site sends them to.",
+   "evidence": "grep -i 'custom projector\\|saved' site pages = none. Inventory (3) 'Custom Projector Builder' and 'Saved Custom Projectors' prodAvailable true."
+  },
+  {
+   "feature": "Cloud Share details: QR code, expiry with Extend, optional password (bcrypt), Share Management list, FieldLux Account Share by email, URL Share without a server",
+   "whyItMatters": "The site says 'Create a review link, then revoke it' (index.html:193). It never mentions the QR code, password protection, expiry, or that a colleague with a FieldLux account can be granted read-only project access by email. Password and expiry appear only in privacy.html in passing.",
+   "evidence": "grep -i 'QR\\|expire\\|Account Share\\|Share Management' index/product/pricing/videos = none. Inventory (3) 'Cloud Share', 'Share Management', 'FieldLux Account Share', 'URL Share' prodAvailable true."
+  },
+  {
+   "feature": "Cloud save, Auto Save interval (1 to 30 min), Version history with Restore, local draft recovery",
+   "whyItMatters": "A buyer moving from a spreadsheet wants to know work is saved and versioned. Nothing on the site says projects are cloud-saved, autosaved or versioned.",
+   "evidence": "grep -i 'version history\\|auto save\\|autosave' site pages = none. Inventory (3) 'Cloud save', 'Auto Save interval', 'Version history and restore' prodAvailable true."
+  },
+  {
+   "feature": "Materials window (presets, reflectance, screen gain, transmission) and the Luminance ramp that scales with reflectance x gain / pi",
+   "whyItMatters": "measurement.html:108 says luminance includes 'the selected surface material' but never says materials are editable with reflectance and gain, which is what makes the cd/m2 number defensible.",
+   "evidence": "grep -i 'reflectance\\|screen gain\\|material' site pages: only two passing mentions in measurement.html:72,108. Inventory (3) 'Material window' prodAvailable true."
+  },
+  {
+   "feature": "Ambient light presets and projection-to-ambient contrast ratio (CR n:1 chip, viability verdict from Optimal to Not viable)",
+   "whyItMatters": "'Will it read under house lights' is the question every venue asks; the app answers it with a CR chip and a verdict. The site instead misuses ambient as an input to lux (measurement.html:72) and never mentions the contrast readout.",
+   "evidence": "grep -i 'contrast' site pages = none. Inventory (3) 'Ambient light and Physical Preview defaults' and Appearance menu CR readout prodAvailable true."
+  },
+  {
+   "feature": "Hover probe tooltip (Surface lux and mm/px under the cursor) and Lens View (camera on the projector's optical axis)",
+   "whyItMatters": "The probe is the only feature with a video but the measurement and product pages never mention it; Lens View is not mentioned anywhere though it appears as a button in three site screenshots.",
+   "evidence": "grep -i 'lens view' site pages = none; 'probe' appears only in videos.html. Inventory (3) 'Hover probe tooltip' and 'Lens View / Scene View' prodAvailable true."
+  },
+  {
+   "feature": "Composite versus per-projector distribution selector and the Measurement target picker (room walls including ceiling, surfaces, photos, models)",
+   "whyItMatters": "Engineers need to read one head's contribution and choose which wall is measured. Both are prod features and neither is on the site.",
+   "evidence": "grep -i 'measurement target\\|composite' site pages = none. Inventory (3) 'Measurement target picker' and 'Legend details ... Distribution selector' prodAvailable true."
+  },
+  {
+   "feature": "Placement Tool live array (source drives clones, Bake Live), coordinate table, and multi-projector match axes dock",
+   "whyItMatters": "product.html:123 mentions 'linear, circular, or mirrored arrays' but not that arrays stay live, export a coordinate table, or that projectors can be aligned to each other. These are rigging-time savers a buyer would pay for.",
+   "evidence": "grep -i 'live array\\|coordinate\\|match' site pages = none. Inventory (3) 'Live projector array' and 'Multi-projector match axes dock' prodAvailable true."
+  },
+  {
+   "feature": "Sample projects on the Projects home ('Open FieldLux Test Scene', 'Open Play Dock Demo')",
+   "whyItMatters": "Lowers the trial barrier: a visitor can see a working four-projector scene without importing anything. The site never says a sample scene exists.",
+   "evidence": "grep -i 'sample\\|test scene\\|demo' site pages: only the hero '3D demo' in 404/privacy and 'samples nine ANSI points'. Inventory (3) both sample tiles prodAvailable true."
+  },
+  {
+   "feature": "Open beta model storage limit (2 GB per account, meter on the Projects home) and media storage limit (1 GB)",
+   "whyItMatters": "A real limit the user hits; the site claims 'all features available' with no quota disclosure.",
+   "evidence": "grep -i '2 GB\\|quota\\|storage limit' index/product/pricing = none. Inventory (3) 'Open beta model storage meter' prodAvailable true; MEDIA_STORAGE_QUOTA_BYTES 1 GB."
+  },
+  {
+   "feature": "Walk mode (first-person navigation, G), display units mm/m/ft, command palette (Ctrl+K), keyboard shortcut sheet (F1)",
+   "whyItMatters": "Secondary, but 'walk the room' is a client-presentation feature and unit switching matters for US buyers; none are mentioned.",
+   "evidence": "grep -i 'walk mode\\|shortcut\\|command palette' site pages = none (videos.html 'walk' is 'walkthrough'). Inventory (3) all prodAvailable true."
+  },
+  {
+   "feature": "Self-serve account deletion in Account settings (7-day grace, cancellable)",
+   "whyItMatters": "privacy.html:320 says 'One route and one address' (email), hiding an in-app control that already exists; users looking for a delete button are told there is none.",
+   "evidence": "privacy.html:320-326; inventory (3) 'Account: sign in, sign out, account settings' lists the account-deletion panel, delete-account edge function prodAvailable true."
+  }
+ ],
+ "overclaims": [
+  {
+   "claimId": "home-63",
+   "page": "index.html:205",
+   "text": "All features are available today.",
+   "reality": "The production web build greys out File > Report Builder... with the app's own hint 'Temporarily disabled in the open beta.' (TopBar.jsx:1083); static share snapshots are prod OFF; Spout/Syphon/NDI Realtime Output exists only in the desktop Tauri runtime; projectionZoneUI and pmremEnvironment are hard false; model storage is capped at 2 GB per account.",
+   "fix": "Full access is free during open beta. A few tools, such as the client proposal Report Builder, are marked temporarily disabled while they finish. Imported model storage is limited to 2 GB per account."
+  },
+  {
+   "claimId": "product-84",
+   "page": "product.html:183",
+   "text": "EVERY FEATURE IS OPEN TODAY.",
+   "reality": "Same gate table as home-63: Report Builder disabled in prod, static snapshot share off, Realtime Output desktop-only. The app tells users a feature is disabled, so the site's absolute is contradicted inside the product.",
+   "fix": "FULL ACCESS IS FREE TODAY."
+  },
+  {
+   "claimId": "pricing-16",
+   "page": "pricing.html:52",
+   "text": "Every feature is available today.",
+   "reality": "Report Builder row is visible but disabled in prod; shareStaticSnapshot OFF; Realtime Output absent on web; 2 GB model quota.",
+   "fix": "Full access during open beta, with a few features such as Report Builder still marked temporarily disabled."
+  },
+  {
+   "claimId": "pricing-19",
+   "page": "pricing.html:53",
+   "text": "Open beta · full access",
+   "reality": "No paywall is true; 'full access' is contradicted by the disabled Report Builder row every prod user can see.",
+   "fix": "Open beta · no paywall"
+  },
+  {
+   "claimId": "pricing-83",
+   "page": "pricing.html:162",
+   "text": "Open beta includes every current feature, including fixtures, fog and Play Dock.",
+   "reality": "Fixtures, fog and Play Dock are live; Report Builder is not (prod OFF unless localStorage opt-in), Realtime Output is desktop-only.",
+   "fix": "Yes. Open beta includes the full current toolset, including fixtures, fog and Play Dock. Report Builder is temporarily disabled during the open beta. No payment method is required."
+  },
+  {
+   "claimId": "pricing-95",
+   "page": "pricing.html:184",
+   "text": "Use the full product on a real project while beta is free.",
+   "reality": "Report Builder OFF, static snapshot OFF, 2 GB storage cap with new-project creation blocked when full (ProjectHome.jsx:217-218).",
+   "fix": "Use the product on a real project while beta is free. Imported model storage is limited to 2 GB per account during beta."
+  },
+  {
+   "claimId": "videos-43",
+   "page": "videos.html:94",
+   "text": "Try the full product now.",
+   "reality": "Same gate table: Report Builder disabled, static snapshot off, Realtime Output desktop-only.",
+   "fix": "Try the product now."
+  },
+  {
+   "claimId": "videos-44",
+   "page": "videos.html:95",
+   "text": "Every current feature is available during beta.",
+   "reality": "Report Builder is disabled in the beta by the app's own hint; 2 GB model storage cap labelled 'Important open beta limit'.",
+   "fix": "Every core planning feature is free during the open beta. Model storage is limited to 2 GB per account."
+  },
+  {
+   "claimId": "home-51",
+   "page": "index.html:162",
+   "text": "Its assumptions stay visible beside the result.",
+   "reality": "What is beside the heatmap in prod is an accuracy chip (Physics Model / Spec-based / Calibrated) whose input list appears only on hover, plus a collapsed details block. The itemised 'Assumptions & Limitations' page lives only in the Report Builder PDF, which is OFF in prod; the Tech Rider PDF skips it.",
+   "fix": "Its calculation basis is labelled right beside the result."
+  },
+  {
+   "claimId": "measurement-06",
+   "page": "measurement.html:8",
+   "text": "with the assumptions behind each estimate shown",
+   "reality": "One global accuracy chip and a 'Physics estimate' badge per panel, not a per-estimate assumption list; the itemised list is Report Builder only (prod OFF).",
+   "fix": "Check estimated surface lux, pixel density, luminance, and 13-point distribution on the venue model, with the basis of each estimate labelled (physics model, spec-based, or calibrated)."
+  },
+  {
+   "claimId": "measurement-12",
+   "page": "measurement.html:23",
+   "text": "Compare light and image scale on the venue model, with the assumptions behind each estimate shown",
+   "reality": "No in-app panel lists assumptions per estimate; the legend shows a Physics estimate badge, the 13pt Diagnostic probe-set label and the luminance basis.",
+   "fix": "Compare light and image scale on the venue model. Every readout is labelled as a physics estimate, not a field measurement."
+  },
+  {
+   "claimId": "measurement-78",
+   "page": "measurement.html:189",
+   "text": "LUX HEATMAP shows the Physics Model and estimate labels beside every result.",
+   "reality": "The panel is titled 'Heatmap' (HeatmapLegend.jsx:613) with a 'Surface Lux' chip; the 'Physics Model' chip sits once in the header (:633) and the 'Physics estimate' badge (:869) is inside the collapsed details block. Probe values, Inspector readouts and viewport labels carry no per-value estimate tag.",
+   "fix": "The Heatmap panel shows its calculation basis, such as Physics Model, in the panel header and marks results as a physics estimate."
+  },
+  {
+   "claimId": "measurement-29",
+   "page": "measurement.html:72",
+   "text": "FieldLux estimates surface lux, pixel density, and luminance from projector optics, scene geometry, overlap, materials, and ambient settings.",
+   "reality": "Ambient lux never enters the three numbers; it only produces the CR contrast chip and washes out the physical preview render. Surface lux, pixel density and luminance are computed from optics, geometry, overlap and material only.",
+   "fix": "FieldLux estimates surface lux, pixel density, and luminance from projector optics, scene geometry, overlap, and materials, and reports projection-to-ambient contrast from your ambient light setting."
+  },
+  {
+   "claimId": "measurement-21",
+   "page": "measurement.html:71",
+   "text": "MEASURE THE LIGHT ON THE SURFACE.",
+   "reality": "The app labels its output 'Physics estimate' and the page itself says at :177 it is 'not a lux-meter reading'; nothing is sampled from a sensor. The app's only 'Measure' tool is a distance ruler.",
+   "fix": "ESTIMATE THE LIGHT ON THE SURFACE."
+  },
+  {
+   "claimId": "measurement-82",
+   "page": "measurement.html:200",
+   "text": "Measure a scene",
+   "reality": "Same as measurement-21: the app estimates lux; 'Measure' in-app is the ruler pill.",
+   "fix": "Estimate a scene"
+  },
+  {
+   "claimId": "measurement-33",
+   "page": "measurement.html:81",
+   "text": "Open LUX HEATMAP, choose Values, and read the 13-point Diagnostic on the target.",
+   "reality": "No prod control is labelled 'LUX HEATMAP' (grep of src/components finds it only in TopBar.jsx comments :396,:399). Entry points are View > 'Heatmap Overlay' (TopBar.jsx:1170), the viewport 'Heatmap' pill and the 'Heatmap' legend header; the probe label is '13pt Diagnostic' (HeatmapLegend.jsx:900).",
+   "fix": "Turn on the Heatmap overlay, choose Values, and read the 13pt Diagnostic on the target."
+  },
+  {
+   "claimId": "measurement-49",
+   "page": "measurement.html:116",
+   "text": "LUX HEATMAP (kicker)",
+   "reality": "Panel header is 'Heatmap' plus a 'Surface Lux' chip since 2026-05-24 (8d736ed3).",
+   "fix": "HEATMAP"
+  },
+  {
+   "claimId": "home-27",
+   "page": "index.html:103,107 (hero, locked)",
+   "text": "absolute Surface Lux when Lux Heatmap is enabled / then open Lux Heatmap to read the facade",
+   "reality": "Inside the hero embed the button literal is uppercase 'LUX HEATMAP' (site embed bundle); in the deployed app there is no 'Lux Heatmap' control at all, only 'Heatmap Overlay' and 'Heatmap'. Recorded for the owner, not proposed as an edit.",
+   "fix": "absolute Surface Lux when the LUX HEATMAP button is on (hero locked; record only)"
+  },
+  {
+   "claimId": "home-44",
+   "page": "index.html:144",
+   "text": "build linear, circular or mirrored placements",
+   "reality": "The third Placement Tool mode is labelled 'Symmetry' (ProjectorPlacementTool.jsx:111); only the sub-field 'Mirror axis' (:1557) and the menu hint 'Array · circular · mirror' use 'mirror'.",
+   "fix": "Choose Epson, Panasonic or Christie optics, then build linear, circular or symmetry (mirrored) placements."
+  },
+  {
+   "claimId": "product-43",
+   "page": "product.html:117",
+   "text": "Source references stay attached to each catalogue entry.",
+   "reality": "sourceRefs exist in the catalog JSON but nothing in the deployed UI or the Tech Rider PDF renders them; provenance rows were hidden by owner decision 2026-09-15 (ProjectorTab.jsx:660-678). A user cannot see or open a source reference.",
+   "fix": "Each catalogue entry is built from published manufacturer specifications and the official calculator where one exists."
+  },
+  {
+   "claimId": "product-50",
+   "page": "product.html:129",
+   "text": "Use the Mapping Stage to place images or video on a surface",
+   "reality": "'Mapping Stage' is an internal component name; the header a user reads in Play Dock is 'Mapping · canvas & signals' or 'Mapping · master canvas'.",
+   "fix": "Use the Mapping panel in Play Dock (labelled Mapping, canvas and signals) to place content on the surface."
+  },
+  {
+   "claimId": "product-72",
+   "page": "product.html:165",
+   "text": "No Barco, Sony or NEC heads yet",
+   "reality": "True that none are selectable (Barco disabled via DISABLED_PROJECTOR_BRANDS; Sony and NEC absent), but 'yet' implies a roadmap that exists nowhere in the app or data.",
+   "fix": "No Barco, Sony or NEC heads are in the library today: add one as a custom head from its spec sheet, or post the sheet on Discord."
+  },
+  {
+   "claimId": "product-22",
+   "page": "product.html:80",
+   "text": "alt: FieldLux showing four projector beams and an absolute surface-lux heatmap on a 3D building",
+   "reality": "The screenshot shows four projector bodies and the heatmap footprint but no beam frusta or cone lines.",
+   "fix": "FieldLux showing four projectors and an absolute surface-lux heatmap on a 3D building"
+  },
+  {
+   "claimId": "product-08 / measurement-11",
+   "page": "product.html:20, measurement.html:20",
+   "text": "og:image:alt: FieldLux projection planning workspace",
+   "reality": "og-card.png is a logo lockup on white with an empty right half; no workspace is in the image.",
+   "fix": "FieldLux logo"
+  },
+  {
+   "claimId": "pricing-44",
+   "page": "pricing.html:93",
+   "text": "Coverage, correction and blend preview",
+   "reality": "Keystone/geometry correction is not simulated in prod (Geometry Correction card hidden 2026-09-15, computeKeystoneCorrection never called). The only live correction preview is Warp & Blend inside Play Dock, which the same page assigns to Pro.",
+   "fix": "Coverage, lens shift and blend preview"
+  },
+  {
+   "claimId": "pricing-58",
+   "page": "pricing.html:115",
+   "text": "Fixture photometry and Isolux Working Plane",
+   "reality": "The app label is 'Working Plane (Isolux)' (TopBar.jsx:1381) and 'Working Plane (Illuminance)' (LightingTab.jsx:985); 'Isolux Working Plane' does not exist as a string.",
+   "fix": "Fixture photometry and Working Plane (Isolux)"
+  },
+  {
+   "claimId": "pricing-63 / sitejs-16",
+   "page": "pricing.html:123",
+   "text": "Enterprise weekly price cell 'Monthly only' beside billing line 'CHOOSE MONTHLY OR YEARLY'",
+   "reality": "The card defines a yearly price ($82/mo, :125), so 'Monthly only' is false; the intended meaning is no weekly pass.",
+   "fix": "No weekly pass. Choose monthly or yearly."
+  },
+  {
+   "claimId": "pricing-53",
+   "page": "pricing.html:108",
+   "text": "Pro chip: Most complete",
+   "reality": "The Enterprise card lists 'Everything in Pro' plus more, so Pro is not the most complete plan on the page.",
+   "fix": "Full toolset"
+  },
+  {
+   "claimId": "sitejs-08 / sitejs-10 / home-78",
+   "page": "scripts/site-experience.js:106-107, rendered at pricing.html:71",
+   "text": "A seven-day pass. One payment, no renewal. / Billed monthly. Cancel before the next billing date.",
+   "reality": "No checkout, subscription or billing code exists in src, supabase/functions or api; the app says paid plans come later. Only the yearly note is hedged with 'planned'; the monthly note is also the static default a visitor reads before JS runs.",
+   "fix": "Planned as a seven-day pass. One payment, no renewal. / Planned as a monthly plan, billed monthly. Cancellation terms will be published with the paid launch."
+  },
+  {
+   "claimId": "pricing-68 / pricing-71",
+   "page": "pricing.html:129,138",
+   "text": "Add invoicing and purchase orders. / Invoice and purchase-order workflow",
+   "reality": "Zero invoicing or purchase-order code anywhere in the app or Supabase functions; if offered it will be a manual email process, not an in-product workflow.",
+   "fix": "Invoices and purchase orders on request, handled by email."
+  },
+  {
+   "claimId": "videos-02 / videos-05 / videos-18 / 404-34",
+   "page": "videos.html:7,11,52; 404.html:154",
+   "text": "previews (plural) / Watch the previews that are ready",
+   "reality": "grep -c '<video' videos.html = 1 (hover-probe-demo.mp4). media-01-hero.mp4 and software-demo.mp4 exist in assets/media but are not referenced.",
+   "fix": "A short FieldLux product preview, with more workflow walkthroughs on the way. / For now, watch the preview that is ready."
+  },
+  {
+   "claimId": "videos-16",
+   "page": "videos.html:51",
+   "text": "Watch each workflow step.",
+   "reality": "One 16-second clip covers one step (Measurement); Build & place and Map & deliver have text cards only.",
+   "fix": "Watch the workflow, one step at a time."
+  },
+  {
+   "claimId": "videos-29 / videos-31",
+   "page": "videos.html:85-86",
+   "text": "New videos will follow the actual product workflow: venue, projection, measurement and handoff. / Venue import",
+   "reality": "'Venue' exists in the app only as ambient-light preset names; the real doors are Modeling (import), Projector, Lighting, Tools and Share. No feature is called 'Venue import'.",
+   "fix": "New videos will follow the actual product workflow: modeling, projection, measurement and sharing. / 3D model and CAD import, Projector Library and Placement Tool."
+  },
+  {
+   "claimId": "404-13",
+   "page": "404.html:45 (tooltip)",
+   "text": "Official FieldLux community: beta access, catalogue submissions and bug reports.",
+   "reality": "Beta access is not obtained through Discord; anyone can sign up at app.field-lux.com via the public-signup edge function (AuthGate: 'Open Beta. Free full access during launch.').",
+   "fix": "Official FieldLux community: announcements, catalogue requests and bug reports. Beta access is free, just sign up at app.field-lux.com."
+  },
+  {
+   "claimId": "404-18 / sitejs-02 / privacy (links clause)",
+   "page": "404.html app links, privacy.html:187",
+   "text": "They carry one parameter, siteReturnUrl, holding the address of the page you left so the app can send you back to it.",
+   "reality": "The deployed App.jsx rewrites the URL to '/' on mount before the Back to site button reads window.location.search, so the button always falls back to https://field-lux.com; no post-login redirect exists.",
+   "fix": "Every app link carries a siteReturnUrl parameter naming the page you came from; the app's Back to site button currently returns you to the field-lux.com home page."
+  },
+  {
+   "claimId": "privacy-30 / privacy-29 / pricing-28",
+   "page": "privacy.html:175",
+   "text": "Three further keys ... fieldlux_flow_app_url, fieldlux_discord_url and fieldlux_embed_src. Those four are everything the pages themselves write.",
+   "reality": "fieldlux_embed_src is no longer written or read by any page (removed with ?embedSrc= in commit 3bd3966); pricing.html writes fieldlux_pricing_period on every load. The true set is fieldlux_motion, fieldlux_pricing_period, fieldlux_flow_app_url, fieldlux_discord_url.",
+   "fix": "Two preferences are stored on your device by these pages: fieldlux_motion, written when you press Reduce motion in the footer, and fieldlux_pricing_period, written when you switch the billing period on the pricing page. Two further keys exist only so a review build can be pointed somewhere else and are written only if you open the site with the matching query parameter: fieldlux_flow_app_url and fieldlux_discord_url. Those four are everything the pages themselves write."
+  },
+  {
+   "claimId": "privacy-42",
+   "page": "privacy.html:183",
+   "text": "A review build can point the frame somewhere else with ?embedSrc=, and that address is accepted only when it resolves to this exact origin; anything else is refused and the stored value cleared.",
+   "reality": "Stale: no query-parameter handling exists; the iframe src is a fixed /embed?scene=hero (index.html:55).",
+   "fix": "The frame always loads /embed from this origin. There is no query parameter that can point it anywhere else."
+  },
+  {
+   "claimId": "privacy-52 / privacy-88",
+   "page": "privacy.html:223 and the whole THE APP section",
+   "text": "Everything below happens at app.field-lux.com, after you create an account (and no telemetry clause at all)",
+   "reality": "The deployed build (rebuild 20a60290, event beacon on) writes app_open with authenticated=false and share_view anonymous=true to fieldlux_app_events with a persistent visitor id, session id, peppered IP hash, user agent, referrer, path, screen, locale, timezone and utm fields; retention 180 days; the only opt-out is an undocumented localStorage key.",
+   "fix": "The app keeps a first-party usage record: one visit row per browser session and a short list of named events such as opening the editor, adding a projector or exporting a PDF. Each row holds a random visitor id kept in your browser, a hash of your network address rather than the address, your browser and screen type, language, time zone, the page path, the referrer and any campaign tags in the link, and your user id if you are signed in. Rows are pruned after 180 days. No third-party analytics script is loaded."
+  },
+  {
+   "claimId": "privacy-83 / privacy-89",
+   "page": "privacy.html:271",
+   "text": "Vercel for hosting.",
+   "reality": "The prod app also mounts Vercel Web Analytics and Speed Insights (PROD-gated, so deployed) and loads Geist from fonts.googleapis.com / fonts.gstatic.com on every app load; neither Google Fonts nor Vercel analytics is disclosed.",
+   "fix": "Vercel for hosting, and for Vercel Web Analytics and Speed Insights, which receive page views, referrers, device type and page performance timings from the app. The app also loads its interface font from Google Fonts, so Google receives a font request from your browser when the app opens."
+  },
+  {
+   "claimId": "privacy-59",
+   "page": "privacy.html:231",
+   "text": "You can sign in with an email code, with Google, or with a password if you choose to set one.",
+   "reality": "Email signup requires a password (8+ chars with upper, lower, digit, special) both client-side and in the public-signup edge function; only Google accounts have none.",
+   "fix": "You can sign in with an email code, with Google, or with your password. Email signup asks you to set a password; accounts created with Google do not have one."
+  },
+  {
+   "claimId": "privacy-60",
+   "page": "privacy.html:231",
+   "text": "Passwords are held on the Supabase Auth side and never reach FieldLux in a form we can read.",
+   "reality": "At signup the plaintext password is POSTed to FieldLux's own public-signup edge function, which reads and validates body.password before forwarding it to Supabase admin createUser.",
+   "fix": "Passwords are stored only by Supabase Auth, hashed. FieldLux keeps no copy. During email signup your new password passes once through our signup function on its way to Supabase Auth and is not written anywhere by us."
+  },
+  {
+   "claimId": "privacy-87 / privacy-114",
+   "page": "privacy.html:271,344",
+   "text": "we do not build a marketing mailing list out of FieldLux account data. / There is no mailing list to announce a change on",
+   "reality": "The deployed /admin console has a Send-to-all action over every account email (context bulk_members, 200 recipients per call, unsubscribe footer); the consent text covers 'product access updates'.",
+   "fix": "We can mail every member from the account list, and we use that only for account, security and product access notices; each such mail carries an unsubscribe address and we do not hand the list to anyone else. / We do not send a notice when this page changes, which is exactly why the date sits where you can see it."
+  },
+  {
+   "claimId": "privacy-100",
+   "page": "privacy.html:287",
+   "text": "Those logs are pruned daily.",
+   "reality": "The daily job (03:45 UTC) deletes signup-verification rows older than 30 days; each row lives about 30 days. Founder claim request logs have no prune cron.",
+   "fix": "Signup verification logs are kept for 30 days and then removed by a daily cleanup job."
+  },
+  {
+   "claimId": "privacy-70",
+   "page": "privacy.html:247",
+   "text": "Each attempt to resolve a link writes one row holding the link's id, the outcome, and a hash of the requesting network address rather than the address.",
+   "reality": "Rate-limited attempts write no row; the hash pepper is a constant committed to the repo, so IPv4 hashes are brute-forceable.",
+   "fix": "Each attempt to resolve a link, other than one turned away by the rate limiter, writes one row holding the link's id, the outcome, and a keyed hash of the requesting network address rather than the address itself."
+  },
+  {
+   "claimId": "privacy-107 / privacy-108",
+   "page": "privacy.html:320-326",
+   "text": "One route and one address. ... Email jay@field-lux.com ... and say which of the three you want.",
+   "reality": "Deletion has two routes: the in-app Account settings 'Schedule deletion' control (7-day grace) plus email. Correction and export are email-only.",
+   "fix": "One address. The account email is what proves the request is yours, so it is the only thing we ask you for. You can delete your account yourself from Account settings in the app, or email us for deletion, correction or export."
+  },
+  {
+   "claimId": "privacy-58 / 404-40",
+   "page": "privacy.html:231",
+   "text": "Your email address is your FieldLux ID, and it is the only value that tells one account from another.",
+   "reality": "Signup also requires a self-declared role stored in auth metadata (fieldlux_role) and fieldlux_member_profiles.role, and the consent row stores the browser user agent; neither is mentioned.",
+   "fix": "Your email address is your FieldLux ID. Signing up also asks for your role (for example Technical Director or Lighting Designer), which is stored with your account profile along with the consent record and your browser's user agent string."
+  },
+  {
+   "claimId": "privacy-19 / privacy-113",
+   "page": "privacy.html:138",
+   "text": "Last updated: September 6, 2026 / The date under the title moves when the text does.",
+   "reality": "Site behaviour changed 2026-09-07 (embedSrc removed, fieldlux_pricing_period added) without the date or the clauses moving.",
+   "fix": "Update clauses 02 and 03 as above and set the date to the day of that edit."
+  },
+  {
+   "claimId": "home-54",
+   "page": "index.html:166",
+   "text": "width=\"1363\" height=\"806\"",
+   "reality": "PNG IHDR height is 805 (product.html:80 already declares 805).",
+   "fix": "width=\"1363\" height=\"805\""
+  },
+  {
+   "claimId": "home-58",
+   "page": "index.html:186-188",
+   "text": "Card index 'FLX' / Project file",
+   "reality": "The real extension is .flx.json (File menu hint); no bare .flx file exists.",
+   "fix": "Project file (.flx.json): move an editable FieldLux plan between accounts or machines."
+  },
+  {
+   "claimId": "sitejs-07 / sitejs-06",
+   "page": "scripts/site-experience.js:90 footer toggle label 'Enable motion'",
+   "text": "Enable motion",
+   "reality": "The script writes data-motion 'full' but the CSS opt-back-in value is 'on' and the .v3-page reduced-motion floor has no escape, so for OS-reduced-motion visitors only the canvas resumes; privacy/404 write 'on'/'off' to the same key, so a choice on /privacy forces full motion on the v3 pages.",
+   "fix": "Either rename the button 'Enable light field' or have every page write and read the same fieldlux_motion values and add html[data-motion=on] to the .v3-page reduced-motion exception."
+  }
+ ],
+ "underclaims": [
+  {
+   "page": "index.html:139 and product.html:111",
+   "text": "Import a 3D model or floor plan, then work at real scale. / Import a 3D model or floor plan, draw the room",
+   "reality": "Prod imports OBJ, FBX, GLB, glTF, DAE, STL and PLY with automatic unit detection and a Y-up/Z-up fix; floor plans load as DWG/DXF linework or as PDF/PNG/JPG placed at a typed physical size; 'draw the room' is a full sketch lane (New Sketch, snapping, Raise walls with W, Make face, Flip Normals) whose walls block light and cast shadows.",
+   "fix": "Import a 3D model (OBJ, FBX, GLB, glTF, STL) or a DWG, DXF or PDF floor plan, or sketch the room from scratch and raise its walls. Everything sits at real scale."
+  },
+  {
+   "page": "product.html:117",
+   "text": "Choose an Epson, Panasonic or Christie head and a lens from its compatible list, or add a custom head.",
+   "reality": "For Epson and Panasonic heads the Center Illuminance readout is cross-checked against the manufacturer's own calculator (Panasonic TDC, Epson PTDS, 642 combos); custom heads are saved to a reusable list with 11 lens profiles; out-of-spec UST placements are flagged with a diagnostic block.",
+   "fix": "Choose an Epson, Panasonic or Christie head and a lens from its compatible list. Epson and Panasonic lux readouts are cross-checked against the manufacturers' own calculators. Add and save custom heads from any spec sheet."
+  },
+  {
+   "page": "product.html:123",
+   "text": "Set throw ratio and lens shift, then build linear, circular, or mirrored arrays.",
+   "reality": "Arrays can stay live (move the source and every clone follows), export a coordinate table, and heads can be aligned to one another with the match axes dock; per-axis position locks exist.",
+   "fix": "Set throw ratio and lens shift, then build linear, circular or symmetry arrays that stay live as you move the source, with a coordinate table for the rigging call."
+  },
+  {
+   "page": "product.html:129 and pricing.html:93,117",
+   "text": "Use the Mapping Stage to place images or video on a surface and preview playback in 3D. / correction and blend preview / Play Dock preview",
+   "reality": "Play Dock ships Output Setup (regions from beams), a Warp & Blend Studio with corner-pin, mesh warp, masks, per-head soft edge and calibration patterns, a Media Library with uploads, playlists and loop modes, and per-edge auto-blend detection in the Inspector.",
+   "fix": "Map images or video onto the surface, corner-pin or mesh-warp each head, set the soft edges and preview playback in 3D. Play Dock previews the show; it does not control or output it."
+  },
+  {
+   "page": "index.html:82 and product.html:105",
+   "text": "every overlap in view / keep the optics tied to the rig",
+   "reality": "Overlap is not just visible: the Inspector's Edge Blending section detects seams, sets per-edge overlap in percent and metres, and blend groups are created automatically for baked arrays.",
+   "fix": "Every overlap in view, with the seam width and feather set per edge."
+  },
+  {
+   "page": "index.html:183 and pricing.html:171",
+   "text": "Turn the current setup into a readable technical handoff. / PDF export",
+   "reality": "The Tech Rider PDF carries a viewport image with lux legend, a project setup table (projectors, total lumens, target), a projector index and a per-projector detail page, headed by a 'not a field measurement' disclaimer band. It is one click from the File menu and also available from the share viewer.",
+   "fix": "One click exports a PDF Tech Rider: scene view with legend, projector index, and a page per projector with lens, throw, position and lux."
+  },
+  {
+   "page": "index.html:193 and product.html:135",
+   "text": "Create a review link, then revoke it when the review is over. / read-only link",
+   "reality": "Cloud Share links include the 3D models, show a QR code, can carry a password (stored hashed) and an expiry you can extend, and are listed in Share Management; a colleague with a FieldLux account can be given read-only project access by email; the viewer can toggle the heatmap and export the Tech Rider.",
+   "fix": "Create a read-only link with a QR code, optional password and expiry, extend or revoke it later, or grant a colleague's FieldLux account read-only access by email."
+  },
+  {
+   "page": "measurement.html:96-108",
+   "text": "Read estimated illuminance in lx, combining every projector that reaches the sampled point.",
+   "reality": "The legend can switch between the Composite and each projector's own distribution, a hover probe gives lux and mm/px under the cursor, and Lens View frames the surface from the projector's optical axis; the Measurement target picker lets you choose any room wall including the ceiling.",
+   "fix": "Read illuminance in lx at 13 probes or under the cursor, for all projectors combined or one head at a time, on any wall you choose."
+  },
+  {
+   "page": "measurement.html:108",
+   "text": "including the selected surface material",
+   "reality": "Materials are editable: presets, reflectance in percent and screen gain, and the luminance ramp scales with reflectance x gain / pi.",
+   "fix": "including the surface material you set, with editable reflectance and screen gain."
+  },
+  {
+   "page": "measurement.html:72 (ambient) and index.html (no contrast mention)",
+   "text": "and ambient settings",
+   "reality": "The ambient light preset plus lux field yields a projection-to-ambient contrast ratio chip (CR n:1) with a viability verdict from Optimal (Full Blackout) to Not viable; that is a real, deployed answer to 'will it read under house lights' and the site never states it.",
+   "fix": "Set the ambient light of the venue and read the projection-to-ambient contrast ratio beside the heatmap."
+  },
+  {
+   "page": "measurement.html:189",
+   "text": "LUX HEATMAP shows the Physics Model",
+   "reality": "The accuracy chip has three states, Physics Model, Spec-based and Calibrated, so the basis is labelled even when a manufacturer calculator figure is in use.",
+   "fix": "The Heatmap panel labels the basis of the number: Physics Model, Spec-based, or Calibrated."
+  },
+  {
+   "page": "pricing.html:112-116",
+   "text": "Fixture photometry and Isolux Working Plane / Fixture schedules and Play Dock preview",
+   "reality": "The lighting lane also imports GDTF and MVR fixture files and IES/LDT photometry, projects gobos, saves Looks (cues), and exports the fixture schedule as CSV; it is the only mention of lighting on the entire site.",
+   "fix": "Fixtures from GDTF, MVR, IES or LDT files, Working Plane (Isolux), looks, and a fixture schedule export."
+  },
+  {
+   "page": "videos.html:62-63",
+   "text": "Check any point on the surface. / check the value at any point",
+   "reality": "The probe reads Surface lux and pixel pitch in mm/px, live as the cursor moves.",
+   "fix": "Read lux and mm/px at any point on the surface as you move the cursor."
+  },
+  {
+   "page": "privacy.html:320-326",
+   "text": "One route and one address.",
+   "reality": "Account deletion is self-serve in Account settings with a 7-day cancellable grace period; the page hides a control that already exists.",
+   "fix": "Delete your account yourself from Account settings in the app, or email jay@field-lux.com from the address on your account for deletion, correction or export."
+  },
+  {
+   "page": "pricing.html:147 and index.html:206",
+   "text": "shared workspaces and seat management are not available yet / No card required",
+   "reality": "Not wrong, but the page never says that saved projects are cloud-stored, autosaved on an interval you set, and version-historied with Restore, which is the reassurance a paying buyer wants before the plan-expiry FAQ.",
+   "fix": "Projects are saved to your account, autosaved on an interval you choose, and every save is kept in version history."
+  }
+ ],
+ "crossPageInconsistencies": [
+  "Beta-availability wording differs on every page and all versions overclaim: index.html:205 'All features are available today.', product.html:183 'EVERY FEATURE IS OPEN TODAY.', pricing.html:52 'Every feature is available today.', pricing.html:162 'every current feature', videos.html:95 'Every current feature is available during beta.', videos.html:94 'full product', pricing.html:184 'full product'. The app itself shows 'Temporarily disabled in the open beta.' on the Report Builder row.",
+  "Heatmap feature name: index.html:103,107 'Lux Heatmap' (hero, locked); measurement.html:81,116,189 'LUX HEATMAP'; the embed button reads 'LUX HEATMAP'; the deployed app says 'Heatmap Overlay' (View menu) and 'Heatmap' (panel). No page uses the app's label.",
+  "13-point probe name: measurement.html:151 kicker '13PT DIAGNOSTIC', measurement.html:81 and 404.html:145 '13-point Diagnostic', measurement.html:8 and videos.html:85 '13-point distribution'; the app's only label is '13pt Diagnostic'.",
+  "Third placement mode: index.html:144 'mirrored placements', product.html:123 'mirrored arrays', app 'Symmetry'.",
+  "Play Dock tier: pricing.html puts 'correction and blend preview' under Projection (:93) and 'Play Dock preview' under Pro (:110,:117), but warp/correction and group blend live inside Play Dock in the app, so the Core tier is promised a preview that the Pro tier owns.",
+  "Pro 'Most complete' chip (pricing.html:108) versus Enterprise 'Everything in Pro' (:137): Enterprise is the most complete plan by the page's own definition.",
+  "Enterprise weekly cell 'Monthly only' (pricing.html:123) versus its billing line 'CHOOSE MONTHLY OR YEARLY' and a defined yearly price ($82/mo, :125).",
+  "Hedging of billing notes: yearly note 'The lowest planned rate' is hedged, weekly 'A seven-day pass. One payment, no renewal.' and monthly 'Billed monthly. Cancel before the next billing date.' (site-experience.js:106-108, pricing.html:71) read as live terms while every card says 'Planned after beta'.",
+  "Projector count in the home page: hero copy says 'Eight projectors' and readout '8' (index.html:82,92), while the screenshot two sections below (hero-stitch-01.png at index.html:166) shows a 4-projector scene; product.html:81 captions the same image 'Four projectors'.",
+  "Workflow stage vocabulary: index.html ticker 'PLAN THE VENUE / CHOOSE THE OPTICS / READ THE SURFACE / HAND OFF THE PLAN'; product.html cards 'SIMULATION / PROJECTOR LIBRARY / PLACEMENT TOOL / PLAY DOCK / DELIVERABLES'; videos.html 'venue, projection, measurement and handoff'; pricing.html 'placement, coverage, measurement, and handoff'; the app's workspaces are 'Design' and 'Simulate' and its menus Modeling / Projector / Lighting / Share. product.html:109 labels the venue-building card '01 / SIMULATION' while the app calls that the Design workspace and 'Simulate' is the projector stage.",
+  "Home meta description (index.html:7) promises 'content mapping'; product.html and every other page say 'content preview'; og:description on index.html:11 says 'a 3D plan your team can review' (a third message for the same page).",
+  "PDF naming: index.html:182, product.html:135, videos.html:86 say 'PDF Tech Rider'; pricing.html:171 FAQ says only 'PDF export' (which a reader may take to mean the Report Builder, prod OFF).",
+  "Nav and title conventions: header nav says 'Videos' on all pages while 404.html:210 footer says 'Feature videos' and 404.html:151 aria-label 'Feature videos'; index.html title is 'FieldLux | Plan projection before load-in' while every other page is '<Page> | FieldLux'.",
+  "Copyright line: v3 pages '© 2026 FieldLux. Open beta.' versus 404.html:219 'Copyright 2026 FieldLux. Open beta' (no symbol, no period); privacy.html footer matches the 404 form.",
+  "Favicon declaration: index, pricing and videos link /favicon.ico; product, measurement, privacy and 404 link /assets/favicon-32.png and favicon-16.png plus apple-touch-icon; only some pages carry og:image:alt.",
+  "Storage disclosure: privacy.html:175 lists four localStorage keys and says 'Those four are everything'; the site actually writes fieldlux_motion, fieldlux_pricing_period, fieldlux_flow_app_url, fieldlux_discord_url (and never fieldlux_embed_src). Motion key values also disagree between page families ('reduced'/'full' on v3 pages, 'on'/'off' on privacy and 404).",
+  "Site-versus-app analytics: privacy.html:172 'no analytics' is true for the static pages but the app the CTAs lead to runs Vercel Web Analytics, Speed Insights, Google Fonts and a first-party event beacon; the privacy page's app section is silent on all four.",
+  "Lighting lane visibility: pricing.html sells fixtures, isolux and fog as Pro features (:106-116) while index.html, product.html, measurement.html and videos.html never mention lighting, so a reader arriving at pricing meets a product lane the rest of the site did not introduce.",
+  "Catalog spelling: product.html:117,145 and 404.html use British 'catalogue'; the app UI uses 'catalog' (ProjectorTab 'catalog datum', Projector Library).",
+  "Discord tooltip on 404.html:45 says the community grants 'beta access'; product.html:165 uses Discord for spec-sheet submissions; pricing and privacy say signup is public with no waitlist."
+ ],
+ "staleImages": [
+  {
+   "src": "/assets/media/hero-stitch-01.png (index.html:166, product.html:80)",
+   "reason": "Panel chrome predates 2026-05-24 (8d736ed3): header reads 'LUX HEATMAP' where HeatmapLegend.jsx:613 now renders 'Heatmap' plus a 'Surface Lux' mode chip; the Surface Lux / Pixel Density / Luminance selector row (HeatmapLegend.jsx:24-26) is missing; the gradient caption 'Low lux -> High lux' is now 'Low surface lux -> High surface lux' (HeatmapLegend.jsx:36); the 'FieldLux Distribution 13PT' C/Avg/U block (:808-809) is absent; the top-right 2x3 toolbar with undo/redo and pencil/sun icons was replaced by the axis gizmo plus Heatmap/Walk/Sensitivity/Measure pills (61e80e4e); the view cube 'LEFT/FRONT' was replaced by the Blender-style axis gizmo (2e8f32d1). Scene shows 4 projectors under a hero that promises 8.",
+   "recaptureSpec": "app.field-lux.com, master 20a60290, web build, 100% browser zoom, dark theme, right Inspector and left Layers panels hidden (View > Show panels off) so the viewport is clean. Scene: the FieldLux Test Scene facade (fbxBuilding.fbx) or building_04 with 4 Panasonic PT-RZ34K2 heads in one blend group aimed at the facade, edge blending enabled. View > Heatmap Overlay ON; legend panel expanded (chevron) showing header 'Heatmap' + 'Surface Lux' chip + amber 'Physics Model' badge; map row Surface Lux selected; mode row Absolute selected, Max lux 500; Values ON so 13 probes are drawn; details open so 'Physics estimate', '4 projectors', 'Ready', Distribution chips (Composite selected) and 'Probe set 13pt Diagnostic' are visible. Frame the facade centred with the axis gizmo and the four viewport pills at top-right. Export at 1363x805 or larger 16:9.5."
+  },
+  {
+   "src": "/assets/media/analysis-13pt-diagnostics.png (measurement.html:80)",
+   "reason": "Whole-editor capture from a desktop or older build: menu bar shows 8 menus (File Edit View Projector Tools Share Settings Help) where TopBar.jsx:1042-1858 now renders 11 (adds Modeling, Lighting, Appearance); top-right 'Output' button is desktop-only (TopBar.jsx:1906 gated on spoutSyphonOutput = isDesktopRuntime); bottom 'ANALYSIS Coming Soon' pane was retired 2026-07-03 (b8c894f6) and the slot is now the Play Dock strip; 'MEASUREMENTS / No measurements' row no longer renders for a scene with no measurements (d598fb70); Inspector shows helper captions 'Power affects analysis...', 'Models lamp aging...', 'Projector Library spec: 2450 W...' and the WUXGA / 3-Chip DLP / Laser / 68.6kg chips, all removed 22bddb77 (2026-09-15; ProjectorTab.jsx:743 now prints 'Spec: 2450 W'); Model option now reads '[30,500lm / 32,000lm Center] PT-RZ34K2' and the Equipment badge 32,000 lm; Lens field now 'Standard/1.30-1.67/ET-D75LE10'; legend header 'LUX HEATMAP' now 'Heatmap' + 'Surface Lux' chip with the map-type row; caption 'Low lux -> High lux' now 'Low surface lux -> High surface lux'; status bar 'Edit · Move' now 'Edit - Move' and the right slot shows a next-step hint instead of 'Selected: ...' until the curriculum ladder is satisfied; 'FRONT' view cube replaced by the axis gizmo. The '172 mm' label is the partially hidden 17269 mm throw label.",
+   "recaptureSpec": "app.field-lux.com web build, master 20a60290, 100% zoom, full editor window at 1920x1080 with both side panels open. Scene: fbxBuilding.fbx model, 4 x Panasonic PT-RZ34K2 with ET-D75LE10 at throw ratio 1.300 in Blend Group 1, Projector 1 Copy 1 selected so the Inspector shows Projector Controls (Power, Beam Preview, Lock Transform, no captions), Equipment 32,000 lm with Brand/Model/Lens/Aspect pickers and no spec chips, Optics with Throw Ratio 1.300:1. Heatmap Overlay ON, legend expanded: 'Heatmap' + 'Surface Lux' + 'Physics Model', Surface Lux map, Absolute, Max lux 500, Lens View active on the selected head (button reads 'Scene View'), Values ON so all 13 probes (TL..BR, T25/L25/R25/B25) show lux, details open with 'Physics estimate', 'fbxBuilding.fbx / model', '4 projectors', 'Ready', Distribution chip 'Projector 1 Copy 1' selected, 'Probe set 13pt Diagnostic'. Make sure the 11-menu bar, BETA V.2 chip, no Output button, the Play Dock strip at the bottom, the frustum labels 'W: 13284mm' / 'H: 8302mm' and the axis gizmo are all visible. Left panel: Scene Layers with Projectors 4 > Blend Group 1, LED Walls 0, Lights 0, Objects 1, Quick Targets 0 and no Measurements row."
+  },
+  {
+   "src": "/assets/media/analysis-heatmap-absolute.png (measurement.html:122)",
+   "reason": "Panel title 'LUX HEATMAP' is now 'Heatmap' + 'Surface Lux' chip (HeatmapLegend.jsx:613, since 8d736ed3); missing the Surface Lux / Pixel Density / Luminance selector row above Absolute / Norm / Deviation; caption 'Low lux -> High lux' is now 'Low surface lux -> High surface lux'; the 'FieldLux Distribution 13PT' C/Avg/U block is absent. Max lux 500 lx, Scene View/Values, Physics estimate, Distribution tabs and 'Probe set 13pt Diagnostic' still match.",
+   "recaptureSpec": "Crop of the expanded Heatmap legend panel at 100% zoom over the same 4-projector fbxBuilding scene: header 'Heatmap' / 'Surface Lux' / 'Physics Model'; map row with Surface Lux selected; mode row Absolute selected; blue-green-yellow-red ramp with ticks 0 / 125 / 250 / 500 and caption 'Low surface lux -> High surface lux'; 'Max lux 500 lx'; the FieldLux Distribution 13PT summary (C / Avg / U / grade); Lens View + Values buttons; details open showing Physics estimate, 'fbxBuilding.fbx / model', '4 projectors', 'Ready', Distribution tabs with 'Projector 1 Copy 1' selected, 'Probe set 13pt Diagnostic'. Roughly 440x720."
+  },
+  {
+   "src": "/assets/media/analysis-heatmap-norm.png (measurement.html:130)",
+   "reason": "Same stale header ('LUX HEATMAP' instead of 'Heatmap' + 'Surface Lux' chip) and missing map-type row and 13PT summary block. Norm ramp ticks 0.0x/0.9x/1.0x/1.1x/2.0x, guide 'Below ref -> On ref -> Above ref' and 'Ref lux 250 lx' still match current readoutLabels.",
+   "recaptureSpec": "Same panel crop as the Absolute capture with the mode row set to Norm: diverging blue-white-orange-red ramp, ticks 0.0x 0.9x 1.0x 1.1x 2.0x, guide 'Below ref -> On ref -> Above ref', 'Ref lux 250 lx', header 'Heatmap' / 'Surface Lux' / 'Physics Model', map row visible, 13PT summary, details open."
+  },
+  {
+   "src": "/assets/media/analysis-heatmap-deviation.png (measurement.html:138)",
+   "reason": "Same stale header and missing map-type row and 13PT block. Deviation ticks -20% / 0% / +20%, guide, 'Ref lux 250 lx' and the Scale +/-10% +/-20% +/-30% buttons still match HeatmapLegend.jsx:783.",
+   "recaptureSpec": "Same panel crop with Deviation selected: blue-white-red ramp with -20% / 0% / +20%, guide 'Below ref -> On target -> Above ref', 'Ref lux 250 lx', Scale row with +/-20% active, header 'Heatmap' / 'Surface Lux' / 'Physics Model', map row visible, 13PT summary, details open."
+  },
+  {
+   "src": "/assets/media/hover-probe-demo.mp4 (videos.html:68)",
+   "reason": "Recorded on an older or desktop build: 8-menu bar (now 11), desktop-only 'Output' button, retired 'ANALYSIS · Coming Soon' pane, 'MEASUREMENTS / No measurements' row, 'LUX HEATMAP' title, Inspector helper captions and WUXGA/3-Chip DLP/Laser/68.6kg chips (removed 22bddb77), '[30,500lm] PT-RZ34K2' model label and 'Standard Zoom Lens (3-Chip DLP, legacy)' lens label (now '[30,500lm / 32,000lm Center] PT-RZ34K2' and 'Standard/1.30-1.67/ET-D75LE10'), tooltip first line now reads 'Surface 349.7 lux' (c045c107), 'FRONT' view cube replaced by axis gizmo, floating toolbar with undo/redo and pointer/pen/sun/orbit icons replaced by ViewCube + Heatmap/Walk/Sensitivity/Measure pills. Also a Chrome '125% - + Reset' zoom bubble at 0:01 and the panel clipped off the right edge for the rest of the clip; silent audio, no captions.",
+   "recaptureSpec": "Screen-record app.field-lux.com (web build, master 20a60290) at 100% browser zoom, 1920x1080, with the same 4 x PT-RZ34K2 fbxBuilding scene, Heatmap Overlay ON in Norm mode (Ref lux 250), Values ON, Lens View active on Projector 1 Copy 1. Move the cursor to top-left, right, centre and bottom-left of the facade so the tooltip reads 'Surface NNN.N lux' over 'N.NN mm/px'. Keep the 11-menu bar, BETA V.2 chip, Play Dock strip and the expanded 'Heatmap' legend fully inside the frame. About 15 seconds, no zoom bubble. Add a poster frame and a short caption track (or on-screen text) naming the two readouts."
+  },
+  {
+   "src": "/assets/og-card.png (og:image on index, product, measurement, pricing, videos, privacy)",
+   "reason": "Not UI-stale, but the card is a bare logo with an empty right half and product.html:20 / measurement.html:20 describe it as a 'projection planning workspace'; every page shares the identical card so social previews carry no product frame or headline.",
+   "recaptureSpec": "1200x630 card: FieldLux lockup top-left, the recaptured 4-projector facade heatmap (current 'Heatmap' panel visible) filling the right two-thirds, and the H1 'How many lux on that facade?' as the single line of text; or keep the logo card and change both og:image:alt values to 'FieldLux logo'."
+  }
+ ],
+ "priorityFixes": [
+  "1. Retire the absolute 'every/all features available today, full product' line on index.html:205, product.html:183, pricing.html:52-53,162,184 and videos.html:94-95: the app's own File menu says 'Temporarily disabled in the open beta.' on Report Builder, and the 2 GB model storage cap is undisclosed. A buyer testing the claim finds the contradiction within one menu click.",
+  "2. Fix the privacy page's falsifiable clauses, since the page stakes its credibility on 'check it from the outside': storage keys (privacy.html:175, add fieldlux_pricing_period, drop fieldlux_embed_src), the ?embedSrc= paragraph (:183), the siteReturnUrl promise (:187), 'password if you choose to set one' and 'never reach FieldLux' (:231), 'pruned daily' (:287), 'One route' (:320), and add the missing app disclosures (first-party event beacon, Vercel Web Analytics and Speed Insights, Google Fonts, role field, admin all-members mail). Move the Last updated date.",
+  "3. Recapture the five screenshots and the one video from the production web build at 100% zoom; every one shows the retired 'LUX HEATMAP' header, the desktop-only Output button, the retired 'ANALYSIS Coming Soon' pane, or Inspector text deleted on 2026-09-15. A prospect who opens the app after reading the site will not find the UI shown.",
+  "4. Align feature names with the shipped UI: 'Lux Heatmap' / 'LUX HEATMAP' to 'Heatmap' (and 'Heatmap Overlay' for the toggle), '13-point Diagnostic' / '13-point distribution' to '13pt Diagnostic', 'mirrored' to 'symmetry', 'Isolux Working Plane' to 'Working Plane (Isolux)', 'Mapping Stage' to the Mapping panel in Play Dock, and drop 'Venue import'. Mark hero (locked) occurrences for the owner.",
+  "5. Correct the measurement page's physics overclaims: ambient settings do not enter lux/pixel density/luminance (measurement.html:72), assumptions are not 'beside every result' (:189, :8, :23, index.html:162), and 'Measure the light' / 'Measure a scene' (:71, :200) contradicts the page's own 'not a lux-meter reading'.",
+  "6. Fix pricing.html internal contradictions: Enterprise 'Monthly only' versus 'CHOOSE MONTHLY OR YEARLY' (:123), Pro 'Most complete' beside Enterprise 'Everything in Pro' (:108,:137), 'correction' in the Core tier (:93) when no keystone correction ships and warp lives in Pro's Play Dock, and hedge the weekly and monthly period notes (site-experience.js:106-107) the way the yearly note already is.",
+  "7. Remove or reword 'Source references stay attached to each catalogue entry' (product.html:117): the UI hides provenance since 2026-09-15, so a user cannot find any reference.",
+  "8. Introduce the lighting lane, fog/volumetrics, DWG/DXF floor-plan import and Warp & Blend on product.html and index.html; today pricing.html sells Pro on features the rest of the site never shows, and the site undersells the shipped product against Depence/Capture-class competitors.",
+  "9. Add the concrete, deployed proof points the site currently omits: Epson and Panasonic lux cross-checked against the manufacturers' own calculators, supported model and drawing formats, contrast ratio against ambient, per-head versus composite distribution, QR/password/expiry on share links, cloud save with version history, and the sample scenes on the Projects home.",
+  "10. Fix the small site-side accuracy items: videos.html plural 'previews' for one clip (also 404.html:154) and 'Watch each workflow step', product/measurement og:image:alt 'workspace' for a logo card, product.html:80 alt 'four projector beams' with no beams drawn, index.html:166 height 806 vs 805, 'FLX' vs '.flx.json', 404 Discord tooltip 'beta access', and unify the copyright line, favicon links, nav label 'Videos' versus 'Feature videos', and the motion-toggle key values across page families."
+ ]
+}
