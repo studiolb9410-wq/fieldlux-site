@@ -12,14 +12,14 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="FieldLux">
   <meta property="og:title" content="Privacy | FieldLux">
-  <meta property="og:description" content="This site sets no cookies and loads no analytics. The app account is where the data is. This page separates the two and says what each one keeps.">
+  <meta property="og:description" content="This site sets no cookies and loads no analytics. The app account is where the data is, and the app runs its own usage record and Vercel analytics. This page separates the two and says what each one keeps.">
   <meta property="og:url" content="https://field-lux.com/privacy">
   <meta property="og:image" content="https://field-lux.com/assets/og-card.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Privacy | FieldLux">
-  <meta name="twitter:description" content="This site sets no cookies and loads no analytics. The app account is where the data is. This page separates the two and says what each one keeps.">
+  <meta name="twitter:description" content="This site sets no cookies and loads no analytics. The app account is where the data is, and the app runs its own usage record and Vercel analytics. This page separates the two and says what each one keeps.">
   <meta name="twitter:image" content="https://field-lux.com/assets/og-card.png">
 
   <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
@@ -54,9 +54,9 @@
       <nav class="nav-links" aria-label="Primary">
         <a class="nav-link" href="/product">Product</a>
         <a class="nav-link" href="/measurement">Measurement</a>
-        <a class="nav-link" href="/videos" aria-label="Feature videos">Videos</a>
+        <a class="nav-link" href="/videos">Videos</a>
         <a class="nav-link" href="/pricing">Pricing</a>
-        <a class="nav-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link data-tooltip="Official FieldLux community: beta access, catalogue submissions and bug reports." target="_blank" rel="noopener noreferrer">Discord</a>
+        <a class="nav-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link data-tooltip="Official FieldLux community: announcements, catalogue requests and bug reports. Beta access is free, just sign up at app.field-lux.com." target="_blank" rel="noopener noreferrer">Discord</a>
       </nav>
 
       <div class="nav-actions">
@@ -135,7 +135,7 @@
 
           <p class="copy u-text-measure reveal">Everything claimed below about this site can be checked from the outside: open the page source, or watch your browser's network panel while you read. If a clause is unclear or wrong, say so at <a class="link" href="mailto:jay@field-lux.com">jay@field-lux.com</a> and it gets rewritten.</p>
 
-          <p class="stat-note u-tabular reveal">Last updated: September 6, 2026</p>
+          <p class="stat-note u-tabular reveal">Last updated: September 16, 2026</p>
         </div>
 
       </div>
@@ -172,7 +172,7 @@
               <span class="speclist-index u-tabular">(02)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">WHAT YOUR BROWSER KEEPS</h3>
-                <p class="u-text-measure">One preference is stored on your device by these pages: <code>fieldlux_motion</code>, written when you press Reduce motion in the footer. Three further keys exist only so a review build can be pointed somewhere else, and are written only if you open the site with the matching query parameter: <code>fieldlux_flow_app_url</code>, <code>fieldlux_discord_url</code> and <code>fieldlux_embed_src</code>. Those four are everything the pages themselves write. The 3D demo on the home page is the FieldLux app served from this same domain, so the view settings it remembers, all of them named with a <code>fieldlux_</code> prefix, are written into this site's local storage rather than a separate one. None of these keys is sent anywhere, none is readable by another site, and clearing site data removes all of them.</p>
+                <p class="u-text-measure">Two preferences are stored on your device by these pages: <code>fieldlux_motion</code>, written when you press Reduce motion in the footer, and <code>fieldlux_pricing_period</code>, written when the pricing page opens and when you switch the billing period there. Two further keys exist only so a review build can be pointed somewhere else, and are written only if you open the site with the matching query parameter: <code>fieldlux_flow_app_url</code> and <code>fieldlux_discord_url</code>. Those four are everything the pages themselves write. The 3D demo on the home page is the FieldLux app served from this same domain, so the view settings it remembers, all of them named with a <code>fieldlux_</code> prefix, are written into this site's local storage rather than a separate one. None of these keys is sent anywhere, none is readable by another site, and clearing site data removes all of them.</p>
               </div>
             </li>
 
@@ -180,7 +180,7 @@
               <span class="speclist-index u-tabular">(03)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">THE DEMO FRAME ON THE HOME PAGE</h3>
-                <p class="u-text-measure">The home page carries a live 3D demo of the app, and it is served from this domain. The build sits at field-lux.com/embed, it is compiled from our own repository and committed to this site, and it loads automatically when the page opens rather than waiting for a click. Because it is the same origin as this page, the frame is not a security boundary and is not offered as one: the demo can read this document and this site's local storage exactly as though the app were written into the page, which is acceptable only because it is our code on our deployment. What it cannot do is leave: the frame is sandboxed without top-level navigation and without forms, so it cannot take you anywhere and there is nothing in it to submit. It contacts no other origin. A review build can point the frame somewhere else with <code>?embedSrc=</code>, and that address is accepted only when it resolves to this exact origin; anything else is refused and the stored value cleared.</p>
+                <p class="u-text-measure">The home page carries a live 3D demo of the app, and it is served from this domain. The build sits at field-lux.com/embed, it is compiled from our own repository and committed to this site, and it loads automatically when the page opens rather than waiting for a click. Because it is the same origin as this page, the frame is not a security boundary and is not offered as one: the demo can read this document and this site's local storage exactly as though the app were written into the page, which is acceptable only because it is our code on our deployment. What it cannot do is leave: the frame is sandboxed without top-level navigation and without forms, so it cannot take you anywhere and there is nothing in it to submit. It contacts no other origin. The frame always loads <code>/embed</code> from this origin; there is no query parameter that can point it anywhere else.</p>
               </div>
             </li>
 
@@ -188,7 +188,7 @@
               <span class="speclist-index u-tabular">(04)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">LINKS THAT LEAVE THIS SITE</h3>
-                <p class="u-text-measure">Sign in and Start free go to app.field-lux.com. They carry one parameter, <code>siteReturnUrl</code>, holding the address of the page you left so the app can send you back to it. The Discord link opens discord.gg in a new tab. What either service records once you are there is governed by that service, not by this page.</p>
+                <p class="u-text-measure">Sign in and Start free go to app.field-lux.com. They carry one parameter, <code>siteReturnUrl</code>, holding the address of the page you left. The Back to site button on the app's sign-in screen uses it to return you to this site; nothing follows you past sign-in. The Discord link opens discord.gg in a new tab. What either service records once you are there is governed by that service, not by this page.</p>
               </div>
             </li>
 
@@ -228,7 +228,7 @@
               <span class="speclist-index u-tabular">(01)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">ACCOUNT DATA</h3>
-                <p class="u-text-measure">Account login runs on Supabase Auth. Your email address is your FieldLux ID, and it is the only value that tells one account from another. You can sign in with an email code, with Google, or with a password if you choose to set one. Passwords are held on the Supabase Auth side and never reach FieldLux in a form we can read.</p>
+                <p class="u-text-measure">Account login runs on Supabase Auth. Your email address is your FieldLux ID. Signing up also asks for your role, for example Technical Director or Lighting Designer, which is stored with your account profile, and the consent record keeps the consent text, the policy version you agreed to and your browser's user agent string. You can sign in with your email and password or with Google; accounts created with Google have no FieldLux password. Passwords are stored only by Supabase Auth, hashed, and FieldLux keeps no copy: during email signup your new password passes once through our signup function on its way to Supabase Auth and is not written anywhere by us.</p>
               </div>
             </li>
 
@@ -244,7 +244,7 @@
               <span class="speclist-index u-tabular">(03)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">SHARE LINKS</h3>
-                <p class="u-text-measure">A share link is resolved on the server rather than handed out as the project itself. If you put a password on a link, it is stored hashed with bcrypt. Each attempt to resolve a link writes one row holding the link's id, the outcome, and a hash of the requesting network address rather than the address, which is what the rate limiting counts against. Anyone holding a live link can open what you shared, which is the whole point of a link, so the link is the credential: send it the way you would send a door code.</p>
+                <p class="u-text-measure">A share link is resolved on the server rather than handed out as the project itself. If you put a password on a link, it is stored hashed with bcrypt. Each attempt to resolve a link, other than one turned away by the rate limiter, writes one row holding the link's id, the outcome, and a keyed hash of the requesting network address rather than the address itself, which is what the rate limiting counts against. Anyone holding a live link can open what you shared, which is the whole point of a link, so the link is the credential: send it the way you would send a door code.</p>
               </div>
             </li>
 
@@ -268,7 +268,7 @@
               <span class="speclist-index u-tabular">(06)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">SERVICE PROVIDERS</h3>
-                <p class="u-text-measure">Supabase for authentication, database and file storage. Vercel for hosting. Resend carries the mail: the sign-in codes, the invite mail and any reply we send you all pass through it. Traffic between you and those services is carried over TLS. We do not sell personal information, and we do not build a marketing mailing list out of FieldLux account data.</p>
+                <p class="u-text-measure">Supabase for authentication, database and file storage. Vercel for hosting, and for Vercel Web Analytics and Speed Insights inside the app, which receive page views, referrers, device type and page performance timings. The app loads its interface font from Google Fonts, so opening the app requests the font files from Google. Resend carries the mail: the sign-in codes, the invite mail and any reply we send you all pass through it. Traffic between you and those services is carried over TLS. We do not sell personal information. We can mail every member from the account list, and we use that only for account, security and product access notices; each such mail carries an unsubscribe address and the list is not handed to anyone else.</p>
               </div>
             </li>
 
@@ -284,7 +284,7 @@
               <span class="speclist-index u-tabular">(08)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">PROVING THE ADDRESS IS YOURS</h3>
-                <p class="u-text-measure">Signing up and claiming founding-member standing both send a one-time code to the address you typed. The code itself is never stored in a readable form, only as a hash we can check your answer against, and it expires. Each attempt is logged with the address, the browser, and a hash of the requesting network address rather than the address itself. Those logs are pruned daily. That log is what stops one script from mailing codes at a thousand strangers.</p>
+                <p class="u-text-measure">Signing up and claiming founding-member standing both send a one-time code to the address you typed. The code itself is never stored in a readable form, only as a hash we can check your answer against, and it expires. Each attempt is logged with the address, the browser, and a hash of the requesting network address rather than the address itself. Signup verification logs are kept for 30 days and then removed by a daily cleanup job. That log is what stops one script from mailing codes at a thousand strangers.</p>
               </div>
             </li>
 
@@ -293,6 +293,14 @@
               <div class="speclist-body">
                 <h3 class="chapter-point-label">NO PAYMENT DATA</h3>
                 <p class="u-text-measure">There is no checkout in FieldLux and no payment code in the build, so no card, no billing address and no payment processor record exists for any account. The <a class="link" href="/pricing">pricing page</a> publishes what plans would cost; nothing on it has ever charged anyone.</p>
+              </div>
+            </li>
+
+            <li class="speclist-item" id="usage-record">
+              <span class="speclist-index u-tabular">(10)</span>
+              <div class="speclist-body">
+                <h3 class="chapter-point-label">USAGE RECORD</h3>
+                <p class="u-text-measure">The app keeps a first-party usage record: a short list of named events such as opening the app, opening the editor, creating a project, adding a projector or a fixture, exporting a PDF and creating or viewing a share link. Each row holds the event name, a random visitor id kept in your browser, a session id, the page path, the referrer and any utm parameters you arrived with, your browser's user agent string, and a keyed hash of the requesting network address rather than the address itself. When you are signed in, the row is tied to your account id. No scene content, project names or typed text are recorded. To switch it off in one browser, set <code>fieldlux.telemetry.optout</code> to <code>1</code> in the app's local storage; the app then sends nothing at all.</p>
               </div>
             </li>
 
@@ -317,7 +325,7 @@
             <span class="section-title-line reveal-line"><span class="reveal-line-inner">ON THE ACCOUNT.</span></span>
           </h2>
 
-          <p class="copy section-lead u-text-measure reveal">One route and one address. The account email is what proves the request is yours, so it is the only thing we ask you for.</p>
+          <p class="copy section-lead u-text-measure reveal">One address, and a button. The account email is what proves a request is yours, so it is the only thing we ask you for; deleting the account itself you can do yourself from inside the app.</p>
 
           <ol class="speclist reveal">
 
@@ -333,7 +341,7 @@
               <span class="speclist-index u-tabular">(02)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">DELETING THE ACCOUNT</h3>
-                <p class="u-text-measure">Account deletion carries a 7-day grace period before the records go.</p>
+                <p class="u-text-measure">Open Account settings in the app and use Schedule deletion, or email the address above. Either way the deletion carries a 7-day grace period before the records go, and you can cancel it from the same place during those days.</p>
               </div>
             </li>
 
@@ -341,7 +349,7 @@
               <span class="speclist-index u-tabular">(03)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">WHEN THIS PAGE CHANGES</h3>
-                <p class="u-text-measure">The date under the title moves when the text does. There is no mailing list to announce a change on, which is exactly why the date sits where you can see it.</p>
+                <p class="u-text-measure">The date under the title moves when the text does. We do not run a newsletter to announce a change on, which is exactly why the date sits where you can see it.</p>
               </div>
             </li>
 
@@ -376,14 +384,14 @@
           <ul class="footer-links">
             <li><a class="footer-link" href="/pricing">Pricing</a></li>
             <li><a class="footer-link" href="/privacy">Privacy</a></li>
-            <li><a class="footer-link" href="/videos">Feature videos</a></li>
+            <li><a class="footer-link" href="/videos">Videos</a></li>
             <li><a class="footer-link" href="https://discord.gg/JpeQ7Hgsnd" data-discord-link target="_blank" rel="noopener noreferrer">Discord</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-meta">
-        <p class="footer-legal">Copyright 2026 FieldLux. Open beta</p>
+        <p class="footer-legal">&copy; 2026 FieldLux. Open beta.</p>
         <button class="motion-toggle" type="button" aria-pressed="false">Reduce motion</button>
       </div>
 

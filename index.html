@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FieldLux | Plan projection before load-in</title>
-  <meta name="description" content="Plan projector coverage, optics, surface lux and content mapping in one browser-based 3D workspace.">
+  <meta name="description" content="Plan projector coverage, optics, edge blending, surface lux and content preview on the venue model in one browser-based 3D workspace. Free during open beta.">
   <link rel="canonical" href="https://field-lux.com/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="FieldLux | Plan projection before load-in">
-  <meta property="og:description" content="Turn venue geometry, projector optics, and overlap into a 3D plan your team can review.">
+  <meta property="og:description" content="Turn venue geometry, projector optics and overlap into a 3D plan your team can check before load-in.">
   <meta property="og:url" content="https://field-lux.com/">
   <meta property="og:image" content="https://field-lux.com/assets/og-card.png">
   <link rel="icon" href="/favicon.ico">
@@ -129,72 +129,159 @@
       <div class="v3-container">
         <div class="v3-section-head v3-section-head--center v3-reveal">
           <p class="v3-kicker">One continuous plan</p>
-          <h2 class="v3-display">From a venue model to a<br>clear projection plan.</h2>
-          <p class="v3-lead">Keep geometry, optics and measurements together. <strong>Move a projector and see coverage update.</strong></p>
+          <h2 class="v3-display">From a venue model to a<br>plan the crew can trust.</h2>
+          <p class="v3-lead">Geometry, optics and light readings stay in one scene. <strong>Move a projector and every number moves with it.</strong></p>
         </div>
         <ol class="v3-grid v3-grid--steps">
           <li class="v3-card v3-step v3-reveal">
             <span class="v3-step-number">01</span>
+            <figure class="v3-step-shot"><img src="/assets/media/feature-venue.webp" width="2560" height="1440" loading="lazy" alt="The FieldLux editor with an imported building model on the ground grid"></figure>
             <h3>Build the venue</h3>
-            <p>Import a 3D model or floor plan, then work at real scale.</p>
+            <p>Import an OBJ, FBX, GLB, glTF, DAE, STL or PLY model, load a DWG, DXF or PDF floor plan at scale and raise its walls, or sketch the room from scratch.</p>
           </li>
           <li class="v3-card v3-step v3-reveal">
             <span class="v3-step-number">02</span>
+            <figure class="v3-step-shot"><img src="/assets/media/feature-placement.webp" width="2560" height="1440" loading="lazy" alt="The Projector Placement Tool window building a circular array of eight projectors"></figure>
             <h3>Place the system</h3>
-            <p>Choose projector optics, then build linear, circular or mirrored placements.</p>
+            <p>Choose Epson, Panasonic or Christie optics, build linear, circular or symmetry arrays, and set the blend overlap per edge.</p>
           </li>
           <li class="v3-card v3-step v3-reveal">
             <span class="v3-step-number">03</span>
-            <h3>Measure the surface</h3>
-            <p>Compare coverage, Surface Lux, Pixel Density and Luminance in context.</p>
+            <figure class="v3-step-shot"><img src="/assets/media/editor-heatmap-values.webp" width="2560" height="1440" loading="lazy" alt="The Heatmap overlay with 13-point probe values drawn on a projected facade"></figure>
+            <h3>Read the surface</h3>
+            <p>Compare Surface Lux, Pixel Density and Luminance on the model, probe any point, and read the 13pt Diagnostic per head or composite.</p>
           </li>
         </ol>
       </div>
     </section>
 
-    <section class="v3-section v3-section--paper">
+    <section class="v3-section v3-section--paper v3-tour-section" aria-labelledby="tour-title">
       <div class="v3-container">
+        <div class="v3-section-head v3-reveal">
+          <p class="v3-kicker">What is in the box</p>
+          <h2 class="v3-display" id="tour-title">Projection, lighting and content,<br>in one scene.</h2>
+          <p class="v3-lead">Eight things the app does today, all free during the open beta. <strong>Each one has a chapter on the Videos page with the exact clicks.</strong></p>
+        </div>
+        <div class="v3-tour">
         <article class="v3-editorial v3-reveal">
           <div class="v3-editorial-copy">
-            <p class="v3-kicker">Optics-based planning</p>
-            <h2 class="v3-display">Check surface lux in 3D.</h2>
-            <p>Switch between <strong>Surface Lux, Pixel Density and Luminance</strong>. Use Absolute, Norm, or Deviation heatmaps to find weak coverage and uneven overlap.</p>
-            <p class="v3-note">FieldLux is a planning estimate, not a calibrated field measurement. Its assumptions stay visible beside the result.</p>
-            <a class="v3-text-link" href="/measurement">Explore measurement <span aria-hidden="true">↗</span></a>
+            <p class="v3-kicker">01 · Venue</p>
+            <h3 class="v3-display">Bring the venue in.</h3>
+            <p>Import an OBJ, FBX, GLB, glTF, DAE, STL or PLY model and FieldLux reads its unit and up axis. Load a DWG, DXF, PDF or image floor plan at scale and raise its walls with one key, or sketch the room from scratch. Need a stand-in: a Basic Room, Flat Surface, Curved Wall, Cylinder, Dome, a site photo or an LED wall is one click under Tools.</p>
+            <a class="v3-text-link" href="/videos#ch-02">How to do it: Chapters 02 to 04 <span aria-hidden="true">&#8599;</span></a>
           </div>
           <figure class="v3-media v3-media--facade">
-            <img src="/assets/media/hero-stitch-01.png" width="1363" height="806" loading="lazy" alt="FieldLux 3D facade with projector coverage and a surface lux heatmap">
+            <img src="/assets/media/feature-venue.webp" width="2560" height="1440" loading="lazy" alt="The FieldLux editor with an imported building model selected on the ground grid, Scene Layers on the left and the Inspector on the right">
           </figure>
         </article>
+        <article class="v3-editorial v3-reveal v3-editorial--flip">
+          <div class="v3-editorial-copy">
+            <p class="v3-kicker">02 · Projector Library</p>
+            <h3 class="v3-display">Real heads, real lenses.</h3>
+            <p>Pick an Epson, Panasonic or Christie projector and a lens from the list its manufacturer documents for it. Epson and Panasonic lux readouts are cross-checked against the manufacturers' own calculators. Anything else becomes a custom head from its spec sheet, saved for the next project.</p>
+            <a class="v3-text-link" href="/videos#ch-05">How to do it: Chapter 05 <span aria-hidden="true">&#8599;</span></a>
+          </div>
+          <figure class="v3-media v3-media--facade">
+            <img src="/assets/media/feature-library.webp" width="2560" height="1440" loading="lazy" alt="The Projector Library dialog open over the editor, showing the Epson tab with projector cards, lens dropdowns and Add buttons">
+          </figure>
+        </article>
+        <article class="v3-editorial v3-reveal">
+          <div class="v3-editorial-copy">
+            <p class="v3-kicker">03 · Placement Tool</p>
+            <h3 class="v3-display">Arrays that stay live.</h3>
+            <p>Build a linear run, a circular ring with a shared aim, or a symmetry pair, and watch the ghost preview and coordinate table before you bake. Start Live and every clone follows the source when you move it. Match position or rotation across heads with one click.</p>
+            <a class="v3-text-link" href="/videos#ch-07">How to do it: Chapter 07 <span aria-hidden="true">&#8599;</span></a>
+          </div>
+          <figure class="v3-media v3-media--facade">
+            <img src="/assets/media/feature-placement.webp" width="2560" height="1440" loading="lazy" alt="The Projector Placement Tool window in Circular mode with eight ghost projectors listed in the coordinate table">
+          </figure>
+        </article>
+        <article class="v3-editorial v3-reveal v3-editorial--flip">
+          <div class="v3-editorial-copy">
+            <p class="v3-kicker">04 · Edge blending</p>
+            <h3 class="v3-display">Seams found for you.</h3>
+            <p>Group the heads that overlap, press Auto-Blend, and FieldLux measures where the beams meet on the surface and sets each edge in percent and metres. Pick Linear, Gamma 2.2 or S-Curve, mirror a feather to the partner, match brightness across the seam.</p>
+            <p class="v3-note">Measured lux stays pre-blend: the map shows each head at full white so the plan never hides a hot spot.</p>
+            <a class="v3-text-link" href="/videos#ch-08">How to do it: Chapter 08 <span aria-hidden="true">&#8599;</span></a>
+          </div>
+          <figure class="v3-media v3-media--facade">
+            <img src="/assets/media/feature-edge-blend.webp" width="2560" height="1440" loading="lazy" alt="The Edge Blending section of the Inspector with Right and Top edges enabled at 58 and 22 percent, and a soft seam on the projected facade">
+          </figure>
+        </article>
+        <article class="v3-editorial v3-reveal">
+          <div class="v3-editorial-copy">
+            <p class="v3-kicker">05 · Heatmap</p>
+            <h3 class="v3-display">Know the lux before the truck leaves.</h3>
+            <p>Turn on the Heatmap overlay for Surface Lux, Pixel Density or Luminance. Read it on an Absolute, Norm or Deviation scale, press Values for the 13pt Diagnostic with a uniformity grade, probe any point under the cursor, and set the venue's ambient light to read the contrast ratio.</p>
+            <p class="v3-note">FieldLux is a planning estimate, not a calibrated field measurement. The Heatmap panel labels the basis of every map: Physics Model, Spec-based or Calibrated.</p>
+            <a class="v3-text-link" href="/videos#ch-09">How to do it: Chapters 09 to 11 <span aria-hidden="true">&#8599;</span></a>
+          </div>
+          <figure class="v3-media v3-media--facade">
+            <img src="/assets/media/editor-heatmap-values.webp" width="2560" height="1440" loading="lazy" alt="The FieldLux editor with the Heatmap overlay on, the Heatmap panel in Absolute mode, and 13-point probe values drawn across a projected facade">
+          </figure>
+        </article>
+        <article class="v3-editorial v3-reveal v3-editorial--flip">
+          <div class="v3-editorial-copy">
+            <p class="v3-kicker">06 · Play Dock</p>
+            <h3 class="v3-display">Put the content on the wall.</h3>
+            <p>Output Setup finds the screens from where your beams land. Drop images or video from the Media Library, build a playlist, and corner-pin, mesh-warp, mask and soft-edge each head in Warp &amp; Blend, all rendered live on the 3D model.</p>
+            <p class="v3-note">Play Dock previews the show. It does not output to hardware.</p>
+            <a class="v3-text-link" href="/videos#ch-12">How to do it: Chapters 12 and 13 <span aria-hidden="true">&#8599;</span></a>
+          </div>
+          <figure class="v3-media v3-media--facade">
+            <img src="/assets/media/feature-play-dock.webp" width="2560" height="1440" loading="lazy" alt="The Play Dock console open along the bottom of the editor with the screens rail, the mapping editor and the transport bar">
+          </figure>
+        </article>
+        <article class="v3-editorial v3-reveal">
+          <div class="v3-editorial-copy">
+            <p class="v3-kicker">07 · Lighting and fog</p>
+            <h3 class="v3-display">The rest of the rig, in the same scene.</h3>
+            <p>Add moving heads, PARs, profiles, Fresnels, floods or strobes, import GDTF, MVR, IES and LDT files, and read an isolux working plane at any height. Add a Fog Machine and the projector and fixture beams glow in the air.</p>
+            <p class="v3-note">Fixtures are a context layer. They never touch the projector lux formula.</p>
+            <a class="v3-text-link" href="/videos#ch-14">How to do it: Chapters 14 and 15 <span aria-hidden="true">&#8599;</span></a>
+          </div>
+          <figure class="v3-media v3-media--facade">
+            <img src="/assets/media/feature-lighting-fog.webp" width="2560" height="1440" loading="lazy" alt="A Moving Head Spot and a Fog Machine added to the facade scene, with the Fog Machine settings open in the Inspector">
+          </figure>
+        </article>
+        <article class="v3-editorial v3-reveal v3-editorial--flip">
+          <div class="v3-editorial-copy">
+            <p class="v3-kicker">08 · Share and handoff</p>
+            <h3 class="v3-display">One link for the client, one PDF for the crew.</h3>
+            <p>Create a Cloud Share link with a QR code, optional password and expiry, choose what viewers can do, and revoke it from Share Management. Export a PDF Tech Rider in one click, or an editable .flx.json project file. Projects are cloud-saved with autosave and version history.</p>
+            <a class="v3-text-link" href="/videos#ch-16">How to do it: Chapters 16 to 18 <span aria-hidden="true">&#8599;</span></a>
+          </div>
+          <figure class="v3-media v3-media--facade">
+            <img src="/assets/media/feature-share.webp" width="2560" height="1440" loading="lazy" alt="The Share 3D View dialog with the Cloud Share block, link label, expiry, password option and the list of what viewers can do">
+          </figure>
+        </article>
+        </div>
       </div>
     </section>
 
-    <section class="v3-section v3-section--dark">
+    <section class="v3-section v3-section--paper">
       <div class="v3-container">
         <div class="v3-section-head v3-reveal">
           <p class="v3-kicker">Make the plan portable</p>
           <h2 class="v3-display">One plan. Clear handoffs.</h2>
-          <p class="v3-lead">Keep the working file editable, then give collaborators <strong>the level of detail they actually need.</strong></p>
+          <p class="v3-lead">Keep the working file editable, then give each person <strong>the level of detail they actually need.</strong></p>
         </div>
         <div class="v3-grid v3-grid--handoff">
           <article class="v3-card v3-reveal">
             <span class="v3-card-index">PDF</span>
             <h3>PDF Tech Rider</h3>
-            <p>Turn the current setup into a readable technical handoff.</p>
+            <p>One click from the File menu: the scene view with its lux legend, a projector index, and a page per projector with lens, throw, position and lux.</p>
           </article>
           <article class="v3-card v3-reveal">
-            <span class="v3-card-index">FLX</span>
+            <span class="v3-card-index">.flx.json</span>
             <h3>Project file</h3>
-            <p>Move an editable FieldLux plan between accounts or machines.</p>
+            <p>Export an editable FieldLux project file and open it on any machine or account.</p>
           </article>
           <article class="v3-card v3-reveal">
             <span class="v3-card-index">URL</span>
             <h3>Read-only share</h3>
-            <p>Create a review link, then revoke it when the review is over.</p>
+            <p>Create a Cloud Share link with a QR code, optional password and expiry. Extend or revoke it from Share Management, or grant a colleague's FieldLux account read-only access by email.</p>
           </article>
-        </div>
-        <div class="v3-inline-link v3-reveal">
-          <a class="v3-text-link v3-text-link--light" href="/product">See the full product workflow <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </section>
@@ -202,8 +289,8 @@
     <section class="v3-section v3-section--signal">
       <div class="v3-container v3-cta v3-reveal">
         <p class="v3-kicker">Open beta</p>
-        <h2 class="v3-display">All features are available today.</h2>
-        <p>FieldLux is free during open beta. <strong>No card required.</strong> Planned prices are shown for transparency. Checkout is not available yet.</p>
+        <h2 class="v3-display">Everything we ship is free today.</h2>
+        <p>FieldLux is free during open beta. <strong>No card required.</strong> Planned prices are shown for transparency. Checkout is not available yet. Imported model storage is limited to 2 GB per account during the beta.</p>
         <div class="v3-actions">
           <a class="v3-button v3-button--dark" href="https://app.field-lux.com/" data-app-link>Start planning</a>
           <a class="v3-button v3-button--signal" href="/pricing">View planned pricing</a>

@@ -5,22 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Measurement | FieldLux</title>
-  <meta name="description" content="Check estimated surface lux, pixel density, luminance, and 13-point distribution on the venue model, with the assumptions behind each estimate shown.">
+  <meta name="description" content="Read estimated surface lux, pixel density, luminance and the 13pt Diagnostic on the venue model. Every map is labelled with its calculation basis: Physics Model, Spec-based or Calibrated.">
   <link rel="canonical" href="https://field-lux.com/measurement">
   <meta name="robots" content="index, follow, max-image-preview:large">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="FieldLux">
   <meta property="og:title" content="FieldLux measurement: read the light on the surface">
-  <meta property="og:description" content="Surface lux, pixel density, luminance, and distribution as an optics-based planning estimate in the 3D scene.">
+  <meta property="og:description" content="Compare light and image scale on the venue model. Every readout is labelled as a physics estimate, not a field measurement.">
   <meta property="og:url" content="https://field-lux.com/measurement">
   <meta property="og:image" content="https://field-lux.com/assets/og-card.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="FieldLux projection planning workspace">
+  <meta property="og:image:alt" content="FieldLux logo">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="FieldLux measurement: read the light on the surface">
-  <meta name="twitter:description" content="Compare light and image scale on the venue model, with the assumptions behind each estimate shown.">
+  <meta name="twitter:description" content="Compare light and image scale on the venue model. Every readout is labelled as a physics estimate, not a field measurement.">
   <meta name="twitter:image" content="https://field-lux.com/assets/og-card.png">
 
   <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
@@ -68,8 +68,8 @@
       <div class="v3-container">
         <div>
           <p class="v3-kicker">MEASUREMENT</p>
-          <h1 class="v3-display" id="measurement-title">MEASURE THE LIGHT<br>ON THE SURFACE.</h1>
-          <p class="v3-lead">FieldLux estimates <strong>surface lux, pixel density, and luminance</strong> from projector optics, scene geometry, overlap, materials, and ambient settings.</p>
+          <h1 class="v3-display" id="measurement-title">READ THE LIGHT<br>BEFORE LOAD-IN.</h1>
+          <p class="v3-lead">FieldLux estimates <strong>surface lux, pixel density and luminance</strong> from projector optics, scene geometry, overlap and surface materials, and reports the projection-to-ambient contrast ratio from your ambient light setting.</p>
           <div class="v3-actions">
             <a class="v3-button v3-button--primary" href="https://app.field-lux.com" data-app-link>Start free</a>
             <a class="v3-button v3-button--text" href="/product">Explore the product</a>
@@ -77,8 +77,8 @@
         </div>
 
         <figure class="v3-media">
-          <img src="/assets/media/analysis-13pt-diagnostics.png" width="1917" height="944" alt="FieldLux Values view with a 13-point Diagnostic drawn across a projected facade">
-          <figcaption>Open LUX HEATMAP, choose Values, and read the 13-point Diagnostic on the target.</figcaption>
+          <img src="/assets/media/editor-heatmap-values.webp" width="2560" height="1440" alt="The FieldLux editor with the Heatmap overlay on, the Heatmap panel in Absolute mode, and the 13pt Diagnostic probe values drawn across a projected facade">
+          <figcaption>Turn on the Heatmap overlay, press Values, and read the 13pt Diagnostic on the target.</figcaption>
         </figure>
       </div>
     </section>
@@ -87,25 +87,25 @@
       <div class="v3-container">
         <p class="v3-kicker">WHAT YOU CAN READ</p>
         <h2 class="v3-display" id="measurement-values-title">THREE VALUES. THREE DIFFERENT QUESTIONS.</h2>
-        <p class="v3-lead">Choose the value that answers your question. <strong>Lux, image scale, and surface brightness are not interchangeable.</strong></p>
+        <p class="v3-lead">Choose the map that answers your question. <strong>Lux, image scale and surface brightness are not interchangeable.</strong></p>
 
         <div class="v3-grid">
           <article class="v3-card">
             <p class="v3-kicker">SURFACE LUX</p>
             <h3>How much light lands here?</h3>
-            <p>Read estimated illuminance in lx, <strong>combining every projector that reaches the sampled point.</strong></p>
+            <p>Read illuminance in lx at 13 probes or under the cursor, for every projector that reaches the point or one head at a time. <strong>Pick the wall it is measured against with the Measurement target dropdown.</strong></p>
           </article>
 
           <article class="v3-card">
             <p class="v3-kicker">PIXEL DENSITY</p>
             <h3>How large is each pixel?</h3>
-            <p>Read image scale on the target in mm/px, so <strong>resolution stays tied to the physical surface size.</strong></p>
+            <p>Read image scale on the target in mm/px: beam width divided by horizontal resolution, so <strong>resolution stays tied to the physical surface size.</strong></p>
           </article>
 
           <article class="v3-card">
             <p class="v3-kicker">LUMINANCE</p>
             <h3>How bright does the surface appear?</h3>
-            <p>Read estimated surface brightness in cd/m<sup>2</sup>, <strong>including the selected surface material.</strong></p>
+            <p>Read surface brightness in cd/m<sup>2</sup> from the material you set: <strong>reflectance and screen gain are editable</strong> in the Material window, with 21 presets from white wall to rear-projection screen.</p>
           </article>
         </div>
       </div>
@@ -113,32 +113,32 @@
 
     <section class="v3-section" aria-labelledby="measurement-modes-title">
       <div class="v3-container">
-        <p class="v3-kicker">LUX HEATMAP</p>
-        <h2 class="v3-display" id="measurement-modes-title">THREE VIEWS OF THE SAME PLAN.</h2>
-        <p class="v3-lead">Use the same scene to compare <strong>values, reference ratios, and percentage deviation.</strong></p>
+        <p class="v3-kicker">HEATMAP</p>
+        <h2 class="v3-display" id="measurement-modes-title">THREE SCALES FOR THE SAME LUX MAP.</h2>
+        <p class="v3-lead">Use the same scene to compare <strong>absolute values, reference ratios and percentage deviation.</strong></p>
 
         <div class="v3-grid">
           <figure class="v3-card v3-media">
-            <img src="/assets/media/analysis-heatmap-absolute.png" width="440" height="667" alt="FieldLux Lux Heatmap panel in Absolute mode">
+            <img src="/assets/media/heatmap-panel-absolute.png" width="544" height="516" alt="FieldLux Heatmap panel with Surface Lux and Absolute selected, a 0 to 875 lux ramp and the Max lux field">
             <figcaption>
               <span class="v3-kicker">ABSOLUTE</span>
-              <span>Shows the estimated value on a fixed scale. Use it when <strong>the number itself matters.</strong></span>
+              <span>Shows the estimated value on a fixed scale you set with Max lux. Use it when <strong>the number itself matters.</strong></span>
             </figcaption>
           </figure>
 
           <figure class="v3-card v3-media">
-            <img src="/assets/media/analysis-heatmap-norm.png" width="442" height="673" alt="FieldLux Lux Heatmap panel in Norm mode">
+            <img src="/assets/media/heatmap-panel-norm.png" width="544" height="516" alt="FieldLux Heatmap panel with Norm selected, a 0.0x to 2.0x ramp and the Ref lux field">
             <figcaption>
               <span class="v3-kicker">NORM</span>
-              <span>Compares every point with a reference value. <strong>1.0x is the reference.</strong></span>
+              <span>Compares every point with the Ref lux value. <strong>1.0x is the reference.</strong></span>
             </figcaption>
           </figure>
 
           <figure class="v3-card v3-media">
-            <img src="/assets/media/analysis-heatmap-deviation.png" width="445" height="718" alt="FieldLux Lux Heatmap panel in Deviation mode">
+            <img src="/assets/media/heatmap-panel-deviation.png" width="544" height="576" alt="FieldLux Heatmap panel with Deviation selected, a minus 20 to plus 20 percent ramp and the Scale buttons">
             <figcaption>
               <span class="v3-kicker">DEVIATION</span>
-              <span>Shows the percentage above or below the reference, making <strong>uneven coverage easier to spot.</strong></span>
+              <span>Shows the percentage above or below the reference at plus or minus 10, 20 or 30, making <strong>uneven coverage easier to spot.</strong></span>
             </figcaption>
           </figure>
         </div>
@@ -150,7 +150,7 @@
         <div>
           <p class="v3-kicker">13PT DIAGNOSTIC</p>
           <h2 class="v3-display" id="diagnostic-title">READ THE DISTRIBUTION, NOT JUST THE CENTER.</h2>
-          <p class="v3-lead">The diagnostic samples nine ANSI points and four quarter-points on the target. <strong>Move a projector and the diagnostic updates with the plan.</strong></p>
+          <p class="v3-lead">Press Values in the Heatmap panel: nine ANSI points and four quarter-points appear on the target with their readings, plus a center, average and uniformity summary with a grade. <strong>Move a projector and the probes follow.</strong></p>
         </div>
 
         <dl class="v3-proof" aria-label="Diagnostic summary">
@@ -174,19 +174,19 @@
       <div class="v3-container">
         <p class="v3-kicker">WHAT THE NUMBERS MEAN</p>
         <h2 class="v3-display" id="assumptions-title">SEE WHAT THE ESTIMATE USES.</h2>
-        <p class="v3-lead">FieldLux calculates from published projector and lens data plus the geometry and settings in your scene. <strong>It is an optics-based planning estimate, not a lux-meter reading.</strong></p>
+        <p class="v3-lead">FieldLux calculates from published projector and lens data plus the geometry and materials in your scene. <strong>It is an optics-based planning estimate, not a lux-meter reading.</strong></p>
 
         <div class="v3-grid">
           <article class="v3-card">
             <p class="v3-kicker">INPUTS</p>
-            <h3>Geometry and settings affect the result</h3>
-            <p>Projector output, lens range, throw, surface, overlap, and scene settings <strong>calculate the displayed result.</strong></p>
+            <h3>Geometry and equipment set the result</h3>
+            <p>Lumens, lens throw range, distance, surface angle, overlap and material <strong>produce the displayed value.</strong> Ambient light does not change lux; it feeds the contrast ratio.</p>
           </article>
 
           <article class="v3-card">
             <p class="v3-kicker">BASIS</p>
-            <h3>The calculation model stays visible</h3>
-            <p>LUX HEATMAP shows the Physics Model and estimate labels <strong>beside every result.</strong></p>
+            <h3>The calculation basis stays visible</h3>
+            <p>The Heatmap panel header shows Physics Model, Spec-based or Calibrated, and the details show a Physics estimate badge. <strong>Epson and Panasonic lux is cross-checked against the manufacturers' own calculators</strong> and labelled Center Illuminance when it is.</p>
           </article>
 
           <article class="v3-card">
@@ -197,7 +197,7 @@
         </div>
 
         <div class="v3-actions">
-          <a class="v3-button v3-button--primary" href="https://app.field-lux.com" data-app-link>Measure a scene</a>
+          <a class="v3-button v3-button--primary" href="https://app.field-lux.com" data-app-link>Open a scene</a>
           <a class="v3-button v3-button--text" href="/product">Back to product</a>
         </div>
       </div>
