@@ -69,7 +69,7 @@
         <div>
           <p class="v3-kicker">MEASUREMENT</p>
           <h1 class="v3-display" id="measurement-title">READ THE LIGHT<br>BEFORE LOAD-IN.</h1>
-          <p class="v3-lead">FieldLux estimates <strong>surface lux, pixel density and luminance</strong> from projector optics, scene geometry, overlap and surface materials, and reports the projection-to-ambient contrast ratio from your ambient light setting.</p>
+          <p class="v3-lead">FieldLux estimates <strong>Surface Lux and Pixel Density</strong> from projector optics and scene geometry. It derives Luminance from the light on the surface, its angle, reflectance and screen gain, then reports contrast from your ambient light setting.</p>
           <div class="v3-actions">
             <a class="v3-button v3-button--primary" href="https://app.field-lux.com" data-app-link>Start free</a>
             <a class="v3-button v3-button--text" href="/product">Explore the product</a>
@@ -150,7 +150,7 @@
         <div>
           <p class="v3-kicker">13PT DIAGNOSTIC</p>
           <h2 class="v3-display" id="diagnostic-title">READ THE DISTRIBUTION, NOT JUST THE CENTER.</h2>
-          <p class="v3-lead">Press Values in the Heatmap panel: nine ANSI points and four quarter-points appear on the target with their readings, plus a center, average and uniformity summary with a grade. <strong>Move a projector and the probes follow.</strong></p>
+          <p class="v3-lead">Press Values in the Heatmap panel to place nine ANSI points and four quarter-points on the target. The panel adds center, average and uniformity summaries with a grade. <strong>Move a projector and the probes follow.</strong></p>
         </div>
 
         <dl class="v3-proof" aria-label="Diagnostic summary">
@@ -174,19 +174,19 @@
       <div class="v3-container">
         <p class="v3-kicker">WHAT THE NUMBERS MEAN</p>
         <h2 class="v3-display" id="assumptions-title">SEE WHAT THE ESTIMATE USES.</h2>
-        <p class="v3-lead">FieldLux calculates from published projector and lens data plus the geometry and materials in your scene. <strong>It is an optics-based planning estimate, not a lux-meter reading.</strong></p>
+        <p class="v3-lead">FieldLux calculates from published projector and lens data, scene geometry and, for Luminance, surface material settings. <strong>It is an optics-based planning estimate, not a lux-meter reading.</strong></p>
 
         <div class="v3-grid">
           <article class="v3-card">
             <p class="v3-kicker">INPUTS</p>
             <h3>Geometry and equipment set the result</h3>
-            <p>Lumens, lens throw range, distance, surface angle, overlap and material <strong>produce the displayed value.</strong> Ambient light does not change lux; it feeds the contrast ratio.</p>
+            <p>Lumens, optics, distance, surface angle and overlap determine Surface Lux. Image size and resolution determine Pixel Density. Material reflectance and screen gain affect Luminance only. <strong>Ambient light feeds the contrast ratio, not the lux value.</strong></p>
           </article>
 
           <article class="v3-card">
             <p class="v3-kicker">BASIS</p>
             <h3>The calculation basis stays visible</h3>
-            <p>The Heatmap panel header shows Physics Model, Spec-based or Calibrated, and the details show a Physics estimate badge. <strong>Epson and Panasonic lux is cross-checked against the manufacturers' own calculators</strong> and labelled Center Illuminance when it is.</p>
+            <p>The Heatmap panel header shows Physics Model, Spec-based or Calibrated, and the details show a Physics estimate badge. <strong>Epson and Panasonic lux values are cross-checked against the manufacturers' own calculators</strong> and labelled Center Illuminance when applicable.</p>
           </article>
 
           <article class="v3-card">

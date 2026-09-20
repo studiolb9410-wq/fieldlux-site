@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Privacy | FieldLux</title>
-  <meta name="description" content="What this site keeps in your browser and what it does not: no cookies, no analytics, no third-party code. What an app account stores on the server: account data, project data, share links, founding member records, waitlist history, service providers, and how to ask for deletion, correction or export.">
+  <meta name="description" content="What the FieldLux site stores in your browser, what the app stores with your account, which service providers are involved, and how to request deletion, correction or export.">
   <link rel="canonical" href="https://field-lux.com/privacy">
   <meta name="robots" content="index, follow, max-image-preview:large">
 
@@ -131,11 +131,11 @@
             <span class="section-title-line reveal-line"><span class="reveal-line-inner">AND WHERE IT LIVES.</span></span>
           </h1>
 
-          <p class="copy section-lead u-text-measure reveal">FieldLux is two things, and they hold different data. This site is a set of static pages with no account, no cookies and no analytics. The app at app.field-lux.com is where an account and your saved work live. This page keeps them apart so you can see which is which.</p>
+          <p class="copy section-lead u-text-measure reveal">FieldLux has a public website and an account-based app, and they handle different data. These static pages have no account, cookies or analytics. Your account and saved work live in the app at app.field-lux.com. The sections below explain each one separately.</p>
 
-          <p class="copy u-text-measure reveal">Everything claimed below about this site can be checked from the outside: open the page source, or watch your browser's network panel while you read. If a clause is unclear or wrong, say so at <a class="link" href="mailto:jay@field-lux.com">jay@field-lux.com</a> and it gets rewritten.</p>
+          <p class="copy u-text-measure reveal">You can verify the website claims below by reading the page source or watching your browser's network panel. If anything is unclear or incorrect, email <a class="link" href="mailto:jay@field-lux.com">jay@field-lux.com</a> so we can correct it.</p>
 
-          <p class="stat-note u-tabular reveal">Last updated: September 16, 2026</p>
+          <p class="stat-note u-tabular reveal">Last updated: September 20, 2026</p>
         </div>
 
       </div>
@@ -156,7 +156,7 @@
             <span class="section-title-line reveal-line"><span class="reveal-line-inner">READING RIGHT NOW.</span></span>
           </h2>
 
-          <p class="copy section-lead u-text-measure reveal">Static HTML, one stylesheet, some images and self-hosted fonts, all served from this domain. There is no form on any page of this site, so there is nothing here for you to submit and nothing for us to receive.</p>
+          <p class="copy section-lead u-text-measure reveal">These pages use static HTML, stylesheets, images, scripts and self-hosted fonts served from this domain. The website has no forms, so there is no information here for you to submit.</p>
 
           <ol class="speclist reveal">
 
@@ -172,7 +172,7 @@
               <span class="speclist-index u-tabular">(02)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">WHAT YOUR BROWSER KEEPS</h3>
-                <p class="u-text-measure">Two preferences are stored on your device by these pages: <code>fieldlux_motion</code>, written when you press Reduce motion in the footer, and <code>fieldlux_pricing_period</code>, written when the pricing page opens and when you switch the billing period there. Two further keys exist only so a review build can be pointed somewhere else, and are written only if you open the site with the matching query parameter: <code>fieldlux_flow_app_url</code> and <code>fieldlux_discord_url</code>. Those four are everything the pages themselves write. The 3D demo on the home page is the FieldLux app served from this same domain, so the view settings it remembers, all of them named with a <code>fieldlux_</code> prefix, are written into this site's local storage rather than a separate one. None of these keys is sent anywhere, none is readable by another site, and clearing site data removes all of them.</p>
+                <p class="u-text-measure">These pages write four local-storage keys. <code>fieldlux_motion</code> remembers the Reduce motion setting, and <code>fieldlux_pricing_period</code> remembers the selected billing period. Review builds may also write <code>fieldlux_flow_app_url</code> and <code>fieldlux_discord_url</code> when opened with the matching query parameters. The live 3D demo is served from this same domain and may store its own FieldLux-specific view preferences in the same browser storage. The four website keys are not sent to the server, other sites cannot read them, and clearing site data removes them.</p>
               </div>
             </li>
 
@@ -180,7 +180,7 @@
               <span class="speclist-index u-tabular">(03)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">THE DEMO FRAME ON THE HOME PAGE</h3>
-                <p class="u-text-measure">The home page carries a live 3D demo of the app, and it is served from this domain. The build sits at field-lux.com/embed, it is compiled from our own repository and committed to this site, and it loads automatically when the page opens rather than waiting for a click. Because it is the same origin as this page, the frame is not a security boundary and is not offered as one: the demo can read this document and this site's local storage exactly as though the app were written into the page, which is acceptable only because it is our code on our deployment. What it cannot do is leave: the frame is sandboxed without top-level navigation and without forms, so it cannot take you anywhere and there is nothing in it to submit. It contacts no other origin. The frame always loads <code>/embed</code> from this origin; there is no query parameter that can point it anywhere else.</p>
+                <p class="u-text-measure">The home page loads a live demo from <code>/embed</code> on this domain. It is compiled from our repository and included in this deployment. Because the frame shares the page's origin, it can read the page and its local storage and should not be treated as a separate security boundary. The sandbox blocks forms and top-level navigation, the demo contacts no other origin, and no query parameter can point the frame to another site.</p>
               </div>
             </li>
 

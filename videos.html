@@ -49,7 +49,7 @@
     Every chapter below has one empty slot: <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-NN-slug">.
     To publish a clip, replace the slot's inner placeholder with:
 
-      <video controls preload="metadata" playsinline poster="/assets/media/videos/ch-NN-slug.jpg" aria-label="...">
+      <video controls preload="metadata" playsinline poster="/assets/media/videos/ch-NN-slug.jpg" aria-label="Feature walkthrough">
         <source src="/assets/media/videos/ch-NN-slug.mp4" type="video/mp4">
         Your browser does not support embedded video.
       </video>
@@ -64,7 +64,7 @@
         <div class="v3-page-hero-copy v3-reveal">
           <p class="v3-kicker">Videos</p>
           <h1 class="v3-display v3-display--page">Every step,<br>shown in the app.</h1>
-          <p class="v3-lead">Short walkthroughs organised by workflow. Each one tells you <strong>where the control lives, what to click, and what you will see.</strong> Clips are being recorded now; the steps are already written out below.</p>
+          <p class="v3-lead">Short walkthroughs follow the current app workflow. Each one shows you <strong>where the control lives, what to select and what appears next.</strong> The clips are in production, and the complete steps are available below.</p>
         </div>
       </div>
     </section>
@@ -86,7 +86,7 @@
           <li><a href="#ch-10">10 Values, 13pt Diagnostic and Lens View</a></li>
           <li><a href="#ch-11">11 Materials and ambient contrast</a></li>
           <li><a href="#ch-12">12 Play Dock, Output Setup and media</a></li>
-          <li><a href="#ch-13">13 Warp &amp; Blend and calibration</a></li>
+          <li><a href="#ch-13">13 Warp &amp; Blend and test patterns</a></li>
           <li><a href="#ch-14">14 Lighting fixtures and Working Plane</a></li>
           <li><a href="#ch-15">15 Fog and volumetric beams</a></li>
           <li><a href="#ch-16">16 Save, versions and project files</a></li>
@@ -112,7 +112,7 @@
             <span class="v3-slot-note">Video in production</span>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Open app.field-lux.com. Sign in with your email and password, or click Continue with Google. New here: click Create account, pick your role, and enter the 6-digit code from the verification email.</li>
+            <li>Open app.field-lux.com and sign in with your email and password, or choose Continue with Google. To create an account, choose Create account, select your role and enter the six-digit code from the verification email.</li>
             <li>The Projects page opens with three tiles: New Project, Open FieldLux Test Scene and Open Play Dock Demo. Saved projects are listed below them.</li>
             <li>Click Open FieldLux Test Scene to get a working four-projector facade without importing anything. The copy is yours; the shared source never changes.</li>
             <li>Click New Project to start from a blank scene. Press Ctrl+O at any time to come back to Projects.</li>
@@ -128,14 +128,14 @@
           <header class="v3-chapter-head">
             <p class="v3-kicker">Part A · Venue · Chapter 02</p>
             <h2 class="v3-display" id="ch-02-title">Import a 3D model.</h2>
-            <p class="v3-howto-where"><strong>Where:</strong> File &gt; Import 3D Model... (Ctrl+I). Also Tools &gt; Quick Target &gt; Import 3D Model.</p>
+            <p class="v3-howto-where"><strong>Where:</strong> File &gt; Import 3D Model (Ctrl+I), or Tools &gt; Quick Target &gt; Import 3D Model.</p>
           </header>
           <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-02-import-model" role="img" aria-label="Video slot: import a 3D model, recording in progress">
             <span class="v3-slot-label">Chapter 02</span>
             <span class="v3-slot-note">Video in production</span>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Click File, then Import 3D Model... and pick one .fbx, .obj, .glb, .dae, .stl or .ply file. For .gltf, select its .bin and textures in the same picker, or export a single .glb instead.</li>
+            <li>Open File, choose Import 3D Model and select one .fbx, .obj, .glb, .dae, .stl or .ply file. For .gltf, include its .bin file and textures in the same picker, or export a single .glb instead.</li>
             <li>Wait for the import progress modal. A toast reports how the unit was detected and, if the up axis was ambiguous, which one was used.</li>
             <li>The model lands on the ground grid and is selected. In the Inspector, open 3D Model to check File, Size, Vertices, Source unit and Dimensions.</li>
             <li>If the model lies on its side, open Source Orientation and click Z-up (Blender, 3ds Max) or X-up. Click Center on bbox under Origin to bring it to the scene origin.</li>
@@ -151,19 +151,19 @@
           <header class="v3-chapter-head">
             <p class="v3-kicker">Part A · Venue · Chapter 03</p>
             <h2 class="v3-display" id="ch-03-title">Floor plans and sketches.</h2>
-            <p class="v3-howto-where"><strong>Where:</strong> File &gt; Import Floor Plan... (or Modeling &gt; Import CAD Drawing...), and Modeling &gt; New Sketch.</p>
+            <p class="v3-howto-where"><strong>Where:</strong> File &gt; Import Floor Plan, Modeling &gt; Import CAD Drawing, or Modeling &gt; New Sketch.</p>
           </header>
           <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-03-floor-plans" role="img" aria-label="Video slot: floor plans and sketches, recording in progress">
             <span class="v3-slot-label">Chapter 03</span>
             <span class="v3-slot-note">Video in production</span>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Click File, then Import Floor Plan... and drop a .dwg, .dxf, PDF, PNG or JPG. A DWG is converted in the browser; a multi-sheet drawing asks which sheet you want.</li>
+            <li>Open File, choose Import Floor Plan and add a .dwg, .dxf, PDF, PNG or JPG. A DWG is converted in the browser, and a multi-sheet drawing asks which sheet you want.</li>
             <li>In Set the scale, click Use this to accept the unit read from the file, or click two points a known distance apart and type the real length. For an image or PDF, type its overall width or height, or pick 1:50, 1:100 or 1:200.</li>
             <li>Click Import as reference lines. The plan appears in 3D as locked reference lines. For an image, click Place in 3D scene instead; it lands on the ground at the size you typed.</li>
             <li>Select the drawing and press Tab (Modeling &gt; Edit Linework). Press 2 to select lines, click the walls you want, then click Trace selected to my sketch in the Build group.</li>
             <li>With the traced lines selected, set Wall height and Wall thickness in the Inspector's Cleanup section, press W, then Enter. The lines rise into walls that receive projector light and cast shadows.</li>
-            <li>No drawing at all: click Modeling, then New Sketch. Press 3 for the Draw tool, click to place points, type a length like 5m while drawing, press Enter to finish a run, then W and Enter to raise the walls.</li>
+            <li>To work without a drawing, open Modeling and choose New Sketch. Press 3 for the Draw tool, click to place points, type a length such as 5m while drawing, press Enter to finish the run, then press W and Enter to raise the walls.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> a full-screen Import Floor Plan overlay with a scale chip, then a linework row in Scene Layers; in edit mode the top strip becomes the Modelling tools toolbar (Select, Draw, Modify, Cleanup, Build) and the prompt strip at the bottom describes the next click. Walls that render black are facing away: select them and click Modeling &gt; Flip Normals.</p>
         </article>
@@ -259,7 +259,7 @@
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Select the projector you want to replicate, then click Projector, then Placement Tool. The floating Projector Placement Tool window opens with the selected projector named at the top.</li>
-            <li>Click a mode: Linear, Circular or Symmetry. Linear: set Count, Spacing and Axis, and which unit the selected projector is (First, Center or Last). Circular: set Count, Radius, Arc and Aim (Aim at center, Rotated clone or Keep parallel). Symmetry: set Mirror axis (X plane or Z plane), Plane and Gap.</li>
+            <li>Choose Linear, Circular or Symmetry. For Linear, set Count, Spacing, Axis and whether the selected projector is First, Center or Last. For Circular, set Count, Radius, Arc and Aim. For Symmetry, set the Mirror axis, Plane and Gap.</li>
             <li>Keep Live ghost preview ticked. Ghost projectors appear in the 3D view and in the Coordinate Table, where you can edit X, Y and Z per unit.</li>
             <li>Click Bake Layout to create real, individually editable projectors, or Start Live to create a linked array that follows the source when you move it. Bake it later with Bake array in the Inspector.</li>
             <li>To align heads to each other, Ctrl+Click two or more projectors, click Show projector match axes in the tool rail, and click X, Y, Z or XYZ under Move or Rotate.</li>
@@ -288,7 +288,7 @@
             <li>Drag an edge slider to adjust the feather from 0 to 50 percent; the readout shows percent and metres. Pick a Blend Curve: Linear, Gamma 2.2 or S-Curve.</li>
             <li>If you move a projector afterwards, the Stale badge appears. Click Recalculate. Use Mirror to copy your feather width to the partner, or Match brightness to equalise the two heads.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> four edge cards, the enabled ones turning cyan with a slider, and in the 3D view a soft feather across the overlap instead of a doubled bright band. Measured lux stays pre-blend: each head's full white.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> four edge cards, with enabled edges turning cyan, and a soft feather across the overlap in the 3D view instead of a doubled bright band. Measured lux stays pre-blend and represents each head at full white.</p>
         </article>
       </div>
     </section>
@@ -351,17 +351,17 @@
           <header class="v3-chapter-head">
             <p class="v3-kicker">Part C · Measurement · Chapter 11</p>
             <h2 class="v3-display" id="ch-11-title">Materials and ambient contrast.</h2>
-            <p class="v3-howto-where"><strong>Where:</strong> Appearance &gt; Material..., or right-click an object in Scene Layers &gt; Material...; Appearance &gt; Ambient Light and Physical Preview.</p>
+            <p class="v3-howto-where"><strong>Where:</strong> Appearance &gt; Material, or right-click an object in Scene Layers and choose Material; Appearance &gt; Ambient Light and Physical Preview.</p>
           </header>
           <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-11-materials-ambient" role="img" aria-label="Video slot: materials and ambient contrast, recording in progress">
             <span class="v3-slot-label">Chapter 11</span>
             <span class="v3-slot-note">Video in production</span>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Select the surface or model, click Appearance, then Material.... In the floating Material window click a preset under Library, for example White Wall, Concrete, Screen/Fabric, Rear Projection or White Scrim.</li>
+            <li>Select the surface or model, open Appearance and choose Material. In the floating Material window, choose a Library preset such as White Wall, Concrete, Screen/Fabric, Rear Projection or White Scrim.</li>
             <li>Under Surface set Type, Base color and Glossiness. Under Brightness Response read Reflectance and set Screen gain. These change the Luminance map and the cd/m² readouts only; measured lux never moves.</li>
             <li>Click Appearance again. Under Ambient Light pick a preset such as Venue (house lights) or Full Blackout, or type a lux value.</li>
-            <li>Read the contrast line below it: a verdict from Optimal (Full Blackout) to Not viable, and the ratio CR n:1, computed as peak projector lux plus ambient over ambient.</li>
+            <li>Read the contrast line below it. FieldLux shows a verdict from Optimal (Full Blackout) to Not viable, plus the CR n:1 ratio calculated as peak projector lux plus ambient, divided by ambient.</li>
             <li>Under Physical Preview click On to render the scene as perceived brightness against that ambient level. For a site photo, raise Dimmer in the photo's Inspector section to darken the photo behind the projection.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> the surface change colour and gloss in the viewport, the Luminance map rescale with reflectance times gain over pi, and a coloured contrast verdict under Ambient Light. Ambient light is a display and contrast input; lux, mm/px and heatmap values do not change with it.</p>
@@ -377,17 +377,17 @@
           <header class="v3-chapter-head">
             <p class="v3-kicker">Part D · Content · Chapter 12</p>
             <h2 class="v3-display" id="ch-12-title">Play Dock, Output Setup and media.</h2>
-            <p class="v3-howto-where"><strong>Where:</strong> the Play Dock strip along the bottom of the viewport, its Output Setup... and Media buttons, and the transport bar inside the console.</p>
+            <p class="v3-howto-where"><strong>Where:</strong> the Play Dock strip along the bottom of the viewport, its Output Setup and Media buttons, and the transport bar inside the console.</p>
           </header>
           <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-12-play-dock" role="img" aria-label="Video slot: Play Dock, Output Setup and media, recording in progress">
             <span class="v3-slot-label">Chapter 12</span>
             <span class="v3-slot-note">Video in production</span>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Aim every projector at its wall, floor or model. Click Output Setup... on the Play Dock strip.</li>
+            <li>Aim every projector at its wall, floor or model, then choose Output Setup on the Play Dock strip.</li>
             <li>Under Regions, where your beams land, click a tile to include or skip it, drag to reorder, shift-drag to merge. Choose Auto, One canvas or My groups, and click Rescan after re-aiming. Under Outputs check each projector's region. Click Apply Setup.</li>
             <li>Click the Play Dock strip to open the console: screens rail on the left, mapping editor in the centre, inspector cards on the right, transport at the bottom.</li>
-            <li>Click Media in the header. Drag a built-in loop from Patterns, or one of your uploads from Library, onto a wall in the 3D view or onto the transport bar. Click Library... to open the full Media Library and upload images or video (1 GB per account).</li>
+            <li>Choose Media in the header. Drag a built-in loop from Patterns, or one of your uploads from Library, onto a wall in the 3D view or the transport bar. Choose Library to open the full Media Library and upload images or video, with a 1 GB limit per account.</li>
             <li>Press Play, or Space. Open the content chip's menu and click Add clip to build a playlist; use the loop button to cycle Clip, Playlist and Hold. Click Calibration to project a test pattern from every head of the group.</li>
             <li>In the centre pane, drag the cyan canvas to move the content on the face, drag its corners to resize, or type X, Y, W and H in the Canvas fields. Use Fill face, Fit ratio or Fit canvas to beams.</li>
           </ol>
@@ -401,19 +401,19 @@
         <article class="v3-chapter-body v3-reveal">
           <header class="v3-chapter-head">
             <p class="v3-kicker">Part D · Content · Chapter 13</p>
-            <h2 class="v3-display" id="ch-13-title">Warp &amp; Blend and calibration.</h2>
+            <h2 class="v3-display" id="ch-13-title">Warp &amp; Blend and test patterns.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> the Play Dock console, centre pane: click Warp &amp; Blend for a group or set. An ungrouped projector opens the studio directly.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-13-warp-blend" role="img" aria-label="Video slot: Warp and Blend and calibration, recording in progress">
+          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-13-warp-blend" role="img" aria-label="Video slot: Warp and Blend and test patterns, recording in progress">
             <span class="v3-slot-label">Chapter 13</span>
             <span class="v3-slot-note">Video in production</span>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Open the Play Dock console and click a blend group in the screens rail. Above the centre pane click Warp &amp; Blend.</li>
             <li>Click a numbered head chip to pick the projector to correct. All shows every head's outline read-only.</li>
-            <li>Corner-pin: drag the four cyan corners to keystone the picture; tick Perspective for a true homography. Mesh: set the Grid columns and rows and drag the amber interior points; click Spherize for domes.</li>
-            <li>Mask: click New mask, click points in the viewport to draw a feathered polygon, then set Invert and Feather. Blend: click Auto-Blend from overlaps or drag the left, right, top and bottom sliders, then tune Power, Gamma and Sharpness.</li>
-            <li>Calibration: click grid, crosshair, greyscale or colorbars for the selected head, or All heads for the whole group. None, show content, restores the picture. Click Reset to clear the current correction.</li>
+            <li>For Corner-pin, drag the four cyan corners to keystone the picture and enable Perspective for a true homography. For Mesh, set the Grid columns and rows, drag the amber interior points and choose Spherize for domes.</li>
+            <li>For a Mask, choose New mask and click points in the viewport to draw a feathered polygon, then set Invert and Feather. For Blend, choose Auto-Blend or adjust the left, right, top and bottom sliders, then tune Power, Gamma and Sharpness.</li>
+            <li>Under Calibration, choose grid, crosshair, greyscale or colorbars to display a test pattern on the selected head, or choose All heads for the whole group. Choose None, show content to restore the picture. This is a pattern preview, not an automatic field-calibration solver. Choose Reset to clear the current correction.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> a 2D studio of the head's frame with drag handles, and every corner-pin, mesh warp, mask and soft edge rendering live on the 3D beam. The footer reminds you that measurements never move: warp and blend change the picture, not the lux.</p>
         </article>
@@ -465,7 +465,7 @@
             <li>Adjust Wind, Direction, Gust and Ventilation to move and clear the cloud. Pick Quality (Low, Medium or High) and Beam visibility.</li>
             <li>Orbit the scene. Projector and fixture beams now glow in the air and projected content is carried through the fog.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> a plume from the nozzle, visible light shafts from every projector and fixture, and haze-attenuated walls. Nothing changes in measured lux; any with fog readout is marked as an estimate.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> a plume from the nozzle, visible light shafts from every projector and fixture, and haze-attenuated walls. Measured lux does not change; the "with fog (est.)" readout is clearly marked as an estimate.</p>
         </article>
       </div>
     </section>
@@ -478,17 +478,17 @@
           <header class="v3-chapter-head">
             <p class="v3-kicker">Part F · Deliver · Chapter 16</p>
             <h2 class="v3-display" id="ch-16-title">Save, versions and project files.</h2>
-            <p class="v3-howto-where"><strong>Where:</strong> File &gt; Save (Ctrl+S), Save As... (Ctrl+Shift+S), Version history..., Export Project File and Open Project File...; Settings &gt; Auto Save.</p>
+            <p class="v3-howto-where"><strong>Where:</strong> File &gt; Save (Ctrl+S), Save As (Ctrl+Shift+S), Version history, Export Project File and Open Project File; Settings &gt; Auto Save.</p>
           </header>
           <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-16-save-versions" role="img" aria-label="Video slot: save, versions and project files, recording in progress">
             <span class="v3-slot-label">Chapter 16</span>
             <span class="v3-slot-note">Video in production</span>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Press Ctrl+S or click File, then Save. The first save creates the cloud project; the chip at the right end of the menu bar reads Saving..., then the Unsaved dot disappears. Use Save As... to name a copy.</li>
+            <li>Press Ctrl+S or open File and choose Save. The first save creates the cloud project. The chip at the right end of the menu bar reads Saving while it works, then the Unsaved dot disappears. Choose Save As to name a copy.</li>
             <li>Click Settings and drag the Auto Save slider between 1 and 30 minutes. While the scene is dirty, a cloud version is written at that interval and a local draft is kept in the browser.</li>
-            <li>Click File, then Version history.... Hover a row and click Restore. The chosen version rolls forward as a new save; your current state is kept.</li>
-            <li>Click File, then Export Project File to download an editable .flx.json. Click File, then Open Project File... on any machine or account to load it, then Ctrl+S to store it in the cloud.</li>
+            <li>Open File and choose Version history. Hover over a row and choose Restore. The selected version is restored as a new save, so your current state remains in the history.</li>
+            <li>Open File and choose Export Project File to download an editable .flx.json. On any machine or account, choose Open Project File to load it, then press Ctrl+S to store it in the cloud.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> toasts reading Saved, Saved as new project or Restored, saved as a new version; a Version history modal listing saves by time with the newest tagged Current; and a downloaded project.flx.json. Imported 3D model binaries are referenced by cloud URL, not embedded in the file.</p>
         </article>
@@ -501,19 +501,19 @@
           <header class="v3-chapter-head">
             <p class="v3-kicker">Part F · Deliver · Chapter 17</p>
             <h2 class="v3-display" id="ch-17-title">Share links.</h2>
-            <p class="v3-howto-where"><strong>Where:</strong> Share &gt; Share... opens Share 3D View; Share &gt; Share Management... lists every link.</p>
+            <p class="v3-howto-where"><strong>Where:</strong> Share &gt; Share opens Share 3D View; Share &gt; Share Management lists every link.</p>
           </header>
           <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-17-share-links" role="img" aria-label="Video slot: share links, recording in progress">
             <span class="v3-slot-label">Chapter 17</span>
             <span class="v3-slot-note">Video in production</span>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Click Share, then Share.... In the Cloud Share block, type a Link label, choose Link expires in (2, 7, 14 or 30 days, or Never), and tick Require a password if you want one.</li>
+            <li>Open Share and choose Share. In the Cloud Share block, enter a Link label, choose an expiry of 2, 7, 14 or 30 days or Never, and enable Require a password when needed.</li>
             <li>Under What viewers can do, toggle Allow PDF Tech Rider download, Show my measurements and Allow walk mode.</li>
             <li>Click Create Cloud Share. Click Copy next to the URL, or let the recipient scan the QR code under Scan to open. Recipients open a read-only viewer without signing in.</li>
             <li>For a scene without imported 3D models, the URL Share block packs the whole scene into the link itself; click Generate URL Share and Copy. Nothing is uploaded.</li>
             <li>To give a colleague's FieldLux account read-only project access, type their email under FieldLux Account Share and click Share. The project appears in their Projects list, read-only.</li>
-            <li>Click Share, then Share Management... to copy, extend (+2d, +7d, +14d, +30d or never), revoke or delete any link.</li>
+            <li>Open Share and choose Share Management to copy, extend, revoke or delete any link. Extensions are available for 2, 7, 14 or 30 days, or permanently.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> the generated URL with a Copy button and a QR code, a toast reading Cloud share created, and in Share Management every link grouped as Active or Expired or revoked with its time left. A revoked link tells the recipient the owner revoked it.</p>
         </article>
@@ -548,7 +548,7 @@
           <header class="v3-chapter-head">
             <p class="v3-kicker">Part F · Deliver · Chapter 19</p>
             <h2 class="v3-display" id="ch-19-title">Settings, shortcuts and walk mode.</h2>
-            <p class="v3-howto-where"><strong>Where:</strong> the Settings and View menus, Help &gt; Keyboard Shortcuts (F1), Tools &gt; Search Commands... (Ctrl+K), and the G key.</p>
+            <p class="v3-howto-where"><strong>Where:</strong> the Settings and View menus, Help &gt; Keyboard Shortcuts (F1), Tools &gt; Search Commands (Ctrl+K), and the G key.</p>
           </header>
           <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-19-settings-shortcuts" role="img" aria-label="Video slot: settings, shortcuts and walk mode, recording in progress">
             <span class="v3-slot-label">Chapter 19</span>
