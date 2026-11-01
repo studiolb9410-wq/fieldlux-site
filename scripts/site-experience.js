@@ -14,23 +14,33 @@
     set(key, value) {
       try { window.localStorage.setItem(key, value); } catch (_) {}
     },
+    remove(key) {
+      try { window.localStorage.removeItem(key); } catch (_) {}
+    },
   };
 
+  // ?flowAppUrl= (README "Review overrides") may only point the CTAs at the
+  // FieldLux app: https on app.field-lux.com or another *.field-lux.com host.
+  // Anything else falls back to the default, and a stored value that fails the
+  // check is removed so it cannot persist for that visitor.
   const resolveAppUrl = () => {
     const params = new URLSearchParams(window.location.search);
-    const supplied = params.get('appUrl') || safeStorage.get(appKey) || appDefault;
-    try {
-      const parsed = new URL(supplied, window.location.href);
-      const host = parsed.hostname.toLowerCase();
-      if (parsed.protocol === 'https:' && (host === 'app.field-lux.com' || host.endsWith('.field-lux.com'))) {
-        if (params.has('appUrl')) safeStorage.set(appKey, parsed.origin + parsed.pathname);
-        parsed.searchParams.set('siteReturnUrl', window.location.href.split('#')[0]);
-        return parsed.href;
+    const fromQuery = params.get('flowAppUrl');
+    const supplied = fromQuery || safeStorage.get(appKey);
+    let target = new URL(appDefault);
+    if (supplied) {
+      let parsed = null;
+      try { parsed = new URL(supplied, window.location.href); } catch (_) {}
+      const host = parsed ? parsed.hostname.toLowerCase() : '';
+      if (parsed && parsed.protocol === 'https:' && (host === 'app.field-lux.com' || host.endsWith('.field-lux.com'))) {
+        if (fromQuery) safeStorage.set(appKey, parsed.origin + parsed.pathname);
+        target = parsed;
+      } else {
+        safeStorage.remove(appKey);
       }
-    } catch (_) {}
-    const fallback = new URL(appDefault);
-    fallback.searchParams.set('siteReturnUrl', window.location.href.split('#')[0]);
-    return fallback.href;
+    }
+    target.searchParams.set('siteReturnUrl', window.location.href.split('#')[0]);
+    return target.href;
   };
 
   const appUrl = resolveAppUrl();
@@ -64,7 +74,9 @@
   updateHeader();
   window.addEventListener('scroll', updateHeader, { passive: true });
 
-  const revealItems = [...document.querySelectorAll('.v3-reveal')];
+  // .reveal and .reveal-lines are the document pages' one-shot reveals (404):
+  // without .is-in they stay at opacity 0 whenever motion is on.
+  const revealItems = [...document.querySelectorAll('.v3-reveal, .reveal, .reveal-lines')];
   if ('IntersectionObserver' in window && revealItems.length) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -102,14 +114,12 @@
 
   const periodButtons = [...document.querySelectorAll('[data-period]')];
   const periodNote = document.querySelector('[data-period-note]');
-  const periodNotes = {
-    weekly: '<strong>A planned seven-day pass.</strong> One payment with no renewal.',
-    monthly: '<strong>A planned monthly subscription.</strong> Cancellation terms will be published before checkout opens.',
-    yearly: '<strong>The lowest planned rate.</strong> The full year is billed once when checkout opens.',
-  };
+  // One sentence for both periods, the same as the static note (launch review 5-1, item 4).
+  const renewalNote = 'Plans renew automatically until you cancel. Cancel any time in Account settings and keep access until the end of the period you paid for.';
+  const periodNotes = { monthly: renewalNote, yearly: renewalNote };
 
   const setPeriod = (period) => {
-    if (!['weekly', 'monthly', 'yearly'].includes(period)) period = 'monthly';
+    if (!['monthly', 'yearly'].includes(period)) period = 'monthly';
     root.dataset.pricingPeriod = period;
     safeStorage.set('fieldlux_pricing_period', period);
     periodButtons.forEach((button) => {
@@ -121,15 +131,18 @@
       const value = card.dataset[`${period}Price`] || 'Not available';
       const unit = card.dataset[`${period}Unit`] || '';
       const billing = card.dataset[`${period}Billing`] || '';
+      const korea = card.dataset[`${period}Kr`] || '';
       const price = card.querySelector('[data-plan-price]');
       const priceUnit = card.querySelector('[data-plan-unit]');
       const bill = card.querySelector('[data-plan-billing]');
+      const koreaLine = card.querySelector('[data-plan-kr]');
       if (price) price.textContent = value;
       if (priceUnit) priceUnit.textContent = unit;
       if (bill) bill.textContent = billing;
-      card.classList.toggle('is-unavailable', value === 'Monthly only' || value === 'Not available' || value === 'No weekly pass');
+      if (koreaLine) koreaLine.textContent = korea;
+      card.classList.toggle('is-unavailable', value === 'Not available');
     });
-    if (periodNote) periodNote.innerHTML = periodNotes[period];
+    if (periodNote) periodNote.textContent = periodNotes[period];
   };
 
   if (periodButtons.length) {

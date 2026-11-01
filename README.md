@@ -12,16 +12,22 @@ README and the spec disagree, the spec wins.
 |---|---|---|
 | `/` | `index.html` | The product, ten chapters, the numbers, the limits |
 | `/videos` | `videos.html` | Feature videos - 43 slots across the same ten chapters |
-| `/pricing` | `pricing.html` | The published price plan. Nothing purchasable yet |
-| `/privacy` | `privacy.html` | Privacy policy |
+| `/pricing` | `pricing.html` | Viewer, Projection and Pro, monthly or yearly. Checkout is in the app, never on this site |
+| `/terms` | `terms.html` | Terms of Service, English and Korean (the Korean text is official for customers in Korea) |
+| `/refund` | `refund.html` | Refund and cancellation policy, English and Korean. Must say the same rule as the app's `REFUND_RULE` |
+| `/privacy` | `privacy.html` | Privacy policy, English and Korean |
 | - | `404.html` | Not-found page |
-| - | `sitemap.xml`, `robots.txt` | `sitemap.xml` lists `/`, `/videos`, `/pricing`, `/privacy` |
+| - | `sitemap.xml`, `robots.txt` | `sitemap.xml` lists every page above except 404 |
+
+The app links `https://field-lux.com/terms`, `/refund`, `/privacy` and `/pricing` from its
+sign-up and checkout screens, so these four routes must never 404.
 
 `vercel.json` sets `cleanUrls: true` and `trailingSlash: false`, so internal links are
 written `/privacy` and `/videos` - **never** with a `.html` suffix.
 
 `outputDirectory` is `"."`, which makes the repo root the web root. Anything committed
-here is publicly served, this file included. Do not put internal preview URLs, tokens or
+here is publicly served unless `.vercelignore` lists it (`docs/`, this README and the
+local tooling are listed). Do not put internal preview URLs, tokens or
 customer names in the repo.
 
 ## Direction
@@ -29,8 +35,12 @@ customer names in the repo.
 - The page is white (`--paper`). Exactly three things on the site are dark, and each is
   dark because the content inside it is: the hero frame that hosts the live 3D embed, and
   the full-bleed product video letterboxes.
-- The site is English only. The bilingual pass was reverted by the owner on 2026-08-15,
-  so no Korean ships on any page.
+- The site is English only (the bilingual pass was reverted by the owner on 2026-08-15),
+  with one exception: the legal pages, `/terms`, `/refund` and `/privacy`, carry a Korean
+  version, which is the official text for customers in Korea. Korean law asks for terms
+  written in Korean (launch review 8-18, decided 2026-10-31). Each page states that both
+  versions have the same effect and that the reading more favorable to the customer wins
+  if they differ, so edit both versions together.
 - Copy is plain ASCII, everywhere, including comments. No em dashes, no accented
   spellings, no typographic quotes, no arrows, no math glyphs. Rewrite the sentence
   rather than reach for a character the self-hosted font subset may not carry: the
@@ -47,7 +57,7 @@ customer names in the repo.
 
 ```bash
 npm install
-npm run build     # tailwindcss -i ./src/input.css -o ./assets/tailwind.css --minify
+npm run build     # scripts/business-info.mjs, then tailwindcss -i ./src/input.css -o ./assets/tailwind.css --minify
 npm run watch     # the --watch variant
 npm run preview   # local server on :4173
 ```
@@ -68,9 +78,53 @@ local preview. Always run the build before committing.
 repo root is covered automatically. Narrowing this glob back to a file list silently purges
 every utility on any page not named in it.
 
+## Business details, placeholders and launch switches
+
+Korean e-commerce law asks every page to show the operator's trade name, representative,
+address, phone, business registration number, mail-order report number, email and
+hosting provider. The repository is public, so the address and phone are **not committed**.
+Every page carries placeholders instead:
+
+```html
+<span data-biz="name_en">[Business name]</span>
+```
+
+`scripts/business-info.mjs` runs first in `npm run build`. On Vercel it writes these
+environment variables into the built pages (a Vercel build works on a fresh checkout, so
+nothing goes back to git); anywhere else it only reports what is missing.
+
+| Variable | Shown as | Keys |
+|---|---|---|
+| `FLX_BIZ_NAME_KO`, `FLX_BIZ_NAME_EN` | trade name | `name_ko`, `name_en` |
+| `FLX_BIZ_REP_KO`, `FLX_BIZ_REP_EN` | representative, also the privacy officer | `rep_ko`, `rep_en` |
+| `FLX_BIZ_ADDRESS_KO`, `FLX_BIZ_ADDRESS_EN` | business address | `address_ko`, `address_en` |
+| `FLX_BIZ_PHONE` | phone | `phone` |
+| `FLX_BIZ_REG_NO` | business registration number | `reg_no` |
+| `FLX_BIZ_MAIL_ORDER_NO` | mail-order report number, or `exempt` | `mail_order_ko`, `mail_order_en` |
+
+An `_EN` value falls back to its `_KO` value. Write the trade name exactly as it appears
+on the Paddle account and the payout bank account.
+
+Elements marked `data-todo` are facts still to confirm in the source itself (the
+effective dates of the legal pages, the support mailbox provider). Edit them in the HTML
+and drop the attribute.
+
+**A production build fails while any placeholder or `data-todo` is left**, so
+field-lux.com keeps its current deployment instead of going live with "[Business name]".
+Preview builds show the placeholders. `FLX_ALLOW_PLACEHOLDERS=1` overrides the check.
+
+Copy that changes on the two launch days carries `data-launch`:
+
+| Marker | When | Change |
+|---|---|---|
+| `data-launch="announce"` | the day the start date is posted | `/pricing` hero: "Paid plans start on {weekday, month day, year} at 09:00 KST (00:00 UTC). Until then, everything is free. If this date changes, we will update this page at least 14 days before the date shown." The "Checkout is not open yet" fact: "These prices apply from the start date above. Nothing is charged before then." The "When do paid plans start?" answer names the date. "Not on sale yet" on the cards: "On sale from the start date". |
+| `data-launch="live"` | the day paid plans start | `/pricing` hero, pill and CTA: "Try Pro free for 14 days. No card required." Remove the open-beta FAQ and the "Checkout is not open yet" fact. Home, product, videos and 404: drop "free during open beta" and "Checkout is not available yet". Footer: "(c) 2026 FieldLux." without "Open beta." |
+
+Find every switch with `grep -n 'data-launch=' *.html`.
+
 ## Review overrides
 
-Three overrides exist for review builds. Each reads a query parameter, persists it in
+One override exists for review builds. It reads a query parameter, persists it in
 `localStorage` for that browser, and changes nothing about the production default.
 
 ### App CTA target - `?flowAppUrl=`
@@ -80,22 +134,18 @@ Every CTA carrying `data-app-link` points at `https://app.field-lux.com` and app
 use the same rewriting. Modifier-click and middle-click pass through untouched, so
 cmd-click still opens a new tab.
 
-To retarget the CTAs at a review build:
+To retarget the CTAs at another FieldLux host:
 
 ```text
-?flowAppUrl=https%3A%2F%2Fmy-preview-build.vercel.app%2F%3Fauth%3D1
+?flowAppUrl=https%3A%2F%2Fstaging.field-lux.com%2F
 ```
 
-The accepted value is stored under `localStorage['fieldlux_flow_app_url']` and applies
-until it is overridden or cleared.
+The accepted value is stored under `localStorage['fieldlux_flow_app_url']` (origin and
+path only) and applies until it is overridden or cleared.
 
-**Host allowlist.** Only these are accepted:
-
-| Accepted | Example |
-|---|---|
-| `field-lux.com` and any subdomain, over HTTPS | `https://app.field-lux.com` |
-| any `*.vercel.app` host, over HTTPS | `https://my-preview-build.vercel.app` |
-| `localhost` / `127.0.0.1`, over HTTPS **or** plain HTTP | `http://localhost:5173` |
+**Host allowlist.** Only HTTPS on `app.field-lux.com` or another `*.field-lux.com` host is
+accepted. `*.vercel.app` and `localhost` are not: anyone can create a `vercel.app` host,
+and a `javascript://localhost/...` value once passed the old localhost exception.
 
 Anything else - any other host, any other protocol - is rejected. The CTAs fall back to
 `https://app.field-lux.com` **and the stored key is cleared**, so a bad value cannot
@@ -106,53 +156,11 @@ would rewrite every CTA on the site to an attacker-chosen sign-in destination an
 that way for that browser. A site whose argument is that it does not overclaim cannot
 carry an open-redirect-shaped surface on its primary CTA.
 
-### Discord invite - `?discordUrl=`
+### Not implemented in this design
 
-Every link carrying `data-discord-link` points at the live invite. To retarget it:
-
-```text
-?discordUrl=https%3A%2F%2Fdiscord.gg%2Fyour-invite
-```
-
-Only HTTPS links on `discord.gg`, `discord.com` and `*.discord.com` are accepted. The
-value is stored under `localStorage['fieldlux_discord_url']`. Accepted links are given
-`target="_blank"` and `rel="noopener noreferrer"`.
-
-### Hero embed - `?embedSrc=`
-
-`index.html` only. The hero frame ships as a still with a hidden launch button; the demo
-iframe is created on an explicit click and never before. Its URL is configuration, read
-from `data-embed-src` on `.hero-frame`, which ships **empty** because the demo deployment
-does not exist yet. With no usable URL the button stays `hidden`, so the no-JS state and
-the JS state are identical - no dead button, no empty iframe.
-
-To point a review build at a demo deployment:
-
-```text
-?embedSrc=https%3A%2F%2Fmy-preview-build.vercel.app%2Fembed%23share%3D<payload>
-```
-
-The accepted value is stored under `localStorage['fieldlux_embed_src']` and applies until
-it is overridden or cleared.
-
-**Host allowlist.** Identical to `?flowAppUrl=` - the same `isAllowedAppHost` function
-validates both:
-
-| Accepted | Example |
-|---|---|
-| `field-lux.com` and any subdomain, over HTTPS | `https://demo.field-lux.com` |
-| any `*.vercel.app` host, over HTTPS | `https://my-preview-build.vercel.app` |
-| `localhost` / `127.0.0.1`, over HTTPS **or** plain HTTP | `http://localhost:5173` |
-
-Anything else is rejected, and the stored key is cleared, so a bad value cannot persist
-for that visitor - the same contract as `flowAppUrl`. The frame then falls back to
-whatever `data-embed-src` declares, which today is nothing, so it stays a still.
-
-The demo is a **separate deployment** and must never point at the signed-in app. The
-iframe is sandboxed `allow-scripts allow-same-origin`, with `allow-top-navigation` and
-`allow-forms` deliberately absent, so an embed can never navigate this site away.
-
-All three keys are documented for visitors in `privacy.html`.
+`?discordUrl=` and `?embedSrc=`, described in `docs/REDESIGN_SPEC_0814.md`, are not
+implemented: the Discord links are written into the markup, and the hero frame always
+loads `/embed` from this origin. `privacy.html` lists exactly the keys the pages write.
 
 ## Publishing a feature video
 
@@ -229,7 +237,11 @@ caught and ignored.
 
 ## Source files
 
-- `index.html`, `videos.html`, `pricing.html`, `privacy.html`, `404.html` - the pages
+- `index.html`, `product.html`, `measurement.html`, `videos.html`, `pricing.html`,
+  `terms.html`, `refund.html`, `privacy.html`, `404.html` - the pages
+- `scripts/site-experience.js` - CTA target, header, reveals, motion toggle, pricing period
+- `scripts/business-info.mjs` - fills the business details on Vercel and guards production
+- `.vercelignore` - keeps `docs/`, this README and the local tooling off the website
 - `src/input.css` - the design tokens and every site component class
 - `tailwind.config.js` - the colour scale and the content glob
 - `vercel.json` - clean URLs and the security headers, including the CSP

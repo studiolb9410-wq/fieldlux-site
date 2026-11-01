@@ -1370,9 +1370,81 @@ body.v3-menu-open{overflow:hidden}
   .v3-footer-brand{grid-column:1 / -1}
 }
 @media (min-width:1024px){
-  .v3-footer-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-  .v3-footer-brand{grid-column:span 2}
+  .v3-footer-grid{grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr))}
+  .v3-footer-brand{grid-column:auto}
 }
+/* the business details Korean e-commerce law asks every page to show, hosting provider included */
+.v3-footer-meta > * + *{margin-top:var(--sp-8)}
+.v3-footer-meta .v3-footer-business{color:var(--ink-500)}
+.v3-footer-meta a{display:inline;width:auto;padding:0;font-size:inherit;line-height:inherit;color:var(--ink-700);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+
+/* -- legal pages: terms, refund, privacy -----------------------------------
+   Built on the document grammar above (section, micro-label, speclist). No
+   reveal classes: a legal text is readable the moment it loads, with or
+   without script. Each page carries an English and a Korean version. */
+.legal-langs{display:flex;flex-wrap:wrap;gap:var(--sp-8);margin-bottom:0;padding:0;list-style:none}
+.legal-langs a{
+  display:inline-flex;
+  align-items:center;
+  min-height:40px;
+  padding:0 var(--sp-16);
+  border:1px solid var(--line-strong);
+  border-radius:999px;
+  font-family:var(--font-display);
+  font-size:var(--fs-ui);
+  font-weight:600;
+  color:var(--ink-900);
+  transition:border-color var(--t-hover) var(--ease);
+}
+.legal-langs a:hover{border-color:var(--ink-900)}
+.legal-summary{
+  max-width:68ch;
+  padding:var(--sp-24);
+  border-left:3px solid var(--brand-700);
+  background:var(--brand-100);
+  font-size:var(--fs-body);
+  line-height:1.6;
+  color:var(--ink-900);
+}
+.legal-version{scroll-margin-top:calc(var(--header-h) + var(--sp-16))}
+.legal-version + .legal-version{border-top:2px solid var(--ink-950)}
+.speclist-body ul,
+.speclist-body ol{display:grid;gap:var(--sp-8);margin:0;padding-left:1.25em;font-size:var(--fs-body);line-height:1.6;color:var(--ink-700)}
+.speclist-body a{color:var(--ink-900);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.legal-table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.legal-table{width:100%;border-collapse:collapse;font-size:var(--fs-caption);line-height:1.5;color:var(--ink-700)}
+.legal-table th,
+.legal-table td{padding:var(--sp-12) var(--sp-16) var(--sp-12) 0;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.legal-table thead th{font-family:var(--font-display);font-size:var(--fs-kicker);font-weight:650;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-500);border-bottom-color:var(--line-strong)}
+.legal-table tbody th{font-weight:600;color:var(--ink-900)}
+/* phones: each row becomes a block, each value named by its column */
+@media (max-width:640px){
+  .legal-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+  .legal-table tr{display:block;padding:var(--sp-12) 0;border-bottom:1px solid var(--line)}
+  .legal-table th,
+  .legal-table td{display:block;padding:var(--sp-4) 0;border-bottom:0}
+  .legal-table td[data-label]::before{content:attr(data-label);display:block;font-family:var(--font-display);font-size:var(--fs-kicker);font-weight:650;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-500)}
+}
+@media (min-width:641px){
+  .legal-table{min-width:560px}
+}
+.legal-form{
+  margin:0;
+  padding:var(--sp-24);
+  border:1px solid var(--line-strong);
+  background:var(--paper-2);
+  font-family:var(--font-body);
+  font-size:var(--fs-caption);
+  line-height:1.8;
+  white-space:pre-wrap;
+  color:var(--ink-900);
+}
+[lang="ko"]{word-break:keep-all;overflow-wrap:break-word}
+
+/* pricing: the Korean VAT-inclusive total under each paid price (launch review 4-3, option B) */
+.v3-price-kr{margin:var(--sp-8) 0 0;font-size:var(--fs-caption);line-height:1.4;color:var(--ink-500)}
+.v3-price-card--featured .v3-price-kr{color:var(--stage-muted)}
+.v3-price-billing{line-height:1.5}
 
 /* ============================================================================
    6. MOTION AND PREFERENCES
