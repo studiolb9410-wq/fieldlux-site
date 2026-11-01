@@ -33,30 +33,35 @@
   const params = new URLSearchParams(window.location.search);
 
   /* == 10.4 (b), flowAppUrl review override: host allowlist ============
-     https only, on app.field-lux.com or another *.field-lux.com host: the
-     rule scripts/site-experience.js applies on the v3 pages. *.vercel.app
-     and localhost are out. Anyone can create a vercel.app host, and the 5/18
-     site let a javascript://localhost/... value through its localhost case. */
+     https only, on app.field-lux.com or another *.field-lux.com host, on the
+     default port and without user info: the rule scripts/site-experience.js
+     applies on the v3 pages. *.vercel.app and localhost are out. Anyone can
+     create a vercel.app host, and the 5/18 site let a javascript://localhost/...
+     value through its localhost case. Only the origin and path are stored. */
   const DEFAULT_APP_URL = 'https://app.field-lux.com';
   const APP_KEY = 'fieldlux_flow_app_url';
 
-  function isAllowedAppHost(u) {
+  function parseAppUrl(u) {
     try {
       const p = new URL(u);
       const h = p.hostname.toLowerCase();
-      return p.protocol === 'https:' && (h === 'app.field-lux.com' || h.endsWith('.field-lux.com'));
-    } catch { return false; }
+      const ok = p.protocol === 'https:' && p.port === '' && !p.username && !p.password
+        && (h === 'app.field-lux.com' || h.endsWith('.field-lux.com'));
+      return ok ? p : null;
+    } catch { return null; }
   }
 
   let appUrl = DEFAULT_APP_URL;
-  const suppliedApp = params.get('flowAppUrl') || read(APP_KEY);
+  const queryApp = params.get('flowAppUrl');
+  const suppliedApp = queryApp || read(APP_KEY);
   if (suppliedApp) {
-    if (isAllowedAppHost(suppliedApp)) {
-      appUrl = new URL(suppliedApp).href;
-      write(APP_KEY, appUrl);
+    const parsed = parseAppUrl(suppliedApp);
+    if (parsed) {
+      const stored = parsed.origin + parsed.pathname;
+      appUrl = queryApp ? parsed.href : stored;
+      write(APP_KEY, stored);
     } else {
       /* a bad value must not persist for this visitor */
-      appUrl = DEFAULT_APP_URL;
       drop(APP_KEY);
     }
   }
@@ -89,15 +94,17 @@
   let discordUrl = DEFAULT_DISCORD_URL;
   const suppliedDiscord = params.get('discordUrl') || read(DISCORD_KEY);
   if (suppliedDiscord) {
-    try {
-      const parsed = new URL(suppliedDiscord, window.location.href);
-      const h = parsed.hostname;
-      const isDiscordHost = h === 'discord.gg' || h === 'discord.com' || h.endsWith('.discord.com');
-      if (parsed.protocol === 'https:' && isDiscordHost) {
-        discordUrl = parsed.href;
-        write(DISCORD_KEY, discordUrl);
-      }
-    } catch (_) { discordUrl = DEFAULT_DISCORD_URL; }
+    let parsed = null;
+    try { parsed = new URL(suppliedDiscord); } catch (_) {}
+    const h = parsed ? parsed.hostname.toLowerCase() : '';
+    const isDiscordHost = h === 'discord.gg' || h === 'discord.com' || h.endsWith('.discord.com');
+    if (parsed && parsed.protocol === 'https:' && parsed.port === '' && !parsed.username && !parsed.password && isDiscordHost) {
+      discordUrl = parsed.href;
+      write(DISCORD_KEY, discordUrl);
+    } else {
+      /* the same rule as the app link: a bad value does not persist */
+      drop(DISCORD_KEY);
+    }
   }
 
   doc.querySelectorAll('[data-discord-link]').forEach((link) => {
@@ -108,8 +115,15 @@
     link.removeAttribute('title');   /* the CSS ::after tooltip is the only tooltip */
   });
 
-  /* == 5.9, Motion: tri-state (on / off / follow the OS) =============== */
+  /* == 5.9, Motion: tri-state (on / off / follow the OS) ===============
+     One stored format on every page, the spec's: 'on' or 'off'. The v3
+     pages stored 'full' and 'reduced' until 2026-11; the <head> script reads
+     those as the same choice, and this rewrites them. Anything else is
+     dropped, so the OS setting applies. */
   const MOTION_KEY = 'fieldlux_motion';
+  const savedMotion = read(MOTION_KEY);
+  if (savedMotion === 'full' || savedMotion === 'reduced') write(MOTION_KEY, savedMotion === 'full' ? 'on' : 'off');
+  else if (savedMotion !== null && savedMotion !== 'on' && savedMotion !== 'off') drop(MOTION_KEY);
   const osReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const motionAllowed = () => {
     const m = root.dataset.motion;

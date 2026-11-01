@@ -18,10 +18,12 @@
   <link rel="stylesheet" href="/assets/tailwind.css">
 
   <script>
-    /* Motion preference, read before first paint (spec 5.9). Tri-state: on / off / follow OS. */
+    /* Motion preference, read before first paint (spec 5.9). Tri-state: on / off / follow OS.
+       'full' and 'reduced' are what the v3 pages stored before 2026-11. */
     (function () {
       try {
         var m = window.localStorage.getItem('fieldlux_motion');
+        if (m === 'full') { m = 'on'; } else if (m === 'reduced') { m = 'off'; }
         if (m === 'on' || m === 'off') { document.documentElement.setAttribute('data-motion', m); }
       } catch (e) { /* storage blocked: follow the OS */ }
     })();

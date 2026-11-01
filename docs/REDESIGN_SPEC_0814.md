@@ -939,7 +939,7 @@ The footer `.motion-toggle` is a real `<button aria-pressed>` labelled `Reduce m
 - `data-motion="off"` → motion off regardless of OS.
 - `data-motion="on"` → motion on regardless of OS.
 
-Persisted to `localStorage['fieldlux_motion']` and read by a tiny inline `<head>` script **before first paint**, to avoid a flash of animated content.
+Persisted to `localStorage['fieldlux_motion']` and read by a tiny inline `<head>` script **before first paint**, to avoid a flash of animated content. The stored value is `on` or `off` on every page (2026-11: the v3 pages had stored `full` / `reduced` under the same key; both scripts now read those as the same choice and rewrite them).
 
 ```css
 @media (prefers-reduced-motion: reduce){
@@ -2434,33 +2434,33 @@ Notes the builder must not undo:
 
 ### 10.4 The three JS contracts
 
-All three pages carry one inline IIFE with the same three blocks. `videos.html` and `privacy.html` must run **all** of them, not a subset.
+All three pages carry one inline IIFE with the same three blocks. `videos.html` and `privacy.html` must run **all** of them, not a subset. (Since 2026-11 the blocks live in two files: `scripts/site-experience.js` for the v3 pages and `scripts/document-page.js` for `/privacy`, `/terms`, `/refund` and 404.)
 
 **(a) `data-app-link` CTA rewriting — with `siteReturnUrl` on every page.** Currently `index.html` appends `siteReturnUrl=<current href>` via `getAppLinkUrl()` while `privacy.html` assigns the bare `appUrl`. **Unify: all three pages use `getAppLinkUrl()`.** The app side reads `siteReturnUrl`. Keep the modifier-key / middle-click passthrough so cmd-click still opens a new tab.
 
 Default app URL: `https://app.field-lux.com`.
 
-**(b) `flowAppUrl` review override — host allowlist, decided.** `?flowAppUrl=<encoded>` or `localStorage['fieldlux_flow_app_url']`. The current validation accepts **any HTTPS host** and persists it, which makes `https://field-lux.com/?flowAppUrl=https://evil.example` turn every CTA on the site into an attacker-chosen sign-in destination, permanently, for that visitor.
+**(b) `flowAppUrl` review override - host allowlist, decided.** `?flowAppUrl=<encoded>` or `localStorage['fieldlux_flow_app_url']`. The 5/18 validation accepted **any HTTPS host** and persisted it, which made `https://field-lux.com/?flowAppUrl=https://evil.example` turn every CTA on the site into an attacker-chosen sign-in destination, permanently, for that visitor.
 
-**Decision — implement this allowlist:**
+**Decision (revised 2026-11) - implement this allowlist:**
 
 ```js
-function isAllowedAppHost(u) {
+function parseAppUrl(u) {
   try {
-    const p = new URL(u);
-    const h = p.hostname;
-    if (p.protocol === 'http:' && (h === 'localhost' || h === '127.0.0.1')) return true;
-    if (p.protocol !== 'https:') return false;
-    return h === 'field-lux.com' || h.endsWith('.field-lux.com')
-        || h.endsWith('.vercel.app')
-        || h === 'localhost' || h === '127.0.0.1';
-  } catch { return false; }
+    const p = new URL(u);                  // absolute URLs only
+    const h = p.hostname.toLowerCase();
+    const ok = p.protocol === 'https:' && p.port === '' && !p.username && !p.password
+      && (h === 'app.field-lux.com' || h.endsWith('.field-lux.com'));
+    return ok ? p : null;
+  } catch { return null; }
 }
 ```
 
-Anything outside the allowlist falls back to `https://app.field-lux.com` **and clears the stored key** so a bad value cannot persist. Document the allowlist in `README.md` so the review workflow still works. A site whose thesis is trustworthiness cannot carry an open-redirect-shaped surface on its primary CTA.
+HTTPS only, on `app.field-lux.com` or another `*.field-lux.com` host, on the default port, without user info. The apex `field-lux.com` is this site, not the app, and is out. The first version of this decision also accepted `*.vercel.app`, `localhost` and `127.0.0.1`, and plain `http:` for the last two; that is withdrawn. Anyone can create a `vercel.app` host, and a `javascript://localhost/...` value passed the 5/18 site's localhost case and ran on click.
 
-**(c) `discordUrl` allowlist — keep exactly as-is.** `?discordUrl=` or `localStorage['fieldlux_discord_url']`, validated to `https:` **and** hostname in `{discord.gg, discord.com, *.discord.com}`. This is already the correct pattern. The handler sets `target="_blank"`, `rel="noopener noreferrer"` and `aria-disabled`. Two cleanups per §6 S11: drop the dead `hasInvite` branch, and drop the `title` attribute so the CSS `::after` tooltip does not double.
+An accepted value is stored as its origin and path only. Anything outside the allowlist falls back to `https://app.field-lux.com` **and clears the stored key** so a bad value cannot persist. Both scripts apply the same rule. Document the allowlist in `README.md` so the review workflow still works. A site whose thesis is trustworthiness cannot carry an open-redirect-shaped surface on its primary CTA.
+
+**(c) `discordUrl` allowlist.** `?discordUrl=` or `localStorage['fieldlux_discord_url']`, validated to `https:` on the default port **and** hostname in `{discord.gg, discord.com, *.discord.com}`. A value that fails falls back to the live invite and clears the stored key, as in (b). The handler sets `target="_blank"`, `rel="noopener noreferrer"` and `aria-disabled`. Two cleanups per §6 S11: drop the dead `hasInvite` branch, and drop the `title` attribute so the CSS `::after` tooltip does not double.
 
 Live invite: `https://discord.gg/JpeQ7Hgsnd`.
 

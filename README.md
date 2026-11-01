@@ -50,6 +50,9 @@ customer names in the repo.
   lux number carries its qualifier in the same sentence.
 - Motion honours `prefers-reduced-motion` everywhere, and the footer carries a tri-state
   motion toggle (on / off / follow the OS) so a reduced-motion visitor can opt back in.
+  Every page stores the choice in `localStorage['fieldlux_motion']` as `on` or `off`
+  (spec 5.9). The v3 pages stored `full` and `reduced` until 2026-11; both scripts read
+  those as the same choice and rewrite them.
 - Video never carries an `autoplay` attribute. Playback is JS-gated, so it stays off for
   reduced-motion and data-saver visitors and the poster frame carries the page alone.
 
@@ -146,10 +149,11 @@ The accepted value is stored under `localStorage['fieldlux_flow_app_url']` (orig
 path only) and applies until it is overridden or cleared.
 
 **Host allowlist.** Only HTTPS on `app.field-lux.com` or another `*.field-lux.com` host is
-accepted. `*.vercel.app` and `localhost` are not: anyone can create a `vercel.app` host,
-and a `javascript://localhost/...` value once passed the old localhost exception.
+accepted, on the default port and without user info. `*.vercel.app` and `localhost` are
+not: anyone can create a `vercel.app` host, and a `javascript://localhost/...` value once
+passed the old localhost exception.
 
-Anything else - any other host, any other protocol - is rejected. The CTAs fall back to
+Anything else - any other host, port or protocol - is rejected. The CTAs fall back to
 `https://app.field-lux.com` **and the stored key is cleared**, so a bad value cannot
 persist for that visitor.
 
@@ -162,8 +166,9 @@ carry an open-redirect-shaped surface on its primary CTA.
 
 Document pages only. Every link carrying `data-discord-link` points at the live invite;
 `?discordUrl=https%3A%2F%2Fdiscord.gg%2Fyour-invite` retargets it. Only HTTPS links on
-`discord.gg`, `discord.com` and `*.discord.com` are accepted, and the value is stored
-under `localStorage['fieldlux_discord_url']`.
+`discord.gg`, `discord.com` and `*.discord.com`, on the default port, are accepted, and
+the value is stored under `localStorage['fieldlux_discord_url']`. Anything else falls back
+to the live invite and clears the stored key, as for the CTA.
 
 ### Not implemented
 

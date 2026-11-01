@@ -20,9 +20,10 @@
   };
 
   // ?flowAppUrl= (README "Review overrides") may only point the CTAs at the
-  // FieldLux app: https on app.field-lux.com or another *.field-lux.com host.
-  // Anything else falls back to the default, and a stored value that fails the
-  // check is removed so it cannot persist for that visitor.
+  // FieldLux app: https on app.field-lux.com or another *.field-lux.com host,
+  // on the default port and without user info. Anything else falls back to
+  // the default, and a stored value that fails the check is removed so it
+  // cannot persist for that visitor. Only the origin and path are stored.
   const resolveAppUrl = () => {
     const params = new URLSearchParams(window.location.search);
     const fromQuery = params.get('flowAppUrl');
@@ -30,11 +31,13 @@
     let target = new URL(appDefault);
     if (supplied) {
       let parsed = null;
-      try { parsed = new URL(supplied, window.location.href); } catch (_) {}
+      try { parsed = new URL(supplied); } catch (_) {}
       const host = parsed ? parsed.hostname.toLowerCase() : '';
-      if (parsed && parsed.protocol === 'https:' && (host === 'app.field-lux.com' || host.endsWith('.field-lux.com'))) {
-        if (fromQuery) safeStorage.set(appKey, parsed.origin + parsed.pathname);
-        target = parsed;
+      if (parsed && parsed.protocol === 'https:' && parsed.port === '' && !parsed.username && !parsed.password
+          && (host === 'app.field-lux.com' || host.endsWith('.field-lux.com'))) {
+        const stored = parsed.origin + parsed.pathname;
+        safeStorage.set(appKey, stored);
+        target = fromQuery ? parsed : new URL(stored);
       } else {
         safeStorage.remove(appKey);
       }
@@ -91,8 +94,20 @@
 
   const systemReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const motionButtons = [...document.querySelectorAll('[data-motion-toggle]')];
-  const savedMotion = safeStorage.get(motionKey);
-  let reduceMotion = savedMotion ? savedMotion === 'reduced' : systemReduced.matches;
+  // The stored choice uses the document pages' format (spec 5.9): 'on' or
+  // 'off'. These pages stored 'full' and 'reduced' until 2026-11; read those
+  // as the same choice and rewrite them, and drop anything else so the OS
+  // setting applies. data-motion on <html> stays 'full' / 'reduced' here,
+  // because the v3 styles select on it.
+  let savedMotion = safeStorage.get(motionKey);
+  if (savedMotion === 'full' || savedMotion === 'reduced') {
+    savedMotion = savedMotion === 'full' ? 'on' : 'off';
+    safeStorage.set(motionKey, savedMotion);
+  } else if (savedMotion !== null && savedMotion !== 'on' && savedMotion !== 'off') {
+    savedMotion = null;
+    safeStorage.remove(motionKey);
+  }
+  let reduceMotion = savedMotion ? savedMotion === 'off' : systemReduced.matches;
 
   const applyMotion = () => {
     root.dataset.motion = reduceMotion ? 'reduced' : 'full';
@@ -105,7 +120,7 @@
 
   motionButtons.forEach((button) => button.addEventListener('click', () => {
     reduceMotion = !reduceMotion;
-    safeStorage.set(motionKey, reduceMotion ? 'reduced' : 'full');
+    safeStorage.set(motionKey, reduceMotion ? 'off' : 'on');
     applyMotion();
   }));
   applyMotion();
