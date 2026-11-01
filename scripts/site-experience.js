@@ -14,23 +14,33 @@
     set(key, value) {
       try { window.localStorage.setItem(key, value); } catch (_) {}
     },
+    remove(key) {
+      try { window.localStorage.removeItem(key); } catch (_) {}
+    },
   };
 
+  // ?flowAppUrl= (README "Review overrides") may only point the CTAs at the
+  // FieldLux app: https on app.field-lux.com or another *.field-lux.com host.
+  // Anything else falls back to the default, and a stored value that fails the
+  // check is removed so it cannot persist for that visitor.
   const resolveAppUrl = () => {
     const params = new URLSearchParams(window.location.search);
-    const supplied = params.get('appUrl') || safeStorage.get(appKey) || appDefault;
-    try {
-      const parsed = new URL(supplied, window.location.href);
-      const host = parsed.hostname.toLowerCase();
-      if (parsed.protocol === 'https:' && (host === 'app.field-lux.com' || host.endsWith('.field-lux.com'))) {
-        if (params.has('appUrl')) safeStorage.set(appKey, parsed.origin + parsed.pathname);
-        parsed.searchParams.set('siteReturnUrl', window.location.href.split('#')[0]);
-        return parsed.href;
+    const fromQuery = params.get('flowAppUrl');
+    const supplied = fromQuery || safeStorage.get(appKey);
+    let target = new URL(appDefault);
+    if (supplied) {
+      let parsed = null;
+      try { parsed = new URL(supplied, window.location.href); } catch (_) {}
+      const host = parsed ? parsed.hostname.toLowerCase() : '';
+      if (parsed && parsed.protocol === 'https:' && (host === 'app.field-lux.com' || host.endsWith('.field-lux.com'))) {
+        if (fromQuery) safeStorage.set(appKey, parsed.origin + parsed.pathname);
+        target = parsed;
+      } else {
+        safeStorage.remove(appKey);
       }
-    } catch (_) {}
-    const fallback = new URL(appDefault);
-    fallback.searchParams.set('siteReturnUrl', window.location.href.split('#')[0]);
-    return fallback.href;
+    }
+    target.searchParams.set('siteReturnUrl', window.location.href.split('#')[0]);
+    return target.href;
   };
 
   const appUrl = resolveAppUrl();
