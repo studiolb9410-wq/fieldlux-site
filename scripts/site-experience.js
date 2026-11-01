@@ -103,9 +103,9 @@
   const periodButtons = [...document.querySelectorAll('[data-period]')];
   const periodNote = document.querySelector('[data-period-note]');
   const periodNotes = {
-    weekly: '<strong>Planned as a seven-day pass.</strong> One payment, no renewal.',
-    monthly: '<strong>Planned as a monthly plan.</strong> Cancellation terms will be published with the paid launch.',
-    yearly: '<strong>The lowest planned rate.</strong> Billed once for the year when checkout opens.',
+    weekly: '<strong>A planned seven-day pass.</strong> One payment with no renewal.',
+    monthly: '<strong>A planned monthly subscription.</strong> Cancellation terms will be published before checkout opens.',
+    yearly: '<strong>The lowest planned rate.</strong> The full year is billed once when checkout opens.',
   };
 
   const setPeriod = (period) => {
