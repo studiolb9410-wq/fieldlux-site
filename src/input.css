@@ -4746,8 +4746,11 @@ body.v3-menu-open{overflow:hidden}
 @media (min-width:1181px){
   .v3-price-card{
     display:grid;
-    grid-template-rows:88px 94px 86px 29px minmax(0,1fr) 44px;
+    grid-template-rows:88px 94px 86px auto minmax(0,1fr) 44px;
   }
+  /* row 4 holds the billing line and the Korean VAT line (.v3-price-meta); its
+     floor keeps the feature lists level across the cards in both periods */
+  .v3-price-meta{min-height:80px}
   .v3-plan-for{min-height:0;margin:22px 0 0}
   .v3-price-line{min-height:0;margin:0;align-self:end;padding-bottom:4px}
   .v3-price-billing{min-height:0;margin:4px 0 0}
@@ -4758,6 +4761,8 @@ body.v3-menu-open{overflow:hidden}
 .v3-pricing-facts{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px;padding:25px 0;border-top:1px solid var(--v3-dark-line);border-bottom:1px solid var(--v3-dark-line)}
 .v3-pricing-facts p{margin:0;color:var(--v3-dark-muted);font-size:.85rem;line-height:1.55}
 .v3-pricing-facts strong{color:var(--v3-dark-text)}
+.v3-pricing-facts a{color:inherit;text-decoration:underline;text-underline-offset:.15em}
+.v3-pricing-facts a:hover{color:var(--v3-dark-text)}
 
 .v3-faq-layout{display:grid;grid-template-columns:.65fr 1fr;gap:clamp(50px,9vw,130px)}
 .v3-faq-list{border-top:1px solid var(--v3-line)}
@@ -4800,7 +4805,7 @@ body.v3-menu-open{overflow:hidden}
 .v3-slot-note{color:var(--v3-dark-text);font-size:1.05rem;font-weight:560}
 
 .v3-footer{padding:70px 0 28px;color:var(--v3-text);background:var(--v3-void);border-top:1px solid var(--v3-line)}
-.v3-footer-grid{display:grid;grid-template-columns:1.5fr .6fr .6fr;gap:50px}
+.v3-footer-grid{display:grid;grid-template-columns:1.5fr .6fr .6fr .6fr;gap:50px}
 .v3-footer-brand img{width:150px}
 .v3-footer-brand p{margin:17px 0 0;color:var(--v3-muted);font-size:.84rem}
 .v3-footer h2{margin:0 0 14px;color:#fff;font-size:.68rem;font-weight:670;letter-spacing:.13em;text-transform:uppercase}
@@ -5017,3 +5022,72 @@ html[data-motion="reduced"] .hero-ticker-track{animation:none;transform:none}
 .v3-footer a,.v3-footer button,.v3-footer-brand p{color:var(--v3-dark-muted)}
 .v3-footer a:hover,.v3-footer button:hover{color:var(--v3-dark-text)}
 .v3-footer-meta{color:#758086;border-color:var(--v3-dark-line)}
+
+/* ############################################################################
+   LEGAL PAGES AND BUSINESS DETAILS (2026-11, paid launch)
+   /terms, /refund and /privacy are document pages: the section grammar above
+   (.section, .micro-label, .section-title, .speclist) with an English and a
+   Korean version on one page. They carry no reveal classes, so the text is
+   there the moment the page loads, with or without script. Every footer shows
+   the business details Korean e-commerce law asks a seller to show.
+   ######################################################################### */
+.legal-langs{ display:flex; flex-wrap:wrap; gap:var(--rhythm-tight); margin:0; padding:0; list-style:none; }
+.legal-langs a{
+  display:inline-flex; align-items:center; min-block-size:44px; padding-inline:18px;
+  border:1px solid var(--line-control); color:var(--ink-900); text-decoration:none;
+  font-family:var(--font-display); font-size:var(--fs-body-sm); font-weight:600;
+  transition:background-color var(--t-fast) var(--ease-out);
+}
+.legal-langs a:hover{ background:var(--surface-100); }
+.legal-summary{
+  max-inline-size:var(--w-text); padding:var(--rhythm-block);
+  border-inline-start:3px solid var(--brand-700); background:var(--surface-tint);
+  font-size:var(--fs-body); line-height:1.65; color:var(--ink-900);
+}
+.legal-version{ scroll-margin-block-start:calc(var(--nav-h) + 16px); }
+.legal-version .section-title{ font-size:var(--fs-display-3); }
+.speclist-body ul,
+.speclist-body ol{ display:grid; gap:.5em; margin:0; padding-inline-start:1.25em; }
+.speclist-body a{ color:var(--brand-800); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.22em; }
+.speclist-body a:hover{ color:var(--brand-900); }
+.legal-table-wrap{ max-inline-size:100%; overflow-x:auto; }
+.legal-table{ inline-size:100%; border-collapse:collapse; font-size:var(--fs-body-sm); line-height:1.55; color:var(--ink-700); }
+.legal-table th,
+.legal-table td{ padding:var(--rhythm-tight) var(--gap) var(--rhythm-tight) 0; border-block-end:1px solid var(--line); text-align:start; vertical-align:top; }
+.legal-table thead th{
+  font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-400); border-block-end-color:var(--line-strong);
+}
+.legal-table tbody th{ font-weight:600; color:var(--ink-900); }
+@media (min-width:641px){
+  .legal-table{ min-inline-size:560px; }
+}
+/* phones: each row becomes a block, each value named by its column */
+@media (max-width:640px){
+  .legal-table thead{ position:absolute; inline-size:1px; block-size:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+  .legal-table tr{ display:block; padding-block:var(--rhythm-tight); border-block-end:1px solid var(--line); }
+  .legal-table th,
+  .legal-table td{ display:block; padding:.2em 0; border:0; }
+  .legal-table td[data-label]::before{
+    content:attr(data-label); display:block;
+    font-family:var(--font-display); font-size:var(--fs-micro); font-weight:600; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--ink-400);
+  }
+}
+.legal-form{
+  margin:0; padding:var(--rhythm-block); border:1px solid var(--line-strong); background:var(--surface-100);
+  font-family:var(--font-body); font-size:var(--fs-body-sm); line-height:1.8; white-space:pre-wrap; color:var(--ink-900);
+}
+[lang="ko"]{ word-break:keep-all; overflow-wrap:break-word; }
+
+.footer-business{ display:grid; gap:.35em; font-size:var(--fs-body-sm); line-height:1.6; color:var(--ink-400); }
+.footer-business p,
+.v3-footer-business p{ margin:0; font-size:inherit; line-height:inherit; color:inherit; }
+.footer-business a{ color:inherit; text-decoration:underline; text-underline-offset:.22em; }
+.v3-footer-legal{ grid-column:1/-1; }
+.v3-footer-business{ display:grid; gap:6px; margin-top:14px; color:var(--v3-dark-muted); font-size:.74rem; line-height:1.6; }
+.v3-footer .v3-footer-business a{ display:inline; width:auto; margin:0; font-size:inherit; text-decoration:underline; text-underline-offset:.15em; }
+
+/* pricing: the Korean VAT-inclusive total under each paid price (launch review 4-3, option B) */
+.v3-price-kr{ min-height:20px; margin:6px 0 0; color:var(--v3-dark-muted); font-size:.74rem; line-height:1.45; }
+.v3-price-billing{ line-height:1.5; }

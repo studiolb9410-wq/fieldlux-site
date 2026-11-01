@@ -112,14 +112,12 @@
 
   const periodButtons = [...document.querySelectorAll('[data-period]')];
   const periodNote = document.querySelector('[data-period-note]');
-  const periodNotes = {
-    weekly: '<strong>A planned seven-day pass.</strong> One payment with no renewal.',
-    monthly: '<strong>A planned monthly subscription.</strong> Cancellation terms will be published before checkout opens.',
-    yearly: '<strong>The lowest planned rate.</strong> The full year is billed once when checkout opens.',
-  };
+  // One sentence for both periods, the same as the static note (launch review 5-1, item 4).
+  const renewalNote = 'Plans renew automatically until you cancel. Cancel any time in Account settings and keep access until the end of the period you paid for.';
+  const periodNotes = { monthly: renewalNote, yearly: renewalNote };
 
   const setPeriod = (period) => {
-    if (!['weekly', 'monthly', 'yearly'].includes(period)) period = 'monthly';
+    if (!['monthly', 'yearly'].includes(period)) period = 'monthly';
     root.dataset.pricingPeriod = period;
     safeStorage.set('fieldlux_pricing_period', period);
     periodButtons.forEach((button) => {
@@ -131,15 +129,18 @@
       const value = card.dataset[`${period}Price`] || 'Not available';
       const unit = card.dataset[`${period}Unit`] || '';
       const billing = card.dataset[`${period}Billing`] || '';
+      const korea = card.dataset[`${period}Kr`] || '';
       const price = card.querySelector('[data-plan-price]');
       const priceUnit = card.querySelector('[data-plan-unit]');
       const bill = card.querySelector('[data-plan-billing]');
+      const koreaLine = card.querySelector('[data-plan-kr]');
       if (price) price.textContent = value;
       if (priceUnit) priceUnit.textContent = unit;
       if (bill) bill.textContent = billing;
-      card.classList.toggle('is-unavailable', value === 'Monthly only' || value === 'Not available');
+      if (koreaLine) koreaLine.textContent = korea;
+      card.classList.toggle('is-unavailable', value === 'Not available');
     });
-    if (periodNote) periodNote.innerHTML = periodNotes[period];
+    if (periodNote) periodNote.textContent = periodNotes[period];
   };
 
   if (periodButtons.length) {
