@@ -124,7 +124,7 @@ Copy that changes on the two launch days carries `data-launch`:
 | Marker | When | Change |
 |---|---|---|
 | `data-launch="announce"` | the day the start date is posted | `/pricing` hero: "Paid plans start on {weekday, month day, year} at 09:00 KST (00:00 UTC). Until then, everything is free. If this date changes, we will update this page at least 14 days before the date shown." The "Checkout is not open yet" fact: "These prices apply from the start date above. Nothing is charged before then." The "When do paid plans start?" answer names the date. "Not on sale yet" on the cards: "On sale from the start date". |
-| `data-launch="live"` | the day paid plans start | `/pricing` hero, pill and CTA: "Try Pro free for 14 days. No card required." Remove the open-beta FAQ and the "Checkout is not open yet" fact. Home, product, videos and 404: drop "free during open beta" and "Checkout is not available yet". Footer: "(c) 2026 FieldLux." without "Open beta." |
+| `data-launch="live"` | the day paid plans start | `/pricing` hero, pill and CTA: "Try Pro free for 14 days. No card required." Remove the open-beta FAQ and the "Checkout is not open yet" fact. Home, product, videos and 404: drop "free during open beta" and "Checkout is not available yet". The home and product open-beta blocks (kicker, headline, lead and the "planned pricing" button) and the home and pricing meta descriptions go with them. Document pages: drop the BETA badge and the Discord tooltip's "Beta access is free" sentence. Footer: "(c) 2026 FieldLux." without "Open beta." |
 
 Find every switch with `grep -n 'data-launch=' *.html`.
 
