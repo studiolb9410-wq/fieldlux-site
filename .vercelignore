@@ -1,0 +1,8 @@
+# Not part of the website. The output directory is the repository root, so
+# anything not listed here is served at field-lux.com/<path>.
+docs
+README.md
+scripts/build-embed.mjs
+scripts/dev-server.mjs
+scripts/preview-server.py
+scripts/sync-embed-hero-ux.mjs
