@@ -36,10 +36,12 @@ This branch supports a review-only app override without changing the production 
 Open the site with:
 
 ```text
-?flowAppUrl=https%3A%2F%2Fprojection-mapping-git-public-signup-project-h-46a32f-field-lux.vercel.app%2F%3Fauth%3D1
+?flowAppUrl=https%3A%2F%2Fapp.field-lux.com%2F
 ```
 
 All app CTAs with `data-app-link` will point to that URL for the current browser. Without the query string, CTAs keep using `https://app.field-lux.com`.
+
+Only HTTPS URLs on `app.field-lux.com` or another `*.field-lux.com` host are accepted. Any other value is ignored, the CTAs fall back to `https://app.field-lux.com`, and a stored override that fails the check is removed from `localStorage`.
 
 The Discord CTA is intentionally configurable because the public invite URL is not checked into the repo. For review, pass:
 

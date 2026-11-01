@@ -61,21 +61,39 @@
   <script>
     (() => {
       const defaultAppUrl = 'https://app.field-lux.com';
+      const appUrlKey = 'fieldlux_flow_app_url';
+      const storage = {
+        get(key) {
+          try { return window.localStorage.getItem(key); } catch (_) { return null; }
+        },
+        set(key, value) {
+          try { window.localStorage.setItem(key, value); } catch (_) {}
+        },
+        remove(key) {
+          try { window.localStorage.removeItem(key); } catch (_) {}
+        },
+      };
       const params = new URLSearchParams(window.location.search);
-      const suppliedUrl = params.get('flowAppUrl') || window.localStorage.getItem('fieldlux_flow_app_url');
+      const suppliedUrl = params.get('flowAppUrl') || storage.get(appUrlKey);
       let appUrl = defaultAppUrl;
 
+      // The CTA target may only be the FieldLux app: https on app.field-lux.com or
+      // another *.field-lux.com host. Anything else falls back to the default, and
+      // a stored value that fails the check is removed so it cannot persist.
       if (suppliedUrl) {
+        let accepted = false;
         try {
           const parsed = new URL(suppliedUrl, window.location.href);
-          const isAllowedProtocol = parsed.protocol === 'https:';
-          const isLocalPreview = parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1';
-          if (isAllowedProtocol || isLocalPreview) {
+          const host = parsed.hostname.toLowerCase();
+          if (parsed.protocol === 'https:' && (host === 'app.field-lux.com' || host.endsWith('.field-lux.com'))) {
             appUrl = parsed.href;
-            window.localStorage.setItem('fieldlux_flow_app_url', appUrl);
+            storage.set(appUrlKey, parsed.origin + parsed.pathname);
+            accepted = true;
           }
-        } catch (_) {
+        } catch (_) {}
+        if (!accepted) {
           appUrl = defaultAppUrl;
+          storage.remove(appUrlKey);
         }
       }
 
