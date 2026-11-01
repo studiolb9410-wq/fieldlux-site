@@ -23,6 +23,9 @@
 // A production build (VERCEL_ENV=production) fails while any placeholder or
 // data-todo remains, so field-lux.com keeps its current deployment instead of
 // going live with "[Business name]". FLX_ALLOW_PLACEHOLDERS=1 overrides that.
+// Dropping a data-todo attribute is not enough either: any other bracketed
+// text with a letter in it, such as "[Effective date]", left in the visible
+// text or a visible attribute counts as a placeholder too.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -52,6 +55,23 @@ const values = {
 const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const SPAN = /(<span\b[^>]*\bdata-biz="([a-z_]+)"[^>]*>)([^<]*)(<\/span>)/g;
 const TODO = /<[^>]*\bdata-todo(?:="([^"]*)")?[^>]*>/g;
+const TODO_ELEMENT = /<([a-z][a-z0-9]*)\b[^>]*\bdata-todo\b[^>]*>[^<]*<\/\1>/gi;
+const VISIBLE_ATTR = /\s(?:content|title|alt|aria-label|data-tooltip|data-label|placeholder|value)="([^"]*)"/gi;
+const BRACKET = /\[[^[\]<>\n]*[A-Za-z\u3131-\u318e\uac00-\ud7a3][^[\]<>\n]*\]/g;
+
+// Bracketed text the two checks above do not already count: the data-biz
+// spans and the data-todo elements are taken out first.
+function strayBrackets(html) {
+  const rest = html
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ')
+    .replace(SPAN, ' ')
+    .replace(TODO_ELEMENT, ' ');
+  const found = [];
+  for (const m of rest.matchAll(VISIBLE_ATTR)) for (const b of m[1].matchAll(BRACKET)) found.push(b[0]);
+  for (const b of rest.replace(/<[^>]*>/g, ' ').matchAll(BRACKET)) found.push(b[0]);
+  return found;
+}
 
 const pages = fs.readdirSync(root).filter((f) => f.endsWith('.html')).sort();
 const unknownKeys = new Set();
@@ -74,6 +94,7 @@ for (const page of pages) {
     if (/^\s*\[.*\]\s*$/.test(m[3])) left.push(`${page}: data-biz="${m[2]}" ${m[3].trim()}`);
   }
   for (const m of after.matchAll(TODO)) left.push(`${page}: data-todo ${m[1] || ''}`.trim());
+  for (const b of strayBrackets(after)) left.push(`${page}: ${b}`);
   if (onVercel && after !== before) fs.writeFileSync(file, after);
 }
 

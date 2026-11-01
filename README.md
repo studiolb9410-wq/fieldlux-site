@@ -114,7 +114,10 @@ and drop the attribute.
 
 **A production build fails while any placeholder or `data-todo` is left**, so
 field-lux.com keeps its current deployment instead of going live with "[Business name]".
-Preview builds show the placeholders. `FLX_ALLOW_PLACEHOLDERS=1` overrides the check.
+Any other bracketed text with a letter in it, left in the visible text or a visible
+attribute, counts as a placeholder too: dropping a `data-todo` attribute without writing
+the fact still fails the build. Preview builds show the placeholders.
+`FLX_ALLOW_PLACEHOLDERS=1` overrides the check.
 
 Copy that changes on the two launch days carries `data-launch`:
 
