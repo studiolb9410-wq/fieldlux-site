@@ -168,11 +168,12 @@
             <li>Open File, choose Import Floor Plan and add a .dwg, .dxf, PDF, PNG or JPG. A DWG is converted in the browser, and a multi-sheet drawing asks which sheet you want.</li>
             <li>In Set the scale, click Use this to accept the unit read from the file, or click two points a known distance apart, type the real length and press Enter. For an image, type its overall width or height and press Enter; for a PDF you can also pick 1:50, 1:100 or 1:200.</li>
             <li>Click Import as reference lines. The plan appears in 3D as locked reference lines. For an image or PDF, click Place in 3D scene instead; it lands on the ground at the size you typed.</li>
-            <li>The import opens the drawing in edit mode (later, select it and press Tab, or choose Modeling &gt; Edit Linework). Press 2, click the first wall line and Ctrl+click the others you want, then click Trace selected to my sketch in the Build group.</li>
-            <li>With the traced lines selected, set Wall height and Wall thickness in the Inspector's Cleanup section, press W, then Enter. The lines rise into walls that receive projector light and cast shadows.</li>
-            <li>To work without a drawing, open Modeling and choose New Sketch; the Draw tool is already on. Click to place points, type a length such as 5m and press Enter to add that point, press Enter again to finish the run, then press W and Enter to raise the walls.</li>
+            <li>The import opens the drawing in edit mode (later, select it and press Tab, or choose Modeling &gt; Edit Linework). Press 2, click one line of the wall face you want to build from and Ctrl+click the rest of it, then click Trace selected to my sketch in the Build group. For a room, pick the inner face all the way round: a closed ring is what tells FieldLux which side is inside.</li>
+            <li>With the traced lines selected, set Wall height and Wall thickness in the Inspector's Cleanup section, press W, then Enter. A closed ring rises as one room whose walls face inward; they receive projector light, block it from whatever is behind them and cast fixture shadows.</li>
+            <li>Press Tab to leave edit mode, open Projector &gt; Projector Library and click Add on a model. In the Inspector's Transform section type its Position to stand it inside the room. The image lands on the wall in front of the lens, with its lux and size labels.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> a full-screen Import Floor Plan overlay with a scale chip, then a linework row in Scene Layers; in edit mode the top strip becomes the Modelling tools toolbar (Select, Draw, Modify, Cleanup, Build) and the prompt strip at the bottom describes the next click. Walls that render black are facing away: select them and click Modeling &gt; Flip Normals.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> a full-screen Import Floor Plan overlay with a scale chip, then a linework row in Scene Layers; in edit mode the top strip becomes the Modelling tools toolbar (Select, Draw, Modify, Cleanup, Build) and the prompt strip at the bottom describes the next click. A run that does not close, such as one with a doorway gap, has no inside to face, and the toast after W says so: if its walls render black under a projector, select them and click Modeling &gt; Flip Normals.</p>
+          <p class="v3-howto-sees"><strong>No drawing?</strong> Open Modeling and choose New Sketch; the Draw tool is already on. Click to place points, type a length such as 5m and press Enter to add that point, press Enter again to finish the run, then press W and Enter to raise the walls.</p>
         </article>
       </div>
     </section>
@@ -570,7 +571,7 @@
             </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Frame the 3D viewport the way you want it captured. Turn the Heatmap overlay on if you want the lux legend in the PDF.</li>
+            <li>Open the set-up project you want to document and frame the 3D viewport the way you want it captured. Turn the Heatmap overlay on if you want the lux legend in the PDF.</li>
             <li>Click File, then Export PDF Tech Rider. The row greys out while the export runs, and a progress toast with a Cancel button may appear for a large rig.</li>
             <li>Open FieldLux_Tech_Rider_date.pdf from your downloads.</li>
           </ol>
