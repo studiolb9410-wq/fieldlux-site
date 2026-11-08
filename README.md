@@ -12,7 +12,7 @@ README and the spec disagree, the spec wins.
 |---|---|---|
 | `/` | `index.html` | The product, ten chapters, the numbers, the limits |
 | `/videos` | `videos.html` | Feature videos - 43 slots across the same ten chapters |
-| `/pricing` | `pricing.html` | Viewer, Projection and Pro, monthly or yearly. Checkout is in the app, never on this site |
+| `/pricing` | `pricing.html` | Viewer, Projection and Pro, as a 7-day pass (one payment, no renewal), monthly or yearly. Checkout is in the app, never on this site |
 | `/terms` | `terms.html` | Terms of Service, English and Korean (the Korean text is official for customers in Korea) |
 | `/refund` | `refund.html` | Refund and cancellation policy, English and Korean. Must say the same rule as the app's `REFUND_RULE` |
 | `/privacy` | `privacy.html` | Privacy policy, English and Korean |

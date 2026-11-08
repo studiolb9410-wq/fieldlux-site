@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pricing | FieldLux</title>
-  <meta name="description" content="FieldLux is free during open beta. See the Projection and Pro plans, their prices and taxes, the refund rules, and what each account gets when paid plans start." data-launch="live">
+  <meta name="description" content="FieldLux is free during open beta. See the Projection and Pro plans by the week, month or year, their prices and taxes, the refund rules, and what each account gets when paid plans start." data-launch="live">
   <link rel="canonical" href="https://field-lux.com/pricing">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Pricing | FieldLux">
-  <meta property="og:description" data-launch="live" content="Free during open beta. Projection $39 a month or $384 a year, Pro $49 a month or $480 a year, in US dollars before tax.">
+  <meta property="og:description" data-launch="live" content="Free during open beta. Projection $19 for a 7-day pass, $39 a month or $384 a year. Pro $24, $49 or $480. In US dollars before tax.">
   <meta property="og:url" content="https://field-lux.com/pricing">
   <meta property="og:image" content="https://field-lux.com/assets/og-card.png">
   <link rel="icon" href="/favicon.ico">
@@ -60,10 +60,11 @@
         <div class="v3-pricing-toolbar v3-reveal">
           <div>
             <p class="v3-kicker">Plans</p>
-            <h2 class="v3-display" id="plans-title">Choose monthly or yearly billing.</h2>
+            <h2 class="v3-display" id="plans-title">Pay for a week, a month or a year.</h2>
           </div>
           <div class="v3-period-wrap">
             <div class="v3-period-tabs" role="tablist" aria-label="Billing period">
+              <button type="button" role="tab" data-period="weekly" aria-selected="false">Weekly</button>
               <button type="button" role="tab" data-period="monthly" aria-selected="true">Monthly</button>
               <button type="button" role="tab" data-period="yearly" aria-selected="false">Yearly</button>
             </div>
@@ -73,6 +74,7 @@
 
         <div class="v3-price-grid">
           <article class="v3-price-card v3-reveal" data-plan
+            data-weekly-price="$0" data-weekly-unit="" data-weekly-billing="Free, no card" data-weekly-kr=""
             data-monthly-price="$0" data-monthly-unit="" data-monthly-billing="Free, no card" data-monthly-kr=""
             data-yearly-price="$0" data-yearly-unit="" data-yearly-billing="Free, no card" data-yearly-kr="">
             <div class="v3-price-card-head">
@@ -98,6 +100,7 @@
           </article>
 
           <article class="v3-price-card v3-reveal" data-plan
+            data-weekly-price="$19" data-weekly-unit=" / 7 days" data-weekly-billing="One payment for 7 days, no renewal" data-weekly-kr="In Korea: $20.90 including 10% VAT."
             data-monthly-price="$39" data-monthly-unit=" / month" data-monthly-billing="Billed monthly, renews until you cancel" data-monthly-kr="In Korea: $42.90 including 10% VAT."
             data-yearly-price="$384" data-yearly-unit=" / year" data-yearly-billing="$32/mo equivalent, billed once a year, renews until you cancel, save $84 vs. paying monthly" data-yearly-kr="In Korea: $422.40 including 10% VAT.">
             <div class="v3-price-card-head">
@@ -125,6 +128,7 @@
           </article>
 
           <article class="v3-price-card v3-price-card--featured v3-reveal" data-plan
+            data-weekly-price="$24" data-weekly-unit=" / 7 days" data-weekly-billing="One payment for 7 days, no renewal" data-weekly-kr="In Korea: $26.40 including 10% VAT."
             data-monthly-price="$49" data-monthly-unit=" / month" data-monthly-billing="Billed monthly, renews until you cancel" data-monthly-kr="In Korea: $53.90 including 10% VAT."
             data-yearly-price="$480" data-yearly-unit=" / year" data-yearly-billing="$40/mo equivalent, billed once a year, renews until you cancel, save $108 vs. paying monthly" data-yearly-kr="In Korea: $528.00 including 10% VAT.">
             <div class="v3-price-card-head">
@@ -151,9 +155,10 @@
         </div>
 
         <div class="v3-pricing-facts v3-reveal">
-          <p><strong>Taxes.</strong> Prices are in US dollars. VAT or sales tax is added at checkout where it applies, and you see the total before you pay. In Korea the total is $42.90 a month for Projection and $53.90 for Pro, including 10% VAT. Businesses that enter a valid VAT or business registration number are not charged VAT. Your card issuer may charge a foreign-transaction fee.</p>
+          <p><strong>Taxes.</strong> Prices are in US dollars. VAT or sales tax is added at checkout where it applies, and you see the total before you pay. In Korea the total is $42.90 a month for Projection and $53.90 for Pro, or $20.90 and $26.40 for a 7-day pass, including 10% VAT. Businesses that enter a valid VAT or business registration number are not charged VAT. Your card issuer may charge a foreign-transaction fee.</p>
           <p><strong>Who sells.</strong> Payments are processed by Paddle.com, our reseller and the Merchant of Record for all our orders. Paddle handles billing, tax and invoices; we cannot issue Korean tax invoices. Questions or refund requests: <a href="mailto:jay@field-lux.com">jay@field-lux.com</a>.</p>
-          <p><strong>Refunds.</strong> 14-day money-back guarantee on your first payment, once per account. A renewal can be refunded within 7 days of the charge. See the <a href="/refund">Refund Policy</a>.</p>
+          <p><strong>7-day passes.</strong> For a single job. A pass starts when you buy it and ends 7 days later, with no renewal and nothing to cancel. Buy another before yours ends and the new one starts when it ends. Need FieldLux for more than two weeks? A monthly plan costs less.</p>
+          <p><strong>Refunds.</strong> 14-day money-back guarantee on your first monthly or yearly payment, once per account. A renewal can be refunded within 7 days of the charge. A 7-day pass is not refunded once it starts, unless the law of your country or Paddle's refund policy gives you a right to cancel. See the <a href="/refund">Refund Policy</a>.</p>
           <p data-launch="announce"><strong>Checkout is not open yet.</strong> These are the prices we plan to charge. Nothing is charged during open beta.</p>
           <p><strong>One person per plan.</strong> Shared workspaces and seat management are not available.</p>
           <p><strong>Storage on every plan.</strong> Imported models up to 2 GB per account and 200 MB per file; media uploads up to 1 GB. The Report Builder proposal PDF is temporarily disabled in the app.</p>
@@ -196,20 +201,24 @@
             <p>Yes. Accounts created after paid plans start get <strong>14 days of Pro with no card</strong>. When the trial ends, nothing is charged. Accounts created before that day get 30 days of Pro free from the start date instead, and Founding Members get 12 months.</p>
           </details>
           <details class="v3-faq v3-reveal">
+            <summary>How does the 7-day pass work?</summary>
+            <p>A pass is <strong>one payment for 7 days</strong> of Projection ($19) or Pro ($24), plus tax where it applies. It starts when you buy it, never renews and needs no cancelling. Buy another before it ends and the new one starts when the first ends. If you need FieldLux for more than two weeks, a monthly plan costs less.</p>
+          </details>
+          <details class="v3-faq v3-reveal">
             <summary>Which plan has the Play Dock, Warp &amp; Blend and the Working Plane?</summary>
             <p>Projection. Pro adds one thing: <strong>creating lighting</strong>, meaning fixtures, fog machines and volumetric beams. Lighting that already exists in a shared or imported project stays visible on Projection: you can view it, read its Working Plane and copy the fixture schedule.</p>
           </details>
           <details class="v3-faq v3-reveal">
-            <summary>What happens when a plan ends?</summary>
+            <summary>What happens when a plan or pass ends?</summary>
             <p>Your projects stay in your account. You can still open them, share read-only links, export the PDF Tech Rider and download project files. <strong>Saving pauses</strong> until you subscribe again: you can still change a project in the app, but the change is not saved to your account. Adding lighting needs Pro. We don't delete projects when a plan ends.</p>
           </details>
           <details class="v3-faq v3-reveal">
             <summary>How does yearly billing work?</summary>
-            <p>Yearly plans are billed once a year: $384 for Projection or $480 for Pro, plus tax where it applies. Cancel any time. Within 14 days of your first payment you can get a full refund, once per account, and a renewal can be refunded in full within 7 days of the charge. After that, we refund the unused days of your year.</p>
+            <p>Yearly plans are billed once a year: $384 for Projection or $480 for Pro, plus tax where it applies. Cancel any time. Within 14 days of your first monthly or yearly payment you can get a full refund, once per account, and a renewal can be refunded in full within 7 days of the charge. After that, we refund the unused days of your year.</p>
           </details>
           <details class="v3-faq v3-reveal">
             <summary>How do I cancel?</summary>
-            <p>Open Account settings in the app and choose Cancel subscription. It takes <strong>one click and one confirmation</strong>. Your plan stays active until the end of the period you paid for, and you won't be charged again.</p>
+            <p>Open Account settings in the app and choose Cancel subscription. It takes <strong>one click and one confirmation</strong>. Your plan stays active until the end of the period you paid for, and you won't be charged again. A 7-day pass needs no cancelling: it ends by itself.</p>
           </details>
         </div>
       </div>

@@ -127,12 +127,14 @@
 
   const periodButtons = [...document.querySelectorAll('[data-period]')];
   const periodNote = document.querySelector('[data-period-note]');
-  // One sentence for both periods, the same as the static note (launch review 5-1, item 4).
+  // One sentence for monthly and yearly, the same as the static note (launch review 5-1, item 4).
   const renewalNote = 'Plans renew automatically until you cancel. Cancel any time in Account settings and keep access until the end of the period you paid for.';
-  const periodNotes = { monthly: renewalNote, yearly: renewalNote };
+  // A 7-day pass is a single payment: nothing renews, so nothing needs cancelling.
+  const passNote = 'A 7-day pass is one payment. It starts when you buy it, ends 7 days later and never renews, so there is nothing to cancel.';
+  const periodNotes = { weekly: passNote, monthly: renewalNote, yearly: renewalNote };
 
   const setPeriod = (period) => {
-    if (!['monthly', 'yearly'].includes(period)) period = 'monthly';
+    if (!['weekly', 'monthly', 'yearly'].includes(period)) period = 'monthly';
     root.dataset.pricingPeriod = period;
     safeStorage.set('fieldlux_pricing_period', period);
     periodButtons.forEach((button) => {
