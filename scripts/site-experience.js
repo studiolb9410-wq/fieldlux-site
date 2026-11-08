@@ -146,15 +146,12 @@
       const value = card.dataset[`${period}Price`] || 'Not available';
       const unit = card.dataset[`${period}Unit`] || '';
       const billing = card.dataset[`${period}Billing`] || '';
-      const korea = card.dataset[`${period}Kr`] || '';
       const price = card.querySelector('[data-plan-price]');
       const priceUnit = card.querySelector('[data-plan-unit]');
       const bill = card.querySelector('[data-plan-billing]');
-      const koreaLine = card.querySelector('[data-plan-kr]');
       if (price) price.textContent = value;
       if (priceUnit) priceUnit.textContent = unit;
       if (bill) bill.textContent = billing;
-      if (koreaLine) koreaLine.textContent = korea;
       card.classList.toggle('is-unavailable', value === 'Not available');
     });
     if (periodNote) periodNote.textContent = periodNotes[period];
