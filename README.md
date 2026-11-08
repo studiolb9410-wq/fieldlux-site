@@ -181,7 +181,7 @@ pages write.
 
 ## Publishing a feature video
 
-`/videos` has one slot per chapter, nineteen in all. A slot's published state is **authored
+`/videos` has one slot per chapter, twenty in all. A slot's published state is **authored
 in the markup**, not probed at runtime, so the page is right with JavaScript disabled and
 before any image has loaded.
 

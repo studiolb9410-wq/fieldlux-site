@@ -73,7 +73,7 @@
     <section class="v3-section v3-section--paper v3-chapter-index-section" aria-labelledby="chapters-title">
       <div class="v3-container">
         <p class="v3-kicker">Chapters</p>
-        <h2 class="v3-display" id="chapters-title">Nineteen chapters, six parts.</h2>
+        <h2 class="v3-display" id="chapters-title">Twenty chapters, seven parts.</h2>
         <ol class="v3-chapter-index" aria-label="Chapter index">
           <li><a href="#ch-01">01 Start and sample scenes</a></li>
           <li><a href="#ch-02">02 Import a 3D model</a></li>
@@ -94,6 +94,7 @@
           <li><a href="#ch-17">17 Share links</a></li>
           <li><a href="#ch-18">18 PDF Tech Rider</a></li>
           <li><a href="#ch-19">19 Settings, shortcuts and walk mode</a></li>
+          <li><a href="#ch-20">20 One video across walls and floor</a></li>
         </ol>
       </div>
     </section>
@@ -602,6 +603,38 @@
             <li>Press F1 for the Keyboard Shortcuts sheet. Under Settings, set Auto Save, toggle Depth Occlusion and Projector Shadows, and pick the Occlusion Quality.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> the Display Unit hint changing between mm, m and ft; the command palette as a floating panel with grouped sections and shortcut hints; and the Keyboard Shortcuts sheet grouped as Anywhere, Viewport, Walking through a room and the drawing groups.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== PART G: IMMERSIVE ===================== -->
+    <section class="v3-section v3-chapter" id="ch-20" aria-labelledby="ch-20-title">
+      <div class="v3-container">
+        <article class="v3-chapter-body v3-reveal">
+          <header class="v3-chapter-head">
+            <p class="v3-kicker">Part G · Immersive · Chapter 20</p>
+            <h2 class="v3-display" id="ch-20-title">One video across walls and floor.</h2>
+            <p class="v3-howto-where"><strong>Where:</strong> Play Dock &gt; 2 Surfaces &gt; Detect surfaces…, or Output Setup… on the collapsed dock. Both open the Output Setup window.</p>
+          </header>
+          <div class="v3-video-frame" data-video-slot="ch-20-room-blend">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-20-room-blend.jpg" aria-label="How-to video: One video across walls and floor">
+              <source src="/assets/media/features/ch-20-room-blend.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
+          </div>
+          <ol class="v3-howto v3-howto--cols">
+            <li>Start with a room and its projectors. Choose Tools &gt; Basic Room, set its Height under Room Dimensions and leave Ceiling Lid off. Add projectors from Projector &gt; Projector Library and aim them so every face is covered by overlapping beams, each beam inside its own face. Specs can be mixed: here each wall gets two 20,000 lm heads on a zoom lens from above the opposite wall, and the floor gets six 16,000 lm short-throw heads pointing straight down in a 2 × 3 grid. Leave them out of any blend group.</li>
+            <li>Click the flame icon at the top-right of the viewport to turn the Heatmap on and check the coverage before you blend, with Max lux set above the overlap level (2,500 lx here). Every face should read lit edge to edge, and the overlaps show as brighter bands: one down the middle of each wall and a grid across the floor. Click the icon again to turn it off.</li>
+            <li>Click PLAY DOCK at the bottom of the screen to open the dock, click 2 Surfaces, then click Detect surfaces….</li>
+            <li>Check the regions. With no groups, the layout is Auto: it finds one surface per face from where the beams land, here five screens: the floor with six projectors and each wall with two. Clicking a tile skips that surface.</li>
+            <li>Under Video across regions, choose Floor-centred — content runs off the floor and up every wall.</li>
+            <li>Under Source, pick a video. This example uses the bundled 4K UHD (3840 x 2160) clip.</li>
+            <li>Click Apply Setup. One blend group per face, each face's crop of the video, the edge blend inside every face with more than one projector, and playback are all set in one undo step.</li>
+            <li>Click 3 Input to see the master canvas: the floor in the middle, with each wall folded out from the edge it stands on.</li>
+            <li>Click 4 Soft Edge. Every face reads blended: each wall across its two projectors, and the floor across its six in both directions.</li>
+            <li>Press ` to collapse the dock, select the room in Scene Layers and press G. Drag to look around, use W A S D to move, and press Esc to leave.</li>
+          </ol>
+          <p class="v3-howto-sees"><strong>You will see:</strong> one clip running off the floor and up all four walls, sent to all fourteen projectors from one video. Projectors that share a face are edge-blended automatically, the floor grid along both its columns and its rows. The four wall-to-floor edges are continuous; the four vertical corners meet edge to edge without a blend, the way real immersive rooms are built. Floor-centred never uses a ceiling, and a 16:9 clip is stretched to fill the square master canvas.</p>
         </article>
       </div>
     </section>
