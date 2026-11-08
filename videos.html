@@ -143,7 +143,7 @@
             <li>Open File, choose Import 3D Model and select one .fbx, .obj, .glb, .dae, .stl or .ply file. For .gltf, include its .bin file and textures in the same picker, or export a single .glb instead.</li>
             <li>Wait for the import progress modal. A toast reports how the unit was detected and, if the file does not state its up axis, reminds you to check Up axis.</li>
             <li>The model keeps the coordinates it was authored with and is selected. In the Inspector, open 3D Model to check File, Size, Vertices, Source unit and Dimensions.</li>
-            <li>If the model lies on its side, open Source Orientation and click Z-up (Blender, 3ds Max) or X-up. Click Center on bbox under Origin to centre it on the scene origin, standing on the ground grid.</li>
+            <li>Check Source Orientation. A file exported Y-up, like this one, stands on the ground grid as it is. If a model lies on its side, click Z-up there (Blender, 3ds Max) or X-up, then click Center on bbox under Origin to centre it on the scene origin.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> the mesh where its file places it, the Inspector header reading the file name with the tag MODEL SETTINGS, and an amber Unit may be wrong note if the largest dimension is under 0.1 m or over 200 m. Files of 100 MB or more ask for confirmation; the cap is 200 MB.</p>
         </article>
