@@ -46,15 +46,16 @@
 
   <!--
     VIDEO SLOTS
-    Every chapter below has one empty slot: <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-NN-slug">.
-    To publish a clip, replace the slot's inner placeholder with:
+    Every chapter below has one slot: <div class="v3-video-frame" data-video-slot="ch-NN-slug"> holding
 
-      <video controls preload="metadata" playsinline poster="/assets/media/videos/ch-NN-slug.jpg" aria-label="Feature walkthrough">
-        <source src="/assets/media/videos/ch-NN-slug.mp4" type="video/mp4">
+      <video controls preload="metadata" playsinline poster="/assets/media/features/ch-NN-slug.jpg" aria-label="How-to video: ...">
+        <source src="/assets/media/features/ch-NN-slug.mp4" type="video/mp4">
         Your browser does not support embedded video.
       </video>
 
-    and drop the "v3-video-frame--empty" class. Keep clips at 1920x1080 or 2560x1440, 4 MB or less each, with a poster image.
+    A slot without a clip carries "v3-video-frame--empty" and the "Video in production" placeholder spans instead.
+    To replace a clip, overwrite the two files under the same names. Keep clips at 1920x1080, 4 MB or less each,
+    with a poster image (README, "Publishing a feature video").
     The chapter text is the shooting script: record exactly the steps listed, in that order.
   -->
 
@@ -64,7 +65,7 @@
         <div class="v3-page-hero-copy v3-reveal">
           <p class="v3-kicker">Videos</p>
           <h1 class="v3-display v3-display--page">Every step,<br>shown in the app.</h1>
-          <p class="v3-lead">Short walkthroughs follow the current app workflow. Each one shows you <strong>where the control lives, what to select and what appears next.</strong> The clips are in production, and the complete steps are available below.</p>
+          <p class="v3-lead">Short walkthroughs follow the current app workflow. Each one shows you <strong>where the control lives, what to select and what appears next.</strong> Each clip follows the numbered steps printed under it.</p>
         </div>
       </div>
     </section>
@@ -107,9 +108,11 @@
             <h2 class="v3-display" id="ch-01-title">Sign in and open a scene.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> app.field-lux.com, then the page headed Projects.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-01-start" role="img" aria-label="Video slot: sign in and open a scene, recording in progress">
-            <span class="v3-slot-label">Chapter 01</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-01-start">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-01-start.jpg" aria-label="How-to video: Sign in and open a scene">
+              <source src="/assets/media/features/ch-01-start.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Open app.field-lux.com and sign in with your email and password, or choose Continue with Google. To create an account, choose Create account, fill in the form and your role, click Email verification code, then enter the six-digit code from the email.</li>
@@ -130,9 +133,11 @@
             <h2 class="v3-display" id="ch-02-title">Import a 3D model.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> File &gt; Import 3D Model (Ctrl+I), or Tools &gt; Quick Target &gt; Import 3D Model.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-02-import-model" role="img" aria-label="Video slot: import a 3D model, recording in progress">
-            <span class="v3-slot-label">Chapter 02</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-02-import-model">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-02-import-model.jpg" aria-label="How-to video: Import a 3D model">
+              <source src="/assets/media/features/ch-02-import-model.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Open File, choose Import 3D Model and select one .fbx, .obj, .glb, .dae, .stl or .ply file. For .gltf, include its .bin file and textures in the same picker, or export a single .glb instead.</li>
@@ -153,15 +158,17 @@
             <h2 class="v3-display" id="ch-03-title">Floor plans and sketches.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> File &gt; Import Floor Plan, Modeling &gt; Import CAD Drawing, or Modeling &gt; New Sketch.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-03-floor-plans" role="img" aria-label="Video slot: floor plans and sketches, recording in progress">
-            <span class="v3-slot-label">Chapter 03</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-03-floor-plans">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-03-floor-plans.jpg" aria-label="How-to video: Floor plans and sketches">
+              <source src="/assets/media/features/ch-03-floor-plans.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Open File, choose Import Floor Plan and add a .dwg, .dxf, PDF, PNG or JPG. A DWG is converted in the browser, and a multi-sheet drawing asks which sheet you want.</li>
             <li>In Set the scale, click Use this to accept the unit read from the file, or click two points a known distance apart, type the real length and press Enter. For an image, type its overall width or height and press Enter; for a PDF you can also pick 1:50, 1:100 or 1:200.</li>
             <li>Click Import as reference lines. The plan appears in 3D as locked reference lines. For an image or PDF, click Place in 3D scene instead; it lands on the ground at the size you typed.</li>
-            <li>The import opens the drawing in edit mode (later, select it and press Tab, or choose Modeling &gt; Edit Linework). Press 2, Shift+click the walls you want, then click Trace selected to my sketch in the Build group.</li>
+            <li>The import opens the drawing in edit mode (later, select it and press Tab, or choose Modeling &gt; Edit Linework). Press 2, click the first wall line and Ctrl+click the others you want, then click Trace selected to my sketch in the Build group.</li>
             <li>With the traced lines selected, set Wall height and Wall thickness in the Inspector's Cleanup section, press W, then Enter. The lines rise into walls that receive projector light and cast shadows.</li>
             <li>To work without a drawing, open Modeling and choose New Sketch; the Draw tool is already on. Click to place points, type a length such as 5m and press Enter to add that point, press Enter again to finish the run, then press W and Enter to raise the walls.</li>
           </ol>
@@ -178,9 +185,11 @@
             <h2 class="v3-display" id="ch-04-title">Quick targets and LED walls.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> Tools &gt; Quick Target (Basic Room, Flat Surface, Background Photo, Curved Wall, Cylinder, Dome / Sphere) and Tools &gt; Add &gt; LED Wall.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-04-quick-targets" role="img" aria-label="Video slot: quick targets and LED walls, recording in progress">
-            <span class="v3-slot-label">Chapter 04</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-04-quick-targets">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-04-quick-targets.jpg" aria-label="How-to video: Quick targets and LED walls">
+              <source src="/assets/media/features/ch-04-quick-targets.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Click Tools, then Basic Room under Quick Target. A 10 x 10 x 4 m room named Room 1 appears on the scene origin with an open top; type Width, Depth and Height in Room Dimensions. To add a ceiling that receives and blocks light, click the ceiling button at the lower left of the viewport.</li>
@@ -204,9 +213,11 @@
             <h2 class="v3-display" id="ch-05-title">Projector Library and custom heads.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> Projector &gt; Projector Library, and Projector &gt; Custom Projector.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-05-projector-library" role="img" aria-label="Video slot: Projector Library and custom heads, recording in progress">
-            <span class="v3-slot-label">Chapter 05</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-05-projector-library">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-05-projector-library.jpg" aria-label="How-to video: Projector Library and custom heads">
+              <source src="/assets/media/features/ch-05-projector-library.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Click Projector, then Projector Library. Pick a brand tab: Epson, Panasonic or Christie. Type in the search field to filter by model, series, resolution or lumens.</li>
@@ -228,9 +239,11 @@
             <h2 class="v3-display" id="ch-06-title">Place, aim and set the optics.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> Edit &gt; Edit Mode with the Move Tool (W) and Rotate Tool (E); Inspector &gt; Projector Settings &gt; Transform and Optics.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-06-place-aim-optics" role="img" aria-label="Video slot: place, aim and set the optics, recording in progress">
-            <span class="v3-slot-label">Chapter 06</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-06-place-aim-optics">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-06-place-aim-optics.jpg" aria-label="How-to video: Place, aim and set the optics">
+              <source src="/assets/media/features/ch-06-place-aim-optics.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Click a projector in the 3D view or in Scene Layers. Click Edit, then Edit Mode. Press W for the move gizmo and drag an arrow; press E for the rotate gizmo and drag a ring to aim. Press F to frame the selection.</li>
@@ -253,9 +266,11 @@
             <h2 class="v3-display" id="ch-07-title">Placement Tool arrays.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> Projector &gt; Placement Tool, or the Projector array button in the viewport tool rail with a projector selected.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-07-placement-arrays" role="img" aria-label="Video slot: Placement Tool arrays, recording in progress">
-            <span class="v3-slot-label">Chapter 07</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-07-placement-arrays">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-07-placement-arrays.jpg" aria-label="How-to video: Placement Tool arrays">
+              <source src="/assets/media/features/ch-07-placement-arrays.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Select the projector you want to replicate, then click Projector, then Placement Tool. The floating Projector Placement Tool window opens with the selected projector named at the top.</li>
@@ -277,13 +292,15 @@
             <h2 class="v3-display" id="ch-08-title">Blend groups and edge blending.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> the chain-link button in the Scene Layers header, and Inspector &gt; Projector Settings &gt; Edge Blending.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-08-edge-blending" role="img" aria-label="Video slot: blend groups and edge blending, recording in progress">
-            <span class="v3-slot-label">Chapter 08</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-08-edge-blending">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-08-edge-blending.jpg" aria-label="How-to video: Blend groups and edge blending">
+              <source src="/assets/media/features/ch-08-edge-blending.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>In Scene Layers, click one projector, then Ctrl+Click the others that overlap. Click the chain-link button in the Scene Layers header (Create blend group from selected projectors). The group appears colour-coded in the list.</li>
-            <li>Select one member and scroll the Inspector to Edge Blending. Switch Enable on; this runs Auto-Blend for the group.</li>
+            <li>Select one member and scroll the Inspector to Edge Blending. A new group starts with Enable on, so click Auto-Blend; switching Enable back on later runs it for you.</li>
             <li>Auto-Blend measures where the beams overlap on the surface and turns on the matching edges, Left, Right, Top or Bottom, with their overlap percentages and the partner's name. Click Auto-Blend to run it again.</li>
             <li>Drag an edge slider to adjust the feather from 0 to 50 percent; the readout shows percent and the feather width in your display unit. Pick a Blend Curve: Linear, Gamma 2.2 or S-Curve.</li>
             <li>If you move a projector afterwards, the Stale badge appears. Click Recalculate. When an amber note on an edge card flags a feather or brightness mismatch, click its Mirror or Match brightness button.</li>
@@ -303,9 +320,11 @@
             <h2 class="v3-display" id="ch-09-title">Heatmap maps and scales.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> the flame icon (Heatmap) in the floating button column at the top-right of the viewport, or View &gt; Heatmap Overlay, then the Heatmap panel that appears at the left of the viewport.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-09-heatmap" role="img" aria-label="Video slot: Heatmap maps and scales, recording in progress">
-            <span class="v3-slot-label">Chapter 09</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-09-heatmap">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-09-heatmap.jpg" aria-label="How-to video: Heatmap maps and scales">
+              <source src="/assets/media/features/ch-09-heatmap.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>With at least one projector and a target in the scene, click the flame icon at the top-right of the viewport, or click View, then Heatmap Overlay.</li>
@@ -328,9 +347,11 @@
             <h2 class="v3-display" id="ch-10-title">Values, 13pt Diagnostic and Lens View.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> the Values and Lens View buttons in the Heatmap panel; the Measurement target dropdown at the top of the Inspector; the cursor itself.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-10-values-13pt" role="img" aria-label="Video slot: Values, 13pt Diagnostic and Lens View, recording in progress">
-            <span class="v3-slot-label">Chapter 10</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-10-values-13pt">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-10-values-13pt.jpg" aria-label="How-to video: Values, 13pt Diagnostic and Lens View">
+              <source src="/assets/media/features/ch-10-values-13pt.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Turn the Heatmap overlay on and select exactly one projector. In the Heatmap panel click Values.</li>
@@ -353,9 +374,11 @@
             <h2 class="v3-display" id="ch-11-title">Materials and ambient contrast.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> Appearance &gt; Material, or right-click an object in Scene Layers and choose Material; Appearance &gt; Ambient Light, and View &gt; Ambient Light Preview.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-11-materials-ambient" role="img" aria-label="Video slot: materials and ambient contrast, recording in progress">
-            <span class="v3-slot-label">Chapter 11</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-11-materials-ambient">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-11-materials-ambient.jpg" aria-label="How-to video: Materials and ambient contrast">
+              <source src="/assets/media/features/ch-11-materials-ambient.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Select the surface or model, open Appearance and choose Material. In the floating Material window, choose a Library preset such as White Wall, Concrete, Screen/Fabric, Rear Projection or White Scrim.</li>
@@ -379,9 +402,11 @@
             <h2 class="v3-display" id="ch-12-title">Play Dock, Output Setup and media.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> the Play Dock strip along the bottom of the viewport, its Output Setup and Media buttons, and the workflow row and transport bar inside the console.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-12-play-dock" role="img" aria-label="Video slot: Play Dock, Output Setup and media, recording in progress">
-            <span class="v3-slot-label">Chapter 12</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-12-play-dock">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-12-play-dock.jpg" aria-label="How-to video: Play Dock, Output Setup and media">
+              <source src="/assets/media/features/ch-12-play-dock.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Aim every projector at its wall, floor or model, then choose Output Setup on the collapsed Play Dock strip. In an open console, the same sheet is Detect surfaces at step 2.</li>
@@ -404,9 +429,11 @@
             <h2 class="v3-display" id="ch-13-title">Warp &amp; Blend and test patterns.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> the Play Dock console: click 4 Soft Edge or 5 Masks in the workflow row, or Warp &amp; Blend above the mapping editor. An ungrouped projector opens the studio directly.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-13-warp-blend" role="img" aria-label="Video slot: Warp and Blend and test patterns, recording in progress">
-            <span class="v3-slot-label">Chapter 13</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-13-warp-blend">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-13-warp-blend.jpg" aria-label="How-to video: Warp and Blend and test patterns">
+              <source src="/assets/media/features/ch-13-warp-blend.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Open the Play Dock console, click 4 Soft Edge in the workflow row and pick a surface in the list on the left. From steps 1 to 3, click Warp &amp; Blend above the mapping editor.</li>
@@ -430,9 +457,11 @@
             <h2 class="v3-display" id="ch-14-title">Lighting fixtures and Working Plane.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> the Lighting menu (Add Fixture, My Fixtures, Lighting Panel, Working Plane (Isolux)) and the Light Settings panel in the Inspector.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-14-lighting" role="img" aria-label="Video slot: lighting fixtures and Working Plane, recording in progress">
-            <span class="v3-slot-label">Chapter 14</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-14-lighting">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-14-lighting.jpg" aria-label="How-to video: Lighting fixtures and Working Plane">
+              <source src="/assets/media/features/ch-14-lighting.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Click Lighting, then a type under Add Fixture: Moving Head Spot, Moving Head Wash, Moving Head Beam, LED PAR / Static Wash, Profile / Ellipsoidal, Fresnel / PC, Flood / Cyc / Blinder or Strobe / Flash. The fixture appears, selected, and the Inspector switches to Light Settings.</li>
@@ -454,12 +483,14 @@
             <h2 class="v3-display" id="ch-15-title">Fog and volumetric beams.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> Lighting &gt; Atmosphere &gt; Fog Machine, and Appearance &gt; Volumetric Beams.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-15-fog" role="img" aria-label="Video slot: fog and volumetric beams, recording in progress">
-            <span class="v3-slot-label">Chapter 15</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-15-fog">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-15-fog.jpg" aria-label="How-to video: Fog and volumetric beams">
+              <source src="/assets/media/features/ch-15-fog.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Click Lighting, then Fog Machine under Atmosphere. A machine appears in the scene, selected, and the Inspector shows the Fog Machine section.</li>
+            <li>Click Lighting, then Fog Machine under Atmosphere. A machine appears on the scene origin, selected, and the Inspector shows the Fog Machine section. Type its Position, or drag it, to place it where the beams pass.</li>
             <li>Set Output, Fluid rate, Fluid (Quick dissipating, Standard or Long lasting), Plume spread, Plume reach and Nozzle velocity. Read Fog output in cubic metres per minute and grams per second.</li>
             <li>Click Appearance. Under Volumetric Beams make sure the toggle reads On. If no machine exists, the panel says to add one first.</li>
             <li>Adjust Wind, Direction, Gust and Ventilation to move and clear the cloud. Pick Quality (Low, Medium or High) and Beam visibility.</li>
@@ -480,9 +511,11 @@
             <h2 class="v3-display" id="ch-16-title">Save, versions and project files.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> File &gt; Save (Ctrl+S), Save As (Ctrl+Shift+S), Version history, Export Project File and Open Project File; Settings &gt; Auto Save.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-16-save-versions" role="img" aria-label="Video slot: save, versions and project files, recording in progress">
-            <span class="v3-slot-label">Chapter 16</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-16-save-versions">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-16-save-versions.jpg" aria-label="How-to video: Save, versions and project files">
+              <source src="/assets/media/features/ch-16-save-versions.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Press Ctrl+S or open File and choose Save. A project started with New Project is already in the cloud under its name. The chip at the right end of the menu bar reads Saving while it works, then the Unsaved dot disappears. Click the project name beside it to rename the project, or choose Save As to name a copy.</li>
@@ -503,9 +536,11 @@
             <h2 class="v3-display" id="ch-17-title">Share links.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> Share &gt; Share opens Share 3D View; Share &gt; Share Management lists every link.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-17-share-links" role="img" aria-label="Video slot: share links, recording in progress">
-            <span class="v3-slot-label">Chapter 17</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-17-share-links">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-17-share-links.jpg" aria-label="How-to video: Share links">
+              <source src="/assets/media/features/ch-17-share-links.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Open Share and choose Share. In the Cloud Share block, enter a Link label, choose an expiry of 2, 7, 14 or 30 days or Never, and enable Require a password when needed.</li>
@@ -528,9 +563,11 @@
             <h2 class="v3-display" id="ch-18-title">PDF Tech Rider.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> File &gt; Export PDF Tech Rider. Also Ctrl+K, then type Export PDF.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-18-pdf-tech-rider" role="img" aria-label="Video slot: PDF Tech Rider, recording in progress">
-            <span class="v3-slot-label">Chapter 18</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-18-pdf-tech-rider">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-18-pdf-tech-rider.jpg" aria-label="How-to video: PDF Tech Rider">
+              <source src="/assets/media/features/ch-18-pdf-tech-rider.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Frame the 3D viewport the way you want it captured. Turn the Heatmap overlay on if you want the lux legend in the PDF.</li>
@@ -550,9 +587,11 @@
             <h2 class="v3-display" id="ch-19-title">Settings, shortcuts and walk mode.</h2>
             <p class="v3-howto-where"><strong>Where:</strong> the Settings and View menus, Help &gt; Keyboard Shortcuts (F1), Tools &gt; Search Commands (Ctrl+K), and the G key.</p>
           </header>
-          <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-19-settings-shortcuts" role="img" aria-label="Video slot: settings, shortcuts and walk mode, recording in progress">
-            <span class="v3-slot-label">Chapter 19</span>
-            <span class="v3-slot-note">Video in production</span>
+          <div class="v3-video-frame" data-video-slot="ch-19-settings-shortcuts">
+            <video controls preload="metadata" playsinline poster="/assets/media/features/ch-19-settings-shortcuts.jpg" aria-label="How-to video: Settings, shortcuts and walk mode">
+              <source src="/assets/media/features/ch-19-settings-shortcuts.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Click Settings, then Display Unit to cycle mm, m and ft. Every dimension field and label follows.</li>

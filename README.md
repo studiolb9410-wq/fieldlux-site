@@ -181,24 +181,25 @@ pages write.
 
 ## Publishing a feature video
 
-`/videos` carries 43 slots across the ten chapters. A slot's published state is **authored
-in the markup**, not probed at runtime - that is what keeps the publication counters
-correct with JavaScript disabled and before any image has loaded.
+`/videos` has one slot per chapter, nineteen in all. A slot's published state is **authored
+in the markup**, not probed at runtime, so the page is right with JavaScript disabled and
+before any image has loaded.
 
 The whole workflow:
 
-1. Record the clip in a 1920 x 1080 window. Clean scene, no client project names in the
-   outliner. Hide the OS cursor unless the clip is about pointing.
-2. Encode it.
-3. Grab a poster.
-4. Drop both files in `assets/media/features/`.
-5. In `videos.html`, on that card: add `has-media` to the `.video-card-media` span and
-   remove `video-card--pending` from the `<article>`. **Two class edits, no new markup.**
+1. Record the clip at 1920 x 1080 following the chapter's numbered steps, in order - the
+   chapter text is the shooting script. Clean scene, no client project names in the outliner.
+2. Encode it (below). Each file must be **4 MB or less**.
+3. Grab a poster: a frame that shows the result of the steps, 200 KB or less.
+4. Put both files in `assets/media/features/`, named after the slot.
+5. In `videos.html`, replace the slot's placeholder spans with the `<video>` element shown
+   in the comment at the top of the page, drop `v3-video-frame--empty` and the slot's
+   `role="img"` / placeholder `aria-label`.
 6. Commit and push.
 
 ### Naming - the only thing that can go wrong
 
-- The basename **must** equal the slug already written on the card, exactly.
+- The basename **must** equal the slot's `data-video-slot` value, exactly (`ch-03-floor-plans`).
 - Lowercase ASCII and hyphens. No spaces, no underscores, no Korean, no version suffixes.
 - Both the `.mp4` and the `.jpg` are required.
 - To replace a clip, **overwrite the same two filenames**. Never add a `v2`.
@@ -206,51 +207,31 @@ The whole workflow:
 ### Encode
 
 ```bash
-ffmpeg -i RAW.mov \
-  -c:v libx264 -profile:v high -level 4.1 -pix_fmt yuv420p \
-  -crf 21 -preset slow \
-  -g 60 -keyint_min 60 -sc_threshold 0 \
-  -maxrate 6M -bufsize 12M \
-  -vf "fps=30" \
-  -an -movflags +faststart \
-  assets/media/features/<slug>.mp4
+ffmpeg -i RAW.mov   -c:v libx264 -profile:v high -level 4.1 -pix_fmt yuv420p   -crf 21 -preset slow   -g 300 -keyint_min 60 -sc_threshold 0   -maxrate 6M -bufsize 12M   -vf "fps=30"   -an -movflags +faststart   assets/media/features/<slug>.mp4
 ```
 
 | Setting | Value | Why |
 |---|---|---|
 | Container / codec | MP4, H.264 High @ L4.1, `yuv420p` | Universal. HEVC and AV1 both have desktop-browser holes |
-| `-movflags +faststart` | **mandatory** | Puts `moov` ahead of `mdat` so playback starts before the file finishes downloading. Without it, hover previews stall |
-| No rescale | omit any `scale=` filter | The source is already 1918 or 1912 wide; rescaling only softens UI text |
-| Frame rate | 30 fps, **60 fps for drag-response clips** | Those clips are about latency and 30 fps flattens it. Bump `-crf` to 23 at 60 |
-| Quality | CRF 21, `-preset slow`, 6 Mbps cap | Flat UI regions compress hard; typical result is 2-4 Mbps |
-| Keyframes | `-g 60` (2 s) | Responsive seeking in the lightbox |
-| Audio | **stripped** (`-an`) | Every preview is muted; audio inflates the file and creates a playback-policy hazard |
-| Size | target <= 12 MB, hard cap 25 MB | |
+| `-movflags +faststart` | **mandatory** | Puts `moov` ahead of `mdat` so playback starts before the file finishes downloading |
+| No rescale | omit any `scale=` filter that changes size | Rescaling only softens UI text. A full-range source (JPEG frames) gets `scale=in_range=full:out_range=tv` and nothing else |
+| Frame rate | 30 fps | Plenty for UI walkthroughs |
+| Quality | CRF 21, `-preset slow`, 6 Mbps cap; raise CRF one step at a time only when the file would exceed 4 MB | The published clips sit at CRF 21-26. A clip that needs more than 26 is too long or has moving content behind it: pause the Play Dock and trim idle time rather than going softer |
+| Keyframes | `-g 300` (10 s) | These clips are mostly static UI: a 2 s keyframe interval cost about 40 % more bytes for no visible gain, and the browser still seeks to any frame |
+| Audio | **stripped** (`-an`) | Every clip is silent; audio inflates the file and creates a playback-policy hazard |
+| Size | **4 MB or less per file** | The redesign spec's media budget |
 
 ### Poster
 
 ```bash
-ffmpeg -ss 00:00:01.5 -i assets/media/features/<slug>.mp4 \
-  -frames:v 1 -q:v 4 assets/media/features/<slug>.jpg
-
-# batch: a poster for every mp4 that lacks one
-for f in assets/media/features/*.mp4; do
-  [ -f "${f%.mp4}.jpg" ] || ffmpeg -y -ss 1.5 -i "$f" -frames:v 1 -q:v 4 "${f%.mp4}.jpg"
-done
+ffmpeg -ss <seconds> -i assets/media/features/<slug>.mp4   -frames:v 1 -q:v 4 assets/media/features/<slug>.jpg
 ```
 
-JPEG at the source resolution, q approx.  4, <= 200 KB. Take it at about 1.5 s, never frame 0 -
-frame 0 is usually mid-transition or black.
+JPEG at the source resolution, q approx. 4, 200 KB or less. Pick a moment that shows what the
+chapter achieves (the walls raised, the fog lit), never frame 0 - frame 0 is usually
+mid-transition or an empty scene.
 
-### Optional manifest
-
-`assets/media/features/manifest.json` is not required for a video to appear. It only
-carries extras the filesystem cannot express, is fetched once, and a missing file is
-caught and ignored.
-
-```json
-{ "auto-edge-blend": { "duration": 44, "badge": "new" } }
-```
+The current `/videos` page reads no manifest; a clip's duration comes from the file itself.
 
 ## Source files
 
