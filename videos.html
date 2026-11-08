@@ -113,11 +113,11 @@
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Open app.field-lux.com and sign in with your email and password, or choose Continue with Google. To create an account, choose Create account, select your role and enter the six-digit code from the verification email.</li>
-            <li>The Projects page opens with three tiles: New Project, Open FieldLux Test Scene and Open Play Dock Demo. Saved projects are listed below them.</li>
+            <li>The Projects page opens with three tiles: New Project, Open FieldLux Test Scene and Open Play Dock Demo. Saved projects are listed below them. Delete moves a project to Trash, where you can restore it for 30 days.</li>
             <li>Click Open FieldLux Test Scene to get a working four-projector facade without importing anything. The copy is yours; the shared source never changes.</li>
-            <li>Click New Project to start from a blank scene. Press Ctrl+O at any time to come back to Projects.</li>
+            <li>Click New Project, type a project name when asked and click OK. The blank project is saved under that name and opens in the editor. Press Ctrl+O at any time to come back to Projects.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> the editor with the menu bar (File, Edit, View, Modeling, Projector, Lighting, Tools, Appearance, Share, Settings, Help), Scene Layers on the left and the Inspector on the right. The Open beta model storage meter on the Projects page shows the 2 GB per-account limit.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> the editor with the menu bar (File, Edit, View, Modeling, Projector, Lighting, Tools, Appearance, Share, Settings, Help) with the project name and save status at its right end, Scene Layers on the left and the Inspector on the right. The Open beta model storage meter on the Projects page shows the 2 GB per-account limit.</p>
         </article>
       </div>
     </section>
@@ -137,10 +137,10 @@
           <ol class="v3-howto v3-howto--cols">
             <li>Open File, choose Import 3D Model and select one .fbx, .obj, .glb, .dae, .stl or .ply file. For .gltf, include its .bin file and textures in the same picker, or export a single .glb instead.</li>
             <li>Wait for the import progress modal. A toast reports how the unit was detected and, if the up axis was ambiguous, which one was used.</li>
-            <li>The model lands on the ground grid and is selected. In the Inspector, open 3D Model to check File, Size, Vertices, Source unit and Dimensions.</li>
-            <li>If the model lies on its side, open Source Orientation and click Z-up (Blender, 3ds Max) or X-up. Click Center on bbox under Origin to bring it to the scene origin.</li>
+            <li>The model keeps the coordinates it was authored with and is selected. In the Inspector, open 3D Model to check File, Size, Vertices, Source unit and Dimensions.</li>
+            <li>If the model lies on its side, open Source Orientation and click Z-up (Blender, 3ds Max) or X-up. Click Center on bbox under Origin to centre it on the scene origin, standing on the ground grid.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> the mesh standing on the Y=0 grid, the Inspector header reading the file name with the tag MODEL SETTINGS, and an amber Unit may be wrong note if the largest dimension is under 0.1 m or over 200 m. Files of 100 MB or more ask for confirmation; the cap is 200 MB.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> the mesh where its file places it, the Inspector header reading the file name with the tag MODEL SETTINGS, and an amber Unit may be wrong note if the largest dimension is under 0.1 m or over 200 m. Files of 100 MB or more ask for confirmation; the cap is 200 MB.</p>
         </article>
       </div>
     </section>
@@ -159,8 +159,8 @@
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Open File, choose Import Floor Plan and add a .dwg, .dxf, PDF, PNG or JPG. A DWG is converted in the browser, and a multi-sheet drawing asks which sheet you want.</li>
-            <li>In Set the scale, click Use this to accept the unit read from the file, or click two points a known distance apart and type the real length. For an image or PDF, type its overall width or height, or pick 1:50, 1:100 or 1:200.</li>
-            <li>Click Import as reference lines. The plan appears in 3D as locked reference lines. For an image, click Place in 3D scene instead; it lands on the ground at the size you typed.</li>
+            <li>In Set the scale, click Use this to accept the unit read from the file, or click two points a known distance apart and type the real length. For an image, type its overall width or height; for a PDF you can also pick 1:50, 1:100 or 1:200.</li>
+            <li>Click Import as reference lines. The plan appears in 3D as locked reference lines. For an image or PDF, click Place in 3D scene instead; it lands on the ground at the size you typed.</li>
             <li>Select the drawing and press Tab (Modeling &gt; Edit Linework). Press 2 to select lines, click the walls you want, then click Trace selected to my sketch in the Build group.</li>
             <li>With the traced lines selected, set Wall height and Wall thickness in the Inspector's Cleanup section, press W, then Enter. The lines rise into walls that receive projector light and cast shadows.</li>
             <li>To work without a drawing, open Modeling and choose New Sketch. Press 3 for the Draw tool, click to place points, type a length such as 5m while drawing, press Enter to finish the run, then press W and Enter to raise the walls.</li>
@@ -183,7 +183,7 @@
             <span class="v3-slot-note">Video in production</span>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Click Tools, then Basic Room under Quick Target. A 10 x 10 x 4 m box named Room 1 appears; type Width, Depth and Height in Room Dimensions.</li>
+            <li>Click Tools, then Basic Room under Quick Target. A 10 x 10 x 4 m room named Room 1 appears on the scene origin with an open top; type Width, Depth and Height in Room Dimensions. To add a ceiling that receives and blocks light, click the ceiling button at the lower left of the viewport.</li>
             <li>Click Tools, then Flat Surface for a single projection wall (5.0 x 2.81 m by default). Edit Width and Height in Dimensions, and click Flip normal in the Facing row if it renders black.</li>
             <li>For a dome, cylinder or curved wall, pick it under Quick Target and edit its Dimensions section: Width, Height and Curvature radius for a curved wall; Radius, Height and Arc for a cylinder; Radius and Coverage for a dome. Set Facing so the lit side faces the projectors.</li>
             <li>For a site photo, click Tools, then Background Photo, pick an image, and set Physical Width in the Inspector so the photo is at real scale. Raise Dimmer to darken the photo so projected light reads more clearly.</li>
@@ -212,7 +212,7 @@
             <li>Click Projector, then Projector Library. Pick a brand tab: Epson, Panasonic or Christie. Type in the search field to filter by model, series, resolution or lumens.</li>
             <li>On the card you want, choose a lens in the Lens dropdown (fixed-lens heads show none), then click Add. The projector appears in the scene, selected, and the Inspector opens on Projector Settings.</li>
             <li>To swap equipment later, select the projector and change Brand, Model, Lens or Aspect Ratio in the Equipment section. Lens shift is re-clamped to the new lens's official limits.</li>
-            <li>For a head that is not in the library, click Projector, then Custom Projector. Type a name, pick a Resolution, set Brightness (ANSI Lumens) and the body size from the spec sheet, choose a Projection Lens Profile, and set Throw Ratio and the lens shift ranges.</li>
+            <li>For a head that is not in the library, click Projector, then Custom Projector. Type a name, pick a Resolution, set Brightness (ANSI Lumens) and the body size from the spec sheet, choose a Projection Lens Profile, and set Throw Ratio and the starting vertical and horizontal lens shift.</li>
             <li>Tick Save to Saved Custom Projectors for reuse before clicking Add Custom Projector. Next time it is one click under the Saved Custom Projectors tab.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> library cards showing the model, lumens, resolution and throw-ratio range. In the Optics section the lux row reads Center Illuminance for Epson and Panasonic pairs backed by the manufacturer's calculator, and Center Surface Lux for Christie and custom heads.</p>
@@ -234,11 +234,11 @@
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Click a projector in the 3D view or in Scene Layers. Click Edit, then Edit Mode. Press W for the move gizmo and drag an arrow; press E for the rotate gizmo and drag a ring to aim. Press F to frame the selection.</li>
-            <li>For exact placement, open Transform in the Inspector and type Position X, Y, Z in metres (Y is height above the ground) and Rotation in degrees. Hover a box and click the padlock to lock that axis.</li>
+            <li>For exact placement, open Transform in the Inspector and type Position X, Y, Z in the display unit, mm by default (Y is height above the ground) and Rotation in degrees. Hover a box and click the padlock to lock that axis.</li>
             <li>Open Optics. Drag the Throw Ratio slider; its end labels are the real limits of the lens you chose. Beam W and Beam H follow: width equals distance divided by throw ratio.</li>
             <li>Read the distance row, Center Illuminance or Center Surface Lux in lx, Surface Tilt in degrees and Pixel Density in mm/px. Hover the question mark beside a row for its definition.</li>
             <li>At the bottom of Optics, drag V Shift and H Shift to move the image without tilting the projector. The limits are the lens's own. Click Reset Shift to Home to return.</li>
-            <li>Use Projector Controls at the top of the panel to switch Power or Beam Preview off, or Lock Transform on.</li>
+            <li>Use Projector Controls at the top of the panel to switch Power or Beam Preview off, or click Lock position so the projector cannot be moved.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> a red, green and blue gizmo on the projector, the beam frustum and its W and H labels moving on the surface, and the Optics readouts changing on every commit. A head placed outside its catalogue throw range gets an amber Out-of-spec diagnostic model card with struck-through values.</p>
         </article>
@@ -260,11 +260,11 @@
           <ol class="v3-howto v3-howto--cols">
             <li>Select the projector you want to replicate, then click Projector, then Placement Tool. The floating Projector Placement Tool window opens with the selected projector named at the top.</li>
             <li>Choose Linear, Circular or Symmetry. For Linear, set Count, Spacing, Axis and whether the selected projector is First, Center or Last. For Circular, set Count, Radius, Arc and Aim. For Symmetry, set the Mirror axis, Plane and Gap.</li>
-            <li>Keep Live ghost preview ticked. Ghost projectors appear in the 3D view and in the Coordinate Table, where you can edit X, Y and Z per unit.</li>
-            <li>Click Bake Layout to create real, individually editable projectors, or Start Live to create a linked array that follows the source when you move it. Bake it later with Bake array in the Inspector.</li>
+            <li>Keep Live ghost preview ticked. Ghost projectors appear in the 3D view and in the Coordinate Table, which lists X, Y and Z for every unit.</li>
+            <li>Click Place projectors to create real, individually editable projectors, or Start Live to keep the copies linked as an array that follows the source. A Circular ring on the default Group center pivot follows its Array Pivot node instead. Bake a live array later with Bake array in the Inspector's Array section.</li>
             <li>To align heads to each other, Ctrl+Click two or more projectors, click Show projector match axes in the tool rail, and click X, Y, Z or XYZ under Move or Rotate.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> ghost projectors and a Coordinate Table in the tool window, then the new projectors in Scene Layers. Two or more baked heads are put in a blend group automatically. A live array child shows an amber Live array child banner in its Transform section.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> ghost projectors and a Coordinate Table in the tool window, then the new projectors in Scene Layers. Two or more placed heads are put in a blend group automatically. Each live copy shows an Array section marked Copy in the Inspector, with Position set to Follows array and Equipment set to Same as source; set either to Own to change that copy alone.</p>
         </article>
       </div>
     </section>
@@ -275,17 +275,17 @@
           <header class="v3-chapter-head">
             <p class="v3-kicker">Part B · Projectors · Chapter 08</p>
             <h2 class="v3-display" id="ch-08-title">Blend groups and edge blending.</h2>
-            <p class="v3-howto-where"><strong>Where:</strong> the + button in the Scene Layers header, and Inspector &gt; Projector Settings &gt; Edge Blending.</p>
+            <p class="v3-howto-where"><strong>Where:</strong> the chain-link button in the Scene Layers header, and Inspector &gt; Projector Settings &gt; Edge Blending.</p>
           </header>
           <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-08-edge-blending" role="img" aria-label="Video slot: blend groups and edge blending, recording in progress">
             <span class="v3-slot-label">Chapter 08</span>
             <span class="v3-slot-note">Video in production</span>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>In Scene Layers, click one projector, then Ctrl+Click the others that overlap. Click the + button in the Scene Layers header (Create blend group from selected projectors). The group appears colour-coded in the list.</li>
-            <li>Select one member and scroll the Inspector to Edge Blending. Switch Enable on.</li>
-            <li>Click Auto-Blend. FieldLux measures where the beams overlap on the surface and turns on the matching edges, Left, Right, Top or Bottom, with their overlap percentages and the partner's name.</li>
-            <li>Drag an edge slider to adjust the feather from 0 to 50 percent; the readout shows percent and metres. Pick a Blend Curve: Linear, Gamma 2.2 or S-Curve.</li>
+            <li>In Scene Layers, click one projector, then Ctrl+Click the others that overlap. Click the chain-link button in the Scene Layers header (Create blend group from selected projectors). The group appears colour-coded in the list.</li>
+            <li>Select one member and scroll the Inspector to Edge Blending. Switch Enable on; this runs Auto-Blend for the group.</li>
+            <li>Auto-Blend measures where the beams overlap on the surface and turns on the matching edges, Left, Right, Top or Bottom, with their overlap percentages and the partner's name. Click Auto-Blend to run it again.</li>
+            <li>Drag an edge slider to adjust the feather from 0 to 50 percent; the readout shows percent and the feather width in your display unit. Pick a Blend Curve: Linear, Gamma 2.2 or S-Curve.</li>
             <li>If you move a projector afterwards, the Stale badge appears. Click Recalculate. Use Mirror to copy your feather width to the partner, or Match brightness to equalise the two heads.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> four edge cards, with enabled edges turning cyan, and a soft feather across the overlap in the 3D view instead of a doubled bright band. Measured lux stays pre-blend and represents each head at full white.</p>
@@ -311,11 +311,11 @@
             <li>With at least one projector and a target in the scene, click the flame icon at the top-right of the viewport, or click View, then Heatmap Overlay.</li>
             <li>In the Heatmap panel, click a map: Surface Lux (lx), Pixel Density (mm/px) or Luminance (cd/m²). The header chip and the ramp labels follow the map.</li>
             <li>With Surface Lux selected, click Absolute and type a ceiling in Max lux so the red end of the ramp matches your brightest reading.</li>
-            <li>Click Norm and type the target in Ref lux. The ramp reads 0.0x to 2.0x with 1.0x at the reference.</li>
+            <li>Click Norm and type the target in Ref lux. The ramp reads 0.0x to 2.0x, and the band from 0.9x to 1.1x marks the reference.</li>
             <li>Click Deviation and pick a band with the Scale buttons, plus or minus 10, 20 or 30 percent, to show how far each point sits from the reference.</li>
-            <li>Drag the panel by its grip to park it anywhere. Read the badge in its header: Physics Model, Spec-based or Calibrated. Hover it to see what feeds the estimate.</li>
+            <li>Drag the panel by its grip to park it anywhere. Read the basis badge in its header, Physics Model for every head in today's library, and hover it to see what feeds the estimate.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> the projected surfaces recoloured, blue through green and yellow to red for Absolute, blue-white-orange-red centred on 1.0x for Norm, and blue-white-red centred on 0 percent for Deviation. Number fields keep their values between sessions.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> the projected surfaces recoloured, blue through green and yellow to red for Absolute, blue rising to white across the 0.9x to 1.1x band, then orange to red, for Norm, and blue-white-red centred on 0 percent for Deviation. Number fields keep their values between sessions.</p>
         </article>
       </div>
     </section>
@@ -335,10 +335,10 @@
           <ol class="v3-howto v3-howto--cols">
             <li>Turn the Heatmap overlay on and select exactly one projector. In the Heatmap panel click Values.</li>
             <li>Read the 13 probes drawn on the projected image: TL, TC, TR, ML, C, MR, BL, BC, BR are the nine ANSI points, and L25, R25, T25, B25 are the quarter-points. Each carries its reading in the current map's unit.</li>
-            <li>Click the chevron at the left of the panel header to expand the details. Read C (centre), Avg (mean of the nine), U (minimum of 13 over the mean) and the grade S, A, B or Correction Required. Under Distribution, click Composite or a projector name to summarise all heads or one.</li>
-            <li>Click Lens View. The camera jumps behind the projector lens looking at its image; click Scene View to return.</li>
+            <li>Read the FieldLux Distribution card in the panel: C (centre), Avg (mean of the nine), U (minimum of 13 over the mean) and the grade S, A, B or Correction Required. Click the chevron at the left of the panel header, then under Distribution click Composite or a projector name to summarise all heads or one.</li>
+            <li>Click Lens View. The camera moves onto the projector's line of sight and frames its image; click Scene View to return.</li>
             <li>Move the cursor over any surface the selected projector lights. The tooltip reads Surface lux and mm/px under the cursor, with no button to press.</li>
-            <li>At the top of the Inspector, open Measurement target. Leave it on Auto, or pick a specific wall such as Room · Front or Room · Ceiling, a surface, a photo or a model. Every lux and mm/px reading, in the viewport and in the PDF, then uses that surface.</li>
+            <li>At the top of the Inspector, open Measurement target. Leave it on Auto, which follows the selected projector's beam, or pick a room wall such as Room 1 · Front, a surface, a photo, a model or a primitive. Ceiling is listed only while the room has its ceiling on. Every lux and mm/px reading, in the viewport and in the PDF, then uses that surface.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> 13 dots joined by thin white lines with bold ids and values such as 312 lx, 1.02x or 2.45 mm/px depending on map and mode; the probes follow the projector as you drag it. The panel's Probe set row reads 13pt Diagnostic.</p>
         </article>
@@ -351,7 +351,7 @@
           <header class="v3-chapter-head">
             <p class="v3-kicker">Part C · Measurement · Chapter 11</p>
             <h2 class="v3-display" id="ch-11-title">Materials and ambient contrast.</h2>
-            <p class="v3-howto-where"><strong>Where:</strong> Appearance &gt; Material, or right-click an object in Scene Layers and choose Material; Appearance &gt; Ambient Light and Physical Preview.</p>
+            <p class="v3-howto-where"><strong>Where:</strong> Appearance &gt; Material, or right-click an object in Scene Layers and choose Material; Appearance &gt; Ambient Light, and View &gt; Ambient Light Preview.</p>
           </header>
           <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-11-materials-ambient" role="img" aria-label="Video slot: materials and ambient contrast, recording in progress">
             <span class="v3-slot-label">Chapter 11</span>
@@ -359,10 +359,10 @@
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Select the surface or model, open Appearance and choose Material. In the floating Material window, choose a Library preset such as White Wall, Concrete, Screen/Fabric, Rear Projection or White Scrim.</li>
-            <li>Under Surface set Type, Base color and Glossiness. Under Brightness Response read Reflectance and set Screen gain. These change the Luminance map and the cd/m² readouts only; measured lux never moves.</li>
+            <li>Under Surface set Type, Base color and Glossiness. Under Brightness Response read Reflectance and set Screen gain. These change the Luminance map and the cd/m² readouts only; measured lux never moves. The exception is the Mirror type, which reflects beams onto other surfaces and adds lux where the reflection lands.</li>
             <li>Click Appearance again. Under Ambient Light pick a preset such as Venue (house lights) or Full Blackout, or type a lux value.</li>
             <li>Read the contrast line below it. FieldLux shows a verdict from Optimal (Full Blackout) to Not viable, plus the CR n:1 ratio calculated as peak projector lux plus ambient, divided by ambient.</li>
-            <li>Under Physical Preview click On to render the scene as perceived brightness against that ambient level. For a site photo, raise Dimmer in the photo's Inspector section to darken the photo behind the projection.</li>
+            <li>To see the venue lit at that ambient level, click View, then Ambient Light Preview. For a site photo, raise Dimmer in the photo's Inspector section to darken the photo behind the projection.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> the surface change colour and gloss in the viewport, the Luminance map rescale with reflectance times gain over pi, and a coloured contrast verdict under Ambient Light. Ambient light is a display and contrast input; lux, mm/px and heatmap values do not change with it.</p>
         </article>
@@ -377,7 +377,7 @@
           <header class="v3-chapter-head">
             <p class="v3-kicker">Part D · Content · Chapter 12</p>
             <h2 class="v3-display" id="ch-12-title">Play Dock, Output Setup and media.</h2>
-            <p class="v3-howto-where"><strong>Where:</strong> the Play Dock strip along the bottom of the viewport, its Output Setup and Media buttons, and the transport bar inside the console.</p>
+            <p class="v3-howto-where"><strong>Where:</strong> the Play Dock strip along the bottom of the viewport, its Output Setup and Media buttons, and the workflow row and transport bar inside the console.</p>
           </header>
           <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-12-play-dock" role="img" aria-label="Video slot: Play Dock, Output Setup and media, recording in progress">
             <span class="v3-slot-label">Chapter 12</span>
@@ -385,13 +385,13 @@
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Aim every projector at its wall, floor or model, then choose Output Setup on the Play Dock strip.</li>
-            <li>Under Regions, where your beams land, click a tile to include or skip it, drag to reorder, shift-drag to merge. Choose Auto, One canvas or My groups, and click Rescan after re-aiming. Under Outputs check each projector's region. Click Apply Setup.</li>
-            <li>Click the Play Dock strip to open the console: screens rail on the left, mapping editor in the centre, inspector cards on the right, transport at the bottom.</li>
+            <li>Under Regions, where your beams land, click a tile to include or skip it, drag to reorder, shift-drag to merge. Choose Auto, One canvas or My groups, and click Rescan after re-aiming. Under Outputs check each projector's region, pick a Source video, then click Apply Setup.</li>
+            <li>The console stays open after Apply Setup (otherwise click the Play Dock strip): the workflow steps 1 Outputs to 6 Show along the top, the outputs or surfaces list on the left, the mapping editor in the centre, inspector tabs on the right and the transport at the bottom.</li>
             <li>Choose Media in the header. Drag a built-in loop from Patterns, or one of your uploads from Library, onto a wall in the 3D view or the transport bar. Choose Library to open the full Media Library and upload images or video, with a 1 GB limit per account.</li>
             <li>Press Play, or Space. Open the content chip's menu and click Add clip to build a playlist; use the loop button to cycle Clip, Playlist and Hold. Click Calibration to project a test pattern from every head of the group.</li>
             <li>In the centre pane, drag the cyan canvas to move the content on the face, drag its corners to resize, or type X, Y, W and H in the Canvas fields. Use Fill face, Fit ratio or Fit canvas to beams.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> an Output Setup sheet with region tiles sized in metres, then a console whose header reads the focused group, the AIM, FIT and BLEND progress chips and the slots count. The mapping editor shows a to-scale plan of the face with every head's footprint. Play Dock previews the show in 3D; it does not output to hardware.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> an Output Setup sheet with region tiles sized in metres, then a console whose header reads the focused surface, the current step and the slots count, above a workflow row that ticks each finished step. The mapping editor shows a to-scale plan of the face with every head's footprint. Play Dock previews the show in 3D; it does not output to hardware.</p>
         </article>
       </div>
     </section>
@@ -402,14 +402,14 @@
           <header class="v3-chapter-head">
             <p class="v3-kicker">Part D · Content · Chapter 13</p>
             <h2 class="v3-display" id="ch-13-title">Warp &amp; Blend and test patterns.</h2>
-            <p class="v3-howto-where"><strong>Where:</strong> the Play Dock console, centre pane: click Warp &amp; Blend for a group or set. An ungrouped projector opens the studio directly.</p>
+            <p class="v3-howto-where"><strong>Where:</strong> the Play Dock console: click 4 Soft Edge or 5 Masks in the workflow row, or Warp &amp; Blend above the mapping editor. An ungrouped projector opens the studio directly.</p>
           </header>
           <div class="v3-video-frame v3-video-frame--empty" data-video-slot="ch-13-warp-blend" role="img" aria-label="Video slot: Warp and Blend and test patterns, recording in progress">
             <span class="v3-slot-label">Chapter 13</span>
             <span class="v3-slot-note">Video in production</span>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Open the Play Dock console and click a blend group in the screens rail. Above the centre pane click Warp &amp; Blend.</li>
+            <li>Open the Play Dock console, click 4 Soft Edge in the workflow row and pick a surface in the list on the left. From any other step, click Warp &amp; Blend above the mapping editor.</li>
             <li>Click a numbered head chip to pick the projector to correct. All shows every head's outline read-only.</li>
             <li>For Corner-pin, drag the four cyan corners to keystone the picture and enable Perspective for a true homography. For Mesh, set the Grid columns and rows, drag the amber interior points and choose Spherize for domes.</li>
             <li>For a Mask, choose New mask and click points in the viewport to draw a feathered polygon, then set Invert and Feather. For Blend, choose Auto-Blend or adjust the left, right, top and bottom sliders, then tune Power, Gamma and Sharpness.</li>
@@ -438,10 +438,10 @@
             <li>Click Lighting, then a type under Add Fixture: Moving Head Spot, Moving Head Wash, Moving Head Beam, LED PAR / Static Wash, Profile / Ellipsoidal, Fresnel / PC, Flood / Cyc / Blinder or Strobe / Flash. The fixture appears, selected, and the Inspector switches to Light Settings.</li>
             <li>In the Fixture section pick a source: Quick Type, Catalog (29 datasheet classes), Library, GDTF / MVR (drop a .gdtf for this fixture or a .mvr for the whole rig) or Manual. In Photometrics enter Output in lumens and Beam Angle; read Peak intensity and the lux at the reference distance, both marked estimate.</li>
             <li>In Beam Preview switch on Beam visible and Light + shadows. Click Import .ies / .ldt to load the manufacturer's photometry. Aim with Pan, Tilt and Dimmer under Position &amp; Aim, or drag the aim handle in 3D.</li>
-            <li>Reopen Lighting and click Save Selected Fixture. It is listed under My Fixtures in every project.</li>
+            <li>Reopen Lighting and click Save Selected Fixture. It is listed under My Fixtures in every project you open in this browser.</li>
             <li>Expand Working Plane (Illuminance), set Plane height and switch on Show isolux in 3D. Read Average, Minimum, Maximum and Uniformity U0, and pick a Target profile for a pass or fail judgment. Under Looks (cues) type a name and click Save look; under Fixture schedule (BOM) click Copy schedule (CSV).</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> a luminaire model with a beam cone and aim handle, a coloured isolux plane at the chosen height, and a stats box labelled estimate with U0 green at 0.4 or above. Fixtures are a context layer: they never touch the projector lux formula.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> a luminaire model with a beam cone and aim handle, a coloured isolux plane over the lit task area at the chosen height, and a stats box labelled estimate with U0 green at 0.4 or above. Fixtures are a context layer: they never touch the projector lux formula.</p>
         </article>
       </div>
     </section>
@@ -485,12 +485,12 @@
             <span class="v3-slot-note">Video in production</span>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Press Ctrl+S or open File and choose Save. The first save creates the cloud project. The chip at the right end of the menu bar reads Saving while it works, then the Unsaved dot disappears. Choose Save As to name a copy.</li>
+            <li>Press Ctrl+S or open File and choose Save. A project started with New Project is already in the cloud under its name. The chip at the right end of the menu bar reads Saving while it works, then the Unsaved dot disappears. Click the project name beside it to rename the project, or choose Save As to name a copy.</li>
             <li>Click Settings and drag the Auto Save slider between 1 and 30 minutes. While the scene is dirty, a cloud version is written at that interval and a local draft is kept in the browser.</li>
             <li>Open File and choose Version history. Hover over a row and choose Restore. The selected version is restored as a new save, so your current state remains in the history.</li>
             <li>Open File and choose Export Project File to download an editable .flx.json. On any machine or account, choose Open Project File to load it, then press Ctrl+S to store it in the cloud.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> toasts reading Saved, Saved as new project or Restored, saved as a new version; a Version history modal listing saves by time with the newest tagged Current; and a downloaded project.flx.json. Imported 3D model binaries are referenced by cloud URL, not embedded in the file.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> toasts reading Saved, Saved as new project or Restored, saved as a new version; a Version history modal listing saves by time with the newest tagged Current; and a downloaded project.flx.json. Imported 3D model binaries are referenced by cloud URL, not embedded in the file. If another tab or device saved the project after you opened it, the chip warns that it changed elsewhere; click it to choose Reload latest, Save as a copy or Overwrite.</p>
         </article>
       </div>
     </section>
@@ -534,7 +534,7 @@
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Frame the 3D viewport the way you want it captured. Turn the Heatmap overlay on if you want the lux legend in the PDF.</li>
-            <li>Click File, then Export PDF Tech Rider. The row greys out while the export runs.</li>
+            <li>Click File, then Export PDF Tech Rider. The row greys out while the export runs, and a progress toast with a Cancel button may appear for a large rig.</li>
             <li>Open FieldLux_Tech_Rider_date.pdf from your downloads.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> page 1 with the viewport capture, a PROJECT SETUP table (projectors, total lumens, target) and a PROJECTOR SETTINGS INDEX, then one page per projector with EQUIPMENT, LENS, POSITION &amp; ORIENTATION, OPTICAL DISTANCES, SURFACE SAMPLING and EDGE BLENDING. A disclaimer band reads that it is a simulation preview, not a field measurement.</p>
