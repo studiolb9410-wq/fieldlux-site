@@ -166,8 +166,15 @@
       setProgress(0);
       setState('loading');
       // A frame that never reports (an old cached copy, a blocked message)
-      // must not stay invisible behind the still for good.
-      revealTimer = window.setTimeout(() => { if (state === 'loading') setState('ready'); }, 25000);
+      // must not stay invisible behind the still for good. It is the same
+      // origin, so look: a scene canvas means show it; none means keep the
+      // still rather than uncover an empty or broken frame.
+      revealTimer = window.setTimeout(() => {
+        if (state !== 'loading') return;
+        let drawn = false;
+        try { drawn = !!heroEmbed.contentDocument?.querySelector('.flx-embed-stage canvas'); } catch (_) {}
+        setState(drawn ? 'ready' : 'failed');
+      }, 25000);
     };
 
     if (!phone && !shortTouch && !saveData) {

@@ -190,7 +190,16 @@ const VERCEL_STUBS =
      is why it asks for ?intro=0 on phones: one invitation, not two.
 
      NARROW FRAMES. In an upright phone frame the sub line ran out under the
-     LUX HEATMAP button; below 560px it wraps. */
+     LUX HEATMAP button; below 560px it wraps.
+
+   (i) PREVIEWS, 1109. Measured on a Vercel preview opened through a share
+   link: the bundle loaded, then the scene fetch was redirected to
+   vercel.com/sso-api and refused by connect-src, and the frame said "The
+   interactive 3D preview is unavailable." The app fetches the scene with
+   credentials:'omit', which drops the preview's login cookie. A wrapper on
+   fetch, installed before the app runs, sends same-origin /demo-scenes/
+   requests with same-origin credentials. The live site sets no cookies, so
+   nothing about its request changes; previews can now show the hero. */
 const HERO_UX = `    <style>
       /* --- the headline face, inside the frame ---------------------------
          The prompt is set in the same face as the hero headline above it, so
@@ -429,6 +438,33 @@ const HERO_UX = `    <style>
       }
     </style>
     <script>
+      /* Scene file on a protected preview -- see (i) in scripts/build-embed.mjs.
+         The app fetches /demo-scenes/<name>.json with credentials:'omit'. On a
+         Vercel preview behind Vercel Authentication that drops the login
+         cookie, the request is sent to vercel.com/sso-api, the CSP refuses it,
+         and the hero reports "unavailable": no preview of the hero has ever
+         loaded its scene. Same-origin /demo-scenes/ requests go out with
+         same-origin credentials instead. field-lux.com sets no cookies, so on
+         the live site the request is the same bytes as before. */
+      (function () {
+        var nativeFetch = window.fetch;
+        if (typeof nativeFetch !== 'function') return;
+        window.fetch = function (input, init) {
+          try {
+            if (init && init.credentials === 'omit') {
+              var u = new URL(typeof input === 'string' ? input : (input && input.url) || '', window.location.href);
+              if (u.origin === window.location.origin && u.pathname.indexOf('/demo-scenes/') === 0) {
+                var copy = {};
+                for (var k in init) copy[k] = init[k];
+                copy.credentials = 'same-origin';
+                init = copy;
+              }
+            }
+          } catch (e) {}
+          return nativeFetch.call(this, input, init);
+        };
+      })();
+
       /* Scroll containment — see (e) in scripts/build-embed.mjs. */
       (function () {
         document.addEventListener('wheel', function (event) {
@@ -579,7 +615,10 @@ const HERO_UX = `    <style>
             };
             window.requestAnimationFrame(tick);
             window.setTimeout(finish, 8000);
-          } else if (waitedReady > 45000) {
+          } else if (waitedReady > 45000 || /unavailable/.test((document.querySelector('[role="status"]') || {}).textContent || '')) {
+            /* The app prints "The interactive 3D preview is unavailable." in
+               its own status node when the scene cannot load; say so at once
+               instead of after 45 seconds. */
             window.clearInterval(readyPoll);
             tell('failed');
           }
