@@ -190,6 +190,9 @@
       if (price) price.textContent = value;
       if (priceUnit) priceUnit.textContent = unit;
       if (bill) bill.textContent = billing;
+      const storage = card.querySelector('[data-plan-storage]');
+      const storageText = card.dataset[`${period}Storage`];
+      if (storage && storageText) storage.textContent = storageText;
       card.classList.toggle('is-unavailable', value === 'Not available');
     });
     if (periodNote) periodNote.textContent = periodNotes[period];
