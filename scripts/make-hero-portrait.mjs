@@ -1,4 +1,4 @@
-/* Derive the phone hero's two upright scenes from demo-scenes/hero.json.
+/* Derive the phone hero's upright scene from demo-scenes/hero.json.
  *
  *   node scripts/make-hero-portrait.mjs          # write
  *   node scripts/make-hero-portrait.mjs --check  # verify only, non-zero if stale
@@ -6,18 +6,16 @@
  * WHY. The embed keeps the camera's vertical field of view and lets the width
  * follow the frame, so the landscape opening shot authored in hero.json crops
  * the building in an upright phone frame (measured at 393x491: the left wing
- * is cut off). The phone hero asks for one of these instead. Each is the SAME
- * scene with one change, the opening shot:
- *
- *   hero-portrait.json  a 4:5 frame (layouts a, b and c)
- *   hero-tall.json      a frame the height of the screen (layout d), about
- *                       0.55 to 0.65 wide-to-tall, so it is pulled back more
+ * is cut off). The phone hero (a 4:5 frame, the full width of the screen)
+ * asks for hero-portrait.json instead: the SAME scene with one change, the
+ * opening shot. assets/media/hero-poster-portrait*.webp is a still of it;
+ * capture a new one if the shot changes.
  *
  * THE SHOT. From the authored camera the view is turned 6 degrees toward the
  * projected facade, the target is lowered so the building stands in the upper
  * part of the frame (the lower part is dark floor, where the phone layouts put
  * type and controls), and the camera is pulled back along its own line of
- * sight. Numbers chosen from renders at 360x450, 393x491 and 393x646.
+ * sight. Numbers chosen from renders at 360x450 and 393x491.
  *
  * Everything else is copied, so re-run this whenever hero.json changes.
  */
@@ -28,7 +26,6 @@ const ROOT = resolve(import.meta.dirname, '..');
 const SRC = join(ROOT, 'demo-scenes/hero.json');
 const SHOTS = [
   { file: 'hero-portrait.json', pullBack: 1.3, dropM: 4, turnDeg: -6 },
-  { file: 'hero-tall.json', pullBack: 1.42, dropM: 4.5, turnDeg: -6 },
 ];
 
 const hero = JSON.parse(readFileSync(SRC, 'utf8'));

@@ -106,13 +106,6 @@
     const pctNode = heroFrame.querySelector('[data-embed-pct]');
     const statusNode = heroFrame.querySelector('[data-embed-status]');
     const phone = window.matchMedia('(max-width: 680px)').matches;
-    // Layout d fills the screen's height, so it asks for the camera that is
-    // pulled back for a tall frame, and the still taken from it.
-    const tall = phone && root.dataset.mh === 'd';
-    if (tall) {
-      heroFrame.querySelector('picture source')?.setAttribute('srcset',
-        '/assets/media/hero-poster-tall-720.webp 720w, /assets/media/hero-poster-tall.webp 1080w');
-    }
     const shortTouch = window.matchMedia('(max-height: 540px) and (pointer: coarse)').matches;
     const saveData = navigator.connection?.saveData === true;
     let state = 'still';
@@ -160,7 +153,7 @@
 
     const mountHero = () => {
       if (heroEmbed.getAttribute('src')) return;
-      const src = (tall && heroEmbed.dataset.srcTall) || (phone && heroEmbed.dataset.srcPhone) || heroEmbed.dataset.src;
+      const src = (phone && heroEmbed.dataset.srcPhone) || heroEmbed.dataset.src;
       heroEmbed.setAttribute('src', src);
       heroFrame.dataset.embedState = 'mounted';
       setProgress(0);
