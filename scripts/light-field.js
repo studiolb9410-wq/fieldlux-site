@@ -669,5 +669,7 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialise, { once: true });
   else initialise();
 
-  window.addEventListener('pagehide', () => fields.forEach((field) => field.destroy()), { once: true });
+  // A page kept in the back/forward cache comes back on pageshow and its fields
+  // must still run, so only tear them down when the page is really unloading.
+  window.addEventListener('pagehide', (event) => { if (!event.persisted) fields.forEach((field) => field.destroy()); });
 })();

@@ -13,9 +13,9 @@ README and the spec disagree, the spec wins.
 | `/` | `index.html` | The product, ten chapters, the numbers, the limits |
 | `/videos` | `videos.html` | Feature videos - 43 slots across the same ten chapters |
 | `/pricing` | `pricing.html` | Viewer, Projection and Pro, as a 7-day pass (one payment, no renewal), monthly or yearly. Checkout is in the app, never on this site |
-| `/terms` | `terms.html` | Terms of Service, English and Korean (the Korean text is official for customers in Korea) |
-| `/refund` | `refund.html` | Refund and cancellation policy, English and Korean. Must say the same rule as the app's `REFUND_RULE` |
-| `/privacy` | `privacy.html` | Privacy policy, English and Korean |
+| `/terms` | `terms.html` | Terms of Service (English) |
+| `/refund` | `refund.html` | Refund and cancellation policy (English). Must say the same rule as the app's `REFUND_RULE` |
+| `/privacy` | `privacy.html` | Privacy policy (English) |
 | - | `404.html` | Not-found page |
 | - | `sitemap.xml`, `robots.txt` | `sitemap.xml` lists every page above except 404 |
 
@@ -35,12 +35,10 @@ customer names in the repo.
 - The page is white (`--paper`). Exactly three things on the site are dark, and each is
   dark because the content inside it is: the hero frame that hosts the live 3D embed, and
   the full-bleed product video letterboxes.
-- The site is English only (the bilingual pass was reverted by the owner on 2026-08-15),
-  with one exception: the legal pages, `/terms`, `/refund` and `/privacy`, carry a Korean
-  version, which is the official text for customers in Korea. Korean law asks for terms
-  written in Korean (launch review 8-18, decided 2026-10-31). Each page states that both
-  versions have the same effect and that the reading more favorable to the customer wins
-  if they differ, so edit both versions together.
+- The site is English only (the bilingual pass was reverted by the owner on 2026-08-15).
+  The legal pages, `/terms`, `/refund` and `/privacy`, carried a Korean version from
+  2026-10-31; the owner removed it on 2026-11-09 ("English only"), so all three are
+  English only too. Do not add Korean text to any page.
 - Copy is plain ASCII, everywhere, including comments. No em dashes, no accented
   spellings, no typographic quotes, no arrows, no math glyphs. Rewrite the sentence
   rather than reach for a character the self-hosted font subset may not carry: the
@@ -124,9 +122,11 @@ Copy that changes on the two launch days carries `data-launch`:
 | Marker | When | Change |
 |---|---|---|
 | `data-launch="announce"` | the day the start date is posted | `/pricing` hero: "Paid plans start on {weekday, month day, year} at 09:00 KST (00:00 UTC). Until then, everything is free. If this date changes, we will update this page at least 14 days before the date shown." The "Checkout is not open yet" fact: "These prices apply from the start date above. Nothing is charged before then." The "When do paid plans start?" answer names the date. "Not on sale yet" on the cards: "On sale from the start date". |
-| `data-launch="live"` | the day paid plans start | `/pricing` hero, pill and CTA: "Try Pro free for 14 days. No card required." Remove the open-beta FAQ and the "Checkout is not open yet" fact. Home, product, videos and 404: drop "free during open beta" and "Checkout is not available yet". The home and product open-beta blocks (kicker, headline, lead and the "planned pricing" button) and the home and pricing meta descriptions go with them. Document pages: drop the BETA badge and the Discord tooltip's "Beta access is free" sentence. Footer: "(c) 2026 FieldLux." without "Open beta." |
+| `data-launch="live"` | the day paid plans start | `/pricing` hero, pill and CTA: "Try every feature free for 21 days. No card required." Remove the open-beta FAQ and the "Checkout is not open yet" fact. Home, product, videos and 404: drop "free during open beta" and "Checkout is not available yet". The home and product open-beta blocks (kicker, headline, lead and the "planned pricing" button) and the home and pricing meta descriptions go with them. Document pages: drop the BETA badge and the Discord tooltip's "Beta access is free" sentence. Footer: "(c) 2026 FieldLux." without "Open beta." |
 
 Find every switch with `grep -n 'data-launch=' *.html`.
+
+The open-beta popup (`scripts/beta-notice.js`, loaded on every page, skipped on `/pricing`) is a launch switch too: on the day the start date is posted, change its copy to the exact date; on the day paid plans start, remove its `<script>` tag from every page.
 
 ## Review overrides
 
@@ -148,8 +148,10 @@ To retarget the CTAs at another FieldLux host:
 ?flowAppUrl=https%3A%2F%2Fstaging.field-lux.com%2F
 ```
 
-The accepted value is stored under `localStorage['fieldlux_flow_app_url']` (origin and
-path only) and applies until it is overridden or cleared.
+The accepted value is stored under `sessionStorage['fieldlux_flow_app_url']` (origin and
+path only; a query or #hash is dropped) and applies only in that browser tab, so one
+shared link cannot repoint a visitor's buttons for good. A value the older script left in
+localStorage is removed on the next visit (changed 2026-11-09).
 
 **Host allowlist.** Only HTTPS on `app.field-lux.com` or another `*.field-lux.com` host is
 accepted, on the default port and without user info. `*.vercel.app` and `localhost` are
@@ -161,8 +163,7 @@ Anything else - any other host, port or protocol - is rejected. The CTAs fall ba
 persist for that visitor.
 
 The allowlist is the point. Without it, `?flowAppUrl=https://somewhere-else.example`
-would rewrite every CTA on the site to an attacker-chosen sign-in destination and keep it
-that way for that browser. A site whose argument is that it does not overclaim cannot
+would rewrite every CTA on the site to an attacker-chosen sign-in destination. A site whose argument is that it does not overclaim cannot
 carry an open-redirect-shaped surface on its primary CTA.
 
 ### Discord invite - `?discordUrl=`

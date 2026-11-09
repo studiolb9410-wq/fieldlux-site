@@ -21,25 +21,30 @@
 
   // ?flowAppUrl= (README "Review overrides") may only point the CTAs at the
   // FieldLux app: https on app.field-lux.com or another *.field-lux.com host,
-  // on the default port and without user info. Anything else falls back to
-  // the default, and a stored value that fails the check is removed so it
-  // cannot persist for that visitor. Only the origin and path are stored.
+  // on the default port and without user info (*.vercel.app stays out: anyone
+  // can create one). Only the origin and path are kept (a query or #hash in
+  // the override is dropped), and the override lasts for this tab only
+  // (sessionStorage), so one shared link cannot repoint a visitor's buttons
+  // for good. A value left in localStorage by the older script is removed.
+  const isReviewHost = (host) => host === 'app.field-lux.com' || host.endsWith('.field-lux.com');
   const resolveAppUrl = () => {
+    safeStorage.remove(appKey);
     const params = new URLSearchParams(window.location.search);
     const fromQuery = params.get('flowAppUrl');
-    const supplied = fromQuery || safeStorage.get(appKey);
+    let fromSession = null;
+    try { fromSession = window.sessionStorage.getItem(appKey); } catch (_) {}
+    const supplied = fromQuery || fromSession;
     let target = new URL(appDefault);
     if (supplied) {
       let parsed = null;
       try { parsed = new URL(supplied); } catch (_) {}
       const host = parsed ? parsed.hostname.toLowerCase() : '';
       if (parsed && parsed.protocol === 'https:' && parsed.port === '' && !parsed.username && !parsed.password
-          && (host === 'app.field-lux.com' || host.endsWith('.field-lux.com'))) {
-        const stored = parsed.origin + parsed.pathname;
-        safeStorage.set(appKey, stored);
-        target = fromQuery ? parsed : new URL(stored);
+          && isReviewHost(host)) {
+        target = new URL(parsed.origin + parsed.pathname);
+        try { window.sessionStorage.setItem(appKey, target.href); } catch (_) {}
       } else {
-        safeStorage.remove(appKey);
+        try { window.sessionStorage.removeItem(appKey); } catch (_) {}
       }
     }
     target.searchParams.set('siteReturnUrl', window.location.href.split('#')[0]);
@@ -51,25 +56,56 @@
 
   const menuButton = document.querySelector('[data-menu-toggle]');
   const menuPanel = document.querySelector('[data-menu-panel]');
+  const isMenuOpen = () => menuButton?.getAttribute('aria-expanded') === 'true';
   const setMenu = (open) => {
     if (!menuButton || !menuPanel) return;
     menuButton.setAttribute('aria-expanded', String(open));
+    menuButton.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
     menuPanel.hidden = !open;
     body.classList.toggle('v3-menu-open', open);
+    if (open) menuPanel.querySelector('a')?.focus();
   };
 
   if (menuButton && menuPanel) {
     setMenu(false);
-    menuButton.addEventListener('click', () => setMenu(menuButton.getAttribute('aria-expanded') !== 'true'));
+    menuButton.addEventListener('click', () => setMenu(!isMenuOpen()));
     menuPanel.addEventListener('click', (event) => {
       if (event.target.closest('a')) setMenu(false);
     });
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && isMenuOpen()) {
         setMenu(false);
         menuButton.focus();
       }
     });
+    // Rotating a tablet or widening the window past the menu breakpoint hides
+    // the toggle; close the panel too, or the page stays scroll-locked.
+    const desktop = window.matchMedia('(min-width: 981px)');
+    desktop.addEventListener('change', (event) => { if (event.matches && isMenuOpen()) setMenu(false); });
+  }
+
+  // The home hero's live 3D scene. On a desktop it mounts at once over its
+  // still. On a phone (narrow, or a short landscape screen) or with Save-Data
+  // on, the still stays and the scene loads only when the visitor asks: it
+  // is about 5 MB and a WebGL scene the size of a stamp is hard to use.
+  const heroFrame = document.querySelector('.hero-frame');
+  const heroEmbed = heroFrame?.querySelector('.hero-frame-embed[data-src]');
+  if (heroFrame && heroEmbed) {
+    const launch = heroFrame.querySelector('[data-embed-launch]');
+    const mountHero = () => {
+      if (heroEmbed.getAttribute('src')) return;
+      heroEmbed.setAttribute('src', heroEmbed.dataset.src);
+      heroFrame.dataset.embedState = 'mounted';
+      if (launch) launch.hidden = true;
+    };
+    const lite = window.matchMedia('(max-width: 680px), (max-height: 540px) and (pointer: coarse)').matches
+      || navigator.connection?.saveData === true;
+    if (!lite || !launch) {
+      mountHero();
+    } else {
+      launch.hidden = false;
+      launch.addEventListener('click', () => { mountHero(); heroEmbed.focus(); }, { once: true });
+    }
   }
 
   const header = document.querySelector('.v3-header');
@@ -111,9 +147,11 @@
 
   const applyMotion = () => {
     root.dataset.motion = reduceMotion ? 'reduced' : 'full';
+    // The label names the action; no aria-pressed, which would read
+    // "Enable motion, pressed" while motion is in fact off.
     motionButtons.forEach((button) => {
       button.textContent = reduceMotion ? 'Enable motion' : 'Reduce motion';
-      button.setAttribute('aria-pressed', String(reduceMotion));
+      button.removeAttribute('aria-pressed');
     });
     window.dispatchEvent(new CustomEvent('fieldlux:motionchange', { detail: { reduced: reduceMotion } }));
   };
@@ -139,7 +177,7 @@
     safeStorage.set('fieldlux_pricing_period', period);
     periodButtons.forEach((button) => {
       const active = button.dataset.period === period;
-      button.setAttribute('aria-selected', String(active));
+      button.setAttribute('aria-pressed', String(active));
       button.tabIndex = active ? 0 : -1;
     });
     document.querySelectorAll('[data-plan]').forEach((card) => {

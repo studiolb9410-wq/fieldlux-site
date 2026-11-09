@@ -5091,3 +5091,167 @@ html[data-motion="reduced"] .hero-ticker-track{animation:none;transform:none}
 /* pricing: the Korean VAT-inclusive total under each paid price (launch review 4-3, option B) */
 .v3-price-kr{ min-height:20px; margin:6px 0 0; color:var(--v3-dark-muted); font-size:.74rem; line-height:1.45; }
 .v3-price-billing{ line-height:1.5; }
+
+/* ==========================================================================
+   1109 REVIEW FIXES - design, code, planner and marketer reviews of
+   1108-site, plus the owner's "it must look right on phones". Appended last
+   on purpose: each rule overrides an earlier one at the same specificity.
+   ========================================================================== */
+
+/* -- Hero: a still of THE SAME hero scene under the live embed -------------
+   The 0818 OVERRIDE 4 objection was a poster of a different scene. This one
+   is a capture of /embed?scene=hero itself, so it never advertises a scene
+   the frame is not running. It fills the frame while the app boots (no black
+   box), and on phones it is what you see until you open the scene
+   (site-experience.js mounts the iframe on demand there). */
+.hero-frame-poster{ position:absolute; inset:0; inline-size:100%; block-size:100%; object-fit:cover; display:block; }
+.hero-frame:not([data-embed-state="mounted"]) .hero-frame-embed{ visibility:hidden; }
+.hero-frame-launch[hidden]{ display:none; }
+@media (max-width:680px){
+  /* the chip sits in the middle of a small frame, not in a corner of it */
+  .hero-frame-launch{
+    inset-block-end:12px; inset-inline-end:auto; left:50%;
+    transform:translateX(-50%); justify-items:center; text-align:center;
+    inline-size:max-content; max-inline-size:calc(100% - 24px);
+    padding:10px 16px;
+  }
+  .v3-home .hero-block{ padding:16px 0 0; background:transparent; }
+}
+/* a phone held sideways: the frame fits the screen instead of filling three */
+@media (max-height:540px) and (orientation:landscape){
+  .hero-frame{ aspect-ratio:auto; block-size:calc(100svh - 96px); }
+}
+
+/* -- Header: keep "Start free" visible on tablets and phones --------------- */
+@media (max-width:980px){
+  .v3-header-inner{ grid-template-columns:1fr auto auto; gap:12px; }
+  .v3-header-actions{ display:flex; align-items:center; }
+  .v3-signin{ display:none; }
+}
+@media (max-width:680px){
+  .v3-header-actions .v3-button--small{ min-height:36px; padding-inline:12px; font-size:.7rem; }
+}
+
+/* -- Mobile menu: opaque panel and a scrim behind it ----------------------- */
+.v3-mobile-nav{ background:#fff; }
+body.v3-menu-open::after{
+  content:""; position:fixed; inset:64px 0 0; z-index:98;
+  background:rgba(18,23,25,.35);
+}
+@media (min-width:981px){ .v3-mobile-nav{ display:none; } body.v3-menu-open::after{ content:none; } }
+
+/* -- Pricing --------------------------------------------------------------- */
+/* phones/tablets: the paid cards come first, so the period buttons change
+   something you can see; the free Viewer card moves to the end */
+@media (max-width:980px){
+  .v3-price-grid > .v3-price-card:first-child{ order:3; }
+}
+/* desktop: the toolbar no longer jumps when the period note changes length */
+@media (min-width:1181px){
+  .v3-pricing-toolbar{ grid-template-columns:minmax(0,1fr) minmax(410px,34rem); }
+  .v3-period-note{ min-height:3.2em; }
+}
+.v3-period-tabs button[aria-pressed="true"]{ color:#fff; background:var(--v3-void); }
+
+/* Team: a real card under the plan grid, fine print below it */
+.v3-team-card{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); gap:48px;
+  margin-top:62px; padding:30px;
+  border:1px solid var(--v3-dark-line); background:var(--v3-paper-bright);
+}
+.v3-team-card .v3-price-line{ margin-top:6px; }
+.v3-team-card-sub{ margin:12px 0 22px; color:var(--v3-dark-muted); font-size:.9rem; line-height:1.55; }
+.v3-team-card-note{ margin:16px 0 0; color:var(--v3-dark-muted); font-size:.82rem; line-height:1.55; }
+.v3-team-card-list{ margin:0; align-self:start; }
+.v3-team-card + .v3-pricing-facts{ margin-top:24px; }
+@media (max-width:980px){
+  .v3-team-card{ grid-template-columns:1fr; gap:28px; max-width:700px; margin-inline:auto; padding:24px; }
+}
+.v3-nowrap{ white-space:nowrap; }
+
+/* -- Phone headlines: smaller display size so H2s stop wrapping 4-5 lines -- */
+@media (max-width:680px){
+  .v3-display{ font-size:clamp(2.1rem,9.5vw,3.4rem); }
+  .v3-light-stage{ height:130svh; }
+  .v3-light-bridge-copy h2,
+  .v3-light-transition > p:last-child{ text-shadow:0 0 24px #fff, 0 0 2px #fff; }
+}
+
+/* -- Footer on phones: bigger tap targets, no "|" stranded at a line end --- */
+@media (max-width:680px){
+  .v3-footer a, .v3-footer button{ padding:8px 0; margin:0; }
+}
+.v3-footer-business [data-biz="reg_no"],
+.v3-footer-business [data-biz="phone"],
+.v3-footer-business [data-biz="mail_order_en"]{ white-space:nowrap; }
+
+/* -- Contrast and focus (WCAG 1.4.11 / 1.4.3) ------------------------------ */
+.v3-page :focus-visible{ outline-color:#0b6f8c; }
+.v3-section--dark :focus-visible,
+.v3-footer :focus-visible{ outline-color:var(--v3-cyan); }
+.v3-page-hero .v3-kicker{ color:#187f9d; }
+.v3-footer-meta{ color:#5f6a70; }
+
+/* -- Cookie settings dialog (scripts/consent.js) --------------------------- */
+.flx-consent{
+  inline-size:min(520px, calc(100% - 32px)); max-block-size:calc(100dvh - 32px);
+  padding:28px; border:1px solid var(--v3-dark-line); border-radius:4px;
+  color:var(--v3-dark-text); background:#fff; box-shadow:0 24px 60px rgba(5,7,8,.25);
+}
+.flx-consent::backdrop{ background:rgba(5,7,8,.45); }
+.flx-consent h2{ margin:0 0 10px; font-size:1.25rem; font-weight:620; letter-spacing:-.02em; }
+.flx-consent p{ margin:0 0 14px; color:var(--v3-dark-muted); font-size:.88rem; line-height:1.55; }
+.flx-consent-row{ display:flex; justify-content:space-between; gap:16px; padding:14px 0; border-top:1px solid var(--v3-dark-line); }
+.flx-consent-row:last-of-type{ border-bottom:1px solid var(--v3-dark-line); }
+.flx-consent-row strong{ display:block; margin-bottom:4px; font-size:.92rem; }
+.flx-consent-row p{ margin:0; }
+.flx-consent-state{ flex:none; align-self:start; color:#187f9d; font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+.flx-consent-actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+.flx-consent-actions button{
+  flex:1 1 140px; min-height:44px; padding:0 18px; border:1px solid var(--v3-void);
+  color:var(--v3-void); background:#fff; font-size:.8rem; font-weight:650; letter-spacing:.03em; cursor:pointer;
+}
+.flx-consent-actions button[data-consent-primary]{ color:#fff; background:var(--v3-void); }
+.flx-consent a{ color:inherit; text-decoration:underline; text-underline-offset:.15em; }
+
+/* the document pages' footer link list also holds a button now */
+.footer-link--button{ padding:0; border:0; background:none; font:inherit; color:inherit; cursor:pointer; text-align:left; }
+.footer-link--button:hover{ text-decoration:underline; }
+
+/* the line under the hero CTAs: the app opens on Sign in, so say where to go */
+.hero-cta-note{ margin:14px 0 0; font-size:var(--fs-body-sm); line-height:1.5; color:var(--ink-400); }
+.hero-cta-note strong{ color:var(--ink-950); font-weight:600; }
+
+/* -- Open-beta notice (scripts/beta-notice.js) - shares the consent dialog's
+      frame; the primary action is a link to /pricing ------------------------ */
+.flx-notice{ inline-size:min(460px, calc(100% - 32px)); }
+.flx-notice-kicker{ margin:0 0 8px; color:#187f9d; font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+.flx-consent .flx-notice-primary{
+  display:flex; align-items:center; justify-content:center; min-height:46px; margin-top:18px;
+  color:#fff; background:var(--v3-void); font-size:.82rem; font-weight:650; letter-spacing:.03em; text-decoration:none;
+}
+.flx-notice-secondary{ display:flex; gap:10px; margin-top:10px; }
+.flx-notice-secondary button{
+  flex:1 1 0; min-height:44px; padding:0 12px; border:1px solid var(--v3-dark-line);
+  color:var(--v3-dark-text); background:#fff; font-size:.78rem; font-weight:600; cursor:pointer;
+}
+.flx-notice-secondary button:hover{ border-color:var(--v3-void); }
+
+/* -- Hero ticker, owner 1109: sharper and about twice as fast ---------------
+   Sharper: solid white glyphs one weight up and a touch larger, legible on
+   the scene through a tight dark shadow instead of the 3px stroke halo (the
+   stroke thickened and softened small caps). Its own compositor layer so the
+   moving text is not resampled into blur. Faster: the 84s above was timed for
+   the old 30-item, 4698px group; the group is now 4 items (767px at 1226), so
+   84s crawled at 9 px/s and read as frozen. 11s is about 70 px/s. Reduced
+   motion still stops it (OS setting or the footer
+   "Reduce motion" button). */
+.hero-frame{ --ticker-dur:11s; }
+.hero-ticker-item{
+  font-size:clamp(0.75rem, 0.71rem + 0.12vw, 0.82rem); font-weight:700;
+  color:#fff;
+  -webkit-text-stroke:0; paint-order:normal;
+  text-shadow:0 0 1px rgba(0,0,0,.95), 0 1px 2px rgba(0,0,0,.9), 0 0 8px rgba(0,0,0,.55);
+  -webkit-font-smoothing:antialiased;
+}
+.hero-ticker-track{ will-change:transform; backface-visibility:hidden; }

@@ -51,18 +51,25 @@
     } catch { return null; }
   }
 
+  /* 1109: the override lives in sessionStorage for this tab only and keeps
+     just origin + path, so one shared link cannot repoint a visitor's buttons
+     for good or carry a query/#hash into them. The old localStorage value is
+     dropped. Same rule as scripts/site-experience.js. */
+  const sessionRead = (k) => { try { return window.sessionStorage.getItem(k); } catch (_) { return null; } };
+  const sessionWrite = (k, v) => { try { window.sessionStorage.setItem(k, v); } catch (_) {} };
+  const sessionDrop = (k) => { try { window.sessionStorage.removeItem(k); } catch (_) {} };
+  drop(APP_KEY);
   let appUrl = DEFAULT_APP_URL;
   const queryApp = params.get('flowAppUrl');
-  const suppliedApp = queryApp || read(APP_KEY);
+  const suppliedApp = queryApp || sessionRead(APP_KEY);
   if (suppliedApp) {
     const parsed = parseAppUrl(suppliedApp);
     if (parsed) {
-      const stored = parsed.origin + parsed.pathname;
-      appUrl = queryApp ? parsed.href : stored;
-      write(APP_KEY, stored);
+      appUrl = parsed.origin + parsed.pathname;
+      sessionWrite(APP_KEY, appUrl);
     } else {
       /* a bad value must not persist for this visitor */
-      drop(APP_KEY);
+      sessionDrop(APP_KEY);
     }
   }
 

@@ -30,6 +30,8 @@
   <link rel="preload" href="/assets/fonts/pretendard/PretendardVariable.subset.91.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/tailwind.css">
   <script src="/scripts/site-experience.js" defer></script>
+  <script defer src="/scripts/consent.js"></script>
+  <script defer src="/scripts/beta-notice.js"></script>
 </head>
 <body class="v3-page" data-page="product">
   <a class="v3-skip" href="#main">Skip to content</a>
@@ -108,7 +110,7 @@
           <article class="v3-card">
             <p class="v3-kicker">01 / DESIGN</p>
             <h3>Build the venue</h3>
-            <p>Import a 3D model (OBJ, FBX, GLB, glTF, DAE, STL, PLY) with unit and up-axis detection, load a DWG, DXF, PDF or image floor plan at scale and raise its walls, or start from a Basic Room, Flat Surface, Curved Wall, Cylinder, Dome or a site photo. <strong>Everything sits at real scale on the ground grid.</strong></p>
+            <p>Import a 3D model (OBJ, FBX, GLB, glTF, DAE, STL, PLY) with unit detection and a one-click up-axis fix, load a DWG, DXF, PDF or image floor plan at scale, trace its walls and raise them, or start from a Basic Room, Flat Surface, Curved Wall, Cylinder, Dome or a site photo. <strong>Everything sits at real scale in one scene.</strong></p>
           </article>
 
           <article class="v3-card">
@@ -132,13 +134,13 @@
           <article class="v3-card">
             <p class="v3-kicker">05 / PLAY DOCK</p>
             <h3>Preview the content</h3>
-            <p>Open the Play Dock, let Output Setup find the screens from your beams, drop images or video from the Media Library, and corner-pin, mesh-warp and soft-edge each head in Warp &amp; Blend. <strong>Play Dock previews the show in 3D. It does not output it.</strong></p>
+            <p>Open the Play Dock, let Output Setup find the screens from your beams, drop images or video from the Media Library, and corner-pin, mesh-warp and soft-edge each head in Warp &amp; Blend. <strong>Play Dock previews the show in 3D. It does not output to hardware.</strong></p>
           </article>
 
           <article class="v3-card">
             <p class="v3-kicker">06 / SHARE AND HANDOFF</p>
             <h3>Hand off the plan</h3>
-            <p>Export a PDF Tech Rider in one click, save an editable .flx.json project file, or create a read-only Cloud Share link with a QR code, optional password and expiry you can revoke later. <strong>Projects are cloud-saved with autosave and version history.</strong></p>
+            <p>Export a PDF Tech Rider in one click, save an editable .flx.json project file, or create a read-only Cloud Share link with a QR code, an optional password and an expiry, and revoke it at any time. <strong>Projects are cloud-saved with autosave and version history.</strong></p>
           </article>
         </div>
       </div>
@@ -148,7 +150,7 @@
       <div class="v3-container">
         <p class="v3-kicker">PROJECTOR LIBRARY</p>
         <h2 class="v3-display" id="product-library-title">THREE MANUFACTURERS IN THE LIBRARY TODAY.</h2>
-        <p class="v3-lead">Each head lists the lenses its manufacturer documents for it, and each entry is built from published manufacturer data. <strong>Manufacturer names identify catalogue data, not a partnership.</strong></p>
+        <p class="v3-lead">Each head lists the lenses its manufacturer documents for it. <strong>Epson, Panasonic and Christie are trademarks of their respective owners; FieldLux is not affiliated with or endorsed by them.</strong></p>
 
         <dl class="v3-proof v3-proof--library" aria-label="Projector library by manufacturer">
           <div>
@@ -194,7 +196,7 @@
           <article class="v3-card">
             <p class="v3-kicker">FOG</p>
             <h3>Beams you can see in the air</h3>
-            <p>Add a Fog Machine, set output, fluid and plume, then dial wind, gust and ventilation under Appearance. Projector and fixture beams glow through the haze. <strong>Measured lux does not change with fog.</strong></p>
+            <p>Add a Fog Machine, set output, fluid and plume, then dial wind, gust and ventilation under Appearance. Projector and fixture beams glow in the fog, up to four of each at a time. <strong>Measured lux does not change with fog.</strong></p>
           </article>
         </div>
       </div>
@@ -215,7 +217,7 @@
       <div class="v3-container">
         <p class="v3-kicker" data-launch="live">OPEN BETA</p>
         <h2 class="v3-display" id="product-beta-title" data-launch="live">EVERYTHING WE SHIP IS FREE TODAY.</h2>
-        <p class="v3-lead" data-launch="live">Build a real project, adjust the rig and share the result. <strong>There is no card, tier or checkout during beta.</strong> In-progress tools such as the Report Builder proposal PDF are marked temporarily disabled in the app. Imported model storage is limited to 2 GB per account.</p>
+        <p class="v3-lead" data-launch="live">Build a real project, adjust the rig and share the result. <strong>There is no card, tier or checkout during beta.</strong> In-progress tools such as the Report Builder proposal PDF are marked temporarily disabled in the app. Each account stores up to 2&nbsp;GB of imported models and 1&nbsp;GB of media, with 200&nbsp;MB per file.</p>
         <div class="v3-actions">
           <a class="v3-button v3-button--primary" href="https://app.field-lux.com" data-app-link>Start free</a>
           <a class="v3-button v3-button--text" href="/pricing" data-launch="live">See planned pricing</a>
@@ -248,11 +250,12 @@
         <a href="/terms">Terms of Service</a>
         <a href="/refund">Refund Policy</a>
         <a href="/privacy">Privacy Policy</a>
+        <button type="button" data-cookie-settings>Cookie settings</button>
       </div>
       <div class="v3-footer-legal">
         <p class="v3-footer-meta" data-launch="live">© 2026 FieldLux. Open beta.</p>
         <div class="v3-footer-business">
-          <p>FieldLux is operated by <span data-biz="name_en">[Business name]</span> | Representative: <span data-biz="rep_en">[Representative]</span> | Business registration no. <span data-biz="reg_no">[Registration no.]</span> | Mail-order business report no. <span data-biz="mail_order_en">[Report no.]</span></p>
+          <p>FieldLux is operated by <span data-biz="name_en">[Business name]</span> | Representative: <span data-biz="rep_en">[Representative]</span> | Business registration no. <span data-biz="reg_no">[Registration no.]</span> (<a href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4581202646" target="_blank" rel="noopener noreferrer" title="Business information on the Korea Fair Trade Commission site">Business info</a>) | Mail-order business report no. <span data-biz="mail_order_en">[Report no.]</span></p>
           <p><span data-biz="address_en">[Business address]</span> | Tel. <span data-biz="phone">[Phone]</span> | <a href="mailto:jay@field-lux.com">jay@field-lux.com</a> | Hosted by Vercel Inc.</p>
         </div>
       </div>

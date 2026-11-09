@@ -6,3 +6,9 @@ scripts/build-embed.mjs
 scripts/dev-server.mjs
 scripts/preview-server.py
 scripts/sync-embed-hero-ux.mjs
+# Media files no page references (checked 2026-11-09); kept in git, not served.
+assets/media/media-01-hero.mp4
+assets/media/software-demo.mp4
+assets/media/hover-probe-demo.mp4
+assets/logo.png
+assets/logo-mark-t.png

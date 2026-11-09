@@ -11,9 +11,20 @@
   <meta property="og:description" content="Turn venue geometry, projector optics and overlap into a 3D plan your team can check before load-in.">
   <meta property="og:url" content="https://field-lux.com/">
   <meta property="og:image" content="https://field-lux.com/assets/og-card.png">
+  <meta property="og:site_name" content="FieldLux">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FieldLux logo">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://field-lux.com/assets/og-card.png">
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/logo-mark-180.png">
+  <link rel="preload" href="/assets/fonts/geologica-var-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="/assets/tailwind.css">
   <script defer src="/scripts/site-experience.js"></script>
+  <script defer src="/scripts/consent.js"></script>
+  <script defer src="/scripts/beta-notice.js"></script>
   <script defer src="/scripts/light-field.js"></script>
 </head>
 <body class="v3-page v3-home">
@@ -51,8 +62,13 @@
   <main class="v3-main" id="main" tabindex="-1">
     <section class="hero v3-legacy-hero" id="top" aria-labelledby="hero-title">
       <div class="site-shell hero-inner">
-        <div class="hero-frame" tabindex="-1" data-embed-state="mounted">
-          <iframe class="hero-frame-embed" src="/embed?scene=hero" title="FieldLux interactive 3D scene, drag to look around" loading="eager" sandbox="allow-scripts allow-same-origin allow-downloads" referrerpolicy="same-origin"></iframe>
+        <div class="hero-frame" tabindex="-1" data-embed-state="still">
+          <img class="hero-frame-poster" src="/assets/media/hero-poster.webp" srcset="/assets/media/hero-poster-720.webp 720w, /assets/media/hero-poster.webp 1200w" sizes="(max-width: 860px) 100vw, 75vw" width="1200" height="688" alt="Still of the live FieldLux scene: a projected logo across an apartment facade" decoding="async" fetchpriority="high">
+          <iframe class="hero-frame-embed" data-src="/embed?scene=hero" title="FieldLux interactive 3D scene, drag to look around" sandbox="allow-scripts allow-same-origin allow-downloads" referrerpolicy="same-origin"></iframe>
+          <button class="hero-frame-launch" type="button" data-embed-launch hidden>
+            <span class="hero-frame-launch-label">Open the live 3D scene</span>
+            <span class="hero-frame-launch-hint">Drag to look around.</span>
+          </button>
           <div class="hero-ticker" aria-hidden="true">
             <div class="hero-ticker-track">
               <ul class="hero-ticker-group">
@@ -84,6 +100,7 @@
             <a class="btn btn--brand" href="https://app.field-lux.com/" data-app-link>START FREE</a>
             <a class="btn btn--text" href="/product">SEE THE PRODUCT</a>
           </div>
+          <p class="hero-cta-note" data-launch="live">Free during open beta, no card required. New here? Choose <strong>Create account</strong> on the next screen.</p>
         </div>
 
         <ul class="hero-readout">
@@ -104,7 +121,7 @@
           </li>
         </ul>
 
-        <p class="hero-caption"><span class="hero-caption-state" data-when="live">Live FieldLux scene: drag to inspect the plan, then open Lux Heatmap to read the facade. Values are planning estimates, not field measurements.</span></p>
+        <p class="hero-caption"><span class="hero-caption-state" data-when="still">A still of the live FieldLux scene. Open it to drag around the plan and read the facade in Lux Heatmap. Values are planning estimates, not field measurements.</span><span class="hero-caption-state" data-when="live">Live FieldLux scene: drag to inspect the plan, then open Lux Heatmap to read the facade. Values are planning estimates, not field measurements.</span></p>
       </div>
     </section>
 
@@ -137,7 +154,7 @@
             <span class="v3-step-number">01</span>
             <figure class="v3-step-shot"><img src="/assets/media/feature-venue.webp" width="2560" height="1440" loading="lazy" alt="The FieldLux editor with an imported building model on the ground grid"></figure>
             <h3>Build the venue</h3>
-            <p>Import an OBJ, FBX, GLB, glTF, DAE, STL or PLY model, load a DWG, DXF or PDF floor plan at scale and raise its walls, or sketch the room from scratch.</p>
+            <p>Import an OBJ, FBX, GLB, glTF, DAE, STL or PLY model, load a DWG, DXF, PDF or image floor plan at scale and trace its walls, or sketch the room from scratch.</p>
           </li>
           <li class="v3-card v3-step v3-reveal">
             <span class="v3-step-number">02</span>
@@ -167,7 +184,7 @@
           <div class="v3-editorial-copy">
             <p class="v3-kicker">01 · Venue</p>
             <h3 class="v3-display">Bring the venue in.</h3>
-            <p>Import an OBJ, FBX, GLB, glTF, DAE, STL or PLY model and FieldLux reads its unit and up axis. Load a DWG, DXF, PDF or image floor plan at scale and raise its walls with one key, or sketch the room from scratch. For a quick stand-in, add a Basic Room, Flat Surface, Curved Wall, Cylinder, Dome, site photo or LED wall from Tools.</p>
+            <p>Import an OBJ, FBX, GLB, glTF, DAE, STL or PLY model; FieldLux detects its units and lets you fix the up axis in one click. Load a DWG, DXF, PDF or image floor plan at scale, trace the walls and raise them to height, or sketch the room from scratch. For a quick stand-in, add a Basic Room, Flat Surface, Curved Wall, Cylinder, Dome, site photo or LED wall from Tools.</p>
             <a class="v3-text-link" href="/videos#ch-02">How to do it: Chapters 02 to 04 <span aria-hidden="true">&#8599;</span></a>
           </div>
           <figure class="v3-media v3-media--facade">
@@ -189,7 +206,7 @@
           <div class="v3-editorial-copy">
             <p class="v3-kicker">03 · Placement Tool</p>
             <h3 class="v3-display">Arrays that stay live.</h3>
-            <p>Build a linear run, a circular ring with a shared aim or a symmetry pair, then review the ghost preview and coordinate table. Choose Place projectors for independent copies or Start Live so the copies follow the source, and give any copy its own position or equipment. Match position or rotation across heads with one click.</p>
+            <p>Build a linear run, a circular ring with a shared aim or a symmetry pair, then review the ghost preview and coordinate table. Choose Place projectors for independent copies or Start Live so the copies follow the source, and give any copy its own position or equipment. Line up position or rotation across selected heads from the match axes in the tool rail.</p>
             <a class="v3-text-link" href="/videos#ch-07">How to do it: Chapter 07 <span aria-hidden="true">&#8599;</span></a>
           </div>
           <figure class="v3-media v3-media--facade">
@@ -213,7 +230,7 @@
             <p class="v3-kicker">05 · Heatmap</p>
             <h3 class="v3-display">Know the lux before the truck leaves.</h3>
             <p>Turn on the Heatmap overlay for Surface Lux, Pixel Density or Luminance. Read Surface Lux on an Absolute, Norm or Deviation scale, press Values for the 13pt Diagnostic with a uniformity grade, probe any point under the cursor, and set the venue's ambient light to read the contrast ratio.</p>
-            <p class="v3-note">FieldLux is a planning estimate, not a calibrated field measurement. The Heatmap panel labels the basis of every map, and every head in today's library reads Physics Model.</p>
+            <p class="v3-note">FieldLux gives planning estimates, not calibrated field measurements. The Heatmap panel labels the basis of every map, and every head in today's library reads Physics Model.</p>
             <a class="v3-text-link" href="/videos#ch-09">How to do it: Chapters 09 to 11 <span aria-hidden="true">&#8599;</span></a>
           </div>
           <figure class="v3-media v3-media--facade">
@@ -224,7 +241,7 @@
           <div class="v3-editorial-copy">
             <p class="v3-kicker">06 · Play Dock</p>
             <h3 class="v3-display">Put the content on the wall.</h3>
-            <p>Output Setup finds the screens from where your beams land. Drop images or video from the Media Library, build a playlist, and corner-pin, mesh-warp, mask and soft-edge each head in Warp &amp; Blend, all rendered live on the 3D model. For an immersive room, Floor-centred runs one video off the floor and up all four walls, with the projectors that share a face blended.</p>
+            <p>Output Setup finds the screens from where your beams land. Drop images or video from the Media Library, build a playlist, and corner-pin, mesh-warp, mask and soft-edge each head in Warp &amp; Blend, and see the result live on the 3D model. For an immersive room, Floor-centred runs one video off the floor and up all four walls, with the projectors that share a face blended.</p>
             <p class="v3-note">Play Dock previews the show. It does not output to hardware.</p>
             <a class="v3-text-link" href="/videos#ch-12">How to do it: Chapters 12, 13 and 20 <span aria-hidden="true">&#8599;</span></a>
           </div>
@@ -236,7 +253,7 @@
           <div class="v3-editorial-copy">
             <p class="v3-kicker">07 · Lighting and fog</p>
             <h3 class="v3-display">The rest of the rig, in the same scene.</h3>
-            <p>Add moving heads, PARs, profiles, Fresnels, floods or strobes, import GDTF, MVR, IES and LDT files, and read an isolux working plane at any height. Add a Fog Machine and the projector and fixture beams glow in the air.</p>
+            <p>Add moving heads, PARs, profiles, Fresnels, floods or strobes, import GDTF, MVR, IES and LDT files, and read an isolux working plane at any height. Add a Fog Machine and up to four projector beams and four fixture beams glow in the air.</p>
             <p class="v3-note">Fixtures provide visual context and do not affect the projector lux calculation.</p>
             <a class="v3-text-link" href="/videos#ch-14">How to do it: Chapters 14 and 15 <span aria-hidden="true">&#8599;</span></a>
           </div>
@@ -290,7 +307,7 @@
       <div class="v3-container v3-cta v3-reveal">
         <p class="v3-kicker" data-launch="live">Open beta</p>
         <h2 class="v3-display" data-launch="live">Everything we ship is free today.</h2>
-        <p data-launch="live">FieldLux is free during open beta. <strong>No card required.</strong> Planned prices are shown for transparency. Checkout is not available yet. Imported model storage is limited to 2 GB per account during the beta.</p>
+        <p data-launch="live">FieldLux is free during open beta. <strong>No card required.</strong> Planned prices are shown for transparency. Checkout is not available yet. Each account stores up to 2&nbsp;GB of imported models and 1&nbsp;GB of media, with 200&nbsp;MB per file.</p>
         <div class="v3-actions">
           <a class="v3-button v3-button--dark" href="https://app.field-lux.com/" data-app-link>Start planning</a>
           <a class="v3-button v3-button--signal" href="/pricing" data-launch="live">View planned pricing</a>
@@ -323,11 +340,12 @@
         <a href="/terms">Terms of Service</a>
         <a href="/refund">Refund Policy</a>
         <a href="/privacy">Privacy Policy</a>
+        <button type="button" data-cookie-settings>Cookie settings</button>
       </div>
       <div class="v3-footer-legal">
         <p class="v3-footer-meta" data-launch="live">© 2026 FieldLux. Open beta.</p>
         <div class="v3-footer-business">
-          <p>FieldLux is operated by <span data-biz="name_en">[Business name]</span> | Representative: <span data-biz="rep_en">[Representative]</span> | Business registration no. <span data-biz="reg_no">[Registration no.]</span> | Mail-order business report no. <span data-biz="mail_order_en">[Report no.]</span></p>
+          <p>FieldLux is operated by <span data-biz="name_en">[Business name]</span> | Representative: <span data-biz="rep_en">[Representative]</span> | Business registration no. <span data-biz="reg_no">[Registration no.]</span> (<a href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4581202646" target="_blank" rel="noopener noreferrer" title="Business information on the Korea Fair Trade Commission site">Business info</a>) | Mail-order business report no. <span data-biz="mail_order_en">[Report no.]</span></p>
           <p><span data-biz="address_en">[Business address]</span> | Tel. <span data-biz="phone">[Phone]</span> | <a href="mailto:jay@field-lux.com">jay@field-lux.com</a> | Hosted by Vercel Inc.</p>
         </div>
       </div>
