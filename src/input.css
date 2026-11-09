@@ -5379,3 +5379,13 @@ body.v3-menu-open::after{
   0%,100%{ transform:scale(1); box-shadow:0 0 0 6px rgba(255,255,255,.22), 0 4px 18px rgba(0,0,0,.45); }
   40%{ transform:scale(.82); box-shadow:0 0 0 16px rgba(255,255,255,0), 0 4px 18px rgba(0,0,0,.45); }
 }
+
+/* ==========================================================================
+   1110 PRICING DETAIL - owner, 2026-11-10: list the planner on the plan cards
+   in detail (formats, materials, counts), the way competing tools list theirs.
+   Short one-line items instead of a few long ones, set tighter here so the
+   card reads as a column of checks rather than a page of prose. Plan cards
+   only; every other .v3-feature-list keeps its spacing.
+   ========================================================================== */
+.v3-price-card .v3-feature-list li{ padding-block:8px; }
+.v3-price-card .v3-feature-list li::before{ top:16px; }
