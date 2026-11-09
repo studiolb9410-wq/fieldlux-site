@@ -54,7 +54,8 @@ for (const shot of SHOTS) {
   const next = JSON.stringify({ ...hero, cameraSnapshot: { ...cam, position, target } }) + '\n';
   const out = join(ROOT, 'demo-scenes', shot.file);
   let current = null;
-  try { current = readFileSync(out, 'utf8'); } catch (_) {}
+  // A Windows checkout may hand the file back with CRLF; that is not a change.
+  try { current = readFileSync(out, 'utf8').replace(/\r\n/g, '\n'); } catch (_) {}
   if (current === next) { console.log(`  demo-scenes/${shot.file} is in sync with hero.json.`); continue; }
   if (check) { console.error(`  STALE: demo-scenes/${shot.file}`); stale += 1; continue; }
   writeFileSync(out, next);
