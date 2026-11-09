@@ -5255,3 +5255,303 @@ body.v3-menu-open::after{
   -webkit-font-smoothing:antialiased;
 }
 .hero-ticker-track{ will-change:transform; backface-visibility:hidden; }
+
+/* ==========================================================================
+   1109 PHONE HERO - owner, 2026-11-09, on an iPhone: the phone hero looked
+   wrong, the ticker never showed on the scene, "drag" should say touch, the
+   open button looked bad, and a second touch was needed before the scene
+   moved. Four layouts (?mh=a|b|c|d) and four live-3D controls (?mhb=1|2|3|4)
+   are built here for the owner to pick from; the inline script in
+   index.html's <head> sets data-mh / data-mhb (default a / 3).
+   Everything is inside max-width:680px except the touch wording and the
+   ticker (<=860), so the desktop hero is untouched.
+   ========================================================================== */
+
+/* -- wording: touch screens say swipe and tap, a mouse says drag ----------- */
+.t-touch{ display:none; }
+@media (hover:none) and (pointer:coarse){
+  .t-touch{ display:inline; }
+  .t-mouse{ display:none; }
+}
+
+/* -- the ticker runs on the scene at every width now ------------------------
+   It was cut below 861 because it kept 140px clear on both sides for the
+   embed's controls. Those controls start 46px down (gizmo) and 92px down
+   (rail); the band ends 32px down, so it clears them by height and can run
+   the full width of the frame. */
+@media (max-width:860px){
+  .v3-home .hero-ticker{ display:block; inset-inline:0; --ticker-fade:28px; }
+}
+
+.hero-live{ display:none; }
+
+@media (max-width:680px){
+  html[data-mh] .v3-home .hero{ min-block-size:0; align-content:start; }
+  html[data-mh] .v3-home .hero-frame{ aspect-ratio:4 / 5; }
+  html[data-mh] .v3-home .hero-title{ font-size:min(3rem, calc((100vw - 40px) / 8.95)); }
+
+  /* The scene stays invisible over the still until it has drawn, then
+     fades in. The still is the same shot, so the change reads as the
+     picture starting to move. */
+  html[data-mh] .v3-home .hero-frame-embed{ opacity:0; transition:opacity .7s var(--ease-out); }
+  html[data-mh] .v3-home .hero-frame:is([data-live="ready"],[data-live="used"]) .hero-frame-embed{ opacity:1; }
+
+  /* ---- the readout as three ruled rows: label and note left, figure right */
+  html[data-mh] .v3-home .hero-readout{ grid-template-columns:minmax(0,1fr); gap:0; padding:0; border:0; }
+  html[data-mh] .v3-home .hero-readout-item{
+    grid-template-columns:minmax(0,1fr) auto; column-gap:16px; row-gap:4px; align-items:center;
+    padding:14px 0; border-block-start:1px solid var(--line);
+  }
+  html[data-mh] .v3-home .hero-readout-item:last-child{ border-block-end:1px solid var(--line); }
+  html[data-mh] .v3-home .hero-readout-label{ grid-column:1; grid-row:1; }
+  html[data-mh] .v3-home .hero-readout-qual{ grid-column:1; grid-row:2; font-size:.8125rem; line-height:1.4; }
+  html[data-mh] .v3-home .hero-readout-value{ grid-column:2; grid-row:1 / span 2; font-size:1.625rem; line-height:1; white-space:nowrap; }
+
+  /* ---- the CTA row: the primary button takes the width it can ---------- */
+  html[data-mh] .v3-home .hero-actions{ flex-wrap:nowrap; gap:18px; }
+  html[data-mh] .v3-home .hero-actions .btn--brand{ flex:1 1 auto; min-block-size:52px; }
+  html[data-mh] .v3-home .hero-actions .btn--text{ flex:none; }
+  html[data-mh] .v3-home .hero-actions .btn--text::after{ content:"\2192"; margin-inline-start:.5em; letter-spacing:0; }
+
+  /* ======================================================================
+     THE LIVE-3D CONTROL. The <button> covers the whole frame so that, while
+     it is a button (idle: Save-Data, nothing loading yet), a tap anywhere on
+     the still starts the scene. In every later state it only shows what the
+     scene is doing and lets every touch through to it.
+     ====================================================================== */
+  html[data-mh] .v3-home .hero-live:not([hidden]){
+    position:absolute; inset:0; z-index:2; display:block;
+    margin:0; padding:0; border:0; background:none; color:#fff;
+    font:inherit; text-align:left; cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:opacity .45s var(--ease-out), visibility 0s;
+  }
+  html[data-mh] .v3-home .hero-frame:not([data-live="idle"]) .hero-live{ pointer-events:none; cursor:default; }
+  html[data-mh] .v3-home .hero-frame[data-live="used"] .hero-live{ opacity:0; visibility:hidden; transition:opacity .45s var(--ease-out), visibility 0s .45s; }
+
+  .hero-live-ui{ position:absolute; }
+  .hero-live-ring, .hero-live-glyph, .hero-live-glyph svg, .hero-live-dot, .hero-live-tag,
+  .hero-live-bar, .hero-live-coach, .hero-live-line, .hero-live-sub{ display:none; }
+  .hero-live-glyph svg{ fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+  .hero-live-glyph-swipe circle{ fill:currentColor; stroke:none; }
+  .hero-frame[data-live="idle"] .hero-live [data-when="idle"],
+  .hero-frame[data-live="loading"] .hero-live [data-when="loading"],
+  .hero-frame:is([data-live="ready"],[data-live="used"]) .hero-live [data-when="ready"],
+  .hero-frame[data-live="failed"] .hero-live [data-when="failed"]{ display:block; }
+  .hero-live-pct{ font-variant-numeric:tabular-nums; }
+  .hero-live-bar{ position:absolute; overflow:hidden; background:rgba(255,255,255,.16); }
+  .hero-live-bar i{ display:block; block-size:100%; inline-size:calc(var(--live-p, 0) * 100%); background:var(--brand-500); transition:inline-size .35s var(--ease-out); }
+  .hero-frame[data-live="loading"] .hero-live-bar{ display:block; }
+
+  /* ---- 1: GLASS PILL, bottom centre ------------------------------------- */
+  html[data-mhb="1"] .hero-live-ui{
+    left:50%; bottom:16px; transform:translateX(-50%);
+    display:flex; align-items:center; gap:10px;
+    min-block-size:46px; padding:8px 20px 8px 14px; border-radius:999px;
+    background:rgba(10,12,14,.58);
+    -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4);
+    border:1px solid rgba(255,255,255,.18); box-shadow:0 10px 30px rgba(0,0,0,.35);
+    white-space:nowrap; overflow:hidden;
+  }
+  html[data-mhb="1"] .hero-live-glyph{ display:grid; place-items:center; inline-size:26px; block-size:26px; }
+  html[data-mhb="1"] .hero-live-glyph-swipe{ display:block; inline-size:26px; block-size:26px; }
+  html[data-mhb="1"] .hero-live-copy{ display:flex; align-items:baseline; gap:8px; }
+  html[data-mhb="1"] .hero-live-line{ font-size:.9375rem; font-weight:600; letter-spacing:-.005em; }
+  html[data-mhb="1"] .hero-live-sub{ font-size:.8125rem; color:rgba(255,255,255,.68); }
+  html[data-mhb="1"] .hero-live-bar{ left:16px; right:16px; bottom:5px; block-size:2px; border-radius:2px; }
+
+  /* ---- 2: ORBIT BUTTON, centre of the scene ------------------------------ */
+  html[data-mhb="2"] .hero-live-ui{
+    left:50%; top:var(--mh-center, 46%); transform:translate(-50%,-50%);
+    display:grid; justify-items:center; gap:12px;
+  }
+  html[data-mhb="2"] .hero-live-ring{
+    display:block; grid-area:1 / 1; position:relative; inline-size:84px; block-size:84px; border-radius:50%;
+    background:rgba(10,12,14,.5);
+    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.22); box-shadow:0 12px 34px rgba(0,0,0,.4);
+  }
+  html[data-mhb="2"] .hero-live-ring svg{ position:absolute; inset:-1px; inline-size:calc(100% + 2px); block-size:calc(100% + 2px); transform:rotate(-90deg); fill:none; }
+  html[data-mhb="2"] .hero-live-ring-track{ stroke:rgba(255,255,255,0); stroke-width:2.6; }
+  html[data-mhb="2"] .hero-live-ring-fill{ stroke:var(--brand-500); stroke-width:2.6; stroke-linecap:round; stroke-dasharray:100 100; stroke-dashoffset:calc(100 - var(--live-p, 0) * 100); transition:stroke-dashoffset .35s var(--ease-out); opacity:0; }
+  html[data-mhb="2"] .hero-frame[data-live="loading"] .hero-live-ring-track{ stroke:rgba(255,255,255,.14); }
+  html[data-mhb="2"] .hero-frame[data-live="loading"] .hero-live-ring-fill{ opacity:1; }
+  html[data-mhb="2"] .hero-live-glyph{ display:grid; grid-area:1 / 1; place-self:center; place-items:center; inline-size:38px; block-size:38px; position:relative; z-index:1; }
+  html[data-mhb="2"] .hero-live-glyph-orbit{ display:block; inline-size:38px; block-size:38px; }
+  html[data-mhb="2"] .hero-frame:is([data-live="ready"],[data-live="used"]) .hero-live-glyph-orbit{ display:none; }
+  html[data-mhb="2"] .hero-frame:is([data-live="ready"],[data-live="used"]) .hero-live-glyph-swipe{ display:block; inline-size:34px; block-size:34px; }
+  html[data-mhb="2"] .hero-live-copy{
+    display:flex; align-items:baseline; gap:8px; padding:7px 14px; border-radius:999px;
+    background:rgba(10,12,14,.62); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.12);
+    font-family:var(--font-display); font-size:.6875rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; white-space:nowrap;
+  }
+  html[data-mhb="2"] .hero-live-sub{ color:rgba(255,255,255,.66); }
+  html[data-mhb="2"] .hero-live-ring::after{
+    content:""; position:absolute; inset:-1px; border-radius:50%;
+    box-shadow:0 0 0 0 rgba(32,213,222,.5);
+  }
+
+  /* ---- 3: MEDIA BAR, docked to the bottom edge ---------------------------- */
+  html[data-mhb="3"] .hero-live-ui{
+    left:0; right:0; bottom:0;
+    display:flex; align-items:center; gap:10px;
+    block-size:50px; padding:0 16px;
+    background:rgba(6,8,9,.74);
+    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+    border-block-start:1px solid rgba(255,255,255,.1);
+    font-family:var(--font-display); font-size:.6875rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; white-space:nowrap;
+  }
+  html[data-mhb="3"] .hero-live-dot{ display:block; inline-size:8px; block-size:8px; border-radius:50%; background:var(--brand-500); box-shadow:0 0 10px rgba(32,213,222,.8); }
+  html[data-mhb="3"] .hero-live-tag{ display:block; }
+  html[data-mhb="3"] .hero-live-glyph{ display:grid; place-items:center; margin-inline-start:auto; inline-size:20px; block-size:20px; }
+  html[data-mhb="3"] .hero-frame:is([data-live="ready"],[data-live="used"]) .hero-live-glyph-swipe{ display:block; inline-size:20px; block-size:20px; }
+  html[data-mhb="3"] .hero-live-copy{ display:flex; align-items:baseline; gap:8px; margin-inline-start:auto; }
+  html[data-mhb="3"] .hero-frame:is([data-live="ready"],[data-live="used"]) .hero-live-copy{ margin-inline-start:0; }
+  html[data-mhb="3"] .hero-live-sub{ color:rgba(255,255,255,.62); }
+  html[data-mhb="3"] .hero-frame:is([data-live="ready"],[data-live="used"]) .hero-live-sub{ display:none; }
+  html[data-mhb="3"] .hero-live-bar{ left:0; right:0; top:-1px; block-size:2px; }
+  /* [dot][LIVE 3D] ........ [gesture][state] */
+  html[data-mhb="3"] .hero-live-dot{ order:1; flex:none; }
+  html[data-mhb="3"] .hero-live-tag{ order:2; flex:none; }
+  html[data-mhb="3"] .hero-live-glyph{ order:3; flex:none; }
+  html[data-mhb="3"] .hero-live-copy{ order:4; min-inline-size:0; }
+  html[data-mhb="3"] .hero-frame:not([data-live="ready"]):not([data-live="used"]) .hero-live-glyph{ display:none; }
+  html[data-mhb="3"] .hero-frame[data-live="idle"] .hero-live-tag{ display:none; }
+
+  /* ---- 4: GESTURE COACH, a fingertip showing the move ---------------------- */
+  html[data-mhb="4"] .hero-live-ui{
+    left:50%; top:calc(var(--mh-center, 46%) + 44px); transform:translateX(-50%);
+    display:grid; justify-items:center; gap:4px; text-align:center; white-space:nowrap;
+    text-shadow:0 1px 3px rgba(0,0,0,.7), 0 0 18px rgba(0,0,0,.55);
+  }
+  html[data-mhb="4"] .hero-live-copy{ display:grid; justify-items:center; gap:3px; }
+  html[data-mhb="4"] .hero-live-line{ font-size:1.0625rem; font-weight:650; letter-spacing:-.01em; }
+  html[data-mhb="4"] .hero-live-sub{ font-size:.8125rem; color:rgba(255,255,255,.78); }
+  html[data-mhb="4"] .hero-live-coach{
+    display:block; position:absolute; left:50%; top:var(--mh-center, 46%);
+    inline-size:120px; block-size:40px; transform:translate(-50%,-50%);
+  }
+  html[data-mhb="4"] .hero-live-coach::before{
+    content:""; position:absolute; left:12px; right:12px; top:50%; block-size:2px; margin-top:-1px; border-radius:2px;
+    background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.55) 50%, rgba(255,255,255,0));
+  }
+  html[data-mhb="4"] .hero-live-coach i{
+    position:absolute; left:50%; top:50%; inline-size:28px; block-size:28px; margin:-14px 0 0 -14px; border-radius:50%;
+    background:rgba(255,255,255,.95); box-shadow:0 0 0 6px rgba(255,255,255,.22), 0 4px 18px rgba(0,0,0,.45);
+  }
+  html[data-mhb="4"] .hero-frame[data-live="loading"] .hero-live-coach{ display:none; }
+  /* loading: the ring takes the fingertip's place and the words sit under it */
+  html[data-mhb="4"] .hero-live-ring{ inline-size:56px; block-size:56px; }
+  html[data-mhb="4"] .hero-frame[data-live="loading"] .hero-live-ring{ display:block; margin-block-end:8px; }
+  html[data-mhb="4"] .hero-live-ring svg{ inline-size:100%; block-size:100%; transform:rotate(-90deg); fill:none; filter:drop-shadow(0 2px 8px rgba(0,0,0,.5)); }
+  html[data-mhb="4"] .hero-live-ring-track{ stroke:rgba(255,255,255,.22); stroke-width:3.5; }
+  html[data-mhb="4"] .hero-live-ring-fill{ stroke:#fff; stroke-width:3.5; stroke-linecap:round; stroke-dasharray:100 100; stroke-dashoffset:calc(100 - var(--live-p, 0) * 100); transition:stroke-dashoffset .35s var(--ease-out); }
+  html[data-mhb="4"] .hero-frame[data-live="loading"] .hero-live-ui{ top:calc(var(--mh-center, 46%) - 28px); }
+
+  /* The centre controls (2, 4) stand in the scene; once it is ready they
+     step aside after a few seconds even if nobody has touched it yet. */
+  html[data-mhb="2"] .v3-home .hero-frame[data-live-rest] .hero-live,
+  html[data-mhb="4"] .v3-home .hero-frame[data-live-rest] .hero-live{ opacity:0; visibility:hidden; transition:opacity .6s var(--ease-out), visibility 0s .6s; }
+
+  /* ======================================================================
+     LAYOUTS
+     ====================================================================== */
+
+  /* ---- A: CINEMATIC. The scene runs edge to edge and the copy continues on
+     its dark ground, so scene and promise read as one object. ----------- */
+  html[data-mh="a"] .v3-home .v3-legacy-hero{
+    color:#F4F7F8;
+    background:linear-gradient(var(--paper) 0 var(--nav-h), #070A0B var(--nav-h));
+  }
+  html[data-mh="a"] .v3-home .hero-frame{ inline-size:100vw; margin-inline:calc(50% - 50vw); border-radius:0; --mh-center:71%; }
+  html[data-mh="a"] .v3-home .hero-block{ padding:4px 0 0; background:transparent; }
+  html[data-mh="a"] .v3-home .hero-title{ color:#fff; }
+  html[data-mh="a"] .v3-home .hero-lead{ color:#A7B2B7; }
+  html[data-mh="a"] .v3-home .v3-legacy-hero .hero-lead strong{ color:#fff; }
+  html[data-mh="a"] .v3-home .v3-legacy-hero .btn--text{ color:#fff; }
+  html[data-mh="a"] .v3-home .hero-cta-note{ color:#8E999E; }
+  html[data-mh="a"] .v3-home .hero-cta-note strong{ color:#fff; }
+  html[data-mh="a"] .v3-home .hero-readout-item,
+  html[data-mh="a"] .v3-home .hero-readout-item:last-child{ border-color:rgba(255,255,255,.13); }
+  html[data-mh="a"] .v3-home .hero-readout-label,
+  html[data-mh="a"] .v3-home .hero-readout-qual,
+  html[data-mh="a"] .v3-home .hero-caption{ color:#8E999E; }
+  html[data-mh="a"] .v3-home .hero-readout-value{ color:#fff; }
+
+  /* ---- B: HEADLINE FIRST. Promise, then the buttons, then the proof. ---- */
+  html[data-mh="b"] .v3-home .hero-block{ order:1; padding:6px 0 0; }
+  html[data-mh="b"] .v3-home .hero-copy{ order:2; margin-block-start:-6px; }
+  html[data-mh="b"] .v3-home .hero-frame{ order:3; border-radius:22px; margin-block-start:6px; --mh-center:71%; }
+  html[data-mh="b"] .v3-home .hero-readout{ order:4; }
+  html[data-mh="b"] .v3-home .hero-caption{ order:5; }
+
+  /* ---- C: THE NOTCH. The desktop composition at phone size: the page cuts
+     into the scene's lower left with the headline. --------------------- */
+  html[data-mh="c"] .v3-home .hero-frame{
+    border-radius:22px; --mh-center:61%;
+    /* the block's top edge at 79% of the frame's height: 21% of a 4:5 frame
+       is 26.25% of its width, and percentage margins are of the width */
+    margin-block-end:calc(-1 * (var(--hero-gap) + 26.25%));
+  }
+  html[data-mh="c"] .v3-home .hero-block{
+    inline-size:92%; justify-self:start; position:relative; z-index:3;
+    background:var(--paper); border-radius:0 22px 0 0; padding:16px 14px 0 0;
+    /* the overlap (26.25% of the frame's width) plus a 14px hang, so the
+       cut always runs past the frame's bottom edge whatever the type does */
+    min-block-size:calc(26.25vw + 3.5px);
+  }
+  html[data-mh="c"] .v3-home .hero-title{ font-size:calc((92vw - 36.8px - 14px) / 8.95); }
+  html[data-mh="c"] .v3-home .hero-copy{ margin-block-start:-6px; }
+  /* edge controls sit on the floor just above the cut */
+  html[data-mh="c"][data-mhb="1"] .hero-live-ui{ bottom:calc(21% + 14px); }
+  html[data-mh="c"][data-mhb="3"] .hero-live-ui{ bottom:21%; }
+
+  /* ---- D: FULL SCREEN. The scene is the whole first screen and the
+     headline and buttons stand on its dark floor. --------------------- */
+  html[data-mh="d"] .v3-home .hero-frame{
+    grid-row:1; grid-column:1;
+    inline-size:100vw; margin-inline:calc(50% - 50vw); border-radius:0;
+    aspect-ratio:auto; block-size:calc(100svh - var(--nav-h)); min-block-size:540px; max-block-size:780px;
+    --mh-center:64%;
+  }
+  html[data-mh="d"] .v3-home .hero-copy{ display:contents; }
+  html[data-mh="d"] .v3-home .hero-block{
+    grid-row:1; grid-column:1; align-self:end; position:relative; z-index:3; pointer-events:none;
+    padding:0; background:transparent; margin-block-end:104px;
+  }
+  html[data-mh="d"] .v3-home .hero-title{ color:#fff; text-shadow:0 2px 20px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.6); }
+  html[data-mh="d"] .v3-home .hero-actions{ grid-row:1; grid-column:1; align-self:end; position:relative; z-index:3; margin-block-end:28px; }
+  html[data-mh="d"] .v3-home .v3-legacy-hero .btn--text{ color:#fff; text-shadow:0 1px 6px rgba(0,0,0,.6); }
+  html[data-mh="d"] .v3-home .hero-lead{ grid-row:2; margin-block-start:6px; }
+  html[data-mh="d"] .v3-home .hero-cta-note{ grid-row:3; margin:0; }
+  html[data-mh="d"] .v3-home .hero-readout{ grid-row:4; }
+  html[data-mh="d"] .v3-home .hero-caption{ grid-row:5; }
+  /* edge controls sit above the headline */
+  html[data-mh="d"][data-mhb="1"] .hero-live-ui{ bottom:214px; }
+  html[data-mh="d"][data-mhb="3"] .hero-live-ui{ bottom:200px; }
+}
+
+/* -- motion for the controls: off under reduced motion, like the ticker ---- */
+@media (max-width:680px) and (prefers-reduced-motion:no-preference){
+  html:not([data-motion="off"])[data-mhb="1"] .hero-frame[data-live="ready"] .hero-live-glyph-swipe circle,
+  html:not([data-motion="off"])[data-mhb="2"] .hero-frame[data-live="ready"] .hero-live-glyph-swipe circle,
+  html:not([data-motion="off"])[data-mhb="3"] .hero-frame[data-live="ready"] .hero-live-glyph-swipe circle{
+    transform-box:fill-box; transform-origin:center; animation:mh-nudge 1.8s var(--ease-out) infinite;
+  }
+  html:not([data-motion="off"])[data-mhb="2"] .hero-frame:is([data-live="idle"],[data-live="ready"]) .hero-live-ring::after{ animation:mh-halo 2.2s ease-out infinite; }
+  html:not([data-motion="off"])[data-mhb="3"] .hero-frame[data-live="loading"] .hero-live-dot{ animation:mh-blink 1.1s steps(1,end) infinite; }
+  html:not([data-motion="off"])[data-mhb="4"] .hero-frame[data-live="ready"] .hero-live-coach i{ animation:mh-swipe 2.6s cubic-bezier(.45,0,.2,1) infinite; }
+  html:not([data-motion="off"])[data-mhb="4"] .hero-frame[data-live="idle"] .hero-live-coach i{ animation:mh-tap 1.8s var(--ease-out) infinite; }
+}
+@keyframes mh-nudge{ 0%,100%{ transform:translateX(0); } 30%{ transform:translateX(-3.5px); } 65%{ transform:translateX(3.5px); } }
+@keyframes mh-halo{ 0%{ box-shadow:0 0 0 0 rgba(32,213,222,.5); } 70%,100%{ box-shadow:0 0 0 18px rgba(32,213,222,0); } }
+@keyframes mh-blink{ 0%,50%{ opacity:1; } 51%,100%{ opacity:.25; } }
+@keyframes mh-swipe{
+  0%{ transform:translateX(0) scale(1); opacity:0; }
+  10%{ opacity:1; transform:translateX(0) scale(.88); }
+  40%{ transform:translateX(-40px) scale(.88); }
+  75%{ transform:translateX(40px) scale(.88); opacity:1; }
+  90%,100%{ transform:translateX(0) scale(1); opacity:0; }
+}
+@keyframes mh-tap{ 0%,100%{ transform:scale(1); box-shadow:0 0 0 6px rgba(255,255,255,.22), 0 4px 18px rgba(0,0,0,.45); } 40%{ transform:scale(.82); box-shadow:0 0 0 16px rgba(255,255,255,0), 0 4px 18px rgba(0,0,0,.45); } }

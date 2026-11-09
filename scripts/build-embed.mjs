@@ -161,7 +161,36 @@ const VERCEL_STUBS =
 
    The wheel contract above is untouched, byte for byte: un-engaged the wheel
    still belongs to the host page (no scroll trap on hover), engaged it still
-   belongs to the scene. */
+   belongs to the scene.
+
+   (h) PHONES, 1109, after the owner tried the hero on an iPhone: "touch
+   should go straight to moving the 3D; on the phone you have to touch once
+   more, and drag should say touch".
+
+     WORDS. On a touch screen the intro says "Swipe to look around" and "Tap a
+     projector", not drag and click.
+
+     GESTURES. Measured with real touch input before the change: the stage
+     chain resolved to touch-action:none (the app's wrapper writes it inline),
+     so any swipe on the scene orbited it and a vertical swipe flipped the
+     camera to a plan view instead of scrolling the page. Now, on touch
+     screens only, the whole stage is pan-y: one finger sideways turns the
+     scene, one finger up or down scrolls the page, two fingers pinch to zoom
+     (Google's model-viewer default). Mouse input is untouched.
+
+     THE HOST IS TOLD WHAT IS HAPPENING. After the tap the phone saw the same
+     still for 8 s (local server) with nothing moving, so the visitor tapped
+     again. The frame now posts to its own origin only:
+       { source:'flx-embed', state:'progress', p }   bytes of the bundle and
+                                                     scene, held under 0.96
+       { state:'ready' }    the canvas exists and 24 frames have drawn (or 8 s)
+       { state:'used' }     first tap, sideways drag or key once it is ready
+       { state:'failed' }   no canvas after 45 s
+     The site's hero draws its own progress and invitation from these, which
+     is why it asks for ?intro=0 on phones: one invitation, not two.
+
+     NARROW FRAMES. In an upright phone frame the sub line ran out under the
+     LUX HEATMAP button; below 560px it wraps. */
 const HERO_UX = `    <style>
       /* --- the headline face, inside the frame ---------------------------
          The prompt is set in the same face as the hero headline above it, so
@@ -372,6 +401,32 @@ const HERO_UX = `    <style>
         transform: translate3d(0, -14px, 0);
         filter: blur(7px);
       }
+
+      /* --- touch screens, 1109 -- see (h) in scripts/build-embed.mjs ------
+         One finger sideways turns the scene, one finger up or down scrolls
+         the page, two fingers pinch to zoom. Every box from the stage down is
+         set because the app's own wrapper writes touch-action:none inline and
+         the browser intersects the whole chain: pan-y on the canvas alone was
+         measured to do nothing. */
+      @media (hover: none) and (pointer: coarse) {
+        .flx-embed-stage, .flx-embed-stage * { touch-action: pan-y !important; }
+      }
+      /* A phone held upright: the instruction wraps under the invitation
+         instead of running out under the controls on the right. */
+      @media (max-width: 560px) {
+        .flx-intro { top: 90px; right: 72px; }
+        .flx-intro-line { font-size: clamp(17px, 5.2vw, 22px); }
+        .flx-intro-line--sub { white-space: normal; font-size: 10px; letter-spacing: 0.12em; }
+        /* The control column (LUX HEATMAP and the three mode buttons) sat
+           over the building's lit face in an upright frame. It becomes one
+           row in the top left, under the site's ticker band (which ends 32px
+           down) and clear of the axis gizmo on the right. The column is the
+           app's own node, matched by the two inline offsets it is placed by. */
+        div[style*="top: 92px"][style*="right: 16px"] {
+          top: 42px !important; right: auto !important; left: 12px !important;
+          flex-direction: row !important; align-items: center !important;
+        }
+      }
     </style>
     <script>
       /* Scroll containment — see (e) in scripts/build-embed.mjs. */
@@ -399,14 +454,18 @@ const HERO_UX = `    <style>
            than styled onto the app's own hint node, because the app owns that
            node and re-renders it; this one is ours, lives on <body>, outside
            React's tree, and can never be clobbered mid-animation. */
-        var LINES = ['Drag to', 'look around'];
-        var SUB = 'Click a projector for its light readings';
+        /* Touch words on a touch screen -- see (h). */
+        var coarse = !!(window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+        var LINES = coarse ? ['Swipe to', 'look around'] : ['Drag to', 'look around'];
+        var SUB = coarse ? 'Tap a projector for its light readings' : 'Click a projector for its light readings';
+        /* ?intro=0: the framing page draws its own invitation (the phone hero). */
+        var introOff = new URLSearchParams(window.location.search).get('intro') === '0';
 
         var intro = null;
         var dismissed = false;
 
         function buildIntro() {
-          if (intro || dismissed) return;
+          if (intro || dismissed || introOff) return;
           intro = document.createElement('div');
           intro.className = 'flx-intro';
           /* aria-hidden, and it is not a shortcut: the app still renders its
@@ -471,6 +530,73 @@ const HERO_UX = `    <style>
             buildIntro();
           }
         }, 220);
+
+        /* Telling the framing page how far along the scene is -- see (h).
+           Addressed to this document's own origin, so only field-lux.com
+           hears it (the CSP already refuses any other framer). */
+        var host = window.parent !== window ? window.parent : null;
+        function tell(state, p) {
+          if (!host) return;
+          try { host.postMessage({ source: 'flx-embed', state: state, p: p }, window.location.origin); } catch (e) {}
+        }
+
+        /* PROGRESS. Bytes of the scene's own files (the bundle, the scene
+           file and its model) against what they measured on 1109, 8.08 MB
+           decoded. The projected clip is left out: it streams, and the scene
+           is ready long before it finishes. Held under 96% until the scene
+           really is ready, so the number never claims more than is true. */
+        var EXPECTED_BYTES = 8000000;
+        var EXPECTED_FILES = 34;
+        var bytes = 0, files = 0, shown = 0, isReady = false;
+        function onEntries(list) {
+          var entries = list.getEntries();
+          for (var i = 0; i < entries.length; i++) {
+            var e = entries[i];
+            if (!/\/embed\/assets\/|\/demo-scenes\//.test(e.name)) continue;
+            files += 1;
+            bytes += e.decodedBodySize || e.encodedBodySize || 0;
+          }
+          var p = Math.min(0.96, bytes > 0 ? bytes / EXPECTED_BYTES : files / EXPECTED_FILES);
+          if (!isReady && p > shown + 0.01) { shown = p; tell('progress', p); }
+        }
+        try { new PerformanceObserver(onEntries).observe({ type: 'resource', buffered: true }); } catch (e) {}
+
+        /* READY means the scene has drawn, not that the canvas exists: the
+           first frames compile the shaders on the main thread, so counting
+           frames waits that out. The timeout covers a frame clock that is
+           throttled and would never reach 24. */
+        var waitedReady = 0;
+        var readyPoll = window.setInterval(function () {
+          waitedReady += 250;
+          if (document.querySelector('.flx-embed-stage canvas')) {
+            window.clearInterval(readyPoll);
+            var frames = 0, t0 = Date.now();
+            var finish = function () { if (isReady) return; isReady = true; tell('ready', 1); };
+            var tick = function () {
+              frames += 1;
+              if (frames >= 24 && Date.now() - t0 >= 1200) finish();
+              else window.requestAnimationFrame(tick);
+            };
+            window.requestAnimationFrame(tick);
+            window.setTimeout(finish, 8000);
+          } else if (waitedReady > 45000) {
+            window.clearInterval(readyPoll);
+            tell('failed');
+          }
+        }, 250);
+
+        /* FIRST REAL TOUCH. A tap, a sideways drag or a key, but not a swipe
+           the browser took as a page scroll (that ends in pointercancel). */
+        var pressed = false, used = false;
+        document.addEventListener('pointerdown', function () { pressed = true; }, { capture: true, passive: true });
+        document.addEventListener('pointercancel', function () { pressed = false; }, { capture: true, passive: true });
+        document.addEventListener('pointerup', function () {
+          if (pressed && !used && isReady) { used = true; tell('used'); }
+          pressed = false;
+        }, { capture: true, passive: true });
+        document.addEventListener('keydown', function () {
+          if (!used && isReady) { used = true; tell('used'); }
+        }, { capture: true, passive: true });
       })();
     </script>
 `;

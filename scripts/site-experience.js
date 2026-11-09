@@ -85,26 +85,117 @@
   }
 
   // The home hero's live 3D scene. On a desktop it mounts at once over its
-  // still. On a phone (narrow, or a short landscape screen) or with Save-Data
-  // on, the still stays and the scene loads only when the visitor asks: it
-  // is about 5 MB and a WebGL scene the size of a stamp is hard to use.
+  // still, exactly as before.
+  //
+  // PHONES, 1109 (owner: "touch should go straight to moving the 3D; on the
+  // phone you have to touch once more"). The old phone path waited for a tap
+  // on "Open the live 3D scene", then showed the same still for 8+ seconds
+  // with nothing moving, so the visitor tapped again. Now:
+  //   - the scene starts loading by itself once the page has loaded and the
+  //     frame is on screen, unless the browser asks to save data;
+  //   - the still stays up, the control shows real progress, and the scene
+  //     fades in only when it has actually drawn (the frame says so);
+  //   - from then on the first finger on the scene turns it. No second tap.
+  // With Save-Data on, one tap anywhere on the still starts the same path.
+  // Phones load the upright camera (?scene=hero-portrait) and ask the frame
+  // not to print its own invitation (&intro=0): the control below is it.
   const heroFrame = document.querySelector('.hero-frame');
   const heroEmbed = heroFrame?.querySelector('.hero-frame-embed[data-src]');
   if (heroFrame && heroEmbed) {
     const launch = heroFrame.querySelector('[data-embed-launch]');
+    const pctNode = heroFrame.querySelector('[data-embed-pct]');
+    const statusNode = heroFrame.querySelector('[data-embed-status]');
+    const phone = window.matchMedia('(max-width: 680px)').matches;
+    // Layout d fills the screen's height, so it asks for the camera that is
+    // pulled back for a tall frame, and the still taken from it.
+    const tall = phone && root.dataset.mh === 'd';
+    if (tall) {
+      heroFrame.querySelector('picture source')?.setAttribute('srcset',
+        '/assets/media/hero-poster-tall-720.webp 720w, /assets/media/hero-poster-tall.webp 1080w');
+    }
+    const shortTouch = window.matchMedia('(max-height: 540px) and (pointer: coarse)').matches;
+    const saveData = navigator.connection?.saveData === true;
+    let state = 'still';
+    let revealTimer = 0;
+
+    const say = (text) => { if (statusNode) statusNode.textContent = text; };
+    const setState = (next) => {
+      if (state === next || state === 'used' && next === 'ready') return;
+      state = next;
+      heroFrame.dataset.live = next;
+      if (!launch) return;
+      // Only the idle control is a button. Every later state is a picture of
+      // what the scene is doing, and must not catch a touch meant for it.
+      const actionable = next === 'idle';
+      launch.disabled = !actionable;
+      launch.tabIndex = actionable ? 0 : -1;
+      if (actionable) launch.removeAttribute('aria-hidden');
+      else launch.setAttribute('aria-hidden', 'true');
+      if (next === 'loading') say('Loading the live 3D scene.');
+      if (next === 'ready') say('The live 3D scene is ready.');
+      if (next === 'failed') say('The live 3D scene could not start on this device.');
+    };
+    const setProgress = (p) => {
+      const value = Math.max(0, Math.min(1, Number(p) || 0));
+      heroFrame.style.setProperty('--live-p', value.toFixed(3));
+      if (pctNode) pctNode.textContent = `${Math.round(value * 100)}%`;
+    };
+
+    window.addEventListener('message', (event) => {
+      if (event.origin !== window.location.origin || event.source !== heroEmbed.contentWindow) return;
+      const data = event.data;
+      if (!data || data.source !== 'flx-embed') return;
+      if (data.state === 'progress' && state === 'loading') setProgress(data.p);
+      if (data.state === 'ready') {
+        setProgress(1);
+        window.clearTimeout(revealTimer);
+        setState('ready');
+        // Controls that stand in the middle of the scene step aside after a
+        // few seconds even if nobody has touched it (the CSS decides which).
+        window.setTimeout(() => { heroFrame.dataset.liveRest = ''; }, 5000);
+      }
+      if (data.state === 'used' && state === 'ready') setState('used');
+      if (data.state === 'failed') { window.clearTimeout(revealTimer); setState('failed'); }
+    });
+
     const mountHero = () => {
       if (heroEmbed.getAttribute('src')) return;
-      heroEmbed.setAttribute('src', heroEmbed.dataset.src);
+      const src = (tall && heroEmbed.dataset.srcTall) || (phone && heroEmbed.dataset.srcPhone) || heroEmbed.dataset.src;
+      heroEmbed.setAttribute('src', src);
       heroFrame.dataset.embedState = 'mounted';
-      if (launch) launch.hidden = true;
+      setProgress(0);
+      setState('loading');
+      // A frame that never reports (an old cached copy, a blocked message)
+      // must not stay invisible behind the still for good.
+      revealTimer = window.setTimeout(() => { if (state === 'loading') setState('ready'); }, 25000);
     };
-    const lite = window.matchMedia('(max-width: 680px), (max-height: 540px) and (pointer: coarse)').matches
-      || navigator.connection?.saveData === true;
-    if (!lite || !launch) {
+
+    if (!phone && !shortTouch && !saveData) {
       mountHero();
-    } else {
+    } else if (launch) {
       launch.hidden = false;
-      launch.addEventListener('click', () => { mountHero(); heroEmbed.focus(); }, { once: true });
+      launch.addEventListener('click', () => { if (state === 'idle') mountHero(); });
+      if (saveData) {
+        setState('idle');
+      } else {
+        // Auto-start: after the page itself has loaded (the still and the
+        // copy come first), and only while the frame is actually on screen.
+        // The control already reads "Loading" at 0%, so nothing asks for a
+        // tap that is about to be unnecessary.
+        setProgress(0);
+        setState('loading');
+        const start = () => {
+          if (!('IntersectionObserver' in window)) { mountHero(); return; }
+          const seen = new IntersectionObserver((entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) { seen.disconnect(); mountHero(); }
+          }, { threshold: 0.25 });
+          seen.observe(heroFrame);
+        };
+        if (document.readyState === 'complete') window.setTimeout(start, 250);
+        else window.addEventListener('load', () => window.setTimeout(start, 250), { once: true });
+      }
+    } else {
+      mountHero();
     }
   }
 

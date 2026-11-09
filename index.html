@@ -3,6 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    /* Phone hero review, 1109: ?mh=a|b|c|d picks the phone layout and
+       ?mhb=1|2|3|4 the live-3D control. Allowlisted; anything else gets the
+       default. Set before first paint so the page never jumps. */
+    (function () {
+      try {
+        var q = new URLSearchParams(window.location.search), d = document.documentElement;
+        var m = q.get('mh'), b = q.get('mhb');
+        d.setAttribute('data-mh', /^[abcd]$/.test(m || '') ? m : 'a');
+        d.setAttribute('data-mhb', /^[1-4]$/.test(b || '') ? b : '3');
+      } catch (e) {}
+    })();
+  </script>
   <title>FieldLux | Plan projection before load-in</title>
   <meta name="description" data-launch="live" content="Plan projector coverage, optics, edge blending, surface lux and content preview on the venue model in one browser-based 3D workspace. Free during open beta.">
   <link rel="canonical" href="https://field-lux.com/">
@@ -62,13 +75,39 @@
   <main class="v3-main" id="main" tabindex="-1">
     <section class="hero v3-legacy-hero" id="top" aria-labelledby="hero-title">
       <div class="site-shell hero-inner">
-        <div class="hero-frame" tabindex="-1" data-embed-state="still">
-          <img class="hero-frame-poster" src="/assets/media/hero-poster.webp" srcset="/assets/media/hero-poster-720.webp 720w, /assets/media/hero-poster.webp 1200w" sizes="(max-width: 860px) 100vw, 75vw" width="1200" height="688" alt="Still of the live FieldLux scene: a projected logo across an apartment facade" decoding="async" fetchpriority="high">
-          <iframe class="hero-frame-embed" data-src="/embed?scene=hero" title="FieldLux interactive 3D scene, drag to look around" sandbox="allow-scripts allow-same-origin allow-downloads" referrerpolicy="same-origin"></iframe>
-          <button class="hero-frame-launch" type="button" data-embed-launch hidden>
-            <span class="hero-frame-launch-label">Open the live 3D scene</span>
-            <span class="hero-frame-launch-hint">Drag to look around.</span>
+        <div class="hero-frame" tabindex="-1" data-embed-state="still" data-live="still">
+          <picture>
+            <source media="(max-width: 680px)" srcset="/assets/media/hero-poster-portrait-720.webp 720w, /assets/media/hero-poster-portrait.webp 1080w" sizes="100vw" width="1080" height="1350">
+            <img class="hero-frame-poster" src="/assets/media/hero-poster.webp" srcset="/assets/media/hero-poster-720.webp 720w, /assets/media/hero-poster.webp 1200w" sizes="(max-width: 860px) 100vw, 75vw" width="1200" height="688" alt="Still of the live FieldLux scene: a projected logo across an apartment facade" decoding="async" fetchpriority="high">
+          </picture>
+          <iframe class="hero-frame-embed" data-src="/embed?scene=hero" data-src-phone="/embed?scene=hero-portrait&amp;intro=0" data-src-tall="/embed?scene=hero-tall&amp;intro=0" title="FieldLux interactive 3D scene" sandbox="allow-scripts allow-same-origin allow-downloads" referrerpolicy="same-origin"></iframe>
+          <!-- The phone hero's live-3D control (site-experience.js). One tap
+               anywhere on the still loads the scene when it is not already
+               loading; after that it only reports progress and then shows
+               the gesture, and never takes a touch the scene should get. -->
+          <button class="hero-live" type="button" data-embed-launch hidden aria-label="Load the live 3D scene, about 9 MB">
+            <span class="hero-live-ui">
+              <span class="hero-live-ring" aria-hidden="true"><svg viewBox="0 0 80 80"><circle class="hero-live-ring-track" cx="40" cy="40" r="37"/><circle class="hero-live-ring-fill" cx="40" cy="40" r="37" pathLength="100"/></svg></span>
+              <span class="hero-live-glyph" aria-hidden="true">
+                <svg class="hero-live-glyph-orbit" viewBox="0 0 32 32"><path d="M16 7.5l7 4v8l-7 4-7-4v-8zM9 11.5l7 4 7-4M16 15.5v8"/><path d="M4.5 16.8c0 2.6 5.2 4.6 11.5 4.6s11.5-2 11.5-4.6M25.4 14.9l2.1 1.9-2.6.9"/></svg>
+                <svg class="hero-live-glyph-swipe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.3"/><path d="M6.6 8.4 3 12l3.6 3.6M17.4 8.4 21 12l-3.6 3.6"/></svg>
+              </span>
+              <span class="hero-live-dot" aria-hidden="true"></span>
+              <span class="hero-live-tag" aria-hidden="true">Live 3D</span>
+              <span class="hero-live-copy" aria-hidden="true">
+                <span class="hero-live-line" data-when="idle">Tap to load the live 3D</span>
+                <span class="hero-live-line" data-when="loading">Loading live 3D</span>
+                <span class="hero-live-line" data-when="ready"><span class="t-touch">Swipe to rotate</span><span class="t-mouse">Drag to rotate</span></span>
+                <span class="hero-live-line" data-when="failed">3D view unavailable here</span>
+                <span class="hero-live-sub" data-when="idle">About 9 MB</span>
+                <span class="hero-live-sub hero-live-pct" data-when="loading" data-embed-pct>0%</span>
+                <span class="hero-live-sub" data-when="ready"><span class="t-touch">Pinch to zoom</span><span class="t-mouse">Scroll to zoom</span></span>
+              </span>
+              <span class="hero-live-bar" aria-hidden="true"><i></i></span>
+            </span>
+            <span class="hero-live-coach" aria-hidden="true"><i></i></span>
           </button>
+          <p class="u-visually-hidden" role="status" data-embed-status></p>
           <div class="hero-ticker" aria-hidden="true">
             <div class="hero-ticker-track">
               <ul class="hero-ticker-group">
@@ -121,7 +160,7 @@
           </li>
         </ul>
 
-        <p class="hero-caption"><span class="hero-caption-state" data-when="still">A still of the live FieldLux scene. Open it to drag around the plan and read the facade in Lux Heatmap. Values are planning estimates, not field measurements.</span><span class="hero-caption-state" data-when="live">Live FieldLux scene: drag to inspect the plan, then open Lux Heatmap to read the facade. Values are planning estimates, not field measurements.</span></p>
+        <p class="hero-caption"><span class="hero-caption-state" data-when="still">A still of the live FieldLux scene. Open it to <span class="t-mouse">drag</span><span class="t-touch">swipe</span> around the plan and read the facade in Lux Heatmap. Values are planning estimates, not field measurements.</span><span class="hero-caption-state" data-when="live">Live FieldLux scene: <span class="t-mouse">drag</span><span class="t-touch">swipe</span> to inspect the plan, then open Lux Heatmap to read the facade. Values are planning estimates, not field measurements.</span></p>
       </div>
     </section>
 

@@ -174,6 +174,18 @@ Document pages only. Every link carrying `data-discord-link` points at the live 
 the value is stored under `localStorage['fieldlux_discord_url']`. Anything else falls back
 to the live invite and clears the stored key, as for the CTA.
 
+### Phone hero options - `?mh=` and `?mhb=` (review only, 2026-11-09)
+
+Home page, phone width (680px and below) only. `?mh=a|b|c|d` picks the hero layout and
+`?mhb=1|2|3|4` the live-3D control; anything else falls back to `a` and `3`. The inline
+script in `index.html`'s `<head>` sets `data-mh` / `data-mhb` on `<html>` before first paint,
+and nothing is stored. The options and screenshots are in the 1109 phone hero section at the
+end of `src/input.css`. Once one pair is chosen the other options are removed.
+
+The phone hero loads the upright scenes `demo-scenes/hero-portrait.json` (layouts a to c)
+and `demo-scenes/hero-tall.json` (layout d), generated from `hero.json` by
+`node scripts/make-hero-portrait.mjs`; re-run it whenever `hero.json` changes.
+
 ### Not implemented
 
 `?embedSrc=`, described in `docs/REDESIGN_SPEC_0814.md`, is not implemented: the hero
