@@ -40,7 +40,7 @@
     dialog.innerHTML = `
       <p class="flx-notice-kicker">Open beta</p>
       <h2 id="flx-notice-title">FieldLux is free during the open beta.</h2>
-      <p id="flx-notice-desc">No card required. Paid plans are planned to start in mid-December 2026; see what they will cost and what your account gets then. We will post the exact date on the Pricing page at least 14 days in advance.</p>
+      <p id="flx-notice-desc">No card required. Paid plans are planned to start in mid-December 2026. We will post the exact date on the Pricing page at least 14 days in advance.</p>
       <a class="flx-notice-primary" href="/pricing" data-notice-pricing>See planned pricing</a>
       <div class="flx-notice-secondary">
         <button type="button" data-notice-today>Don't show again today</button>
