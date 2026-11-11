@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Secure checkout | FieldLux</title>
+  <meta name="description" content="Paddle's secure checkout for a FieldLux plan, 7-day pass, card update or invoice.">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- Filled at build time by scripts/paddle-config.mjs from FLX_PADDLE_CLIENT_TOKEN (Paddle client-side
+       token, public by design). Empty means checkout is not set up for this deployment. -->
+  <meta name="flx-paddle-token" content="">
+  <meta name="flx-paddle-env" content="">
+
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="/assets/favicon-16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/assets/logo-mark-180.png">
+
+  <link rel="preload" href="/assets/fonts/geologica-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/pretendard/PretendardVariable.subset.91.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="/assets/tailwind.css">
+</head>
+<body data-checkout-state="loading">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="site-shell nav-shell">
+      <a class="brand-lockup" href="/" aria-label="FieldLux home">
+        <img class="brand-lockup-img" src="/assets/logo-ink.png" width="154" height="45" alt="FieldLux">
+      </a>
+
+      <div class="nav-actions">
+        <a class="btn btn--outline btn--sm" href="https://app.field-lux.com">Open FieldLux</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="site-main" id="main" tabindex="-1">
+
+    <!-- == /checkout ==========================================================
+         Paddle's default payment link (owner decision 2026-11-11): every Paddle
+         checkout link lands here as /checkout?_ptxn=txn_..., the plan picker's
+         own, a card update and an invoice alike. Paddle.js, loaded by
+         scripts/checkout-page.js only when a payment is attached, opens the
+         checkout for that transaction on this page. Kept out of the sitemap,
+         noindex in this head and in the X-Robots-Tag header (vercel.json). -->
+    <section class="section" id="checkout" aria-labelledby="checkout-title">
+      <div class="site-shell--narrow">
+
+        <div class="section-head">
+          <p class="micro-label">
+            <span class="micro-label-ord">(00)</span>
+            <span class="micro-label-name">SECURE CHECKOUT</span>
+          </p>
+
+          <h1 class="section-title" id="checkout-title">SECURE CHECKOUT.</h1>
+
+          <p class="copy section-lead u-text-measure" id="checkout-status" role="status" aria-live="polite">Opening the secure checkout...</p>
+          <p class="copy u-text-measure" id="checkout-detail">The payment window opens on this page. Paddle.com runs it: Paddle is the Merchant of Record for FieldLux orders, charges your card, handles tax and emails your receipt.</p>
+          <noscript><p class="copy u-text-measure">This page needs JavaScript to open the checkout. Nothing was charged.</p></noscript>
+
+          <div class="hero-actions" id="checkout-actions" hidden>
+            <a class="btn btn--solid" href="https://app.field-lux.com" id="checkout-return">RETURN TO FIELDLUX</a>
+            <button class="btn btn--outline" type="button" id="checkout-reopen" hidden>OPEN THE CHECKOUT AGAIN</button>
+          </div>
+
+          <p class="copy u-text-measure">Questions about a payment: <a class="link" href="mailto:jay@field-lux.com">jay@field-lux.com</a>. See the <a class="link" href="/terms">Terms of Service</a> and the <a class="link" href="/refund">Refund Policy</a>.</p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-shell footer-inner">
+
+      <a class="brand-lockup" href="/" aria-label="FieldLux home">
+        <img class="brand-lockup-img" src="/assets/logo-ink.png" width="154" height="45" alt="FieldLux">
+      </a>
+
+      <div class="footer-contact">
+        <p class="footer-contact-item">
+          <span class="footer-col-title">hello</span>
+          <a class="footer-link" href="mailto:jay@field-lux.com">jay@field-lux.com</a>
+        </p>
+      </div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <p class="footer-col-title">legal</p>
+          <ul class="footer-links">
+            <li><a class="footer-link" href="/terms">Terms of Service</a></li>
+            <li><a class="footer-link" href="/refund">Refund Policy</a></li>
+            <li><a class="footer-link" href="/privacy">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-meta">
+        <p class="footer-legal" data-launch="live">&copy; 2026 FieldLux. Open beta.</p>
+      </div>
+
+      <div class="footer-business">
+        <p>FieldLux is operated by <span data-biz="name_en">[Business name]</span> | Representative: <span data-biz="rep_en">[Representative]</span> | Business registration no. <span data-biz="reg_no">[Registration no.]</span> (<a href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4581202646" target="_blank" rel="noopener noreferrer" title="Business information on the Korea Fair Trade Commission site">Business info</a>) | Mail-order business report no. <span data-biz="mail_order_en">[Report no.]</span></p>
+        <p><span data-biz="address_en">[Business address]</span> | Tel. <span data-biz="phone">[Phone]</span> | <a href="mailto:jay@field-lux.com">jay@field-lux.com</a> | Hosted by Vercel Inc.</p>
+      </div>
+
+    </div>
+  </footer>
+  <script src="/scripts/checkout-page.js"></script>
+</body>
+</html>
