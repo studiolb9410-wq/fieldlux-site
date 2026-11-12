@@ -12,6 +12,8 @@ README and the spec disagree, the spec wins.
 |---|---|---|
 | `/` | `index.html` | The product, ten chapters, the numbers, the limits |
 | `/videos` | `videos.html` | Feature videos - 43 slots across the same ten chapters |
+| `/customers` | `customers.html` | Customers: the logo row of customers who agreed to be named, and their stories |
+| `/customers/<slug>` | `customers/<slug>.html` | One customer story (use case). Today: `/customers/sixtyfour` |
 | `/pricing` | `pricing.html` | Viewer, Projection and Pro, as a 7-day pass (one payment, no renewal), monthly or yearly. Buying starts in the app (the plan picker), never on this page |
 | `/checkout` | `checkout.html` | Paddle's checkout for a payment link (`?_ptxn=`), opened by the app in a new tab; also Paddle's default payment link. noindex, not in the sitemap. See "Checkout page" below |
 | `/terms` | `terms.html` | Terms of Service (English) |
@@ -29,7 +31,8 @@ written `/privacy` and `/videos` - **never** with a `.html` suffix.
 `outputDirectory` is `"."`, which makes the repo root the web root. Anything committed
 here is publicly served unless `.vercelignore` lists it (`docs/`, this README and the
 local tooling are listed). Do not put internal preview URLs, tokens or
-customer names in the repo.
+customer names in the repo. The one exception is a customer who has approved being
+named on the site (see "Customer stories" below).
 
 ## Direction
 
@@ -297,10 +300,40 @@ mid-transition or an empty scene.
 
 The current `/videos` page reads no manifest; a clip's duration comes from the file itself.
 
+## Customer stories
+
+`/customers` and `/customers/<slug>` show real customers. Spec 9.4 deleted the old
+logo row because no customer had agreed to be named and a brand logo implies
+endorsement; the rule stands: **a customer's name, logo or photos go up only after
+the customer approves them**, and the story is written from facts the customer and
+the FieldLux file can back. **Send the studio the draft before it goes live**, and
+again before a later change to their story does. SIXTYFOUR (Houston) agreed to the use
+case, their name, photos and logo on 2026-11-09 and 10, the logo "under studios using
+FieldLux", and wrote the text their story follows.
+
+To add a customer:
+
+1. Put the files in `assets/media/customers/`, named `<slug>-<what>.webp` in
+   lowercase ASCII and hyphens: each photo at its source width plus a half-width copy
+   for the phone `srcset`, the logo as `<slug>-logo.svg`, and a 1200 x 630
+   `<slug>-og.jpg` for link previews. Strip EXIF (phone photos can carry GPS).
+   An app screenshot keeps its full frame; trim only a capture border.
+2. Copy `customers/sixtyfour.html` to `customers/<slug>.html` and rewrite it. Keep the
+   facts row honest: every figure from the customer or their FieldLux file, every
+   FieldLux value labelled as a planning estimate.
+3. On `/customers`, add the logo to the logo row and one more `.v3-story` card.
+4. Add the page to `sitemap.xml`.
+
+Pages live in `customers/`, one level down, so two build files name that folder:
+`scripts/business-info.mjs` (`PAGE_DIRS`; without it the story ships with the
+business-detail placeholders in its footer and skips the production check) and
+`tailwind.config.js` (`content`). A new page folder needs the same two lines.
+
 ## Source files
 
-- `index.html`, `product.html`, `measurement.html`, `videos.html`, `pricing.html`,
-  `terms.html`, `refund.html`, `privacy.html`, `404.html`, `checkout.html` - the pages
+- `index.html`, `product.html`, `measurement.html`, `videos.html`, `customers.html`,
+  `pricing.html`, `terms.html`, `refund.html`, `privacy.html`, `404.html`, `checkout.html`, and the
+  customer stories in `customers/` - the pages
 - `scripts/checkout-page.js` - `/checkout`: loads Paddle.js for a payment link and says what happened
 - `scripts/paddle-config.mjs` - writes the Paddle client-side token into `/checkout` on Vercel and guards it
 - `scripts/site-experience.js` - the v3 pages: CTA target, header, reveals, motion toggle, pricing period

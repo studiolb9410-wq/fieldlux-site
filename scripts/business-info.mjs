@@ -73,7 +73,20 @@ function strayBrackets(html) {
   return found;
 }
 
-const pages = fs.readdirSync(root).filter((f) => f.endsWith('.html')).sort();
+// Every page the site serves: the root pages, plus the customer stories in
+// customers/ (served at /customers/<slug>). A page in a folder that is not
+// listed here would ship without its business details AND skip the checks
+// below, so add the folder here when you add one. embed/ is not a page: it
+// is the bundled 3D app, and it shows no footer.
+const PAGE_DIRS = ['', 'customers'];
+const pages = PAGE_DIRS.flatMap((dir) => {
+  const abs = path.join(root, dir);
+  if (!fs.existsSync(abs)) return [];
+  return fs.readdirSync(abs)
+    .filter((f) => f.endsWith('.html'))
+    .sort()
+    .map((f) => (dir ? `${dir}/${f}` : f));
+});
 const unknownKeys = new Set();
 const left = [];
 let filled = 0;
