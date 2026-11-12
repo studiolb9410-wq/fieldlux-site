@@ -63,7 +63,7 @@
     completed: {
       title: 'PAYMENT RECEIVED.',
       status: 'Payment received. You can close this tab and return to FieldLux.',
-      detail: 'Paddle emails your receipt. In FieldLux, the tab you came from updates by itself within a minute or two. If it has not after an hour, email jay@field-lux.com.',
+      detail: 'Paddle emails your receipt. In FieldLux, the tab you came from updates by itself within a minute or two. If it has not after an hour, email info@field-lux.com.',
       actions: true,
     },
     closed: {
@@ -76,7 +76,7 @@
     error: {
       title: 'CHECKOUT DID NOT OPEN.',
       status: 'The checkout could not open. Nothing was charged.',
-      detail: 'The link may have been paid already or replaced by a newer one. Go back to FieldLux and start again, or email jay@field-lux.com with the link.',
+      detail: 'The link may have been paid already or replaced by a newer one. Go back to FieldLux and start again, or email info@field-lux.com with the link.',
       actions: true,
     },
     blocked: {
@@ -94,7 +94,7 @@
     unavailable: {
       title: 'CHECKOUT UNAVAILABLE.',
       status: 'Checkout is not available here right now. Nothing was charged.',
-      detail: 'Email jay@field-lux.com and we will help you pay.',
+      detail: 'Email info@field-lux.com and we will help you pay.',
       actions: true,
     },
   };
