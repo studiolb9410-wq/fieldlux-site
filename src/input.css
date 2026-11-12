@@ -5389,3 +5389,219 @@ body.v3-menu-open::after{
    ========================================================================== */
 .v3-price-card .v3-feature-list li{ padding-block:8px; }
 .v3-price-card .v3-feature-list li::before{ top:16px; }
+
+/* ==========================================================================
+   1112 CUSTOMERS AND USE CASES - owner, 2026-11-12: SIXTYFOUR (Houston)
+   approved the use of their logo and of their room as a published use case.
+   /customers lists the customers and their stories, /customers/<slug> is one
+   story, and the home page carries one customer band. Same white page, type
+   and rules as the other v3 pages; the one colour that is not ours is the
+   customer's logo, shown as they supplied it. Spec 9.4 deleted the old
+   .trust-logo row because no customer had agreed to be named. This one names
+   only customers who have.
+   ========================================================================== */
+
+/* -- the customer lockup: their logo, their name, where they are ----------- */
+.v3-client{ display:inline-flex; align-items:center; gap:14px; min-width:0; color:var(--v3-dark-text); }
+.v3-client img{ flex:none; width:48px; height:48px; }
+.v3-client-text{ display:grid; gap:3px; min-width:0; }
+.v3-client-name{ font-size:.98rem; font-weight:700; line-height:1.15; letter-spacing:.09em; text-transform:uppercase; }
+.v3-client-meta{ color:var(--v3-dark-muted); font-size:.84rem; line-height:1.35; }
+.v3-client--lg img{ width:60px; height:60px; }
+.v3-client--lg .v3-client-name{ font-size:1.12rem; }
+
+/* -- the arrow on a text link, drawn rather than typed (README: no arrow
+      glyphs in copy; the self-hosted subsets do not all carry them) -------- */
+.v3-link-icon{ flex:none; width:11px; height:11px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:square; transition:transform .2s ease; }
+.v3-text-link:hover .v3-link-icon,
+.v3-story:hover .v3-link-icon{ transform:translate(3px,-3px); }
+
+/* -- breadcrumb above a story ---------------------------------------------- */
+.v3-crumbs{ margin:0 0 38px; }
+.v3-crumbs ol{ display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px; margin:0; padding:0; list-style:none; color:var(--v3-dark-muted); font-size:.8rem; font-weight:560; }
+.v3-crumbs li + li::before{ content:"/"; margin-right:10px; color:rgba(18,23,25,.35); }
+.v3-crumbs a{ border-bottom:1px solid rgba(18,23,25,.25); transition:color .2s ease, border-color .2s ease; }
+.v3-crumbs a:hover{ color:var(--v3-dark-text); border-color:currentColor; }
+.v3-crumbs [aria-current="page"]{ color:var(--v3-dark-text); }
+
+/* -- story hero: headline across, then the lead beside the client card ----- */
+/* the hero kicker in the section kickers' ink: #9bdcf9 on white is 1.6:1 */
+.v3-page[data-page="customers"] .v3-hero .v3-kicker{ color:#187f9d; }
+.v3-case-hero .v3-display{ max-width:none; }
+.v3-case-intro{ display:grid; grid-template-columns:minmax(0,1fr) minmax(300px,400px); align-items:start; gap:40px clamp(48px,6vw,104px); margin-top:36px; }
+.v3-case-intro .v3-lead{ margin-top:0; }
+.v3-case-intro .v3-lead{ max-width:50rem; }
+.v3-client-card{ padding:24px 24px 6px; border:1px solid var(--v3-dark-line); background:rgba(255,255,255,.88); }
+.v3-client-card dl{ margin:20px 0 0; border-top:1px solid var(--v3-dark-line); }
+.v3-client-card dl > div{ display:grid; grid-template-columns:96px minmax(0,1fr); gap:12px; padding:12px 0; border-bottom:1px solid var(--v3-dark-line); }
+.v3-client-card dl > div:last-child{ border-bottom:0; }
+.v3-client-card dt{ padding-top:3px; color:var(--v3-dark-muted); font-size:.64rem; font-weight:680; letter-spacing:.12em; text-transform:uppercase; }
+.v3-client-card dd{ margin:0; color:var(--v3-dark-text); font-size:.92rem; line-height:1.4; }
+
+/* -- the facts row: six figures, each with what it is made of -------------- */
+.v3-facts{ display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); margin:56px 0 0; border-top:1px solid var(--v3-dark-text); border-bottom:1px solid var(--v3-dark-line); }
+.v3-facts > div{ display:flex; flex-direction:column; min-width:0; padding:20px 20px 24px; border-left:1px solid var(--v3-dark-line); }
+.v3-facts > div:first-child{ padding-left:0; border-left:0; }
+.v3-facts dt{ color:var(--v3-dark-muted); font-size:.66rem; font-weight:680; line-height:1.3; letter-spacing:.12em; text-transform:uppercase; }
+.v3-facts dd{ margin:0; }
+.v3-facts .v3-facts-value{ margin-top:26px; color:var(--v3-dark-text); font-size:clamp(2rem,2.6vw,2.85rem); font-weight:520; line-height:1; letter-spacing:-.05em; font-variant-numeric:lining-nums tabular-nums; white-space:nowrap; }
+.v3-facts-unit{ margin-left:.18em; color:var(--v3-dark-muted); font-size:.36em; font-weight:680; letter-spacing:.08em; text-transform:uppercase; vertical-align:.55em; }
+.v3-facts .v3-facts-sub{ margin-top:12px; color:var(--v3-dark-muted); font-size:.84rem; line-height:1.42; }
+
+/* -- the short version: three steps, the last one is the result ------------ */
+.v3-case-summary .v3-display{ max-width:none; font-size:clamp(2.3rem,4vw,4rem); }
+.v3-case-steps{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:56px 0 0; padding:0; list-style:none; }
+.v3-case-steps li{ display:flex; flex-direction:column; padding:26px 28px 30px; border:1px solid var(--v3-dark-line); background:#fff; }
+.v3-case-steps li:last-child{ box-shadow:inset 0 3px 0 var(--v3-cyan-deep); }
+.v3-case-steps h3{ margin:22px 0 0; font-size:1.3rem; font-weight:620; line-height:1.2; letter-spacing:-.025em; }
+.v3-case-steps p{ margin:12px 0 0; color:var(--v3-dark-muted); font-size:1.04rem; line-height:1.6; }
+
+/* -- the story: numbered chapters, the headline left and the text right ---- */
+.v3-case-chapter{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:22px clamp(48px,7vw,128px); padding:clamp(64px,7vw,104px) 0; border-top:1px solid var(--v3-dark-line); }
+.v3-case-chapter:first-child{ padding-top:0; border-top:0; }
+.v3-case-chapter:has(+ .v3-case-figure){ padding-bottom:clamp(40px,4vw,56px); }
+.v3-case-chapter-head .v3-kicker{ margin:0 0 18px; }
+.v3-case-chapter-head h2{ margin:0; max-width:15ch; font-size:clamp(2.05rem,3.2vw,3.4rem); font-weight:520; line-height:1.02; letter-spacing:-.05em; text-wrap:balance; }
+.v3-case-chapter-body{ padding-top:34px; }
+.v3-case-chapter-body > p{ max-width:44rem; margin:0 0 20px; color:var(--v3-dark-muted); font-size:1.16rem; line-height:1.66; }
+.v3-case-chapter-body > p:first-child{ color:var(--v3-dark-text); }
+.v3-case-chapter-body > p:last-child{ margin-bottom:0; }
+.v3-case-chapter-body > .v3-text-link{ margin-top:8px; }
+
+/* a picture between chapters: full width, the caption under it */
+.v3-case-figure{ margin:0; padding:0 0 clamp(64px,7vw,104px); }
+.v3-case-frame{ display:block; overflow:hidden; border:1px solid rgba(18,23,25,.13); background:#0b0f11; box-shadow:0 30px 75px rgba(24,35,38,.13); }
+.v3-case-frame img{ display:block; width:100%; height:auto; }
+a.v3-case-frame{ cursor:zoom-in; }
+/* a 4:3 photo is as tall as the screen at full width; keep it on one screen */
+.v3-case-figure--fit .v3-case-frame{ max-width:min(100%, calc((100svh - 150px) * 4 / 3)); }
+.v3-case-zoom{ white-space:nowrap; color:var(--v3-dark-text); border-bottom:1px solid currentColor; }
+.v3-case-zoom:hover{ color:#187f9d; }
+.v3-case-figure figcaption,
+.v3-blend figcaption{ max-width:62rem; margin-top:16px; color:var(--v3-dark-muted); font-size:.92rem; line-height:1.55; }
+.v3-fig-label{ display:inline-block; margin-right:10px; padding:3px 7px 2px; border:1px solid rgba(24,127,157,.4); color:#187f9d; font-size:.62rem; font-weight:700; line-height:1.4; letter-spacing:.12em; text-transform:uppercase; vertical-align:1px; }
+
+/* LRV: of the light that reaches the wall, how much comes back */
+.v3-lrv{ max-width:44rem; margin:34px 0 0; }
+.v3-lrv-labels{ display:flex; justify-content:space-between; gap:16px; margin:0 0 10px; color:var(--v3-dark-muted); font-size:.66rem; font-weight:680; letter-spacing:.12em; text-transform:uppercase; }
+.v3-lrv-bar{ display:flex; height:58px; border:1px solid var(--v3-dark-text); background:#151b1e; }
+.v3-lrv-bar > span{ display:flex; align-items:center; font-size:.95rem; font-weight:650; letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
+.v3-lrv-bar > span:first-child{ flex:0 0 11%; justify-content:center; color:var(--v3-dark-text); background:linear-gradient(180deg,#ffd58a,var(--v3-amber)); }
+.v3-lrv-bar > span:last-child{ flex:1 1 auto; justify-content:flex-end; padding:0 14px; color:rgba(244,247,248,.86); }
+.v3-lrv figcaption{ margin-top:12px; color:var(--v3-dark-muted); font-size:.9rem; line-height:1.55; }
+
+/* the overlap diagram: a black frame, software blend against hardware blend.
+   Orange marks the extra light in an overlap, as the overlap labels do in
+   the app. */
+.v3-blend{ margin:0; padding:0 0 clamp(64px,7vw,104px); }
+.v3-blend-panels{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.v3-blend-panel{ padding:26px 28px 24px; border:1px solid var(--v3-dark-line); background:#fff; }
+.v3-blend-panel--even{ box-shadow:inset 0 3px 0 var(--v3-cyan-deep); }
+.v3-page .v3-blend-panel .v3-kicker{ margin:0; }
+.v3-blend-panel h3{ margin:12px 0 0; font-size:1.3rem; font-weight:620; line-height:1.2; letter-spacing:-.025em; }
+.v3-blend-panel svg{ display:block; width:100%; height:auto; margin-top:22px; }
+.v3-blend-panel p:not(.v3-kicker){ max-width:34rem; margin:16px 0 0; color:var(--v3-dark-muted); font-size:1rem; line-height:1.55; }
+.v3-blend-svg .zone{ fill:rgba(18,23,25,.05); }
+.v3-blend-svg .axis{ stroke:rgba(18,23,25,.5); stroke-width:1.2; }
+.v3-blend-svg .beam{ fill:none; stroke:#7d8a90; stroke-width:2; stroke-dasharray:5 6; stroke-linecap:round; }
+.v3-blend-svg .total{ fill:none; stroke:var(--v3-dark-text); stroke-width:3.5; stroke-linejoin:round; stroke-linecap:round; }
+.v3-blend-svg .band{ fill:#ff9c45; fill-opacity:.45; }
+.v3-blend-svg text{ fill:var(--v3-dark-muted); font-family:inherit; font-size:11px; font-weight:650; letter-spacing:.06em; }
+.v3-blend-svg .hot{ fill:#b45309; }
+.v3-blend-svg .even{ fill:#187f9d; }
+
+/* -- the check: one centred verdict, then the room ------------------------ */
+.v3-case-verdict .v3-display{ max-width:none; font-size:clamp(2.5rem,5.2vw,5.3rem); line-height:.96; }
+.v3-case-verdict .v3-section-head > p:not(.v3-kicker){ max-width:46rem; margin:26px auto 0; color:var(--v3-dark-muted); font-size:1.2rem; line-height:1.62; }
+.v3-case-verdict .v3-section-head > p strong{ color:var(--v3-dark-text); }
+.v3-case-verdict .v3-case-figure{ margin-top:clamp(56px,6vw,88px); padding-bottom:0; }
+.v3-case-verdict .v3-note{ margin-top:28px; }
+
+/* -- /customers: the logo row, the story cards, the invitation ------------- */
+.v3-logo-strip{ display:grid; grid-template-columns:minmax(140px,220px) minmax(0,1fr); align-items:center; gap:18px 40px; margin:72px 0 0; padding:24px 0; border-top:1px solid var(--v3-dark-text); border-bottom:1px solid var(--v3-dark-line); }
+.v3-logo-strip > p{ margin:0; color:var(--v3-dark-muted); font-size:.66rem; font-weight:680; letter-spacing:.12em; text-transform:uppercase; }
+.v3-logo-list{ display:flex; flex-wrap:wrap; align-items:center; gap:20px 56px; margin:0; padding:0; list-style:none; }
+
+.v3-story{ position:relative; display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); margin-top:56px; border:1px solid var(--v3-dark-line); background:#fff; transition:border-color .25s ease, box-shadow .25s ease; }
+.v3-story:hover{ border-color:rgba(18,23,25,.38); box-shadow:0 30px 75px rgba(24,35,38,.12); }
+.v3-story:has(h3 a:focus-visible){ outline:2px solid #0b6f8c; outline-offset:4px; }
+.v3-story-media{ position:relative; min-height:380px; margin:0; overflow:hidden; background:#0b0f11; }
+.v3-story-media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:28% 50%; transition:transform .7s cubic-bezier(.2,.7,.2,1); }
+.v3-story:hover .v3-story-media img{ transform:scale(1.02); }
+.v3-story-copy{ display:flex; flex-direction:column; padding:clamp(28px,3vw,44px); }
+.v3-page .v3-story-copy .v3-kicker{ margin:30px 0 0; }
+.v3-story-copy h3{ margin:14px 0 0; font-size:clamp(1.9rem,2.7vw,2.8rem); font-weight:520; line-height:1.02; letter-spacing:-.05em; text-wrap:balance; }
+.v3-story-copy h3 a::after{ content:""; position:absolute; inset:0; z-index:1; }
+.v3-story-copy h3 a:focus-visible{ outline:none; }
+.v3-story-copy > p:not(.v3-kicker):not(.v3-story-more){ margin:18px 0 0; color:var(--v3-dark-muted); font-size:1.04rem; line-height:1.62; }
+.v3-story-more{ margin-top:auto; padding-top:30px; }
+.v3-story-more .v3-text-link{ margin-top:0; }
+
+.v3-mini-facts{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin:26px 0 0; border-top:1px solid var(--v3-dark-line); }
+.v3-mini-facts > div{ display:flex; flex-direction:column; min-width:0; padding:14px 12px 0 0; }
+.v3-mini-facts > div + div{ padding-left:14px; border-left:1px solid var(--v3-dark-line); }
+.v3-mini-facts dt{ order:2; margin-top:7px; color:var(--v3-dark-muted); font-size:.64rem; font-weight:680; letter-spacing:.12em; text-transform:uppercase; }
+.v3-mini-facts dd{ order:1; margin:0; color:var(--v3-dark-text); font-size:1.5rem; font-weight:540; line-height:1; letter-spacing:-.04em; font-variant-numeric:lining-nums tabular-nums; white-space:nowrap; }
+
+.v3-invite{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:end; gap:28px clamp(48px,7vw,128px); }
+.v3-invite .v3-display{ max-width:13ch; }
+.v3-invite-copy > p{ max-width:40rem; margin:0; color:var(--v3-dark-muted); font-size:1.12rem; line-height:1.62; }
+.v3-invite-copy .v3-actions{ margin-top:28px; }
+
+/* -- home: the customer band between the three steps and the tour ---------- */
+.v3-customer-band-grid{ display:grid; grid-template-columns:minmax(0,1.32fr) minmax(320px,.78fr); align-items:center; gap:clamp(44px,6vw,104px); }
+.v3-customer-band-media{ margin:0; overflow:hidden; border:1px solid rgba(18,23,25,.13); background:#0b0f11; box-shadow:0 30px 75px rgba(24,35,38,.13); }
+.v3-customer-band-media img{ display:block; width:100%; height:auto; }
+.v3-page .v3-customer-band-copy .v3-kicker{ margin:30px 0 0; }
+.v3-customer-band-copy .v3-display{ max-width:13ch; margin:14px 0 0; font-size:clamp(2.3rem,3.4vw,3.9rem); line-height:1; }
+.v3-customer-band-copy > p:not(.v3-kicker){ max-width:36rem; margin:22px 0 0; color:var(--v3-dark-muted); font-size:1.12rem; line-height:1.62; }
+.v3-customer-band-copy > p strong{ color:var(--v3-dark-text); }
+.v3-customer-band-links{ display:flex; flex-wrap:wrap; gap:12px 30px; margin-top:30px; }
+.v3-customer-band-links .v3-text-link{ margin-top:0; }
+
+/* -- five links in the header between 981 and 1180 ------------------------- */
+@media (min-width:981px) and (max-width:1180px){
+  .v3-nav{ gap:22px; }
+}
+
+@media (max-width:1180px){
+  .v3-case-intro{ grid-template-columns:minmax(0,1fr) minmax(280px,340px); gap:36px 48px; }
+  .v3-facts{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .v3-facts > div:nth-child(3n+1){ padding-left:0; border-left:0; }
+  .v3-facts > div:nth-child(n+4){ border-top:1px solid var(--v3-dark-line); }
+  .v3-story{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+}
+
+@media (max-width:980px){
+  .v3-case-intro{ grid-template-columns:1fr; align-items:start; }
+  .v3-client-card{ max-width:520px; }
+  .v3-case-steps{ grid-template-columns:1fr; }
+  .v3-case-chapter{ grid-template-columns:1fr; gap:18px; }
+  .v3-case-chapter-body{ padding-top:0; }
+  .v3-case-chapter-head h2{ max-width:20ch; }
+  .v3-blend-panels{ grid-template-columns:1fr; }
+  .v3-story{ grid-template-columns:1fr; }
+  .v3-story-media{ min-height:0; aspect-ratio:16 / 9; }
+  .v3-invite{ grid-template-columns:1fr; align-items:start; }
+  .v3-customer-band-grid{ grid-template-columns:1fr; }
+  .v3-logo-strip{ grid-template-columns:1fr; gap:16px; }
+}
+
+@media (max-width:680px){
+  .v3-crumbs{ margin-bottom:28px; }
+  .v3-facts{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .v3-facts > div{ padding:18px 12px 20px 16px; }
+  .v3-facts > div:nth-child(3n+1){ padding-left:16px; border-left:1px solid var(--v3-dark-line); }
+  .v3-facts > div:nth-child(2n+1){ padding-left:0; border-left:0; }
+  .v3-facts > div:nth-child(n+3){ border-top:1px solid var(--v3-dark-line); }
+  .v3-facts .v3-facts-value{ margin-top:20px; font-size:1.9rem; }
+  .v3-case-steps li{ padding:24px; }
+  .v3-case-chapter-head h2{ font-size:clamp(1.85rem,8vw,2.4rem); }
+  .v3-case-chapter-body > p{ font-size:1.06rem; }
+  .v3-blend-panel{ padding:22px 18px 20px; }
+  .v3-blend-svg text{ font-size:17px; }
+  .v3-story-copy{ padding:24px; }
+  .v3-mini-facts dd{ font-size:1.3rem; }
+  .v3-case-verdict .v3-section-head > p:not(.v3-kicker){ font-size:1.08rem; }
+  .v3-customer-band-copy > p:not(.v3-kicker){ font-size:1.06rem; }
+}
