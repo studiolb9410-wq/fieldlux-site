@@ -258,8 +258,10 @@ The current `/videos` page reads no manifest; a clip's duration comes from the f
 logo row because no customer had agreed to be named and a brand logo implies
 endorsement; the rule stands: **a customer's name, logo or photos go up only after
 the customer approves them**, and the story is written from facts the customer and
-the FieldLux file can back. SIXTYFOUR (Houston) approved their logo and their room's
-story on 2026-11-12.
+the FieldLux file can back. **Send the studio the draft before it goes live**, and
+again before a later change to their story does. SIXTYFOUR (Houston) agreed to the use
+case, their name, photos and logo on 2026-11-09 and 10, the logo "under studios using
+FieldLux", and wrote the text their story follows.
 
 To add a customer:
 

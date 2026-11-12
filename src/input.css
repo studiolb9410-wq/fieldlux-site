@@ -5437,6 +5437,8 @@ body.v3-menu-open::after{
 .v3-client-card dl > div:last-child{ border-bottom:0; }
 .v3-client-card dt{ padding-top:3px; color:var(--v3-dark-muted); font-size:.64rem; font-weight:680; letter-spacing:.12em; text-transform:uppercase; }
 .v3-client-card dd{ margin:0; color:var(--v3-dark-text); font-size:.92rem; line-height:1.4; }
+.v3-client-site{ border-bottom:1px solid currentColor; transition:color .2s ease; }
+.v3-client-site:hover{ color:#187f9d; }
 
 /* -- the facts row: six figures, each with what it is made of -------------- */
 .v3-facts{ display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); margin:56px 0 0; border-top:1px solid var(--v3-dark-text); border-bottom:1px solid var(--v3-dark-line); }
