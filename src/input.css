@@ -5495,6 +5495,16 @@ a.v3-case-frame{ cursor:zoom-in; }
 .v3-case-verdict .v3-display{ max-width:none; font-size:clamp(2.5rem,5.2vw,5.3rem); line-height:.96; }
 .v3-case-verdict .v3-section-head > p:not(.v3-kicker){ max-width:46rem; margin:26px auto 0; color:var(--v3-dark-muted); font-size:1.2rem; line-height:1.62; }
 .v3-case-verdict .v3-section-head > p strong{ color:var(--v3-dark-text); }
+/* the check itself: the meter reading beside the FieldLux estimate. Each
+   lux figure is named by its label (README: every lux number carries its
+   qualifier). */
+.v3-check{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); max-width:640px; margin:48px auto 0; border-top:1px solid var(--v3-dark-text); border-bottom:1px solid var(--v3-dark-line); text-align:center; }
+.v3-check > div{ padding:22px 16px 26px; }
+.v3-check > div + div{ border-left:1px solid var(--v3-dark-line); }
+.v3-check dt{ color:var(--v3-dark-muted); font-size:.66rem; font-weight:680; letter-spacing:.12em; text-transform:uppercase; }
+.v3-check dd{ margin:14px 0 0; color:var(--v3-dark-text); font-size:clamp(2.6rem,4.4vw,4rem); font-weight:520; line-height:1; letter-spacing:-.05em; font-variant-numeric:lining-nums tabular-nums; white-space:nowrap; }
+.v3-check > div + div dd{ color:#187f9d; }
+.v3-check-note{ max-width:40rem; margin:14px auto 0; color:var(--v3-dark-muted); font-size:.9rem; line-height:1.55; text-align:center; }
 .v3-case-verdict .v3-case-figure{ margin-top:clamp(56px,6vw,88px); padding-bottom:0; }
 .v3-case-verdict .v3-note{ margin-top:28px; }
 
@@ -5600,5 +5610,10 @@ a.v3-case-frame{ cursor:zoom-in; }
   .v3-story-copy{ padding:24px; }
   .v3-mini-facts dd{ font-size:1.3rem; }
   .v3-case-verdict .v3-section-head > p:not(.v3-kicker){ font-size:1.08rem; }
+  /* the verdict reads left-aligned on phones, so the check does too */
+  .v3-check{ margin:36px 0 0; text-align:left; }
+  .v3-check > div{ padding:18px 12px 20px 0; }
+  .v3-check > div + div{ padding-left:16px; }
+  .v3-check-note{ margin:12px 0 0; text-align:left; }
   .v3-customer-band-copy > p:not(.v3-kicker){ font-size:1.06rem; }
 }
