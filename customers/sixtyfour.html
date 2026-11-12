@@ -220,63 +220,9 @@
           <figcaption><span class="v3-fig-label">In FieldLux</span>The room in FieldLux, seen from above without its ceiling. Scene Layers lists the 15 projectors in four blend groups. The Heatmap overlay is in Norm mode, comparing the light at each point with a 450 lx reference, and the 13pt Diagnostic is on one projector. All values are FieldLux planning estimates. <a class="v3-case-zoom" href="/assets/media/customers/sixtyfour-fieldlux-plan.webp" target="_blank" rel="noopener">Open full size</a></figcaption>
         </figure>
 
-        <article class="v3-case-chapter v3-reveal" aria-labelledby="overlap-title">
-          <div class="v3-case-chapter-head">
-            <p class="v3-kicker">04 / THE OVERLAPS</p>
-            <h2 id="overlap-title">Blended in hardware.</h2>
-          </div>
-          <div class="v3-case-chapter-body">
-            <p>The overlaps got their own fix. A projector showing black still leaks a little light. Where two images overlap, the two leaks add up, and dark scenes show a grey band that software blending cannot remove.</p>
-            <p>This room uses hardware edge blending, which fades each projector's edge physically. The leak fades with it, so black stays even across the seam.</p>
-          </div>
-        </article>
-
-        <figure class="v3-blend v3-reveal">
-          <div class="v3-blend-panels">
-            <div class="v3-blend-panel">
-              <p class="v3-kicker">Software blend only</p>
-              <h3>The leaks add up</h3>
-              <svg class="v3-blend-svg" viewBox="0 0 400 214" role="img" aria-labelledby="blend-soft-t blend-soft-d">
-                <title id="blend-soft-t">Software blend only</title>
-                <desc id="blend-soft-d">During a black frame each projector still leaks a little light. Where projectors A and B overlap, both leaks land on the wall, so the overlap gets twice the black level of the rest of the wall.</desc>
-                <rect class="zone" x="160" y="20" width="80" height="156"/>
-                <rect class="band" x="160" y="76" width="80" height="50"/>
-                <line class="axis" x1="16" y1="176" x2="384" y2="176"/>
-                <polyline class="beam" points="20,126 240,126"/>
-                <polyline class="beam" points="160,126 380,126"/>
-                <polyline class="total" points="20,126 160,126 160,76 240,76 240,126 380,126"/>
-                <text x="20" y="112">A</text>
-                <text x="380" y="112" text-anchor="end">B</text>
-                <text class="hot" x="200" y="62" text-anchor="middle">2x</text>
-                <text x="200" y="202" text-anchor="middle">OVERLAP</text>
-              </svg>
-              <p>In the overlap the wall gets both leaks: twice the black level, a grey band in every dark scene.</p>
-            </div>
-            <div class="v3-blend-panel v3-blend-panel--even">
-              <p class="v3-kicker">Hardware edge blend</p>
-              <h3>The leak fades too</h3>
-              <svg class="v3-blend-svg" viewBox="0 0 400 214" role="img" aria-labelledby="blend-hard-t blend-hard-d">
-                <title id="blend-hard-t">Hardware edge blend</title>
-                <desc id="blend-hard-d">Each projector's light, its leak included, fades out across the overlap while the other fades in, so the wall gets the same black level everywhere.</desc>
-                <rect class="zone" x="160" y="20" width="80" height="156"/>
-                <line class="axis" x1="16" y1="176" x2="384" y2="176"/>
-                <polyline class="beam" points="20,126 160,126 240,176"/>
-                <polyline class="beam" points="160,176 240,126 380,126"/>
-                <polyline class="total" points="20,126 380,126"/>
-                <text x="20" y="112">A</text>
-                <text x="380" y="112" text-anchor="end">B</text>
-                <text class="even" x="200" y="112" text-anchor="middle">1x</text>
-                <text x="200" y="202" text-anchor="middle">OVERLAP</text>
-              </svg>
-              <p>Each projector's light fades across the overlap, leak included, so the black level stays even across the seam.</p>
-            </div>
-          </div>
-          <figcaption>Light on the wall during a black frame where projectors A and B overlap. Dashed: each projector. Solid: the total the audience sees.</figcaption>
-        </figure>
-
         <article class="v3-case-chapter v3-reveal" aria-labelledby="heatmap-title">
           <div class="v3-case-chapter-head">
-            <p class="v3-kicker">05 / THE HEATMAPS</p>
+            <p class="v3-kicker">04 / THE HEATMAPS</p>
             <h2 id="heatmap-title">Light, brightness and pixel density, surface by surface.</h2>
           </div>
           <div class="v3-case-chapter-body">
@@ -298,7 +244,7 @@
     <section class="v3-section v3-case-verdict" aria-labelledby="verdict-title">
       <div class="v3-container">
         <div class="v3-section-head v3-section-head--center v3-reveal">
-          <p class="v3-kicker">06 / THE CHECK</p>
+          <p class="v3-kicker">05 / THE CHECK</p>
           <h2 class="v3-display" id="verdict-title">MEASURED AFTER OPENING.<br>THE NUMBERS HELD.</h2>
           <p>After the room opened, Neal went back with a light meter and measured. <strong>The numbers held.</strong></p>
           <p>That is the job FieldLux is for: settle the big questions before install day, so time on site goes to fine-tuning.</p>
