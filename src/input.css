@@ -5516,11 +5516,30 @@ a.v3-case-frame{ cursor:zoom-in; }
 .v3-story-more{ margin-top:auto; padding-top:30px; }
 .v3-story-more .v3-text-link{ margin-top:0; }
 
-.v3-mini-facts{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin:26px 0 0; border-top:1px solid var(--v3-dark-line); }
-.v3-mini-facts > div{ display:flex; flex-direction:column; min-width:0; padding:14px 12px 0 0; }
+/* The row is its own size container: three across when it has the room,
+   ruled rows when it is narrow (phones, and the home band's side column up
+   to about 1300px wide). The dl cannot restyle itself from its own query,
+   so it is a wrapping flex row and the query changes the children. */
+.v3-mini-facts{ container-type:inline-size; display:flex; flex-wrap:wrap; margin:26px 0 0; border-top:1px solid var(--v3-dark-line); }
+.v3-mini-facts > div{ flex:1 1 0; display:flex; flex-direction:column; min-width:0; padding:14px 12px 0 0; }
 .v3-mini-facts > div + div{ padding-left:14px; border-left:1px solid var(--v3-dark-line); }
 .v3-mini-facts dt{ order:2; margin-top:7px; color:var(--v3-dark-muted); font-size:.64rem; font-weight:680; letter-spacing:.12em; text-transform:uppercase; }
 .v3-mini-facts dd{ order:1; margin:0; color:var(--v3-dark-text); font-size:1.5rem; font-weight:540; line-height:1; letter-spacing:-.04em; font-variant-numeric:lining-nums tabular-nums; white-space:nowrap; }
+/* the same note under each figure as the story's facts row, so a figure
+   reads the same wherever it appears */
+.v3-mini-facts dd.v3-mini-sub{ order:3; margin-top:6px; color:var(--v3-dark-muted); font-size:.78rem; font-weight:500; line-height:1.4; letter-spacing:0; white-space:normal; font-variant-numeric:normal; }
+/* Narrow: three ruled rows, label and note left, figure right, the same
+   reading as the phone hero readout. Three columns under 440px leave the
+   notes about 110px wide and break "EB-L695SE" at its hyphen. */
+@container (max-width:440px){
+  .v3-mini-facts > div,
+  .v3-mini-facts > div + div{ flex:0 0 100%; display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:16px; row-gap:4px; align-items:center; padding:12px 0; border-left:0; border-top:1px solid var(--v3-dark-line); }
+  .v3-mini-facts > div:first-child{ border-top:0; }
+  .v3-mini-facts > div:last-child{ border-bottom:1px solid var(--v3-dark-line); }
+  .v3-mini-facts dt{ grid-column:1; grid-row:1; margin-top:0; }
+  .v3-mini-facts dd.v3-mini-sub{ grid-column:1; grid-row:2; margin-top:0; }
+  .v3-mini-facts dd:not(.v3-mini-sub){ grid-column:2; grid-row:1 / span 2; }
+}
 
 .v3-invite{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:end; gap:28px clamp(48px,7vw,128px); }
 .v3-invite .v3-display{ max-width:13ch; }
