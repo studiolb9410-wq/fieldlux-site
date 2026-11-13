@@ -84,7 +84,26 @@ const EMBED_HEADERS = {
     "child-src 'self' blob:; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
 };
 
+/* /checkout (2026-11-11): the page Paddle's checkout links open. Its own
+   entry in vercel.json, missed by the global one for the same reason as
+   /embed: Paddle.js from cdn.paddle.com, its checkout frame on buy.paddle.com
+   (the frame asks for the Payment Request API, Apple Pay), its stylesheet and
+   API; no inline script; COOP lets Paddle's Apple Pay popup keep its opener;
+   noindex. */
+const CHECKOUT_HEADERS = {
+  ...COMMON,
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(self "https://buy.paddle.com" "https://sandbox-buy.paddle.com"), usb=(), serial=()',
+  'X-Frame-Options': 'DENY',
+  'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+  'Content-Security-Policy':
+    "default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self' 'unsafe-inline' https://cdn.paddle.com https://sandbox-cdn.paddle.com; " +
+    "script-src 'self' https://cdn.paddle.com; font-src 'self'; connect-src 'self' https://api.paddle.com https://sandbox-api.paddle.com; " +
+    "frame-src https://buy.paddle.com https://sandbox-buy.paddle.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+  'X-Robots-Tag': 'noindex, nofollow',
+};
+
 const isEmbedDocument = (pathname) => pathname === '/embed' || pathname === '/embed/';
+const isCheckoutDocument = (pathname) => pathname === '/checkout' || pathname === '/checkout/';
 
 /* Cache-Control, also from vercel.json. The hero is ~14 MB the first time and
    must be ~0 bytes every time after that, on a site whose only scaling limit is
@@ -177,7 +196,7 @@ createServer((req, res) => {
   const headers = {
     'Content-Type': type,
     'Cache-Control': cacheControl(pathname),
-    ...(isEmbedDocument(pathname) ? EMBED_HEADERS : GLOBAL_HEADERS),
+    ...(isEmbedDocument(pathname) ? EMBED_HEADERS : isCheckoutDocument(pathname) ? CHECKOUT_HEADERS : GLOBAL_HEADERS),
   };
 
   // Range support so the browser can scrub the hero video instead of

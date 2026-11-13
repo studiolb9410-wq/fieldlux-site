@@ -14,12 +14,13 @@ README and the spec disagree, the spec wins.
 | `/videos` | `videos.html` | Feature videos - 43 slots across the same ten chapters |
 | `/customers` | `customers.html` | Customers: the logo row of customers who agreed to be named, and their stories |
 | `/customers/<slug>` | `customers/<slug>.html` | One customer story (use case). Today: `/customers/sixtyfour` |
-| `/pricing` | `pricing.html` | Viewer, Projection and Pro, as a 7-day pass (one payment, no renewal), monthly or yearly. Checkout is in the app, never on this site |
+| `/pricing` | `pricing.html` | Viewer, Projection and Pro, as a 7-day pass (one payment, no renewal), monthly or yearly. Buying starts in the app (the plan picker), never on this page |
+| `/checkout` | `checkout.html` | Paddle's checkout for a payment link (`?_ptxn=`), opened by the app in a new tab; also Paddle's default payment link. noindex, not in the sitemap. See "Checkout page" below |
 | `/terms` | `terms.html` | Terms of Service (English) |
 | `/refund` | `refund.html` | Refund and cancellation policy (English). Must say the same rule as the app's `REFUND_RULE` |
 | `/privacy` | `privacy.html` | Privacy policy (English) |
 | - | `404.html` | Not-found page |
-| - | `sitemap.xml`, `robots.txt` | `sitemap.xml` lists every page above except 404 |
+| - | `sitemap.xml`, `robots.txt` | `sitemap.xml` lists every page above except 404 and `/checkout` |
 
 The app links `https://field-lux.com/terms`, `/refund`, `/privacy` and `/pricing` from its
 sign-up and checkout screens, so these four routes must never 404.
@@ -130,6 +131,53 @@ Copy that changes on the two launch days carries `data-launch`:
 Find every switch with `grep -n 'data-launch=' *.html`.
 
 The open-beta popup (`scripts/beta-notice.js`, loaded on every page, skipped on `/pricing`) is a launch switch too: on the day the start date is posted, change its copy to the exact date; on the day paid plans start, remove its `<script>` tag from every page.
+
+## Checkout page - `/checkout`
+
+Added 2026-11-11. Paddle approved field-lux.com for checkout; the app at
+app.field-lux.com sits behind its sign-in and is not approved, and Paddle.js only
+opens a checkout on an approved domain. So the app's billing server creates the
+Paddle transaction and opens `https://field-lux.com/checkout?_ptxn=txn_...` in a new
+tab, and this page is also the account's **default payment link** in Paddle: card
+updates and invoices land here too.
+
+- `checkout.html` + `scripts/checkout-page.js`. No `?_ptxn`: a plain "There is no
+  payment to open here" message, and nothing is loaded from Paddle. With one: Paddle.js
+  v2 from `cdn.paddle.com`, `Paddle.Initialize` with the build-time token; Paddle.js
+  opens the checkout for `?_ptxn` by itself (overlay, `allowLogout: false`). On
+  `checkout.completed`: "Payment received. You can close this tab and return to
+  FieldLux." On close or `checkout.error`: "Nothing was charged", with the way back
+  (and, after a close, a button to open the checkout again). Nothing is sent back to
+  the app: the app's own tab sees the purchase through its server.
+- **The client-side token is set in Vercel, not in git**: `FLX_PADDLE_CLIENT_TOKEN`
+  (`live_...` for Production, `test_...` for Preview). `scripts/paddle-config.mjs`
+  runs in `npm run build` and writes it into the page's
+  `<meta name="flx-paddle-token">`; the environment is the token's prefix
+  (`FLX_PADDLE_ENV`, if set, must agree). It fails the build on a malformed token, a
+  disagreeing `FLX_PADDLE_ENV`, or a `test_` token on a production build. Without a
+  token the page says checkout is not available - so the site deploys as before until
+  the token is set.
+- **Headers (`vercel.json`)**: `/checkout` has its own entry and the global entry
+  skips it, as for `/embed` (Vercel applies every matching entry and cannot unset a
+  header). Only that page allows Paddle: `script-src https://cdn.paddle.com` (and no
+  `'unsafe-inline'` - the page has no inline script), the checkout frame
+  `buy.paddle.com` / `sandbox-buy.paddle.com`, Paddle's stylesheet from
+  `cdn.paddle.com` / `sandbox-cdn.paddle.com`, `connect-src` to `api.paddle.com` /
+  `sandbox-api.paddle.com`, `Permissions-Policy payment=` for the checkout frame
+  (Apple Pay), and `Cross-Origin-Opener-Policy: same-origin-allow-popups` so Paddle's
+  Apple Pay popup (used on a domain not verified for Apple Pay) keeps its opener.
+  Paddle documents no CSP list; these origins are the ones Paddle.js 2.11.0 itself
+  uses. Paddle Retain's script (`public.profitwell.com`) is not allowed - add it if
+  Retain is turned on. `X-Robots-Tag: noindex, nofollow`. `scripts/dev-server.mjs`
+  replays the same set.
+- Kept out of `sitemap.xml`, and `noindex` in the page head too.
+- **Order on the day** (owner, with the app's runbook): set `FLX_PADDLE_CLIENT_TOKEN`
+  in Vercel, merge to `main` (= deploy), check that `/checkout` shows "There is no
+  payment to open here", then set Paddle's Default payment link to
+  `https://field-lux.com/checkout`.
+- The `/privacy` sentence "reading this site sends no request to a third party" does
+  not hold for `/checkout` once it opens a payment. That is a legal-text decision
+  for the owner (see the PR).
 
 ## Review overrides
 
@@ -284,8 +332,10 @@ business-detail placeholders in its footer and skips the production check) and
 ## Source files
 
 - `index.html`, `product.html`, `measurement.html`, `videos.html`, `customers.html`,
-  `pricing.html`, `terms.html`, `refund.html`, `privacy.html`, `404.html`, and the
+  `pricing.html`, `terms.html`, `refund.html`, `privacy.html`, `404.html`, `checkout.html`, and the
   customer stories in `customers/` - the pages
+- `scripts/checkout-page.js` - `/checkout`: loads Paddle.js for a payment link and says what happened
+- `scripts/paddle-config.mjs` - writes the Paddle client-side token into `/checkout` on Vercel and guards it
 - `scripts/site-experience.js` - the v3 pages: CTA target, header, reveals, motion toggle, pricing period
 - `scripts/document-page.js` - the document pages: CTA target, Discord link, motion, nav overlay, reveals
 - `scripts/business-info.mjs` - fills the business details on Vercel and guards production
@@ -294,6 +344,7 @@ business-detail placeholders in its footer and skips the production check) and
 - `tailwind.config.js` - the colour scale and the content glob
 - `vercel.json` - clean URLs and the security headers, including the CSP
 - `assets/fonts/` - self-hosted Geologica and Pretendard. **The CSP has no external
-  origins; re-adding a hosted font link ships the page as unstyled text**
+  origins (except Paddle's, on `/checkout` only); re-adding a hosted font link ships
+  the page as unstyled text**
 - `assets/media/`, `assets/media/features/` - product captures and feature clips
 - `docs/REDESIGN_SPEC_0814.md` - the build specification
