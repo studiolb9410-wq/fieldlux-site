@@ -42,6 +42,11 @@ named on the site (see "Customer stories" below).
   The legal pages, `/terms`, `/refund` and `/privacy`, carried a Korean version from
   2026-10-31; the owner removed it on 2026-11-09 ("English only"), so all three are
   English only too. Do not add Korean text to any page.
+- Copy a visitor reads is plain language, the legal pages included: no storage key names,
+  query parameters, file paths or function names, and no words only an engineer would know
+  (origin, sandbox, hash, TLS, user agent, toast, modal). Say what it means for the visitor;
+  the code names go in this README (owner, 2026-11-12). Names of the app's own buttons and
+  menus, and file formats a user opens or saves (`.flx.json`, DWG, GDTF), are fine.
 - Copy is plain ASCII, everywhere, including comments. No em dashes, no accented
   spellings, no typographic quotes, no arrows, no math glyphs. Rewrite the sentence
   rather than reach for a character the self-hosted font subset may not carry: the
@@ -180,8 +185,30 @@ to the live invite and clears the stored key, as for the CTA.
 ### Not implemented
 
 `?embedSrc=`, described in `docs/REDESIGN_SPEC_0814.md`, is not implemented: the hero
-frame always loads `/embed` from this origin. `privacy.html` lists exactly the keys the
-pages write.
+frame always loads `/embed` from this origin.
+
+## What the pages store, and where `/privacy` says so
+
+`/privacy` section 02 describes, in plain words, every setting the pages write, when, and
+for how long. It never names a key (changed 2026-11-12, owner: "no developer language").
+This table is the map from its rows to the code; add a row to both when a page starts
+storing something new.
+
+| `/privacy` (02) row | Key | Storage | Written by |
+|---|---|---|---|
+| Your motion choice | `fieldlux_motion` (`on` / `off`) | localStorage | `site-experience.js`, `document-page.js` (read before first paint by each page's inline `<head>` script) |
+| The billing period you last viewed on the Pricing page | `fieldlux_pricing_period` | localStorage | `site-experience.js` |
+| "Don't show again today" on the open-beta notice | `fieldlux_beta_notice_until` (that day's date) | localStorage | `beta-notice.js` |
+| You closed the open-beta notice | `fieldlux_beta_notice_closed` | sessionStorage | `beta-notice.js` |
+| Testing only: another address for Sign in / Start free | `fieldlux_flow_app_url` (`?flowAppUrl=`) | sessionStorage | `site-experience.js`, `document-page.js` |
+| Testing only: another Discord invite | `fieldlux_discord_url` (`?discordUrl=`) | localStorage | `document-page.js` |
+| The 3D demo's own view settings | `fieldlux_*` keys of the app build in `/embed` | localStorage | `embed/assets/*` |
+
+The same paragraph's other sentences map to: "cannot send forms or take you to another
+page" = the hero iframe's `sandbox` (no `allow-forms`, no `allow-top-navigation`);
+"contacts no other website" = `connect-src 'self'` in the `/embed` CSP; "tell it only
+which page of this site you came from" = the `siteReturnUrl` parameter on `data-app-link`
+CTAs.
 
 ## Phone hero
 

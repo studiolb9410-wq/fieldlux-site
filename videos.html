@@ -153,8 +153,8 @@
             </video>
           </div>
           <ol class="v3-howto v3-howto--cols">
-            <li>Open File, choose Import 3D Model and select one .fbx, .obj, .glb, .dae, .stl or .ply file. For .gltf, include its .bin file and textures in the same picker, or export a single .glb instead.</li>
-            <li>Wait for the import progress modal. A toast reports how the unit was detected and, if the file does not state its up axis, reminds you to check Up axis.</li>
+            <li>Open File, choose Import 3D Model and select one .fbx, .obj, .glb, .dae, .stl or .ply file. For .gltf, select its .bin file and textures at the same time, or export a single .glb instead.</li>
+            <li>Wait while the import progress window runs. A short pop-up message then reports how the unit was detected and, if the file does not state its up axis, reminds you to check Up axis.</li>
             <li>The model keeps the coordinates it was authored with and is selected. In the Inspector, open 3D Model to check File, Size, Vertices, Source unit and Dimensions.</li>
             <li>Check Source Orientation. A file exported Y-up, like this one, stands on the ground grid as it is. If a model lies on its side, click Z-up there (Blender, 3ds Max) or X-up, then click Center on bbox under Origin to centre it on the scene origin.</li>
           </ol>
@@ -185,7 +185,7 @@
             <li>With the traced lines selected, set Wall height and Wall thickness in the Inspector's Cleanup section, press W, then Enter. A closed ring rises as one room whose walls face inward; they receive projector light, block it from whatever is behind them and cast fixture shadows.</li>
             <li>Press Tab to leave edit mode, open Projector &gt; Projector Library and click Add on a model. In the Inspector's Transform section type its Position to stand it inside the room. The image lands on the wall in front of the lens, with its lux and size labels.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> a full-screen Import Floor Plan overlay with a scale chip, then a linework row in Scene Layers; in edit mode the top strip becomes the Modelling tools toolbar (Select, Draw, Modify, Cleanup, Build) and the prompt strip at the bottom describes the next click. A run that does not close, such as one with a doorway gap, has no inside to face, and the toast after W says so: if its walls render black under a projector, select them and click Modeling &gt; Flip Normals.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> a full-screen Import Floor Plan overlay with a scale chip, then a linework row in Scene Layers; in edit mode the top strip becomes the Modelling tools toolbar (Select, Draw, Modify, Cleanup, Build) and the prompt strip at the bottom describes the next click. A run that does not close, such as one with a doorway gap, has no inside to face, and the pop-up message after W says so: if its walls render black under a projector, select them and click Modeling &gt; Flip Normals.</p>
           <p class="v3-howto-sees"><strong>No drawing?</strong> Open Modeling and choose New Sketch; the Draw tool is already on. Click to place points, type a length such as 5m and press Enter to add that point, press Enter again to finish the run, then press W and Enter to raise the walls.</p>
         </article>
       </div>
@@ -267,7 +267,7 @@
             <li>At the bottom of Optics, drag V Shift and H Shift to move the image without tilting the projector. The limits are the lens's own. Click Reset Shift to Home to return.</li>
             <li>Use Projector Controls at the top of the panel to switch Power or Beam Preview off, or click Lock position so the projector cannot be moved.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> a red, green and blue gizmo on the projector, the beam frustum and its W and H labels moving on the surface, and the Optics readouts changing on every commit. A head whose catalogue lists a distance range, such as the Epson EB-800F, gets an amber Out-of-spec diagnostic model card with struck-through values when placed outside it.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> a red, green and blue gizmo on the projector, the beam frustum and its W and H labels moving on the surface, and the Optics readouts updating each time you finish a move or confirm a value. A head whose catalogue lists a distance range, such as the Epson EB-800F, gets an amber Out-of-spec diagnostic model card with struck-through values when placed outside it.</p>
         </article>
       </div>
     </section>
@@ -348,7 +348,7 @@
             <li>Click Deviation and pick a band with the Scale buttons, plus or minus 10, 20 or 30 percent, to show how far each point sits from the reference.</li>
             <li>Drag the panel by its grip to park it anywhere. Read the basis badge in its header, Physics Model for every head in today's library, and hover it to see what feeds the estimate.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> the projected surfaces recoloured, blue through green and yellow to red for Absolute, blue rising to white across the 0.9x to 1.1x band, then orange to red, for Norm, and blue-white-red centred on 0 percent for Deviation. Number fields keep their values between sessions.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> the projected surfaces recoloured, blue through green and yellow to red for Absolute, blue rising to white across the 0.9x to 1.1x band, then orange to red, for Norm, and blue-white-red centred on 0 percent for Deviation. The number fields keep their values the next time you open FieldLux.</p>
         </article>
       </div>
     </section>
@@ -375,7 +375,7 @@
             <li>Move the cursor over any surface the selected projector lights. The tooltip reads Surface lux and mm/px under the cursor, with no button to press.</li>
             <li>At the top of the Inspector, open Measurement target. Leave it on Auto, which follows the selected projector's beam, or pick a room wall such as Room 1 · Front, a surface, a photo, a model or a primitive. Ceiling is listed only while the room has its ceiling on. Every lux and mm/px reading, in the viewport and in the PDF, then uses that surface.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> 13 dots joined by thin white lines with bold ids and values such as 312 lx, 1.02x or 2.45 mm/px depending on map and mode; the probes follow the projector as you drag it. The panel's Probe set row reads 13pt Diagnostic.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> 13 dots joined by thin white lines with bold point names and values such as 312 lx, 1.02x or 2.45 mm/px depending on map and mode; the probes follow the projector as you drag it. The panel's Probe set row reads 13pt Diagnostic.</p>
         </article>
       </div>
     </section>
@@ -533,11 +533,11 @@
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Press Ctrl+S or open File and choose Save. A project started with New Project is already in the cloud under its name. The chip at the right end of the menu bar reads Saving while it works, then the Unsaved dot disappears. Click the project name beside it to rename the project, or choose Save As to name a copy.</li>
-            <li>Click Settings and drag the Auto Save slider between 1 and 30 minutes. While the scene is dirty, a cloud version is written at that interval and a local draft is kept in the browser.</li>
+            <li>Click Settings and drag the Auto Save slider between 1 and 30 minutes. While the scene has unsaved changes, FieldLux saves a version to the cloud at that interval and keeps a draft in your browser.</li>
             <li>Open File and choose Version history. Hover over an older row, choose Restore and confirm. The selected version is restored as a new save, so your current state remains in the history.</li>
             <li>Open File and choose Export Project File to download an editable .flx.json. On any machine or account, choose Open Project File to load it, then press Ctrl+S to store it in the cloud.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> toasts reading Saved, Saved as new project or Restored, saved as a new version; a Version history modal listing saves by time with the newest tagged Current; and a downloaded project.flx.json. Imported 3D model binaries are referenced by cloud URL, not embedded in the file. If another tab or device saved the project after you opened it, the chip warns that it changed elsewhere; click it to choose Reload latest, Save as a copy or Overwrite.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> pop-up messages reading Saved, Saved as new project or Restored, saved as a new version; a Version history window listing saves by time with the newest tagged Current; and a downloaded project.flx.json. Imported 3D models are not copied into the file: it points to the copies stored in the cloud. If another tab or device saved the project after you opened it, the chip warns that it changed elsewhere; click it to choose Reload latest, Save as a copy or Overwrite.</p>
         </article>
       </div>
     </section>
@@ -564,7 +564,7 @@
             <li>To give a colleague's FieldLux account read-only project access, type their email under FieldLux Account Share and click Share. The project appears in their Projects list, read-only.</li>
             <li>Open Share and choose Share Management to copy, extend or revoke a link; once revoked, a link can be deleted. Extensions are available for 2, 7, 14 or 30 days, or permanently.</li>
           </ol>
-          <p class="v3-howto-sees"><strong>You will see:</strong> the generated URL with a Copy button and a QR code, a toast reading Cloud share created, and in Share Management every link grouped as Active or Expired or revoked with its time left. A revoked link tells the recipient the owner revoked it.</p>
+          <p class="v3-howto-sees"><strong>You will see:</strong> the generated URL with a Copy button and a QR code, a pop-up message reading Cloud share created, and in Share Management every link grouped as Active or Expired or revoked with its time left. A revoked link tells the recipient the owner revoked it.</p>
         </article>
       </div>
     </section>
@@ -585,7 +585,7 @@
           </div>
           <ol class="v3-howto v3-howto--cols">
             <li>Open the set-up project you want to document and frame the 3D viewport the way you want it captured. Turn the Heatmap overlay on if you want the lux legend in the PDF.</li>
-            <li>Click File, then Export PDF Tech Rider. The row greys out while the export runs, and a progress toast with a Cancel button may appear for a large rig.</li>
+            <li>Click File, then Export PDF Tech Rider. The row greys out while the export runs, and for a large rig a progress message with a Cancel button may appear.</li>
             <li>Open FieldLux_Tech_Rider_date.pdf from your downloads.</li>
           </ol>
           <p class="v3-howto-sees"><strong>You will see:</strong> page 1 with the viewport capture, a PROJECT SETUP table (projectors, total lumens, target) and a PROJECTOR SETTINGS INDEX, then one page per projector with EQUIPMENT, LENS, POSITION &amp; ORIENTATION, OPTICAL DISTANCES, SURFACE SAMPLING and, for heads in a blend group, EDGE BLENDING. A disclaimer band reads that it is a simulation preview, not a field measurement.</p>

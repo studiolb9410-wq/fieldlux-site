@@ -132,6 +132,7 @@
           <p class="copy u-text-measure">This policy is published in English.</p>
           <p class="stat-note u-tabular">Effective date: November 9, 2026</p>
           <p class="stat-note u-tabular">Change posted November 10, 2026, effective January 1, 2027: how long uploaded files of unused accounts are kept, in section 04.</p>
+          <p class="stat-note u-tabular">Wording revised <span data-todo="posted date">[Posted date]</span>: sections 02, 03, 04, 06, 08 and 11 now say the same things in plain language. Nothing changes in what we collect, why, how long we keep it or who receives it.</p>
         </div>
       </div>
     </section>
@@ -154,9 +155,26 @@
               <span class="speclist-index u-tabular">(02)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">This website</h3>
-                <p>These pages are static files with no account, no form, no cookies and no analytics, tag manager or tracking script. The stylesheet, fonts and images come from field-lux.com itself, so reading this site sends no request to a third party.</p>
-                <p>Your browser keeps a few keys for this site: <code>fieldlux_motion</code> when you press Reduce motion, <code>fieldlux_pricing_period</code> when you open the pricing page or switch its billing period, <code>fieldlux_beta_notice_until</code> when you choose "Don't show again today" on the open-beta notice (it holds that day's date) and <code>fieldlux_beta_notice_closed</code> for the rest of your visit when you close that notice or follow its link, and two that exist only for review builds and are written only if you open the site with the matching parameter: <code>fieldlux_flow_app_url</code> for <code>?flowAppUrl=</code>, kept for that browser tab only and accepting nothing but a field-lux.com app address, and <code>fieldlux_discord_url</code> for <code>?discordUrl=</code>, which accepts nothing but a Discord link and is kept until you clear this site's data. The 3D demo on the home page is the FieldLux app served from this domain at <code>/embed</code>; it may keep its own view preferences, named with a <code>fieldlux_</code> prefix, in the same storage. None of these keys is sent anywhere, and clearing this site's data removes them.</p>
-                <p>The demo frame shares this page's origin, so it is not a separate security boundary. It is sandboxed without forms or top-level navigation and contacts no other site. Sign in and Start free take you to app.field-lux.com with one parameter, <code>siteReturnUrl</code>, the page you came from. The Discord link opens discord.gg. Vercel, our host, records the requests it serves, such as network address, browser and time, as any web host does; we keep no log of our own.</p>
+                <p>This website, field-lux.com, has no accounts and no forms, and it sets no cookies. It runs no analytics, advertising or tracking tools. Its text, styles, fonts and images all come from field-lux.com itself, so reading these pages makes your browser contact no other website.</p>
+                <p>To keep the pages the way you left them, your browser remembers a few settings for this site. They stay in your browser: none of them is sent to us or to anyone else, and clearing this site's data in your browser removes them all.</p>
+                <div class="legal-table-wrap">
+                  <table class="legal-table">
+                    <thead>
+                      <tr><th scope="col">What your browser remembers</th><th scope="col">When</th><th scope="col">Kept for</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><th scope="row">Your motion choice: whether pages play their animations</th><td data-label="When">When you press Reduce motion or Enable motion at the bottom of a page</td><td data-label="Kept for">Until you clear this site's data</td></tr>
+                      <tr><th scope="row">The billing period you last viewed on the Pricing page: 7-day pass, monthly or yearly</th><td data-label="When">When you open the Pricing page or switch its billing period</td><td data-label="Kept for">Until you clear this site's data</td></tr>
+                      <tr><th scope="row">That you chose "Don't show again today" on the open-beta notice, saved as that day's date</th><td data-label="When">When you press "Don't show again today"</td><td data-label="Kept for">Until you clear this site's data; the notice shows again from the next day</td></tr>
+                      <tr><th scope="row">That you closed the open-beta notice</th><td data-label="When">When you close the notice or follow its link</td><td data-label="Kept for">For the rest of your visit, until you close that browser tab</td></tr>
+                      <tr><th scope="row">For our own testing only: a different address for the Sign in and Start free buttons, which must be a FieldLux address on field-lux.com</th><td data-label="When">Only if you open this site through a special link we use to check new versions of the site</td><td data-label="Kept for">Until you close that browser tab</td></tr>
+                      <tr><th scope="row">For our own testing only: a different invite for the Discord links, which must be a Discord link</th><td data-label="When">Only if you open this site through a special link we use to check new versions of the site</td><td data-label="Kept for">Until you clear this site's data</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p>The 3D demo on the home page is the FieldLux app itself, running on this site. Because it runs on the same site, it shares the browser storage described above and may remember its own view settings there, which are not sent anywhere either. The demo cannot send forms or take you to another page, and it contacts no other website.</p>
+                <p>The Sign in and Start free buttons take you to the app at app.field-lux.com and tell it only which page of this site you came from, so it can bring you back. The Discord links open Discord's website, discord.gg.</p>
+                <p>Vercel, the company that hosts this site, records the requests it serves, such as your network address, your browser and the time, as any web host does. We keep no records of our own about visits to this site.</p>
               </div>
             </li>
 
@@ -170,13 +188,13 @@
                       <tr><th scope="col">Category</th><th scope="col">What</th><th scope="col">Why</th></tr>
                     </thead>
                     <tbody>
-                      <tr><th scope="row">Account</th><td data-label="What">Email address; your password, which only Supabase Auth stores, hashed, and we never see; if you sign in with Google, the name, email address and account identifier Google shares; the role you choose at sign-up; consent records with the text you agreed to, its version, the time and your browser's user agent</td><td data-label="Why">Create and secure your account, sign you in, send account, security and service notices</td></tr>
-                      <tr><th scope="row">Projects and files</th><td data-label="What">Project names, scenes, versions, uploaded models, drawings and media, and share-link settings; link passwords are stored hashed</td><td data-label="Why">Store, reopen and share your work</td></tr>
-                      <tr><th scope="row">Share-link access</th><td data-label="What">For each attempt to open a share link: the link, the outcome and a keyed hash of the network address, never the address itself</td><td data-label="Why">Rate limiting and abuse prevention</td></tr>
-                      <tr><th scope="row">Email verification</th><td data-label="What">One-time codes, stored only as hashes, which expire; each attempt with the address, the browser and a keyed hash of the network address</td><td data-label="Why">Prove an address is yours and stop code abuse</td></tr>
-                      <tr><th scope="row">Billing, once paid plans start</th><td data-label="What">From Paddle: plan, billing period, subscription status and dates, country, currency, amounts, tax, refunds and chargebacks, and Paddle customer, subscription and transaction IDs. When you start a checkout: the terms shown to you and the sentences you agreed to, with the time and your browser's user agent. We never receive your full card number.</td><td data-label="Why">Run your plan, give refunds and keep the records the law requires</td></tr>
-                      <tr><th scope="row">Usage record</th><td data-label="What">Event names such as opening the editor, adding a projector or fixture, exporting a PDF, opening a share link, and app errors; a few details per event: project and share IDs, scene counts and model size, the projector brand, model and lens you add, and for an error its type and message, cleaned of addresses and keys on a best-effort basis; a random visitor ID kept in your browser; a session ID; the page path, referrer and UTM parameters; your browser's user agent; a keyed hash of the network address; your account ID when signed in. No file contents, scene geometry, project names or measurements.</td><td data-label="Why">See which features are used and fix problems</td></tr>
-                      <tr><th scope="row">Analytics</th><td data-label="What">Vercel Web Analytics and Speed Insights inside the app: page views, referrers, device type and page performance timings, without cookies</td><td data-label="Why">Measure performance and usage</td></tr>
+                      <tr><th scope="row">Account</th><td data-label="What">Email address; your password, which we never see: only our sign-in provider, Supabase, stores it, and only in a scrambled form that cannot be turned back into the password; if you sign in with Google, the name, email address and account identifier Google shares; the role you choose at sign-up; consent records with the text you agreed to, its version, the time and the browser and operating system your browser reports</td><td data-label="Why">Create and secure your account, sign you in, send account, security and service notices</td></tr>
+                      <tr><th scope="row">Projects and files</th><td data-label="What">Project names, scenes, versions, uploaded models, drawings and media, and share-link settings; share-link passwords are stored only in scrambled form</td><td data-label="Why">Store, reopen and share your work</td></tr>
+                      <tr><th scope="row">Share-link access</th><td data-label="What">For each attempt to open a share link: the link, the outcome and a coded form of the network address (section 11), never the address itself</td><td data-label="Why">Limit repeated attempts and prevent abuse</td></tr>
+                      <tr><th scope="row">Email verification</th><td data-label="What">One-time codes, which expire and are stored only in scrambled form; for each attempt, the email address, the browser and a coded form of the network address</td><td data-label="Why">Prove an email address is yours and stop misuse of codes</td></tr>
+                      <tr><th scope="row">Billing, once paid plans start</th><td data-label="What">From Paddle: plan, billing period, subscription status and dates, country, currency, amounts, tax, refunds and chargebacks, and Paddle customer, subscription and transaction IDs. When you start a checkout: the terms shown to you and the sentences you agreed to, with the time and the browser and operating system your browser reports. We never receive your full card number.</td><td data-label="Why">Run your plan, give refunds and keep the records the law requires</td></tr>
+                      <tr><th scope="row">Usage record</th><td data-label="What">What you do in the app, such as opening the editor, adding a projector or fixture, exporting a PDF or opening a share link, and the errors the app runs into; a few details for each: the IDs of the project and share link, how many items the scene holds and how large the model is, the projector brand, model and lens you add, and for an error its type and message, with web and email addresses, network addresses, file names and access codes removed wherever we can recognise them; a random visitor ID kept in your browser and an ID for each visit; the address of the page, the page that linked you to it and any campaign tags in that link; the browser and operating system your browser reports; a coded form of the network address; your account ID when signed in. No file contents, scene geometry, project names or measurements.</td><td data-label="Why">See which features are used and fix problems</td></tr>
+                      <tr><th scope="row">Analytics</th><td data-label="What">Vercel's visitor and page-speed measurement inside the app (Vercel Web Analytics and Speed Insights): page views, the pages that linked to them, device type and how fast pages load, without cookies</td><td data-label="Why">Measure performance and usage</td></tr>
                       <tr><th scope="row">Support mail</th><td data-label="What">What you send to jay@field-lux.com: your address and name, the subject, the message and any attachment</td><td data-label="Why">Answer you and handle requests and refunds</td></tr>
                       <tr><th scope="row">Founding Member records</th><td data-label="What">The approved email and, after sign-in, the account it belongs to</td><td data-label="Why">Apply launch benefits to the right account</td></tr>
                       <tr><th scope="row">Waitlist history</th><td data-label="What">Records of earlier beta requests</td><td data-label="Why">Operational history, abuse prevention and support</td></tr>
@@ -204,7 +222,7 @@
                       <tr><th scope="row">Usage record and visit records</th><td data-label="Kept for">180 days</td></tr>
                       <tr><th scope="row">Support mail</th><td data-label="Kept for">Until your request is handled; up to 3 years where it concerns a complaint or a dispute</td></tr>
                       <tr><th scope="row">Waitlist history</th><td data-label="Kept for">Up to 3 years from the request</td></tr>
-                      <tr><th scope="row">Backups</th><td data-label="Kept for">Up to 12 months; information deleted from the live database leaves the backups as they expire</td></tr>
+                      <tr><th scope="row">Backups</th><td data-label="Kept for">Up to 12 months; information deleted from FieldLux is gone from the backups once they expire</td></tr>
                     </tbody>
                   </table>
                 </div>
@@ -231,11 +249,11 @@
                     </thead>
                     <tbody>
                       <tr><th scope="row">Supabase, Inc. (supabase.com/privacy)</th><td data-label="Country">United States company; data stored in Seoul, Korea</td><td data-label="Information">Account, project, share, verification, usage and billing records; uploaded files</td><td data-label="Purpose">Database, file storage and sign-in</td></tr>
-                      <tr><th scope="row">Vercel Inc. (vercel.com/legal/privacy-policy)</th><td data-label="Country">United States</td><td data-label="Information">Request logs (network address, browser, time); Web Analytics and Speed Insights in the app</td><td data-label="Purpose">Hosting this website and the app; performance measurement</td></tr>
+                      <tr><th scope="row">Vercel Inc. (vercel.com/legal/privacy-policy)</th><td data-label="Country">United States</td><td data-label="Information">Records of the requests it serves (network address, browser, time); visitor and page-speed measurement in the app (Web Analytics and Speed Insights)</td><td data-label="Purpose">Hosting this website and the app; performance measurement</td></tr>
                       <tr><th scope="row">Plus Five Five, Inc. (Resend), resend.com/legal/privacy-policy</th><td data-label="Country">United States</td><td data-label="Information">Your email address and the messages we send you</td><td data-label="Purpose">Sending sign-in codes and service notices</td></tr>
                       <tr><th scope="row">Cloudflare, Inc. (cloudflare.com/privacypolicy)</th><td data-label="Country">United States</td><td data-label="Information">Mail you send to jay@field-lux.com</td><td data-label="Purpose">Routing mail for field-lux.com to our support mailbox</td></tr>
                       <tr><th scope="row">Google LLC, Gmail (policies.google.com/privacy)</th><td data-label="Country">United States</td><td data-label="Information">Mail you send to jay@field-lux.com and our replies</td><td data-label="Purpose">Keeping and answering support mail</td></tr>
-                      <tr><th scope="row">Google LLC (policies.google.com/privacy)</th><td data-label="Country">United States</td><td data-label="Information">If you choose Google sign-in, the sign-in exchange; when the app loads its interface font, your network address and browser details</td><td data-label="Purpose">Google sign-in and web fonts</td></tr>
+                      <tr><th scope="row">Google LLC (policies.google.com/privacy)</th><td data-label="Country">United States</td><td data-label="Information">If you choose Google sign-in, the details passed between Google and us to sign you in; when the app loads its font from Google, your network address and browser details</td><td data-label="Purpose">Google sign-in and web fonts</td></tr>
                     </tbody>
                   </table>
                 </div>
@@ -256,7 +274,7 @@
               <span class="speclist-index u-tabular">(08)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">Browser storage and analytics in the app</h3>
-                <p>The app keeps your sign-in session, your preferences and the random visitor ID in your browser's local storage. It sets no advertising cookies, and Vercel Web Analytics works without cookies. To turn usage and error reports off, use the "Share usage and error reports" switch under Privacy choices on the sign-in screen or in Account settings; turning it off stops the usage events, error reports and Vercel Web Analytics and Speed Insights for that browser. If your browser sends a Global Privacy Control or Do Not Track signal, reports start off. Clearing the app's site data removes everything it stored in that browser.</p>
+                <p>The app keeps what it needs to keep you signed in, your preferences and the random visitor ID in your browser's storage. It sets no advertising cookies, and Vercel's visitor measurement works without cookies. To turn usage and error reports off, use the "Share usage and error reports" switch under Privacy choices on the sign-in screen or in Account settings; turning it off stops the usage record, error reports and Vercel's visitor and page-speed measurement for that browser. If your browser is set to send a privacy signal asking sites not to track you (Global Privacy Control or Do Not Track), reports start off. Clearing the app's site data in your browser removes everything it stored there.</p>
               </div>
             </li>
 
@@ -280,7 +298,7 @@
               <span class="speclist-index u-tabular">(11)</span>
               <div class="speclist-body">
                 <h3 class="chapter-point-label">How we protect it</h3>
-                <p>Connections use TLS. Passwords are handled only by Supabase Auth and stored hashed, and share-link passwords are hashed too. Network addresses are stored only as keyed hashes. Row-level security limits each account to its own data, and administrator access is limited to the operator.</p>
+                <p>All connections are encrypted. Passwords are handled only by our sign-in provider, Supabase, and are stored only in a scrambled form that cannot be turned back into the password; share-link passwords are stored the same way. Network addresses are stored only in a coded form made with a secret key, never as the address itself. Rules in the database itself limit each account to its own data, and only the operator has administrator access.</p>
               </div>
             </li>
 
@@ -306,7 +324,7 @@
               <div class="speclist-body">
                 <h3 class="chapter-point-label">Changes to this policy</h3>
                 <p>We post changes here, with their effective date, at least 7 days before they take effect, and email account holders about changes that affect how we use their information, at least 30 days ahead when a change needs your consent.</p>
-                <p>History: November 10, 2026, posted for January 1, 2027: uploaded models and media of accounts with no plan and no sign-in for 12 months may be deleted after email notice (section 04). November 9, 2026, full revision for paid plans: payments, retention periods, transfers abroad and the privacy officer. Earlier version: May 14, 2026.</p>
+                <p>History: <span data-todo="posted date">[Posted date]</span>: sections 02, 03, 04, 06, 08 and 11 reworded in plain language, with no change in what we collect, why, for how long or who receives it. November 10, 2026, posted for January 1, 2027: uploaded models and media of accounts with no plan and no sign-in for 12 months may be deleted after email notice (section 04). November 9, 2026, full revision for paid plans: payments, retention periods, transfers abroad and the privacy officer. Earlier version: May 14, 2026.</p>
               </div>
             </li>
           </ol>
