@@ -1,9 +1,18 @@
 /* Open-beta notice - a small popup on entering the site that says FieldLux
  * is free in open beta and points to the planned pricing (owner, 2026-11-09).
  *
- * LAUNCH SWITCH: this is open-beta copy. On the day the paid-plan start date
- * is posted (README "launch switches"), change the copy to the exact date or
- * remove this script tag from every page.
+ * LAUNCH SWITCH: this is open-beta copy (README "launch switches"). From the
+ * day the paid-plan start date is posted, it names that date (START_DATE
+ * below). On the day paid plans start, remove this script tag from every page.
+ *
+ * !!! START_DATE IS FILLED BY HAND - THE BUILD DOES NOT CHECK THIS FILE !!!
+ * START_DATE starts as the same bracketed placeholder that pricing.html
+ * carries. The production build's placeholder check (scripts/business-info.mjs)
+ * reads the HTML pages only, not this file: a production build passes with
+ * the bracket still in here, and every page but /pricing then shows it in
+ * this popup. Fill it in the same find/replace as pricing.html, then check
+ * that this prints nothing (the [:] keeps this comment from matching itself):
+ *   grep -rn "start date[:] Weekday" *.html customers/*.html scripts/
  *
  * Not shown on /pricing (the visitor is already there).
  * "Close" hides it for the rest of this visit (sessionStorage).
@@ -12,6 +21,9 @@
  */
 (() => {
   'use strict';
+
+  // The paid-plan start date, written as on /pricing. Filled by hand: see above.
+  const START_DATE = '[start date: Weekday, Month D, YYYY]';
 
   const path = window.location.pathname.replace(/\/+$/, '') || '/';
   if (path === '/pricing') return;
@@ -40,7 +52,7 @@
     dialog.innerHTML = `
       <p class="flx-notice-kicker">Open beta</p>
       <h2 id="flx-notice-title">FieldLux is free during the open beta.</h2>
-      <p id="flx-notice-desc">No card required. Paid plans are planned to start in mid-December 2026. We will post the exact date on the Pricing page at least 14 days in advance.</p>
+      <p id="flx-notice-desc">No card required. Paid plans start on ${START_DATE} at 09:00 KST (00:00 UTC).</p>
       <a class="flx-notice-primary" href="/pricing" data-notice-pricing>See planned pricing</a>
       <div class="flx-notice-secondary">
         <button type="button" data-notice-today>Don't show again today</button>
