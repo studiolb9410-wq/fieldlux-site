@@ -177,9 +177,15 @@ updates and invoices land here too.
   replays the same set.
 - Kept out of `sitemap.xml`, and `noindex` in the page head too.
 - **Order on the day** (owner, with the app's runbook): set `FLX_PADDLE_CLIENT_TOKEN`
-  in Vercel, merge to `main` (= deploy), check that `/checkout` shows "There is no
-  payment to open here", then set Paddle's Default payment link to
-  `https://field-lux.com/checkout`.
+  in Vercel, merge to `main` (= deploy), open
+  `/checkout?_ptxn=txn_01aaaaaaaaaaaaaaaaaaaaaaaa` (a transaction that does not
+  exist) and check that the page does NOT say "CHECKOUT UNAVAILABLE", then set
+  Paddle's Default payment link to `https://field-lux.com/checkout`.
+  The bare address proves nothing (corrected 2026-11-19): without `_ptxn` the page
+  answers "There is no payment to open here" before it reads the token
+  (`scripts/checkout-page.js`), so it says that with or without one. And the token
+  is written into the page at build time (`scripts/paddle-config.mjs`): a deploy made
+  before the env was set carries none - set the env, then redeploy, then check.
 - The `/privacy` sentence "reading this site sends no request to a third party" does
   not hold for `/checkout` once it opens a payment. That is a legal-text decision
   for the owner (see the PR).
