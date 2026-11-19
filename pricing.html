@@ -203,11 +203,18 @@
           <p class="v3-kicker">For studios and companies</p>
           <h2 class="v3-display" id="team-title">Team plans (early access).</h2>
         </div>
-        <article class="v3-team-card v3-reveal" aria-labelledby="team-card-title">
+        <!-- The Team card follows the "Billing period" switch in the Plans section, like the cards there.
+             Team has no 7-day pass, so its weekly values repeat the monthly ones; without them the switch
+             would print "Not available". With no script the card shows the monthly price and names the yearly one. -->
+        <article class="v3-team-card v3-reveal" aria-labelledby="team-card-title" data-plan
+          data-weekly-price="$120" data-weekly-unit=" / month" data-weekly-billing="Or $1,200 a year: $100/mo equivalent, save $240 vs. paying monthly"
+          data-monthly-price="$120" data-monthly-unit=" / month" data-monthly-billing="Or $1,200 a year: $100/mo equivalent, save $240 vs. paying monthly"
+          data-yearly-price="$1,200" data-yearly-unit=" / year" data-yearly-billing="$100/mo equivalent, billed once a year, renews until you cancel, save $240 vs. paying monthly">
           <div class="v3-team-card-price">
             <p class="v3-plan-label" id="team-card-title">Team</p>
-            <div class="v3-price-line"><span>$120</span><small> / month</small></div>
-            <p class="v3-team-card-sub">Includes 3 editor seats with every feature. Each extra seat is $35 a month.<br>Yearly: $1,200, plus $350 per extra seat.</p>
+            <div class="v3-price-line"><span data-plan-price>$120</span><small data-plan-unit> / month</small></div>
+            <p class="v3-price-billing" data-plan-billing>Or $1,200 a year: $100/mo equivalent, save $240 vs. paying monthly</p>
+            <p class="v3-team-card-sub">Includes 3 editor seats with every feature. Each extra seat is $35 a month, or $350 a year.</p>
             <a class="v3-button v3-button--light" href="mailto:info@field-lux.com?subject=FieldLux%20Team%20early%20access">Email to join early</a>
             <p class="v3-team-card-note">Early-access price: teams that join now keep it for their first year. Team is not in the app yet; we are building it with the first studios that sign up, so tell us how many editor seats you need.</p>
           </div>
